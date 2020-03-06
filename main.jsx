@@ -16,12 +16,18 @@ const Login = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Entrance = Loadable({
+  loader: () => import('./containers/Entrance/Entrance'),
+  loading: Loading,
+  delay: 0,
+})
 
 
 const Parent = () => (
-  <div>
+  <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
-  </div>
+    <Route path="/entrance" component={Entrance} />
+  </React.Fragment>
 )
 reactDom.render(
   <AppContainer>
