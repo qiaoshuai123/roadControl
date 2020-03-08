@@ -52,7 +52,6 @@ class Entrance extends React.Component {
                                   this.front
               }}
             >
-              front
               <div
                 className={styles.frontSysPic}
                 style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
@@ -66,7 +65,6 @@ class Entrance extends React.Component {
                                   this.right
               }}
             >
-              right
               <div
                 className={styles.rightSysPic}
                 style={{ transform: clickCount === 0 ? 'rotateY(-90deg)' :
@@ -84,7 +82,6 @@ class Entrance extends React.Component {
                                   this.back
               }}
             >
-              back
               <div
                 className={styles.backSysPic}
                 style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
@@ -99,7 +96,6 @@ class Entrance extends React.Component {
                                   this.left
               }}
             >
-              left
               <div
                 className={styles.leftSysPic}
                 style={{ transform: clickCount === 0 ? 'rotateY(-90deg)' : clickCount === 1 ? 'rotateY(0)' : 'rotateY(-90deg)' }}
