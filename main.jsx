@@ -6,6 +6,7 @@ import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-intl-redux'
 import './app.css'
 import LoadingPage from './components/LoadingPage/LoadingPage'
+import RealTime from './TestRealTimeGreenWave'
 
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
@@ -21,12 +22,19 @@ const Entrance = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Inter = Loadable({
+  loader: () => import('./containers/Evaluate/Inter/Inter'),
+  loading: Loading,
+  delay: 0,
+})
 
 
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
+    <Route path="/realtime" component={RealTime} />
     <Route path="/entrance" component={Entrance} />
+    <Route path="/inter" component={Inter} />
   </React.Fragment>
 )
 reactDom.render(

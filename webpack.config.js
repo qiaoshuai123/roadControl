@@ -130,7 +130,7 @@ if (!httpENV) { // 如果是开发环境
     inline: true,
     compress: true,
   }
-  webpackConfig.devtool = 'source-map'
+  webpackConfig.devtool = 'eval'
 }
 
 module.exports = webpackConfig

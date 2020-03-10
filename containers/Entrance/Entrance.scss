@@ -6,6 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     .boolLight {
         position: relative;
         width: 1000px;
@@ -67,6 +68,8 @@
                 div {
                     width: 200px;
                     height: 200px;
+                    transition: all ease .2s;
+                    cursor: pointer;
                 }
                 .frontSysPic {
                     background: url(./consim.png) center center no-repeat;
@@ -87,26 +90,6 @@
                     transform: rotateY(-90deg);
                 }
             }
-            // .front {
-            //     // background-color: blue;
-            //     // transform: translateZ(250px);
-                
-            // }
-            // .left {
-            //     // background-color: #ff0000;
-            //     // transform: rotateY(90deg) translateZ(400px);
-                
-            // }
-            // .back {
-            //     // background-color: yellow;
-            //     // transform: translateZ(-250px);
-                
-            // }
-            // .right {
-            //     // background-color: green;
-            //     // transform: rotateY(90deg) translateZ(-400px);
-                
-            // }
         }
         
     }
