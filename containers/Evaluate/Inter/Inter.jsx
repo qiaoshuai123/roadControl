@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, Icon, Tree } from 'antd'
+import { Select, Icon } from 'antd'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
@@ -17,7 +17,6 @@ class Inter extends React.Component {
   }
   render() {
     const { Option } = Select
-    const { TreeNode, DirectoryTree } = Tree
     return (
       <div className={styles.InterWrapper}>
         <Header {...this.props} />
@@ -40,7 +39,7 @@ class Inter extends React.Component {
           <div className={styles.interChartsMsg}>
             <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
             <InterMsg msgName="路口流量" />
-            <InterMsg msgName="路口延误时间 " />
+            <InterMsg msgName="路口延误时间" />
           </div>
         </div>
       </div>
