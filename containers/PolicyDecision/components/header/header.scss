@@ -1,0 +1,55 @@
+
+.signalHomeBox_header{
+    height: 100px;
+    background: url('./lALPD3IrpUdjio9tzQeA_1920_109.png') center center no-repeat;
+}
+.headers{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.header_left{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .header_left_top{
+        flex: 1;
+    }
+    .header_left_bom{
+        flex: 1;
+        display: flex;
+        div{
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+.header_center{
+    color: #66E8EE;
+    font-size: 24px;
+    font-weight: bold;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header_right{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .header_right_top{
+        flex: 1;
+    }
+    .header_right_bom{
+        flex: 1;
+        display: flex;
+        div{
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

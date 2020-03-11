@@ -39,6 +39,10 @@ class Entrance extends React.Component {
     const path = e.currentTarget.getAttribute('sysname')
     this.props.history.push(path)
   }
+  TrafficControl=(e )=>{
+    const path = e.currentTarget.getAttribute('sysname')
+    this.props.history.push(path)
+  }
   render() {
     const { clickCount } = this.state
     return (
@@ -95,6 +99,8 @@ class Entrance extends React.Component {
               <div
                 className={styles.backSysPic}
                 style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
+                sysname="/signalhome"
+                onClick={this.TrafficControl}
               />
             </div>
             <div

@@ -28,6 +28,11 @@ const Inter = Loadable({
   delay: 0,
 })
 
+const SignalHome = Loadable({
+  loader: () => import('./containers/PolicyDecision/SignalHome/SignalHome'),
+  loading: Loading,
+  delay: 0,
+})
 
 const Parent = () => (
   <React.Fragment>
@@ -35,6 +40,7 @@ const Parent = () => (
     <Route path="/realtime" component={RealTime} />
     <Route path="/entrance" component={Entrance} />
     <Route path="/inter" component={Inter} />
+    <Route path="/signalhome" component={SignalHome} />
   </React.Fragment>
 )
 reactDom.render(
