@@ -10,7 +10,7 @@
         display: flex;
         flex-wrap: wrap;
         :global(.ant-calendar-picker) {
-            width: 130px;
+            width: 110px;
             height: 30px;
         }
         :global(.ant-calendar-picker-icon) {
@@ -39,9 +39,13 @@
             color: #F1F1FB;
         }
         :global(.ant-select-selection--multiple .ant-select-selection__choice) {
-            // color: #F1F1FB;
-            // background-color: transparent;
+            color: #F1F1FB;
+            background-color: transparent;
+            border: none;
             margin-top: 2px;
+        }
+        :global(.ant-select-selection__choice__remove) {
+            color: #46A7C6;
         }
         .searchBtn {
             width: 80px;

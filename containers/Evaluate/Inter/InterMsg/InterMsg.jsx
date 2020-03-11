@@ -2,6 +2,8 @@ import React from 'react'
 import classNames from 'classnames'
 import { DatePicker, Select } from 'antd'
 
+import LineCharts from './LineCharts/LineCharts'
+
 import styles from './InterMsg.scss'
 
 class InterMsg extends React.Component {
@@ -35,7 +37,7 @@ class InterMsg extends React.Component {
           <Select
             defaultValue={[1, 2]}
             mode="multiple"
-            style={{ width: '150px', height: '30px', marginLeft: '5px' }}
+            style={{ width: '160px', height: '30px', marginLeft: '5px' }}
           >
             <Option key={1}>1</Option>
             <Option key={2}>2</Option>
@@ -72,6 +74,7 @@ class InterMsg extends React.Component {
           >导出
           </div>
         </div>
+        <LineCharts />
       </div>
     )
   }
