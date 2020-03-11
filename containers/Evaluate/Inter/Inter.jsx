@@ -2,7 +2,6 @@ import React from 'react'
 import { Select, Icon, Tree } from 'antd'
 
 import Header from '../Header/Header'
-import EvaNav from '../Nav/Nav'
 import InterMsg from './InterMsg/InterMsg'
 
 import styles from './Inter.scss'
