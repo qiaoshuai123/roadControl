@@ -49,7 +49,7 @@ class SignalHome extends Component {
             show: false, // ---是否显示直角坐标系网格
             top: '8%', // 等价于 y: '16%'
             left: '13%',
-            bottom: '58', // ---相对位置，top\bottom\left\right 
+            bottom: '58', // ---相对位置，top\bottom\left\right
             containLabel: false, // ---grid 区域是否包含坐标轴的刻度标签
           },
           xAxis: {
@@ -71,17 +71,16 @@ class SignalHome extends Component {
                     ret += temp // 凭借最终的字符串
                   }
                   return ret
-                } else {
-                  return value
                 }
-              }
+                return value
+              },
             },
             axisTick: {
               alignWithLabel: true,
             },
             axisLine: {
               lineStyle: {
-                color: "#FFFFFF", //轴的颜色
+                color: '#FFFFFF', // 轴的颜色
               },
             },
           },
@@ -89,7 +88,7 @@ class SignalHome extends Component {
             type: 'value',
             axisLine: {
               lineStyle: {
-                color: "#FFFFFF", //轴的颜色
+                color: '#FFFFFF', // 轴的颜色
               },
             },
           },
@@ -114,8 +113,8 @@ class SignalHome extends Component {
             // x: 'left',
             data: ['离线设备', '在线设备', '异常设备'],
             textStyle: {
-              color: '#FFFFFF'
-            }
+              color: '#FFFFFF',
+            },
           },
           tooltip: {
             trigger: 'item',
@@ -124,9 +123,9 @@ class SignalHome extends Component {
             backgroundColor: 'rgba(255,0,0,0.7)',
             textStyle: {
               fontSize: '16px',
-              color: '#000'
+              color: '#000',
             },
-            formatter: '{b} : {c}个 ({d}%)'
+            formatter: '{b} : {c}个 ({d}%)',
           },
           series: [
             {
@@ -137,13 +136,13 @@ class SignalHome extends Component {
 
               label: {
                 normal: {
-                  position: 'inner'
-                }
+                  position: 'inner',
+                },
               },
               labelLine: {
                 normal: {
                   show: false,
-                }
+                },
               },
             },
             {
