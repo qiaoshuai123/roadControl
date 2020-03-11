@@ -20,8 +20,8 @@ class Inter extends React.Component {
     const { TreeNode, DirectoryTree } = Tree
     return (
       <div className={styles.InterWrapper}>
-        <Header />
-        <EvaNav />
+        <Header {...this.props} />
+        <EvaNav {...this.props} />
         <div className={styles.interContainer}>
           <div className={styles.interTreeBox}>
             <div className={styles.interSearch}>
@@ -37,7 +37,7 @@ class Inter extends React.Component {
             <div className={styles.interTree}>
               <DirectoryTree multiple defaultExpandAll onSelect={this.onSelect} onExpand={this.onExpand}>
                 <TreeNode title="parent 0" key="0-0">
-                  <TreeNode title="leaf 0-0" key="0-0-0" isLeaf />
+                  <TreeNode title="leaf 0-0" key="0-0-0" />
                   <TreeNode title="leaf 0-1" key="0-0-1" isLeaf />
                 </TreeNode>
                 <TreeNode title="parent 1" key="0-1">
@@ -49,7 +49,8 @@ class Inter extends React.Component {
           </div>
           <div className={styles.interChartsMsg}>
             <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
-            <InterMsg />
+            <InterMsg msgName="路口流量" />
+            <InterMsg msgName="路口延误时间 " />
           </div>
         </div>
       </div>

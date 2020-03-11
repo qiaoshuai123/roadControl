@@ -25,7 +25,7 @@ class InterMsg extends React.Component {
     const { searchName } = this.state
     return (
       <div className={styles.interMsgWrapper}>
-        <div className={styles.chartsTitle}>路口流量</div>
+        <div className={styles.chartsTitle}>{this.props.msgName}</div>
         <div className={styles.chartsSearch}>
           <span>初始条件：</span>
           <DatePicker /> - <DatePicker suffixIcon={null} />

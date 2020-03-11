@@ -84,6 +84,7 @@ class LineCharts extends React.Component {
       legend: {
         data: ['东进口左转', '东进口直行', '东南进口左转', '东南进口直行', '西南进口左转', '西南进口直行', '西北进口左转', '西北进口直行', '西北进口左转1', '西北进口直行1'],
         // data: legend,
+        top: 10,
         textStyle: {
           color: '#fff',
         },
@@ -98,6 +99,11 @@ class LineCharts extends React.Component {
             textStyle: {
               fontSize: 12,
               color: '#fff',
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#f1f1fb',
             },
           },
         },
@@ -118,7 +124,7 @@ class LineCharts extends React.Component {
         {
           name: '东进口左转',
           type: 'line',
-          data: [2.0, 4.9, 1.0, 33.2, 25.6, 75.7, 25.6, 162.2, 32.6, 20.0, 6.4, 3.3, 33]
+          data: [2.0, 4.9, 1.0, 33.2, 25.6, 75.7, 25.6, 162.2, 32.6, 20.0, 6.4, 3.3, 33],
         },
       ],
       // series,
