@@ -46,7 +46,7 @@ class RealTimeDetection extends React.Component {
       zIndex: 2,
     }
   }
-  componentWillMount = () => {
+  UNSAFE_componentWillMount = () => {
     console.log(this.props)
   }
   componentDidMount = () => {
@@ -57,7 +57,7 @@ class RealTimeDetection extends React.Component {
     this.setState({ xAxisArr: this.xAxisArr })
     this.props.getCalculateHs(this.Hs)
   }
-  componentWillReceiveProps = (nextProps) => {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     const chartsData = nextProps.chartsData
     chartsData.forEach((item, index) => {
       this.xAxisArr.push(item.lenAll)

@@ -59,7 +59,7 @@ class GreenWaveCharts extends React.Component {
       this.getGreenWaveCharts(this.props.chartsData)
     })
   }
-  componentWillReceiveProps = (nextProps) => {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     this.prevTime = 0
     this.reversePrevTime = 0
     this.greenPositions = []
