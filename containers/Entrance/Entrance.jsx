@@ -14,7 +14,7 @@ class Entrance extends React.Component {
     this.left = 'rotateY(90deg) translateZ(400px)'
     this.right = 'rotateY(90deg) translateZ(-400px)'
   }
-  componentDidMount = () => {}
+  componentDidMount = () => { }
   handleMoveLeft = () => {
     const clickCount = this.state.clickCount === 4 ? 1 : this.state.clickCount += 1
     const transFormBoxY = this.state.transFormBoxY === -360 ? -90 : this.state.transFormBoxY -= 90
@@ -36,10 +36,6 @@ class Entrance extends React.Component {
     })
   }
   handleGoSystem = (e) => {
-    const path = e.currentTarget.getAttribute('sysname')
-    this.props.history.push(path)
-  }
-  TrafficControl=(e )=>{
     const path = e.currentTarget.getAttribute('sysname')
     this.props.history.push(path)
   }
@@ -100,7 +96,7 @@ class Entrance extends React.Component {
                 className={styles.backSysPic}
                 style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
                 sysname="/signalhome"
-                onClick={this.TrafficControl}
+                onClick={this.handleGoSystem}
               />
             </div>
             <div
