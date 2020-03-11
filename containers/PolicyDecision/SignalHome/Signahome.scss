@@ -1,5 +1,116 @@
+@font-face {
+    font-family: num;
+    src: url(../../../utils/290.7218c42.woff) format("woff");
+    font-weight: 400;
+    color: #ffee00;
+    font-style: normal;
+    text-align: center;
+  }
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 .signalHomeBox{
     width: 100%;
     height: 100%;
     background-color: #021035;
+    display: flex;
+    flex-direction: column;
+}
+.signaContainer{
+    flex: 1;
+    display: flex;
+    .signaContainer_left{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .signaContainer_center{
+        flex: 2.2;
+        height: 95px;
+        display: flex;
+        margin: 25px 20px 0;
+        .road_show_item {   
+            flex: 1;
+            background: url(./img/showbg.png) center center no-repeat;
+            background-size: 100% 100%;
+            border-radius: 4px;
+            display: flex;
+            margin: 0 11px;
+            position: relative;
+            box-sizing: border-box;
+            padding: 10px 16px;
+            box-shadow: 0 0 10px #0194c0 inset, 0 0 30px #0194c0;
+            //外层1
+            > div:nth-child(1) {    
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              span {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                font-weight: 400;
+                color: #12f2f9;
+                text-align: left;
+              }
+            //   > span:nth-child(1) {
+            //     line-height: 70px;
+            //   }
+            //   > span:nth-child(2) {
+            //     line-height: 30px;
+            //   }
+            }
+            //外层2
+            > div:nth-child(2) {
+                flex: 1.5;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+              > span {
+                display: inline-block;
+                font: 60px num;
+                color: #ffff15;
+                text-align: center;
+                line-height: 70px;
+                background: url(./img/22.png) center center no-repeat;
+                background-size: 100% 90%;
+                padding-right: 10px;
+                position: relative;
+                // transform: skew(8deg);
+                &:nth-child(2) {
+                  left: -8px;
+                }
+                &:nth-child(3) {
+                  left: -15px;
+                }
+                &:nth-child(4) {
+                  left: -23px;
+                }
+              }
+            }
+            //外层3
+            > div:nth-child(3) {
+              color: #ffff15;
+              position: absolute;
+              bottom: 20px;
+              right: 10px;
+            }
+            // &:nth-child(2) {
+            //   > div:nth-child(1) {
+            //     display: inline-block;
+            //   }
+            // }
+          }
+    }
+    .signaContainer_right{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 }
