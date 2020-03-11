@@ -3,6 +3,7 @@ import { Select, Icon, Tree } from 'antd'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
+import CustomTree from '../../../components/CustomTree/CustomTree'
 
 import styles from './Inter.scss'
 
@@ -20,7 +21,6 @@ class Inter extends React.Component {
     return (
       <div className={styles.InterWrapper}>
         <Header {...this.props} />
-        {/* <EvaNav {...this.props} /> */}
         <div className={styles.interContainer}>
           <div className={styles.interTreeBox}>
             <div className={styles.interSearch}>
@@ -34,16 +34,7 @@ class Inter extends React.Component {
               </span>
             </div>
             <div className={styles.interTree}>
-              <DirectoryTree multiple defaultExpandAll onSelect={this.onSelect} onExpand={this.onExpand}>
-                <TreeNode title="parent 0" key="0-0">
-                  <TreeNode title="leaf 0-0" key="0-0-0" />
-                  <TreeNode title="leaf 0-1" key="0-0-1" isLeaf />
-                </TreeNode>
-                <TreeNode title="parent 1" key="0-1">
-                  <TreeNode title="leaf 1-0" key="0-1-0" isLeaf />
-                  <TreeNode title="leaf 1-1" key="0-1-1" isLeaf />
-                </TreeNode>
-              </DirectoryTree>
+              <CustomTree />
             </div>
           </div>
           <div className={styles.interChartsMsg}>
