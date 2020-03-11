@@ -15,7 +15,7 @@ class LineCharts extends React.Component {
     const chartsBox = echarts.init(this.chartsBox)
     this.renderCharts(chartsBox)
   }
-  componentWillReceiveProps = (nextProps) => {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     // // if (this.props.chartsData !== nextProps.chartsData) {
     // const datas = nextProps.chartsData
 

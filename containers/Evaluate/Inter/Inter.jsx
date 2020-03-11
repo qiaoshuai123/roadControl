@@ -21,7 +21,7 @@ class Inter extends React.Component {
     return (
       <div className={styles.InterWrapper}>
         <Header {...this.props} />
-        <EvaNav {...this.props} />
+        {/* <EvaNav {...this.props} /> */}
         <div className={styles.interContainer}>
           <div className={styles.interTreeBox}>
             <div className={styles.interSearch}>

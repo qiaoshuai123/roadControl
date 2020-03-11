@@ -2,6 +2,8 @@ import React from 'react'
 
 import styles from './Header.scss'
 
+import Nav from './Nav/Nav'
+
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -39,7 +41,6 @@ class Header extends React.Component {
     })
   }
   handleGoBack = () => {
-    console.log(this.props)
     this.props.history.push('/entrance')
   }
   coustomInterval = () => {
@@ -55,6 +56,7 @@ class Header extends React.Component {
           <span className={styles.timeSpan}>{this.state.nowtoday}</span>
         </div>
         <div className={styles.goBack} onClick={this.handleGoBack}>返回首页</div>
+        <Nav {...this.props} />
       </div>
     )
   }
