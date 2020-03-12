@@ -8,17 +8,21 @@ class EvaNav extends React.Component {
     super(props)
     this.state = {}
     this.navItems = [
-      { name: '全局监控' },
-      { name: '特勤任务' },
-      { name: '协调监控' },
+      { name: '全局监控', path: '/signalhome' },
+      { name: '特勤任务', path: '/specialTask' },
+      { name: '协调监控', path: '/monitoring' },
     ]
-    this.navItemsRight=[
+    this.navItemsRight = [
       { name: '统计分析' },
       { name: '综合管理' },
       { name: '系统维护' },
     ]
   }
   componentDidMount = () => { }
+  handClick = (paths) => {
+    this.props.history.push(paths)
+    // console.log(this.props.history)
+  }
   render() {
     return (
       <div className={styles.navWrapper}>
@@ -26,7 +30,7 @@ class EvaNav extends React.Component {
           {
             this.navItems.map((item) => {
               return (
-                <div className={styles.navItem} key={item.name}>
+                <div onClick={() => this.handClick(item.path)} className={styles.navItem} key={item.name}>
                   <p className={classNames({ [styles.navName]: true, [styles.navActive]: this.props.location.pathname === item.path })}>{item.name}</p>
                   <p className={styles.navBg} />
                 </div>

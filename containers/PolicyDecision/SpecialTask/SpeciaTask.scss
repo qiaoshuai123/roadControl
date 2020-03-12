@@ -1,0 +1,126 @@
+.speciaTaskBox {
+  width: 100%;
+  height: 100%;
+  background-color: #021035;
+  display: flex;
+  flex-direction: column;
+}
+.speciaContainer {
+  position: relative;
+  flex: 1;
+  display: flex;
+  .swipers{
+    width: 1440px;
+    height: 235px;
+    background-color: #ccc;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .speciaContainer_left {
+    padding-left: 10px;
+    flex: 1;
+    height: 70%;
+    flex-direction: column;
+    display: flex;
+    .speciaContainer_left_top {
+      padding-top: 10px;
+      height: 50px;
+    }
+    .speciaContainer_left_bom {
+      flex: 1;
+    }
+  }
+  .speciaContainer_center {
+    flex: 2.2;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    background-color: #011F53;
+    margin: 25px 20px 0;
+    padding: 5px 10px;
+    .speciaContainer_center_top {
+      flex: 2.2;
+    }
+    .speciaContainer_center_bom {
+      flex: 1;
+      display: flex;
+      li{
+        margin-right: 20px;
+      }
+      span{
+        color: #00FF64;
+      }
+    }
+  }
+  .speciaContainer_right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .speciaContainer_right_one {
+      flex: 1;
+    }
+    .speciaContainer_right_two {
+      flex: 1.9;
+      display: flex;
+      flex-direction: column;
+      p:nth-child(1){
+        font-size: 18px;
+        line-height: 30px;
+        height: 30px;
+        span{
+          font-size: 12px;
+        }
+      }
+      p:nth-child(2){
+        line-height: 25px;
+        color: #DB0500;
+        height: 25px;
+      }
+      .speciaContainerLB_canvas{
+        flex: 3;
+        display: flex;
+        div{
+          flex: 1;
+        }
+      }
+      .speciaContainerLB_list{
+        flex: 3;
+      }
+      .speciaContainerLB_bom{
+        flex: 1;
+      }
+    }
+    .speciaContainer_right_tre {
+      flex: 1.2;
+    }
+  }
+}
+.speciaContainer_left {
+  :global(.ant-select-selection) {
+    color: white;
+    background-color: #023052;
+    border: 1px solid #1d425f;
+  }
+  :global(path) {
+    color: white;
+  }
+
+  :global(.ant-input-affix-wrapper .ant-input) {
+    color: #376282;
+    background-color: #023052;
+    border: 1px solid #1d425f;
+  }
+}
+.seipers{
+  :global(.ant-carousel .slick-slide) {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background-color: #364d79;
+    overflow: hidden;
+  }
+  :global(.ant-carousel .slick-slide h3) {
+    color: #fff;
+  }
+}

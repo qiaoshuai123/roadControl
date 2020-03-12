@@ -27,9 +27,18 @@ const Inter = Loadable({
   loading: Loading,
   delay: 0,
 })
-
 const SignalHome = Loadable({
   loader: () => import('./containers/PolicyDecision/SignalHome/SignalHome'),
+  loading: Loading,
+  delay: 0,
+})
+const SpecialTask = Loadable({
+  loader: () => import('./containers/PolicyDecision/SpecialTask/SpeciaTask'),
+  loading: Loading,
+  delay: 0,
+})
+const Monitoring = Loadable({
+  loader: () => import('./containers/PolicyDecision/Monitoring/Monitoring'),
   loading: Loading,
   delay: 0,
 })
@@ -41,6 +50,8 @@ const Parent = () => (
     <Route path="/entrance" component={Entrance} />
     <Route path="/inter" component={Inter} />
     <Route path="/signalhome" component={SignalHome} />
+    <Route path="/specialTask" component={SpecialTask} />
+    <Route path="/monitoring" component={Monitoring} />
   </React.Fragment>
 )
 reactDom.render(

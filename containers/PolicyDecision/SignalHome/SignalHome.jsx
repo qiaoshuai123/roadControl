@@ -32,6 +32,13 @@ class SignalHome extends Component {
       echarts1: {
         option: {
           color: ['#3398DB'],
+          title: {
+            text: '实时信号控制状态',
+            textStyle: {
+              fontWeight: 'normal',
+              color: '#FFFFFF',
+            },
+          },
           tooltip: {
             trigger: 'axis',
             axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -41,13 +48,13 @@ class SignalHome extends Component {
           legend: {
             data: [''],
             textStyle: { // ----图例内容样式
-              color: '#0099CC', // ---所有图例的字体颜色
+              color: '#FFFFFF', // ---所有图例的字体颜色
               // backgroundColor:'black',  //---所有图例的字体背景色
             },
           },
           grid: {
             show: false, // ---是否显示直角坐标系网格
-            top: '8%', // 等价于 y: '16%'
+            top: '13%', // 等价于 y: '16%'
             left: '13%',
             bottom: '58', // ---相对位置，top\bottom\left\right
             containLabel: false, // ---grid 区域是否包含坐标轴的刻度标签
@@ -67,7 +74,7 @@ class SignalHome extends Component {
                     let temp = '' // 每次截取的字符串
                     const start = i * maxLength // 开始截取的位置
                     const end = start + maxLength // 结束截取的位置
-                    temp = value.substring(start, end) + "\n"
+                    temp = `${value.substring(start, end)}\n`
                     ret += temp // 凭借最终的字符串
                   }
                   return ret
@@ -105,6 +112,27 @@ class SignalHome extends Component {
       echarts2: {
         option: {
           color: ['#0189FF', '#FF8C3C', '#F10282'],
+          title: {
+            text: '信号机实时状态统计',
+            textStyle: {
+              fontWeight: 'normal',
+              color: '#FFFFFF',
+            },
+          },
+          graphic: {
+            type: 'text',
+            left: 'center',
+            bottom: '18%',
+            style: {
+              text: ` ${10}  \n  ${20}  \n\n`,
+              textAlign: 'center',
+              fontSize: 30,
+              // font: 'italic bolder 30px cursive',
+              fill: '#fff',
+              width: 30,
+              height: 30,
+            },
+          },
           legend: {
             x: 'right',
             y: 'bottom',
@@ -139,11 +167,11 @@ class SignalHome extends Component {
                   position: 'inner',
                 },
               },
-              labelLine: {
-                normal: {
-                  show: false,
-                },
-              },
+              // labelLine: {
+              //   normal: {
+              //     show: false,
+              //   },
+              // },
             },
             {
               name: '已完成',
@@ -152,7 +180,7 @@ class SignalHome extends Component {
               data: [
                 { value: 332, name: '离线设备' },
                 { value: 55, name: '异常设备' },
-                { value: 88, name: '在线设备' }
+                { value: 88, name: '在线设备' },
               ],
               itemStyle: {
                 emphasis: {
@@ -167,8 +195,13 @@ class SignalHome extends Component {
       },
       echarts3: {
         option: {
+          color: ['#FBD106', '#2FF4F1'],
           title: {
             text: '折线图堆叠',
+            textStyle: {
+              fontWeight: 'normal',
+              color: '#FFFFFF',
+            },
           },
           tooltip: {
             trigger: 'axis',
@@ -179,49 +212,44 @@ class SignalHome extends Component {
             bottom: '3%',
             containLabel: true,
           },
-          toolbox: {
-            feature: {
-              saveAsImage: {},
-            },
-          },
           xAxis: {
             type: 'category',
-            boundaryGap: false,
+            boundaryGap: false, // 设为false首个在y轴
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            axisLine: {
+              lineStyle: {
+                color: '#FFFFFF', // 轴的颜色
+              },
+            },
+            axisLabel: {
+              rotate: 45, // 旋转角度
+              interval: 0, // 设置X轴数据间隔几个显示一个，为0表示都显示
+            },
           },
           yAxis: {
             type: 'value',
+            axisLine: {
+              lineStyle: {
+                color: '#FFFFFF', // 轴的颜色
+              },
+            },
           },
           series: [
             {
               name: '邮件营销',
               type: 'line',
               stack: '总量',
+              symbol: 'none', // 设置折线弧度，取值：0-1之间
+              smooth: 0.5,
               data: [120, 132, 101, 134, 90, 230, 210],
             },
             {
               name: '联盟广告',
               type: 'line',
               stack: '总量',
+              symbol: 'none', // 设置折线弧度，取值：0-1之间
+              smooth: 0.5,
               data: [220, 182, 191, 234, 290, 330, 310],
-            },
-            {
-              name: '视频广告',
-              type: 'line',
-              stack: '总量',
-              data: [150, 232, 201, 154, 190, 330, 410],
-            },
-            {
-              name: '直接访问',
-              type: 'line',
-              stack: '总量',
-              data: [320, 332, 301, 334, 390, 330, 320],
-            },
-            {
-              name: '搜索引擎',
-              type: 'line',
-              stack: '总量',
-              data: [820, 932, 901, 934, 1290, 1330, 1320],
             },
           ],
         },
@@ -235,9 +263,9 @@ class SignalHome extends Component {
         <Header {...this.props} />
         <div className={styles.signaContainer}>
           <div className={styles.signaContainer_left}>
-            <From {...this.fromlist.form1} />
-            <EchartsPage {...this.echarts.echarts1} />
-            <EchartsPage {...this.echarts.echarts2} />
+            <div className={styles.signaContainer_left_box}><From {...this.fromlist.form1} /></div>
+            <div className={styles.signaContainer_left_box}><EchartsPage {...this.echarts.echarts1} /></div>
+            <div className={styles.signaContainer_left_box}><EchartsPage {...this.echarts.echarts2} /></div>
           </div>
           <div className={styles.signaContainer_center}>
             <div className={`${styles.road_show_item} ${styles.buling}`}>
@@ -274,9 +302,9 @@ class SignalHome extends Component {
             </div>
           </div>
           <div className={styles.signaContainer_right}>
-            <From {...this.fromlist.form2} />
-            <From {...this.fromlist.form3} />
-            <EchartsPage {...this.echarts.echarts3} />
+            <div className={styles.signaContainer_left_box}><From {...this.fromlist.form2} /></div>
+            <div className={styles.signaContainer_left_box}><From {...this.fromlist.form3} /></div>
+            <div className={styles.signaContainer_left_box}><EchartsPage {...this.echarts.echarts3} /></div>
           </div>
         </div>
       </div>
