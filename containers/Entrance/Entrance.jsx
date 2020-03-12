@@ -7,33 +7,20 @@ class Entrance extends React.Component {
     super(props)
     this.state = {
       clickCount: 0,
-      transFormBoxY: 0,
     }
-    this.front = 'translateZ(250px)'
-    this.back = 'translateZ(-250px)'
-    this.left = 'rotateY(90deg) translateZ(400px)'
-    this.right = 'rotateY(90deg) translateZ(-400px)'
+    this.F = { top: '350px', left: '430px', transform: 'scale(1.4)' }
+    this.L = { top: '100px', left: '-60px', transform: 'scale(1)' }
+    this.B = { top: '-70px', left: '430px', transform: 'scale(1)' }
+    this.R = { top: '100px', left: '905px', transform: 'scale(1)' }
   }
   componentDidMount = () => { }
   handleMoveLeft = () => {
     const clickCount = this.state.clickCount === 4 ? 1 : this.state.clickCount += 1
-    const transFormBoxY = this.state.transFormBoxY === -360 ? -90 : this.state.transFormBoxY -= 90
-    this.setState({
-      clickCount,
-      transFormBoxY,
-    }, () => {
-      console.log(this.state.transFormBoxY)
-    })
+    this.setState({ clickCount })
   }
   handleMoveRight = () => {
     const clickCount = this.state.clickCount === 0 ? 3 : this.state.clickCount -= 1
-    const transFormBoxY = this.state.transFormBoxY === 0 ? -270 : this.state.transFormBoxY += 90
-    this.setState({
-      clickCount,
-      transFormBoxY,
-    }, () => {
-      console.log(this.state.transFormBoxY)
-    })
+    this.setState({ clickCount })
   }
   handleGoSystem = (e) => {
     const path = e.currentTarget.getAttribute('sysname')
@@ -44,76 +31,28 @@ class Entrance extends React.Component {
     return (
       <div className={styles.entranceWrapper}>
         <div className={styles.boolLight}>
-          {/* <div className={styles.bool} /> */}
+          <div
+            className={styles.F}
+            style={clickCount === 1 ? this.L : clickCount === 2 ? this.B : clickCount === 3 ? this.R : this.F}
+          />
+          <div
+            className={styles.L}
+            style={clickCount === 1 ? this.B : clickCount === 2 ? this.R : clickCount === 3 ? this.F : this.L}
+            sysname="/inter"
+            onClick={this.handleGoSystem}
+          />
+          <div
+            className={styles.B}
+            style={clickCount === 1 ? this.R : clickCount === 2 ? this.F : clickCount === 3 ? this.L : this.B}
+            sysname="/signalhome"
+            onClick={this.handleGoSystem}
+          />
+          <div
+            className={styles.R}
+            style={clickCount === 1 ? this.F : clickCount === 2 ? this.L : clickCount === 3 ? this.B : this.R}
+          />
           <span className={styles.moveLeft} onClick={this.handleMoveLeft} />
           <span className={styles.moveRight} onClick={this.handleMoveRight} />
-          <div className={styles.transformBox} style={{ transform: `rotateX(-45deg) rotateY(${this.state.transFormBoxY}deg)` }}>
-            <div
-              className={styles.front}
-              style={{
-                transform: clickCount === 1 ? 'translateZ(400px) scale(1)' :
-                  clickCount === 2 ? `${this.front} rotateY(-180deg) scale(1)` :
-                    clickCount === 3 ? 'translateZ(400px) rotateY(-90deg) scale(1)' :
-                      `${this.front} scale(1.3)`,
-              }}
-            >
-              <div
-                className={styles.frontSysPic}
-                style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
-              />
-            </div>
-            <div
-              className={styles.right}
-              style={{
-                transform: clickCount === 1 ? 'rotateY(90deg) translateY(-250px) scale(1)' :
-                  clickCount === 2 ? `${this.right} rotateY(-180deg) scale(1)` :
-                    clickCount === 3 ? 'translateY(250px) rotateY(0) scale(1.3)' :
-                      `${this.right} scale(1)`,
-              }}
-            >
-              <div
-                className={styles.rightSysPic}
-                style={{
-                  transform: clickCount === 0 ? 'rotateY(-90deg)' :
-                    clickCount === 1 ? 'rotateY(0)' :
-                      clickCount === 2 ? 'rotateY(-90deg)' :
-                        null,
-                }}
-                sysname="/inter"
-                onClick={this.handleGoSystem}
-              />
-            </div>
-            <div
-              className={styles.back}
-              style={{
-                transform: clickCount === 1 ? 'translateZ(-400px) scale(1)' :
-                  clickCount === 2 ? `${this.back} rotateY(-180deg) scale(1.3)` :
-                    clickCount === 3 ? 'translateZ(-400px) rotateY(-90deg) scale(1)' :
-                      `${this.back} scale(1)`,
-              }}
-            >
-              <div
-                className={styles.backSysPic}
-                style={{ transform: clickCount === 1 ? 'rotateY(90deg)' : clickCount === 0 ? 'rotateY(0)' : 'rotateY(0)' }}
-                sysname="/signalhome"
-                onClick={this.handleGoSystem}
-              />
-            </div>
-            <div
-              className={styles.left}
-              style={{
-                transform: clickCount === 1 ? 'rotateY(90deg) translateY(250px) scale(1.3)' :
-                  clickCount === 2 ? `${this.left} rotateY(-180deg) scale(1)` :
-                    clickCount === 3 ? 'translateY(-250px) rotateY(0) scale(1)' :
-                      `${this.left} scale(1)`,
-              }}
-            >
-              <div
-                className={styles.leftSysPic}
-                style={{ transform: clickCount === 0 ? 'rotateY(-90deg)' : clickCount === 1 ? 'rotateY(0)' : 'rotateY(-90deg)' }}
-              />
-            </div>
-          </div>
         </div>
       </div>
     )
