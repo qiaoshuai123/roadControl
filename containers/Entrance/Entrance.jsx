@@ -44,17 +44,17 @@ class Entrance extends React.Component {
     return (
       <div className={styles.entranceWrapper}>
         <div className={styles.boolLight}>
-          <div className={styles.bool} />
+          {/* <div className={styles.bool} /> */}
           <span className={styles.moveLeft} onClick={this.handleMoveLeft} />
           <span className={styles.moveRight} onClick={this.handleMoveRight} />
           <div className={styles.transformBox} style={{ transform: `rotateX(-45deg) rotateY(${this.state.transFormBoxY}deg)` }}>
             <div
               className={styles.front}
               style={{
-                transform: clickCount === 1 ? 'translateZ(400px)' :
-                  clickCount === 2 ? `${this.front} rotateY(-180deg)` :
-                    clickCount === 3 ? 'translateZ(400px) rotateY(-90deg)' :
-                      this.front,
+                transform: clickCount === 1 ? 'translateZ(400px) scale(1)' :
+                  clickCount === 2 ? `${this.front} rotateY(-180deg) scale(1)` :
+                    clickCount === 3 ? 'translateZ(400px) rotateY(-90deg) scale(1)' :
+                      `${this.front} scale(1.3)`,
               }}
             >
               <div
@@ -65,10 +65,10 @@ class Entrance extends React.Component {
             <div
               className={styles.right}
               style={{
-                transform: clickCount === 1 ? 'rotateY(90deg) translateY(-250px)' :
-                  clickCount === 2 ? `${this.right} rotateY(-180deg)` :
-                    clickCount === 3 ? 'translateY(250px) rotateY(0)' :
-                      this.right,
+                transform: clickCount === 1 ? 'rotateY(90deg) translateY(-250px) scale(1)' :
+                  clickCount === 2 ? `${this.right} rotateY(-180deg) scale(1)` :
+                    clickCount === 3 ? 'translateY(250px) rotateY(0) scale(1.3)' :
+                      `${this.right} scale(1)`,
               }}
             >
               <div
@@ -86,10 +86,10 @@ class Entrance extends React.Component {
             <div
               className={styles.back}
               style={{
-                transform: clickCount === 1 ? 'translateZ(-400px)' :
-                  clickCount === 2 ? `${this.back} rotateY(-180deg)` :
-                    clickCount === 3 ? 'translateZ(-400px) rotateY(-90deg)' :
-                      this.back,
+                transform: clickCount === 1 ? 'translateZ(-400px) scale(1)' :
+                  clickCount === 2 ? `${this.back} rotateY(-180deg) scale(1.3)` :
+                    clickCount === 3 ? 'translateZ(-400px) rotateY(-90deg) scale(1)' :
+                      `${this.back} scale(1)`,
               }}
             >
               <div
@@ -102,10 +102,10 @@ class Entrance extends React.Component {
             <div
               className={styles.left}
               style={{
-                transform: clickCount === 1 ? 'rotateY(90deg) translateY(250px)' :
-                  clickCount === 2 ? `${this.left} rotateY(-180deg)` :
-                    clickCount === 3 ? 'translateY(-250px) rotateY(0)' :
-                      this.left,
+                transform: clickCount === 1 ? 'rotateY(90deg) translateY(250px) scale(1.3)' :
+                  clickCount === 2 ? `${this.left} rotateY(-180deg) scale(1)` :
+                    clickCount === 3 ? 'translateY(-250px) rotateY(0) scale(1)' :
+                      `${this.left} scale(1)`,
               }}
             >
               <div
