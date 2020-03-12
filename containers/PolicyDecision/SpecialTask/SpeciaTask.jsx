@@ -185,7 +185,7 @@ class SpeciaTask extends Component {
   componentDidMount() {
   }
   handleChange = (value) => {
-    console.log(`selected ${value}`)
+    // console.log(`selected ${value}`)
   }
   onChange = (a, b, c) => {
     console.log(a, b, c)

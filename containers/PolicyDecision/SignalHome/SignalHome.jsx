@@ -221,6 +221,14 @@ class SignalHome extends Component {
                 color: '#FFFFFF', // 轴的颜色
               },
             },
+            splitLine: { // ---grid 区域中的分隔线
+              show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
+              lineStyle: {
+                color: ['#143058'],
+                width: 1,
+                type: 'solid',
+              },
+            },
             axisLabel: {
               rotate: 45, // 旋转角度
               interval: 0, // 设置X轴数据间隔几个显示一个，为0表示都显示
@@ -228,11 +236,21 @@ class SignalHome extends Component {
           },
           yAxis: {
             type: 'value',
+            splitLine: { // ---grid 区域中的分隔线
+              show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
+              lineStyle: {
+                color: ['#143058'],
+                width: 1,
+                type: 'solid',
+              },
+            },
             axisLine: {
+              // show: true,
               lineStyle: {
                 color: '#FFFFFF', // 轴的颜色
               },
             },
+
           },
           series: [
             {

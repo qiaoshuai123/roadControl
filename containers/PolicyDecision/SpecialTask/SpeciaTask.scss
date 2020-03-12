@@ -6,20 +6,32 @@
   flex-direction: column;
 }
 .speciaContainer {
-  position: relative;
-  flex: 1;
+  height: calc(100% - 100px);
+  position: absolute;
+  width: 100%;
+  top: 100px;
   display: flex;
   .swipers{
-    width: 1440px;
+    width: calc(100% - 461px);
     height: 235px;
+    overflow: hidden;
+    display: flex;
     background-color: #ccc;
     position: absolute;
     left: 0;
     bottom: 0;
+    ul{
+      width: 115px;
+      display: flex;
+      flex-direction: column;
+      li{
+        
+      }
+    }
   }
   .speciaContainer_left {
     padding-left: 10px;
-    flex: 1;
+    width: 441px;
     height: 70%;
     flex-direction: column;
     display: flex;
@@ -54,7 +66,7 @@
     }
   }
   .speciaContainer_right {
-    flex: 1;
+    width: 441px;
     display: flex;
     flex-direction: column;
     .speciaContainer_right_one {
