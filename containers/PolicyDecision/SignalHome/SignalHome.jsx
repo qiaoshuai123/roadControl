@@ -151,7 +151,7 @@ class SignalHome extends Component {
       },
       echarts2: {
         option: {
-          color: ['#0189FF', '#FF8C3C', '#F10282'],
+          color: ['#00cf4d', '#d3692f', '#0f85ff'],
           title: {
             text: '信号机实时状态统计',
             textStyle: {
@@ -162,11 +162,11 @@ class SignalHome extends Component {
           graphic: {
             type: 'text',
             left: 'center',
-            bottom: '18%',
+            bottom: '35%',
             style: {
-              text: ` ${10}  \n  ${20}  \n\n`,
+              text: ` ${'215处'}  \n  ${'信号机总数'}  \n\n`,
               textAlign: 'center',
-              fontSize: 30,
+              fontSize: 16,
               // font: 'italic bolder 30px cursive',
               fill: '#fff',
               width: 30,
@@ -201,6 +201,17 @@ class SignalHome extends Component {
                   },
                 },
               },
+              itemStyle: {
+                normal: {
+                  color(params) {
+                    // 自定义颜色
+                    const colorList = [
+                      '#0f85ff', '#d3692f', '#00cf4d',
+                    ]
+                    return colorList[params.dataIndex]
+                  },
+                },
+              },
               labelLine: {
                 normal: {
                   show: false,
@@ -214,93 +225,6 @@ class SignalHome extends Component {
             },
           ],
         },
-
-
-        // option: {
-        //   color: ['#0189FF', '#FF8C3C', '#F10282'],
-        //   title: {
-        //     text: '信号机实时状态统计',
-        //     textStyle: {
-        //       fontWeight: 'normal',
-        //       color: '#FFFFFF',
-        //     },
-        //   },
-        //   graphic: {
-        //     type: 'text',
-        //     left: 'center',
-        //     bottom: '18%',
-        //     style: {
-        //       text: ` ${10}  \n  ${20}  \n\n`,
-        //       textAlign: 'center',
-        //       fontSize: 30,
-        //       // font: 'italic bolder 30px cursive',
-        //       fill: '#fff',
-        //       width: 30,
-        //       height: 30,
-        //     },
-        //   },
-        //   legend: {
-        //     x: 'right',
-        //     y: 'bottom',
-        //     orient: 'vertical',
-        //     // orient: 'vertical',
-        //     // x: 'left',
-        //     data: ['离线设备', '在线设备', '异常设备'],
-        //     textStyle: {
-        //       color: '#FFFFFF',
-        //     },
-        //   },
-        //   tooltip: {
-        //     trigger: 'item',
-        //     showDelay: 20,
-        //     hideDelay: 20,
-        //     backgroundColor: 'rgba(255,0,0,0.7)',
-        //     textStyle: {
-        //       fontSize: '16px',
-        //       color: '#000',
-        //     },
-        //     formatter: '{b} : {c}个 ({d}%)',
-        //   },
-        //   series: [
-        //     {
-        //       name: '未完成',
-        //       type: 'pie',
-        //       radius: [20, '30%'],
-        //       avoidLabelOverlap: false,
-        //       label: {
-        //         normal: {
-        //           show: false,
-        //           position: 'center',
-        //         },
-        //       },
-        //       labelLine: {
-        //         normal: {
-        //           show: false,
-        //         },
-        //       },
-        //       data: [
-        //         { value: 332, name: '离线设备' },
-        //         { value: 55, name: '异常设备' },
-        //         { value: 88, name: '在线设备' },
-        //       ],
-        //     },
-        //     {
-        //       name: '已完成',
-        //       type: 'pie',
-        //       radius: ['40%', '55%'],
-        //       data: [
-
-        //       ],
-        //       // itemStyle: {
-        //       //   emphasis: {
-        //       //     shadowBlur: 10,
-        //       //     shadowOffsetX: 0,
-        //       //     shadowColor: 'rgba(0, 0, 0, 0.5)',
-        //       //   },
-        //       // },
-        //     },
-        //   ],
-        // },
       },
       echarts3: {
         option: {
@@ -324,7 +248,7 @@ class SignalHome extends Component {
           xAxis: {
             type: 'category',
             boundaryGap: false, // 设为false首个在y轴
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
             axisLine: {
               lineStyle: {
                 color: '#1C385F', // 轴的颜色
@@ -342,7 +266,7 @@ class SignalHome extends Component {
               rotate: 45, // 旋转角度
               textStyle: {
                 color: '#FFFFFF', // 更改坐标轴文字颜色
-                fontSize: 14, // 更改坐标轴文字大小
+                fontSize: 12, // 更改坐标轴文字大小
               },
               interval: 0, // 设置X轴数据间隔几个显示一个，为0表示都显示
             },
@@ -404,7 +328,25 @@ class SignalHome extends Component {
           <div className={styles.signaContainer_left}>
             <div className={styles.signaContainer_left_box}><From {...this.fromlist.form1} /></div>
             <div className={styles.signaContainer_left_box}><EchartsPage {...this.echarts.echarts1} /></div>
-            <div className={styles.signaContainer_left_box}><EchartsPage {...this.echarts.echarts2} /></div>
+            <div className={`${styles.signaContainer_left_box} ${styles.signaContainer_left_boxer}`}>
+              <div className={styles.signaContainerLB_left}>
+                <EchartsPage {...this.echarts.echarts2} />
+              </div>
+              <div className={styles.signaContainerLB_right}>
+                <dl>
+                  <dt><b className={styles.bone}></b><li>ATC</li><li className={styles.lione}>在线2处</li></dt>
+                  <dd><b></b><li className={styles.nums}>25%</li><li className={styles.lione}>离线0处</li></dd>
+                </dl>
+                <dl>
+                  <dt><b className={styles.btwo}></b><li>ATC</li><li className={styles.litwo}>在线2处</li></dt>
+                  <dd><b></b><li className={styles.nums}>25%</li><li className={styles.litwo}>离线0处</li></dd>
+                </dl>
+                <dl>
+                  <dt><b className={styles.bthr}></b><li>ATC</li><li className={styles.lithr}>在线2处</li></dt>
+                  <dd><b></b><li className={styles.nums}>25%</li><li className={styles.lithr}>离线0处</li></dd>
+                </dl>
+              </div>
+            </div>
           </div>
           <div className={styles.signaContainer_center}>
             <div className={`${styles.road_show_item} ${styles.buling}`}>

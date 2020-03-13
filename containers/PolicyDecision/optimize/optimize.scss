@@ -11,21 +11,91 @@
   width: 100%;
   top: 100px;
   display: flex;
-  .swipers{
+  .swipers {
     width: calc(100% - 461px);
     height: 235px;
     overflow: hidden;
     display: flex;
-    background-color: #ccc;
+    background-color: #021035;
     position: absolute;
     left: 0;
     bottom: 0;
-    ul{
-      width: 115px;
+    .uls {
+      width: 110px;
       display: flex;
+      padding: 15px 15px;
       flex-direction: column;
-      li{
-        
+      li {
+        flex: 1;
+        color: white;
+        margin: 5px 0;
+        border: 1px solid #153b5a;
+        background-color: #012f51;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .swiperRig {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      .swiperRig_left,
+      .swiperRig_right {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .swiperRig_left div,
+      .swiperRig_right div {
+        height: 50%;
+        width: 80%;
+        background-color: #001f52;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+      .swiperRig_left span {
+        width: 0;
+        height: 0;
+        border: 10px solid;
+        transform: rotate(45deg);
+        border-color: transparent transparent white white;
+      }
+      .swiperRig_right span {
+        width: 0;
+        height: 0;
+        border: 10px solid;
+        transform: rotate(-135deg);
+        border-color: transparent transparent white white;
+      }
+      .swiperRig_center {
+        width: calc(100% - 85px);
+        overflow: hidden;
+        position: relative;
+        ul {
+          position: absolute;
+          top: 0;
+          transition: all 0.3s;
+          left: 0px;
+          height: 100%;
+        }
+        li {
+          float: left;
+          height: 100%;
+          width: 315px;
+          display: flex;
+          flex-direction: column;
+          p {
+            height: 20px;
+          }
+          div {
+            flex: 1;
+          }
+        }
       }
     }
   }
@@ -48,7 +118,7 @@
     height: 75px;
     display: flex;
     flex-direction: column;
-    background-color: #011F53;
+    background-color: #011f53;
     margin: 25px 20px 0;
     padding: 5px 10px;
     .speciaContainer_center_top {
@@ -57,11 +127,11 @@
     .speciaContainer_center_bom {
       flex: 1;
       display: flex;
-      li{
+      li {
         margin-right: 20px;
       }
-      span{
-        color: #00FF64;
+      span {
+        color: #00ff64;
       }
     }
   }
@@ -76,37 +146,86 @@
       flex: 1.9;
       display: flex;
       flex-direction: column;
-      p:nth-child(1){
+      p:nth-child(1) {
         font-size: 18px;
         line-height: 30px;
         height: 30px;
-        span{
+        span {
           font-size: 12px;
         }
       }
-      p:nth-child(2){
+      p:nth-child(2) {
         line-height: 25px;
-        color: #DB0500;
+        color: #db0500;
         height: 25px;
       }
-      .speciaContainerLB_canvas{
+      .speciaContainerLB_canvas {
         flex: 3;
         display: flex;
-        div{
+        div {
           flex: 1;
         }
       }
-      .speciaContainerLB_list{
+      .speciaContainerLB_list {
         flex: 3;
       }
-      .speciaContainerLB_bom{
+      .speciaContainerLB_bom {
         flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        .spans {
+          color: white;
+          padding: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+          background-color: #04a8c3;
+        }
+        .spans:nth-child(1) {
+          margin-right: 8px;
+        }
       }
     }
     .speciaContainer_right_tre {
-      flex: 1.2;
+      flex: 1.4;
+      display: flex;
+      flex-direction: column;
+      p {
+        font-size: 18px;
+        line-height: 30px;
+        height: 30px;
+      }
+      ul {
+        height: 30px;
+        display: flex;
+        padding-top: 5px;
+        justify-content: center;
+        align-items: center;
+        li {
+          flex: 1;
+          text-align: center;
+          padding: 3px 0;
+          margin: 0 8px;
+          border: 1px solid #087c96;
+          cursor: pointer;
+          border-radius: 5px;
+          display: flex;
+          justify-content: center;
+          span{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+          }
+        }
+      }
+      div {
+        flex: 1;
+      }
     }
   }
+}
+.active{
+  background-color: red;
 }
 .speciaContainer_left {
   :global(.ant-select-selection) {
@@ -124,15 +243,32 @@
     border: 1px solid #1d425f;
   }
 }
-.seipers{
-  :global(.ant-carousel .slick-slide) {
-    text-align: center;
-    height: 160px;
-    line-height: 160px;
-    background-color: #364d79;
-    overflow: hidden;
+:global(.ant-carousel .slick-slide) {
+  text-align: center;
+  height: 235px;
+  line-height: 235px;
+  background: #364d79;
+  overflow: hidden;
+}
+:global(.ant-carousel .slick-slide h3) {
+  color: #fff;
+}
+.speciaContainerLB_bom {
+  :global(.ant-select) {
+    height: 25px;
   }
-  :global(.ant-carousel .slick-slide h3) {
-    color: #fff;
+  :global(.ant-select-selection) {
+    color: white;
+    height: 25px;
+    line-height: 25px;
+    background-color: #023052;
+    border: 1px solid #1d425f;
+  }
+  :global(.ant-select-selection--single .ant-select-selection__rendered) {
+    height: 25px;
+    line-height: 25px;
+  }
+  :global(path) {
+    color: white;
   }
 }

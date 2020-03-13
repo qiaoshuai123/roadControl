@@ -29,10 +29,64 @@
   .signaContainer_left {
     height: 100%;
     width: 448px;
+    overflow: auto;
     flex-direction: column;
     display: flex;
     .signaContainer_left_box {
       flex: 1;
+    }
+    .signaContainer_left_boxer {
+      display: flex;
+      .signaContainerLB_left {
+        flex: 1;
+      }
+      .signaContainerLB_right {
+        flex: 1;
+        padding: 10px 20px 10px 0;
+        display: flex;
+        flex-direction: column;
+        dl {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          dt,
+          dd {
+            flex: 1;
+            display: flex;
+            b {
+              width: 20px;
+              margin: 10px;
+            }
+            .bone {
+              background-color: #00cf4d;
+              border-radius: 5px;
+            }
+            .btwo {
+              background-color: #d3692f;
+              border-radius: 5px;
+            }
+            .bthr {
+              background-color: #0f85ff;
+              border-radius: 5px;
+            }
+            li {
+              flex: 1;
+            }
+            .nums {
+              color: #2ec8ea;
+            }
+            .lione {
+              color: #0abc52;
+            }
+            .litwo {
+              color: #b55a33;
+            }
+            .lithr {
+              color: #196cca;
+            }
+          }
+        }
+      }
     }
   }
   .signaContainer_center {
@@ -116,6 +170,7 @@
     }
   }
   .signaContainer_right {
+    overflow: auto;
     width: 448px;
     display: flex;
     flex-direction: column;

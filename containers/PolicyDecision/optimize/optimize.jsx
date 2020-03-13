@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../Header/Header'
-import { Select, Input, Button, Carousel } from 'antd'
+import { Select, Input } from 'antd'
 import OptimizeList from './optimizeList/optimizeList'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import OptimizeListT from './optimizeListT/optimizeListT'
@@ -10,10 +10,21 @@ import styles from './optimize.scss'
 class Optimize extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      num: 1,
+    }
     this.echartsprogramme = {
       option: {
-        legend: {},
+        legend: {
+          right: '5%', // 图列相对容器的位置 top\bottom\left\right
+          selected: {
+            // '销量': true  // 图列选择，图形加载出来会显示选择的图列，默认为true
+          },
+          textStyle: { // 图列内容样式
+            color: '#fff', // 字体颜色
+            // backgroundColor: 'black', // 字体背景色
+          },
+        },
         tooltip: {},
         dataset: {
           source: [
@@ -28,14 +39,36 @@ class Optimize extends Component {
           type: 'category',
           axisLine: {
             lineStyle: {
-              color: '#FFFFFF', // 轴的颜色1E385D
+              color: '#1C385F', // 轴的颜色1E385D
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#FFFFFF', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
             },
           },
         },
         yAxis: {
           axisLine: {
             lineStyle: {
-              color: '#FFFFFF', // 轴的颜色1E385D
+              color: '#1C385F', // 轴的颜色1E385D
+            },
+          },
+          splitLine: { // ---grid 区域中的分隔线
+            show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
+            lineStyle: {
+              color: ['#143058'],
+              width: 1,
+              type: 'solid',
+            },
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#FFFFFF', // 更改坐标轴文字颜色
+              fontSize: 14, // 更改坐标轴文字大小
             },
           },
         },
@@ -181,18 +214,65 @@ class Optimize extends Component {
         },
       },
     }
+    this.dataList = [//模拟数据
+      1, 2, 3, 4, 5, 6,
+    ]
+    this.num = 4
+    this.nums = 0
+    this.assessmentList = [
+      {
+        id: 1,
+        name: '排队长度',
+      },
+      {
+        id: 2,
+        name: '停车次数',
+      },
+      {
+        id: 3,
+        name: '延迟时间',
+      },
+    ]
   }
   componentDidMount() {
+    // eslint-disable-next-line react/no-string-refs
+    this.uls = this.refs.uls
+    // eslint-disable-next-line prefer-destructuring
+    const length = this.dataList.length
+    this.uls.style.width = `${length * 317} px`
   }
   handleChange = (value) => {
     // console.log(`selected ${value}`)
   }
+  next = () => {
+    if (this.num >= this.dataList.length) {
+      return
+    }
+    this.nums++
+    this.num++
+    this.uls.style.left = `${-317 * this.nums}px`
+  }
+  prev = () => {
+    if (this.num <= 4) {
+      return
+    }
+    this.nums--
+    this.num--
+    this.uls.style.left = `${-317 * this.nums}px`
+  }
+  btnclick(id) {
+    this.setState({
+      num: id,
+    })
+  }
   onChange = (a, b, c) => {
     console.log(a, b, c)
   }
+
   render() {
     const { Option } = Select
     const { Search } = Input
+    const { num } = this.state
     return (
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
@@ -248,36 +328,57 @@ class Optimize extends Component {
                   <Option value="disabled">Disabled</Option>
                   <Option value="Yiminghe">yiminghe</Option>
                 </Select>
-                <Button type="primary">Primary</Button>
-                <Button type="primary">Primary</Button>
+                <div><span className={styles.spans}>执行</span></div>
+                <div><span className={styles.spans}>优化控制管理</span></div>
               </div>
             </div>
             <div className={styles.speciaContainer_right_tre}>
-              <EchartsPage {...this.echartsprogramme} />
+              <p>方案预评估</p>
+              <ul>
+                {
+                  this.assessmentList.map(item => <li key={item.id} onClick={() => this.btnclick(item.id)}>{item.name}<span className={num === item.id ? styles.active : ''}> </span></li>)
+                }
+              </ul>
+              <div>
+                <EchartsPage {...this.echartsprogramme} />
+              </div>
+
             </div>
           </div>
           <div className={styles.swipers}>
-            <ul>
+            <ul className={styles.uls}>
               <li>流量</li>
               <li>延误</li>
               <li>停车</li>
               <li>排队</li>
             </ul>
-            <div>
-              {/* <Carousel afterChange={this.onChange}>
-                <div>
-                  <h3>1</h3>
+            <div className={styles.swiperRig}>
+              <div className={styles.swiperRig_left}>
+                <div onClick={this.prev}>
+                  <span></span>
                 </div>
-                <div>
-                  <h3>2</h3>
+              </div>
+              <div className={styles.swiperRig_center}>
+                <ul ref="uls">
+                  {
+                    this.dataList.map((item, ind) =>
+                      (<li key={ind}>
+                        <p>设备编号:1000227$1$041</p>
+                        <p>位置:世纪大道-********</p>
+                        <div>
+                          {item}
+                        </div>
+                      </li>)
+                    )
+                  }
+
+                </ul>
+              </div>
+              <div className={styles.swiperRig_right}>
+                <div onClick={this.next}>
+                  <span></span>
                 </div>
-                <div>
-                  <h3>3</h3>
-                </div>
-                <div>
-                  <h3>4</h3>
-                </div>
-              </Carousel> */}
+              </div>
             </div>
           </div>
         </div>
