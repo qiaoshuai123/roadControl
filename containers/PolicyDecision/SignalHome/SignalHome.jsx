@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../Header/Header'
+import echarts from 'echarts'
 import From from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import styles from './Signahome.scss'
@@ -63,6 +64,11 @@ class SignalHome extends Component {
             type: 'category',
             data: ['离点断线', '关灯控制', '全红控制', '黄闪控制', '本地多时段', '本地感应', '中心多时段', '勤务控制'],
             axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#FFFFFF', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
               interval: 0,
               formatter(value) {
                 let ret = ''
@@ -86,16 +92,32 @@ class SignalHome extends Component {
               alignWithLabel: true,
             },
             axisLine: {
+              // show: true,
               lineStyle: {
-                color: '#FFFFFF', // 轴的颜色
+                color: '#1C385F', // 轴的颜色
               },
             },
           },
           yAxis: {
             type: 'value',
+            splitLine: { // ---grid 区域中的分隔线
+              show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
+              lineStyle: {
+                color: ['#143058'],
+                width: 1,
+                type: 'solid',
+              },
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#FFFFFF', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
+            },
             axisLine: {
               lineStyle: {
-                color: '#FFFFFF', // 轴的颜色
+                color: '#1C385F', // 轴的颜色
               },
             },
           },
@@ -105,6 +127,24 @@ class SignalHome extends Component {
               type: 'bar',
               barWidth: '60%',
               data: [60, 80, 120, 160, 120, 100, 60, 40],
+              itemStyle: {// 柱状图圆角
+                // emphasis: {
+                //   barBorderRadius: 7,
+                // },
+                normal: {
+                  barBorderRadius: [5, 5, 0, 0],
+                  color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                    offset: 0,
+                    color: '#05427B', // 0% 处的颜色
+                  }, {
+                    offset: 0.6,
+                    color: '#2099B4', // 60% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: ' #39E8DB ', // 100% 处的颜色
+                  }], false),
+                },
+              },
             },
           ],
         },
@@ -133,65 +173,134 @@ class SignalHome extends Component {
               height: 30,
             },
           },
-          legend: {
-            x: 'right',
-            y: 'bottom',
-            orient: 'vertical',
-            // orient: 'vertical',
-            // x: 'left',
-            data: ['离线设备', '在线设备', '异常设备'],
-            textStyle: {
-              color: '#FFFFFF',
-            },
-          },
           tooltip: {
             trigger: 'item',
-            showDelay: 20,
-            hideDelay: 20,
-            backgroundColor: 'rgba(255,0,0,0.7)',
-            textStyle: {
-              fontSize: '16px',
-              color: '#000',
-            },
-            formatter: '{b} : {c}个 ({d}%)',
+            formatter: '{a} <br/>{b}: {c} ({d}%)',
           },
+          // legend: {
+          //   orient: 'vertical',
+          //   left: 10,
+          //   data: ['离线设备', '在线设备', '异常设备'],
+          // },
           series: [
             {
-              name: '未完成',
+              name: '访问来源',
               type: 'pie',
-              selectedMode: 'single',
-              radius: [20, '30%'],
-
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
               label: {
                 normal: {
-                  position: 'inner',
+                  show: false,
+                  position: 'center',
+                },
+                emphasis: {
+                  show: false,
+                  textStyle: {
+                    fontSize: '30',
+                    fontWeight: 'bold',
+                  },
                 },
               },
-              // labelLine: {
-              //   normal: {
-              //     show: false,
-              //   },
-              // },
-            },
-            {
-              name: '已完成',
-              type: 'pie',
-              radius: ['40%', '55%'],
+              labelLine: {
+                normal: {
+                  show: false,
+                },
+              },
               data: [
                 { value: 332, name: '离线设备' },
                 { value: 55, name: '异常设备' },
                 { value: 88, name: '在线设备' },
               ],
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)',
-                },
-              },
             },
           ],
         },
+
+
+        // option: {
+        //   color: ['#0189FF', '#FF8C3C', '#F10282'],
+        //   title: {
+        //     text: '信号机实时状态统计',
+        //     textStyle: {
+        //       fontWeight: 'normal',
+        //       color: '#FFFFFF',
+        //     },
+        //   },
+        //   graphic: {
+        //     type: 'text',
+        //     left: 'center',
+        //     bottom: '18%',
+        //     style: {
+        //       text: ` ${10}  \n  ${20}  \n\n`,
+        //       textAlign: 'center',
+        //       fontSize: 30,
+        //       // font: 'italic bolder 30px cursive',
+        //       fill: '#fff',
+        //       width: 30,
+        //       height: 30,
+        //     },
+        //   },
+        //   legend: {
+        //     x: 'right',
+        //     y: 'bottom',
+        //     orient: 'vertical',
+        //     // orient: 'vertical',
+        //     // x: 'left',
+        //     data: ['离线设备', '在线设备', '异常设备'],
+        //     textStyle: {
+        //       color: '#FFFFFF',
+        //     },
+        //   },
+        //   tooltip: {
+        //     trigger: 'item',
+        //     showDelay: 20,
+        //     hideDelay: 20,
+        //     backgroundColor: 'rgba(255,0,0,0.7)',
+        //     textStyle: {
+        //       fontSize: '16px',
+        //       color: '#000',
+        //     },
+        //     formatter: '{b} : {c}个 ({d}%)',
+        //   },
+        //   series: [
+        //     {
+        //       name: '未完成',
+        //       type: 'pie',
+        //       radius: [20, '30%'],
+        //       avoidLabelOverlap: false,
+        //       label: {
+        //         normal: {
+        //           show: false,
+        //           position: 'center',
+        //         },
+        //       },
+        //       labelLine: {
+        //         normal: {
+        //           show: false,
+        //         },
+        //       },
+        //       data: [
+        //         { value: 332, name: '离线设备' },
+        //         { value: 55, name: '异常设备' },
+        //         { value: 88, name: '在线设备' },
+        //       ],
+        //     },
+        //     {
+        //       name: '已完成',
+        //       type: 'pie',
+        //       radius: ['40%', '55%'],
+        //       data: [
+
+        //       ],
+        //       // itemStyle: {
+        //       //   emphasis: {
+        //       //     shadowBlur: 10,
+        //       //     shadowOffsetX: 0,
+        //       //     shadowColor: 'rgba(0, 0, 0, 0.5)',
+        //       //   },
+        //       // },
+        //     },
+        //   ],
+        // },
       },
       echarts3: {
         option: {
@@ -218,7 +327,7 @@ class SignalHome extends Component {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
             axisLine: {
               lineStyle: {
-                color: '#FFFFFF', // 轴的颜色
+                color: '#1C385F', // 轴的颜色
               },
             },
             splitLine: { // ---grid 区域中的分隔线
@@ -231,6 +340,10 @@ class SignalHome extends Component {
             },
             axisLabel: {
               rotate: 45, // 旋转角度
+              textStyle: {
+                color: '#FFFFFF', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
               interval: 0, // 设置X轴数据间隔几个显示一个，为0表示都显示
             },
           },
@@ -244,10 +357,18 @@ class SignalHome extends Component {
                 type: 'solid',
               },
             },
+
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: '#FFFFFF', // 更改坐标轴文字颜色
+                fontSize: 14, // 更改坐标轴文字大小
+              },
+            },
             axisLine: {
               // show: true,
               lineStyle: {
-                color: '#FFFFFF', // 轴的颜色
+                color: '#1C385F', // 轴的颜色
               },
             },
 

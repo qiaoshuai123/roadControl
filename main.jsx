@@ -32,8 +32,8 @@ const SignalHome = Loadable({
   loading: Loading,
   delay: 0,
 })
-const SpecialTask = Loadable({
-  loader: () => import('./containers/PolicyDecision/SpecialTask/SpeciaTask'),
+const Optimize = Loadable({
+  loader: () => import('./containers/PolicyDecision/optimize/optimize'),
   loading: Loading,
   delay: 0,
 })
@@ -50,7 +50,7 @@ const Parent = () => (
     <Route path="/entrance" component={Entrance} />
     <Route path="/inter" component={Inter} />
     <Route path="/signalhome" component={SignalHome} />
-    <Route path="/specialTask" component={SpecialTask} />
+    <Route path="/optimize" component={Optimize} />
     <Route path="/monitoring" component={Monitoring} />
   </React.Fragment>
 )

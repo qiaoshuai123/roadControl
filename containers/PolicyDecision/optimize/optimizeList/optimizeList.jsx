@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import styles from './speciaList.scss'
+import styles from './optimizeList.scss'
 
 
-class SpeciaList extends Component {
+class OptimizeList extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -51,4 +51,4 @@ class SpeciaList extends Component {
   }
 }
 
-export default SpeciaList
+export default OptimizeList
