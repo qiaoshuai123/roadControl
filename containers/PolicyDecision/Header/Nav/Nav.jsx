@@ -21,7 +21,6 @@ class EvaNav extends React.Component {
   componentDidMount = () => { }
   handClick = (paths) => {
     this.props.history.push(paths)
-    // console.log(this.props.history)
   }
   render() {
     return (
@@ -38,7 +37,7 @@ class EvaNav extends React.Component {
             })
           }
         </div>
-        <div className={styles.navCenter}> </div>
+        <div className={styles.navCenter} />
         <div className={styles.navRight}>
           {
             this.navItemsRight.map((item) => {
