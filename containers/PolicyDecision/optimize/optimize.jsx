@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import Header from '../Header/Header'
 import { Select, Input, Button, Carousel } from 'antd'
-import SpeciaList from './speciaList/speciaList'
+import OptimizeList from './optimizeList/optimizeList'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
-import SpeciaListT from './speciaListT/speciaListT'
-import styles from './SpeciaTask.scss'
+import OptimizeListT from './optimizeListT/optimizeListT'
+import styles from './optimize.scss'
 
 
-class SpeciaTask extends Component {
+class Optimize extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -228,7 +228,7 @@ class SpeciaTask extends Component {
           </div>
           <div className={styles.speciaContainer_right}>
             <div className={styles.speciaContainer_right_one}>
-              <SpeciaList />
+              <OptimizeList />
             </div>
             <div className={styles.speciaContainer_right_two}>
               <p>实时优化方案控制 <span>方案编号:2020202022202-1</span></p>
@@ -238,7 +238,7 @@ class SpeciaTask extends Component {
                 <div> <EchartsPage {...this.echarts.echarts2} /></div>
               </div>
               <div className={styles.speciaContainerLB_list}>
-                <SpeciaListT />
+                <OptimizeListT />
               </div>
               <div className={styles.speciaContainerLB_bom}>
                 <span>优化控制操作:</span>
@@ -286,4 +286,4 @@ class SpeciaTask extends Component {
   }
 }
 
-export default SpeciaTask
+export default Optimize

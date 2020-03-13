@@ -9,7 +9,7 @@ class EvaNav extends React.Component {
     this.state = {}
     this.navItems = [
       { name: '全局监控', path: '/signalhome' },
-      { name: '特勤任务', path: '/specialTask' },
+      { name: '特勤任务', path: '/optimize' },
       { name: '协调监控', path: '/monitoring' },
     ]
     this.navItemsRight = [
