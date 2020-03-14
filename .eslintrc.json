@@ -35,6 +35,7 @@
           "error",
           "never"
       ],
+      "import/prefer-default-export": "off",
       "wrap-iife": ["error", "any"],
       "no-underscore-dangle": ["error", 
         {"allow": ["__DEF__","__DEFS__","__PROP__","__PROPS__"]}

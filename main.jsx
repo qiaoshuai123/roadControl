@@ -3,13 +3,14 @@ import reactDom from 'react-dom'
 import Loadable from 'react-loadable'
 import { HashRouter, Route, BrowserHistory, Redirect, Switch } from 'react-router-dom'
 import { AppContainer } from 'react-hot-loader'
-import { Provider } from 'react-intl-redux'
-import './app.css'
-import LoadingPage from './components/LoadingPage/LoadingPage'
-import RealTime from './TestRealTimeGreenWave'
-
+import { Provider } from 'react-redux'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
+
+import './app.css'
+import store from './configureStore'
+import LoadingPage from './components/LoadingPage/LoadingPage'
+import RealTime from './TestRealTimeGreenWave'
 
 const Loading = () => <LoadingPage />
 const Login = Loadable({
@@ -57,15 +58,15 @@ const Parent = () => (
 reactDom.render(
   <AppContainer>
     <ConfigProvider locale={zhCN}>
-      {/* //<Provider> */}
-      <HashRouter basename="" history={BrowserHistory}>
-        <Switch>
-          <Redirect exact from="/" to="/login" />
-          <Route exact path="/login" component={Login} />
-          <Route path="/" component={Parent} />
-        </Switch>
-      </HashRouter>
-      {/* //</Provider> */}
+      <Provider store={store}>
+        <HashRouter basename="" history={BrowserHistory}>
+          <Switch>
+            <Redirect exact from="/" to="/login" />
+            <Route exact path="/login" component={Login} />
+            <Route path="/" component={Parent} />
+          </Switch>
+        </HashRouter>
+      </Provider>
     </ConfigProvider>
   </AppContainer>
   , document.getElementById('content'),
