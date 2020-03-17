@@ -289,8 +289,12 @@
   background-color: red;
 }
 .speciaContainer_left {
+  :global(.ant-select .ant-select-enabled){
+    flex: 1;
+  }
   :global(.ant-select-selection) {
     color: white;
+    height: 31px;
     background-color: #023052;
     border: 1px solid #1d425f;
   }
@@ -302,6 +306,10 @@
     color: #376282;
     background-color: #023052;
     border: 1px solid #1d425f;
+  }
+  :global(.ant-input-search){
+    flex: 2;
+    height: 31px;
   }
 }
 :global(.ant-carousel .slick-slide) {

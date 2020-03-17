@@ -1,0 +1,46 @@
+
+.mountingTable {
+    width: 100%;
+    color: black;
+    height: 175px;
+    background-color: #eef6ff;
+    display: flex;
+    flex-direction: column;
+  .mountingThead {
+    font-size: 12px;
+    height: 30px;
+    display: flex;
+  }
+  .mountingTr {
+    height: 40px;
+    margin-bottom: 10px;
+    display: flex;
+  }
+  .mountingThead {
+    // background-color: rgba(14, 28, 63, 0.7);
+  }
+  .mountingTh,
+  .mountingTd {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .deviceMsg {
+    margin: 0 10px;
+    border: 1px solid #B7DEEF;
+    padding: 2px;
+    cursor: pointer;
+    color: #07a8ff;
+  }
+  .mountingTr {
+    background-color: #d0e2f8;
+  }
+  //   .mountingTr:nth-child(even) {
+  //     background-color: rgba(14, 28, 63, 0.7);
+  //   }
+  .mountingTbody {
+    height: 100%;
+    overflow-y: auto;
+  }
+}

@@ -43,6 +43,11 @@ const Monitoring = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Timing = Loadable({
+  loader: () => import('./containers/PolicyDecision/Timing/Timing'),
+  loading: Loading,
+  delay: 0,
+})
 
 const Parent = () => (
   <React.Fragment>
@@ -53,6 +58,7 @@ const Parent = () => (
     <Route path="/signalhome" component={SignalHome} />
     <Route path="/optimize" component={Optimize} />
     <Route path="/monitoring" component={Monitoring} />
+    <Route path="/timing" component={Timing} />
   </React.Fragment>
 )
 reactDom.render(
