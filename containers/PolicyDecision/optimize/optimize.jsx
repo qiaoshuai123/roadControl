@@ -19,7 +19,12 @@ class Optimize extends Component {
     this.echartsprogramme = echartsprogramme
     this.echarts = echarts
     this.dataList = [ // 模拟数据
-      1, 2, 3, 4, 5, 6,
+      { id: 1, num: 1 },
+      { id: 2, num: 2 },
+      { id: 3, num: 3 },
+      { id: 4, num: 4 },
+      { id: 5, num: 5 },
+      { id: 6, num: 6 },
     ]
     this.num = 4
     this.nums = 0
@@ -45,40 +50,54 @@ class Optimize extends Component {
     const length = this.dataList.length
     this.uls.style.width = `${length * 317} px`
   }
-  handleChange = (value) => {
-    // console.log(`selected ${value}`)
-  }
-  next = () => {
-    if (this.num >= this.dataList.length) {
-      return
-    }
-    this.nums++
-    this.num++
-    this.uls.style.left = `${-317 * this.nums}px`
-  }
-  prev = () => {
+  // 路口图片上一页
+  intersectionPre = () => {
     if (this.num <= 4) {
       return
     }
+    // eslint-disable-next-line no-plusplus
     this.nums--
+    // eslint-disable-next-line no-plusplus
     this.num--
     this.uls.style.left = `${-317 * this.nums}px`
   }
-  btnclick(id) {
+  // 路口图片下一页
+  intersectionNext = () => {
+    if (this.num >= this.dataList.length) {
+      return
+    }
+    // eslint-disable-next-line no-plusplus
+    this.nums++
+    // eslint-disable-next-line no-plusplus
+    this.num++
+    this.uls.style.left = `${-317 * this.nums}px`
+  }
+  // 方案评估按钮切换
+  AssessmentBtn(id) {
     this.setState({
       num: id,
     })
   }
-  swipersBtn = () => {
-    const { showOpeMessage } = this.state
+  // 打开路口监控弹窗
+  monitorMessage = () => {
     this.setState({
-      showOpeMessage: !showOpeMessage,
+      showOpeMessage: true,
     })
   }
-  onChange = (a, b, c) => {
-    console.log(a, b, c)
+  // 关闭路口监控弹窗
+  monitorMessageNone = () => {
+    this.setState({
+      showOpeMessage: false,
+    })
   }
+  // 头部城市选择
+  cityChange = (value) => {
 
+  }
+  // 切换优化控制
+  handleChange = (value) => {
+    // console.log(`selected ${value}`)
+  }
   render() {
     const { Option } = Select
     const { Search } = Input
@@ -89,7 +108,7 @@ class Optimize extends Component {
         <div className={styles.speciaContainer}>
           <div className={styles.speciaContainer_left}>
             <div className={styles.speciaContainer_left_top}>
-              <Select defaultValue="lucy" style={{ width: '30%', marginRight: '5px' }} onChange={this.handleChange}>
+              <Select defaultValue="lucy" style={{ width: '33%', marginRight: '8px' }} onChange={this.cityChange}>
                 <Option value="jack">Jack</Option>
                 <Option value="lucy">Lucy</Option>
                 <Option value="disabled">Disabled</Option>
@@ -98,12 +117,12 @@ class Optimize extends Component {
               <Search
                 placeholder="input search text"
                 onSearch={value => console.log(value)}
-                style={{ width: '60%' }}
+                style={{ width: '65%' }}
               />
             </div>
             <div className={styles.speciaContainer_left_bom}>
               {
-                this.dataList.map((item, index) => <div key={index}>{item}</div>)
+                this.dataList.map(item => <div key={item.id}>{item.num}</div>)
               }
             </div>
           </div>
@@ -148,47 +167,42 @@ class Optimize extends Component {
               <p>方案预评估</p>
               <ul>
                 {
-                  this.assessmentList.map(item => <li key={item.id} onClick={() => this.btnclick(item.id)}>{item.name}<span className={num === item.id ? styles.active : ''}> </span></li>)
+                  this.assessmentList.map(item => <li key={item.id} onClick={() => this.AssessmentBtn(item.id)}>{item.name}<span className={num === item.id ? styles.active : ''}> </span></li>)
                 }
               </ul>
               <div>
                 <EchartsPage {...this.echartsprogramme} />
               </div>
-
             </div>
           </div>
           <div className={styles.swipers}>
             <ul className={styles.uls}>
-              <li onClick={this.swipersBtn}>流量</li>
+              <li onClick={this.monitorMessage}>流量</li>
               <li>延误</li>
               <li>停车</li>
               <li>排队</li>
             </ul>
             <div className={styles.swiperRig}>
               <div className={styles.swiperRig_left}>
-                <div onClick={this.prev}>
-                  <span></span>
+                <div onClick={this.intersectionPre}>
+                  <span />
                 </div>
               </div>
               <div className={styles.swiperRig_center}>
                 <ul className={styles.ulList} ref="uls">
                   {
-                    this.dataList.map((item, ind) =>
-                      // eslint-disable-next-line react/no-array-index-key
-                      (<li key={ind}>
+                    this.dataList.map(item =>
+                      (<li key={item.id}>
                         <p>设备编号:1000227$1$041</p>
                         <p>位置:世纪大道-********</p>
-                        <div>
-                          {item}
-                        </div>
-                      </li>)
-                    )
+                        <div>{item.num}</div>
+                      </li>))
                   }
                 </ul>
               </div>
               <div className={styles.swiperRig_right}>
-                <div onClick={this.next}>
-                  <span></span>
+                <div onClick={this.intersectionNext}>
+                  <span />
                 </div>
               </div>
             </div>
@@ -210,7 +224,7 @@ class Optimize extends Component {
                     <li>掉头x</li>
                   </div>
                   <div className={styles.optimizeMessage_top_right}>
-                    <span>x</span>
+                    <span onClick={this.monitorMessageNone}>x</span>
                   </div>
                 </div>
                 <OptimizeMsg />
