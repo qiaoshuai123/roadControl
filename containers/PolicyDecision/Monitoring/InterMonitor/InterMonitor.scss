@@ -1,0 +1,107 @@
+.interMonitorBox {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 320px;
+    height: 100%;
+    background-color: rgba(6, 35, 79, .8);
+    // overflow-y: auto;
+    .hideIcon {
+        position: absolute;
+        right: -20px;
+        top: 5px;
+        width: 20px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        font-size: 24px;
+        color: #f1f1fb;
+        cursor: pointer;
+    }
+    .title {
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 10px;
+        color: #f1f1fb;
+        font-size: 16px;
+        background-color: #02183D;
+    }
+    .interMsg {
+        display: flex;
+        // height: 100px;
+        padding: 20px 0;
+        .msgShow {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            & > div {
+                width: 50px;
+                height: 50px;
+            }
+            & > p {
+                padding-top: 10px;
+            }
+            .listIcon {
+                background: url(./interlist.png) center center no-repeat;
+                background-size: 100% 100%;
+            }
+            .analysisIcon {
+                background: url(./analisys.png) center center no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    }
+    .statusMsg {
+        padding-top: 20px;
+        .statusBox {
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            .statusTitle {
+                position: relative;
+                width: 200px;
+                height: 30px;
+                text-align: center;
+                line-height: 30px;
+                border-radius: 50px;
+                border: 1px solid #00A9C0;
+                background-color: transparent;
+                cursor: pointer;
+                transition: all .2s;
+                .downIcon {
+                    position: absolute;
+                    top: 0;
+                    right: 15px;
+                    font-size: 15px;
+                    transition: all .2s;
+                }
+            }
+            .statusList {
+                position: absolute;
+                top: 40px;
+                left: 60px;
+                width: 200px;
+                max-height: 0;
+                overflow: hidden;
+                transition: all .2s;
+                .statusItems {
+                    position: relative;
+                    width: 100%;
+                    height: 30px;
+                    padding-left: 10px;
+                    line-height: 30px;
+                    .statusCheck {
+                        position: absolute;
+                        top: 0;
+                        right: 20px;
+                        transition: all .2s;
+                    }
+                }
+            }
+        }
+    }
+}

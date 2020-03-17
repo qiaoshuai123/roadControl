@@ -9,22 +9,29 @@ class EvaNav extends React.PureComponent {
     this.state = {
     }
     this.navItems = [
-      {
-        name: '首页',
-        path: '/signalhome',
-        children: [
-          { name: '首页', path: '/signalhome' },
-          { name: '全局监控', path: '/globalmonitor' },
-          { name: '路口优化', path: '/optimize' },
-        ],
-      },
+      { name: '首页', path: '/signalhome' },
+      { name: '全局监控', path: '/monitoring' },
       { name: '特勤任务', path: '/secretTask' },
-      { name: '协调监控', path: '/monitoring' },
     ]
     this.navItemsRight = [
-      { name: '统计分析' },
-      { name: '综合管理' },
-      { name: '系统维护' },
+      {
+        name: '信号优化',
+        path: '/',
+        children: [
+          { name: '路口优化', path: '/optimize' },
+          { name: '区域优化', path: '/optimize' },
+        ],
+      },
+      {
+        name: '综合管理',
+        path: '/',
+        children: [
+          { name: '路口管理', path: '/optimize' },
+          { name: '子区管理', path: '/optimize' },
+          { name: '区域管理', path: '/optimize' },
+          { name: '配时管理', path: '/optimize' },
+        ],
+      },
     ]
     this.childItems = [
       { name: '首页', path: '/signalhome' },
@@ -58,13 +65,13 @@ class EvaNav extends React.PureComponent {
     innerBox.style.height = 0
   }
   render() {
+    const { pathname } = this.props.location
     return (
       <div className={styles.navWrapper}>
         <div className={styles.navLeft}>
           {
             this.navItems.map((item) => {
               const child = this.handleShowDefaultNav(item)
-              const { pathname } = this.props.location
               return (
                 <div
                   className={styles.navItem}
@@ -95,6 +102,7 @@ class EvaNav extends React.PureComponent {
         <div className={styles.navRight}>
           {
             this.navItemsRight.map((item) => {
+              const child = this.handleShowDefaultNav(item)
               return (
                 <div
                   className={styles.navItem}
@@ -103,7 +111,20 @@ class EvaNav extends React.PureComponent {
                   onMouseLeave={this.handleNavMouseLeave}
                 >
                   <p className={styles.navBg} />
-                  <p className={classNames({ [styles.navName]: true, [styles.navActive]: this.props.location.pathname === item.path })}>{item.name}</p>
+                  {/* <p className={classNames({ [styles.navName]: true, [styles.navActive]: this.props.location.pathname === item.path })}>{item.name}</p> */}
+                  <p
+                    className={classNames({ [styles.navName]: true, [styles.navActive]: child ? pathname === child.path : pathname === item.path })}
+                    path={child ? child.path : item.path}
+                    onClick={this.handGosystem}
+                  >
+                    {child ? child.name : item.name}
+                  </p>
+                  <div className={styles.innerItemBox}>
+                    {
+                      item.children &&
+                      item.children.map(items => <div className={styles.innerItem} onClick={this.handGosystem} key={items.name + items.path} path={items.path}>{items.name}</div>)
+                    }
+                  </div>
                 </div>
               )
             })
