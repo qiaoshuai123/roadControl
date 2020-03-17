@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { Pagination, Button, Input } from 'antd'
 
 import styles from './Timing.scss'
 import Header from '../Header/Header'
 import TimingMessage from './TimingMessage/TimingMessage'
-import { Pagination, Button, Input } from 'antd'
+
 
 class Timing extends Component {
   constructor(props) {

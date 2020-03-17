@@ -5,6 +5,7 @@
     width: 320px;
     height: 100%;
     background-color: rgba(6, 35, 79, .8);
+    transition: all .3s;
     .hideIcon {
         position: absolute;
         right: -20px;
@@ -36,6 +37,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
             & > div {
                 width: 50px;
                 height: 50px;
@@ -67,7 +69,7 @@
                 width: 200px;
                 height: 30px;
                 text-align: center;
-                line-height: 30px;
+                line-height: 28px;
                 border-radius: 50px;
                 border: 1px solid #00A9C0;
                 background-color: transparent;
@@ -206,6 +208,7 @@
     width: 320px;
     height: 100%;
     background-color: #06234D;
+    transition: all .3s;
     .title {
         position: relative;
         height: 40px;
@@ -222,9 +225,20 @@
             cursor: pointer;
         }
     }
+    .administration {
+        padding: 5px 15px 5px 0;
+        .btn {
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #018DA8;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    }
     .interTreeBox {
         width: 320px;
-        height: calc(100% - 40px);
+        height: calc(100% - 150px);
         padding: 10px 0 0 15px;
         background-color: #02183D;
         .interSearch {
@@ -266,6 +280,19 @@
         .interTree {
             height: calc(100% - 40px);
             overflow-y: auto;
+        }
+    }
+    .interAreaLineBox {
+        padding: 15px;
+        .areaLineBtn {
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #023757;
+            letter-spacing: 5px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            cursor: pointer;
         }
     }
 }

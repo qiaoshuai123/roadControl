@@ -44,9 +44,7 @@ class Optimize extends Component {
     ]
   }
   componentDidMount() {
-    // eslint-disable-next-line react/no-string-refs
     this.uls = this.refs.uls
-    // eslint-disable-next-line prefer-destructuring
     const length = this.dataList.length
     this.uls.style.width = `${length * 317} px`
   }
@@ -55,9 +53,7 @@ class Optimize extends Component {
     if (this.num <= 4) {
       return
     }
-    // eslint-disable-next-line no-plusplus
     this.nums--
-    // eslint-disable-next-line no-plusplus
     this.num--
     this.uls.style.left = `${-317 * this.nums}px`
   }
@@ -66,9 +62,7 @@ class Optimize extends Component {
     if (this.num >= this.dataList.length) {
       return
     }
-    // eslint-disable-next-line no-plusplus
     this.nums++
-    // eslint-disable-next-line no-plusplus
     this.num++
     this.uls.style.left = `${-317 * this.nums}px`
   }
@@ -191,8 +185,8 @@ class Optimize extends Component {
               <div className={styles.swiperRig_center}>
                 <ul className={styles.ulList} ref="uls">
                   {
-                    this.dataList.map(item =>
-                      (<li key={item.id}>
+                    this.dataList.map(item => (
+                      <li key={item.id}>
                         <p>设备编号:1000227$1$041</p>
                         <p>位置:世纪大道-********</p>
                         <div>{item.num}</div>

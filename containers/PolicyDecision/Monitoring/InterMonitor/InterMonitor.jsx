@@ -35,6 +35,9 @@ class InterMonitor extends React.Component {
     super(props)
     this.state = {
       statusName: null,
+      showInterList: false,
+      interMonitorLeft: 15,
+      interListLeft: 360,
     }
     this.statusList = [
       { name: '单点离线' },
@@ -44,25 +47,43 @@ class InterMonitor extends React.Component {
   componentDidMount = () => {}
   handleStatusDropDown = (e) => {
     const statusName = e.currentTarget.getAttribute('statusname')
-    console.log('当前的判断：：：：')
-    console.log(this.state.statusName && this.state.statusName === statusName)
-    if (this.state.statusName && this.state.statusMsg === statusName) {
+    if (this.state.statusName && this.state.statusName === statusName) {
       this.setState({ statusName: null })
-      console.log('应该收起来')
     } else {
       this.setState({ statusName })
     }
   }
+  hadleShowInterList = () => {
+    this.setState({ showInterList: true })
+  }
+  handleCloseInterList = () => {
+    this.setState({ showInterList: false })
+  }
+  handleShowInterMonitor = () => {
+    if (this.state.interMonitorLeft > 0) {
+      this.setState({
+        interMonitorLeft: -315,
+        interListLeft: 30,
+      })
+    } else {
+      this.setState({
+        interMonitorLeft: 15,
+        interListLeft: 360,
+      })
+    }
+  }
   render() {
-    const { statusName } = this.state
+    const { statusName, showInterList, interMonitorLeft, interListLeft } = this.state
     const { Option } = Select
     return (
       <React.Fragment>
-        <div className={styles.interMonitorBox}>
-          <span className={styles.hideIcon}><Icon type="backward" /></span>
+        <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
+          <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
+            { interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
+          </span>
           <div className={styles.title}>路口监视功能</div>
           <div className={styles.interMsg}>
-            <div className={styles.msgShow}>
+            <div className={styles.msgShow} onClick={this.hadleShowInterList}>
               <div className={styles.listIcon} />
               <p>系统路口列表</p>
             </div>
@@ -114,27 +135,38 @@ class InterMonitor extends React.Component {
             </div>
           </div>
         </div>
-        <div className={styles.interListPop}>
-          <div className={styles.title}>
-            路口列表
-            <span className={styles.popCloseBox}><Icon type="close" /></span>
-          </div>
-          <div className={styles.interTreeBox}>
-            <div className={styles.interSearch}>
-              <Select defaultValue="1">
-                <Option key="1">贵阳市</Option>
-                <Option key="2">南阳市</Option>
-              </Select>
-              <span className={styles.searchBox}>
-                <input className={styles.searchInput} type="text" placeholder="请输入你要搜索的内容" />
-                <Icon className={styles.searchIcon} type="search" />
-              </span>
+        {
+          showInterList &&
+          <div className={styles.interListPop} style={{ left: `${interListLeft}px` }}>
+            <div className={styles.title}>
+              路口列表
+              <span className={styles.popCloseBox} onClick={this.handleCloseInterList}><Icon type="close" /></span>
             </div>
-            <div className={styles.interTree}>
-              <CustomTree />
+            <div className={styles.interTreeBox}>
+              <div className={styles.interSearch}>
+                <Select defaultValue="1">
+                  <Option key="1">贵阳市</Option>
+                  <Option key="2">南阳市</Option>
+                </Select>
+                <span className={styles.searchBox}>
+                  <input className={styles.searchInput} type="text" placeholder="请输入你要搜索的内容" />
+                  <Icon className={styles.searchIcon} type="search" />
+                </span>
+              </div>
+              <div className={styles.administration}>
+                <div className={styles.btn}>行政区域</div>
+              </div>
+              <div className={styles.interTree}>
+                <CustomTree />
+              </div>
+            </div>
+            <div className={styles.interAreaLineBox}>
+              <div className={styles.areaLineBtn}>子区</div>
+              <div className={styles.areaLineBtn}>线路</div>
             </div>
           </div>
-        </div>
+
+        }
       </React.Fragment>
     )
   }
