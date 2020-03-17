@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-// import Header from '../Header/Header'
-// import styles from './Monitoring.scss'
+
+import styles from './Monitoring.scss'
+import Header from '../Header/Header'
+import InterMonitor from './InterMonitor/InterMonitor'
 
 
 class Monitoring extends Component {
@@ -12,12 +14,11 @@ class Monitoring extends Component {
   }
   render() {
     return (
-      <div>
-        123456468
-        {/* <Header {...this.props} />
-        <div className={styles.MonitoringContainer}>
-          1
-        </div> */}
+      <div className={styles.monitorWrapper}>
+        <Header {...this.props} />
+        <div className={styles.container}>
+          <InterMonitor />
+        </div>
       </div>
     )
   }

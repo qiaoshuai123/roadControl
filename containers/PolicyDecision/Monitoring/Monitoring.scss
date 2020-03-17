@@ -1,4 +1,12 @@
-.MonitoringContainer{
+.monitorWrapper{
     height: 100%;
     width: 100%;
+    background-color: #021035;
+    .container {
+        position: fixed;
+        bottom: 0;
+        left: o;
+        width: 100%;
+        height: calc(100% - 110px);
+    }
 }
