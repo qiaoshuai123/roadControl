@@ -1,10 +1,12 @@
 import React from 'react'
-import { Icon, Checkbox } from 'antd'
+import { Select, Icon, Checkbox } from 'antd'
 
 import styles from './InterMonitor.scss'
+import CustomTree from '../../../../components/CustomTree/CustomTree'
 
 function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow } = props
+  console.log(statusName, isShow)
   return (
     <div className={styles.statusBox}>
       <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#00A9C0' : 'transparent' }}>
@@ -41,15 +43,19 @@ class InterMonitor extends React.Component {
   }
   componentDidMount = () => {}
   handleStatusDropDown = (e) => {
-    if (this.state.statusName) {
+    const statusName = e.currentTarget.getAttribute('statusname')
+    console.log('当前的判断：：：：')
+    console.log(this.state.statusName && this.state.statusName === statusName)
+    if (this.state.statusName && this.state.statusMsg === statusName) {
       this.setState({ statusName: null })
+      console.log('应该收起来')
     } else {
-      const statusName = e.currentTarget.getAttribute('statusname')
       this.setState({ statusName })
     }
   }
   render() {
     const { statusName } = this.state
+    const { Option } = Select
     return (
       <React.Fragment>
         <div className={styles.interMonitorBox}>
@@ -91,9 +97,42 @@ class InterMonitor extends React.Component {
         <div className={styles.pointTypeBox}>
           <div className={styles.title}>系统点位分布类型</div>
           <div className={styles.systemPoint}>
-            <div><span className={styles.upIconBox}><Icon type="up" /></span>海信系统<span><Checkbox defaultChecked /></span></div>
-            <div><span className={styles.squareBox} />ATC系统<span><Checkbox defaultChecked /></span></div>
-            <div><span className={styles.circleBox} />泰尔文特<span><Checkbox defaultChecked /></span></div>
+            <div><span className={styles.upIconBox}><i /><b /></span>海信系统<span className={styles.checkeBox}><Checkbox defaultChecked /></span></div>
+            <div><span className={styles.squareBox} />ATC系统<span className={styles.checkeBox}><Checkbox defaultChecked /></span></div>
+            <div><span className={styles.circleBox} />泰尔文特<span className={styles.checkeBox}><Checkbox defaultChecked /></span></div>
+          </div>
+          <div className={styles.statusDetails}>
+            <div className={styles.pointList}>
+              <span className={styles.circleColor} />
+              <span className={styles.pointText}>单点离线</span>
+              <span className={styles.pointNum}>104处</span>
+            </div>
+            <div className={styles.pointList}>
+              <span className={styles.circleColor} />
+              <span className={styles.pointText}>单点离线</span>
+              <span className={styles.pointNum}>104处</span>
+            </div>
+          </div>
+        </div>
+        <div className={styles.interListPop}>
+          <div className={styles.title}>
+            路口列表
+            <span className={styles.popCloseBox}><Icon type="close" /></span>
+          </div>
+          <div className={styles.interTreeBox}>
+            <div className={styles.interSearch}>
+              <Select defaultValue="1">
+                <Option key="1">贵阳市</Option>
+                <Option key="2">南阳市</Option>
+              </Select>
+              <span className={styles.searchBox}>
+                <input className={styles.searchInput} type="text" placeholder="请输入你要搜索的内容" />
+                <Icon className={styles.searchIcon} type="search" />
+              </span>
+            </div>
+            <div className={styles.interTree}>
+              <CustomTree />
+            </div>
           </div>
         </div>
       </React.Fragment>
