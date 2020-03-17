@@ -4,6 +4,8 @@ import { Select, Input } from 'antd'
 import OptimizeList from './optimizeList/optimizeList'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import OptimizeListT from './optimizeListT/optimizeListT'
+import { echartsprogramme, echarts } from './chartsOptions'
+import OptimizeMsg from './optimizeMsg/optimizeMsg'
 import styles from './optimize.scss'
 
 
@@ -12,209 +14,11 @@ class Optimize extends Component {
     super(props)
     this.state = {
       num: 1,
+      showOpeMessage: false,
     }
-    this.echartsprogramme = {
-      option: {
-        legend: {
-          right: '5%', // 图列相对容器的位置 top\bottom\left\right
-          selected: {
-            // '销量': true  // 图列选择，图形加载出来会显示选择的图列，默认为true
-          },
-          textStyle: { // 图列内容样式
-            color: '#fff', // 字体颜色
-            // backgroundColor: 'black', // 字体背景色
-          },
-        },
-        tooltip: {},
-        dataset: {
-          source: [
-            ['product', '2015', '2016'],
-            ['Matcha Latte', 43.3, 85.8],
-            ['Milk Tea', 83.1, 73.4],
-            ['Cheese Cocoa', 86.4, 65.2],
-            ['Walnut Brownie', 72.4, 53.9],
-          ],
-        },
-        xAxis: {
-          type: 'category',
-          axisLine: {
-            lineStyle: {
-              color: '#1C385F', // 轴的颜色1E385D
-            },
-          },
-          axisLabel: {
-            show: true,
-            textStyle: {
-              color: '#FFFFFF', // 更改坐标轴文字颜色
-              fontSize: 14, // 更改坐标轴文字大小
-            },
-          },
-        },
-        yAxis: {
-          axisLine: {
-            lineStyle: {
-              color: '#1C385F', // 轴的颜色1E385D
-            },
-          },
-          splitLine: { // ---grid 区域中的分隔线
-            show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
-            lineStyle: {
-              color: ['#143058'],
-              width: 1,
-              type: 'solid',
-            },
-          },
-          axisLabel: {
-            show: true,
-            textStyle: {
-              color: '#FFFFFF', // 更改坐标轴文字颜色
-              fontSize: 14, // 更改坐标轴文字大小
-            },
-          },
-        },
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
-        series: [
-          { type: 'bar' },
-          { type: 'bar' },
-        ],
-      },
-    }
-    this.echarts = {
-      echarts1: {
-        option: {
-          color: ['#0189FF', '#FF8C3C', '#F10282'],
-          graphic: {
-            type: 'text',
-            left: 'center',
-            bottom: '40%',
-            style: {
-              text: `10`,
-              textAlign: 'center',
-              fontSize: 16,
-              // font: 'italic bolder 30px cursive',
-              fill: '#fff',
-              width: 30,
-              height: 30,
-            },
-          },
-          tooltip: {
-            trigger: 'item',
-            showDelay: 20,
-            hideDelay: 20,
-            backgroundColor: 'rgba(255,0,0,0.7)',
-            textStyle: {
-              fontSize: '16px',
-              color: '#000',
-            },
-            formatter: '{b} : {c}个 ({d}%)',
-          },
-          series: [
-            {
-              name: '未完成',
-              type: 'pie',
-              selectedMode: 'single',
-              radius: [20, '30%'],
-
-              label: {
-                normal: {
-                  position: 'inner',
-                },
-              },
-              // labelLine: {
-              //   normal: {
-              //     show: false,
-              //   },
-              // },
-            },
-            {
-              name: '已完成',
-              type: 'pie',
-              radius: ['40%', '55%'],
-              data: [
-                { value: 332, name: '离线设备' },
-                { value: 55, name: '异常设备' },
-                { value: 88, name: '在线设备' },
-              ],
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)',
-                },
-              },
-            },
-          ],
-        },
-      },
-      echarts2: {
-        option: {
-          color: ['#0189FF', '#FF8C3C', '#F10282'],
-          graphic: {
-            type: 'text',
-            left: 'center',
-            bottom: '40%',
-            style: {
-              text: `20`,
-              textAlign: 'center',
-              fontSize: 16,
-              // font: 'italic bolder 30px cursive',
-              fill: '#fff',
-              width: 30,
-              height: 30,
-            },
-          },
-          tooltip: {
-            trigger: 'item',
-            showDelay: 20,
-            hideDelay: 20,
-            backgroundColor: 'rgba(255,0,0,0.7)',
-            textStyle: {
-              fontSize: '16px',
-              color: '#000',
-            },
-            formatter: '{b} : {c}个 ({d}%)',
-          },
-          series: [
-            {
-              name: '未完成',
-              type: 'pie',
-              selectedMode: 'single',
-              radius: [20, '30%'],
-
-              label: {
-                normal: {
-                  position: 'inner',
-                },
-              },
-              // labelLine: {
-              //   normal: {
-              //     show: false,
-              //   },
-              // },
-            },
-            {
-              name: '已完成',
-              type: 'pie',
-              radius: ['40%', '55%'],
-              data: [
-                { value: 332, name: '离线设备' },
-                { value: 55, name: '异常设备' },
-                { value: 88, name: '在线设备' },
-              ],
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)',
-                },
-              },
-            },
-          ],
-        },
-      },
-    }
-    this.dataList = [//模拟数据
+    this.echartsprogramme = echartsprogramme
+    this.echarts = echarts
+    this.dataList = [ // 模拟数据
       1, 2, 3, 4, 5, 6,
     ]
     this.num = 4
@@ -265,6 +69,12 @@ class Optimize extends Component {
       num: id,
     })
   }
+  swipersBtn = () => {
+    const { showOpeMessage } = this.state
+    this.setState({
+      showOpeMessage: !showOpeMessage,
+    })
+  }
   onChange = (a, b, c) => {
     console.log(a, b, c)
   }
@@ -272,7 +82,7 @@ class Optimize extends Component {
   render() {
     const { Option } = Select
     const { Search } = Input
-    const { num } = this.state
+    const { num, showOpeMessage } = this.state
     return (
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
@@ -292,7 +102,9 @@ class Optimize extends Component {
               />
             </div>
             <div className={styles.speciaContainer_left_bom}>
-              11
+              {
+                this.dataList.map((item, index) => <div key={index}>{item}</div>)
+              }
             </div>
           </div>
           <div className={styles.speciaContainer_center}>
@@ -347,7 +159,7 @@ class Optimize extends Component {
           </div>
           <div className={styles.swipers}>
             <ul className={styles.uls}>
-              <li>流量</li>
+              <li onClick={this.swipersBtn}>流量</li>
               <li>延误</li>
               <li>停车</li>
               <li>排队</li>
@@ -359,9 +171,10 @@ class Optimize extends Component {
                 </div>
               </div>
               <div className={styles.swiperRig_center}>
-                <ul ref="uls">
+                <ul className={styles.ulList} ref="uls">
                   {
                     this.dataList.map((item, ind) =>
+                      // eslint-disable-next-line react/no-array-index-key
                       (<li key={ind}>
                         <p>设备编号:1000227$1$041</p>
                         <p>位置:世纪大道-********</p>
@@ -371,7 +184,6 @@ class Optimize extends Component {
                       </li>)
                     )
                   }
-
                 </ul>
               </div>
               <div className={styles.swiperRig_right}>
@@ -381,6 +193,30 @@ class Optimize extends Component {
               </div>
             </div>
           </div>
+          {
+            showOpeMessage ?
+              <div className={styles.optimizeMessage}>
+                <div className={styles.optimizeMessage_top}>
+                  <ul className={styles.optimizeMessage_top_left}>
+                    <span>方向:</span>
+                    <li>北x</li>
+                    <li>北x</li>
+                    <li>北x</li>
+                  </ul>
+                  <div className={styles.optimizeMessage_top_center}>
+                    <span>方向:</span>
+                    <li>左转x</li>
+                    <li>直行x</li>
+                    <li>掉头x</li>
+                  </div>
+                  <div className={styles.optimizeMessage_top_right}>
+                    <span>x</span>
+                  </div>
+                </div>
+                <OptimizeMsg />
+              </div> : ''
+          }
+
         </div>
       </div>
     )
