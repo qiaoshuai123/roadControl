@@ -124,7 +124,11 @@
         padding: 20px 0;
         & > div {
             height: 30px;
-            line-height: 30px;
+            display: flex;
+            align-items: center;
+            .upIconBox {
+                
+            }
         }
     }
 }
