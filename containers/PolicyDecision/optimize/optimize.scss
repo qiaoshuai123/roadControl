@@ -236,47 +236,6 @@
     position: absolute;
     bottom: 0;
     left: 110px;
-    .optimizeMessage_top{
-      height: 45px;
-      font-size: 16px;
-      display: flex;
-      .optimizeMessage_top_left{
-        margin: 0;
-        width: 48%;
-        display: flex;
-        align-items: center;
-        overflow: auto;
-        span{
-          color: #B0F3FC;
-          margin: 0 15px;
-        }
-        li{
-          margin-right: 15px;
-        }
-      }
-      .optimizeMessage_top_center{
-        width: 48%;
-        display: flex;
-        align-items: center;
-        span{
-          color: #B0F3FC;
-          margin: 0 15px;
-        }
-        li{
-          margin-right: 15px;
-        }
-      }
-      .optimizeMessage_top_right{
-        width: 4%;
-        font-size: 30px;
-        color: #22CED0;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
   }
 }
 .active{
