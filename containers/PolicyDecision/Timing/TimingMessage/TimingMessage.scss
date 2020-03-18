@@ -12,7 +12,7 @@
     display: flex;
   }
   .mountingTr {
-    height: 40px;
+    height: 65px;
     margin-bottom: 10px;
     display: flex;
   }
@@ -26,12 +26,32 @@
     justify-content: center;
     align-items: center;
   }
+  .mountingThs{
+    flex: 1.3;
+    display: flex;
+  }
+  dl{
+    margin: 0;
+    width: 25%;
+    height: 100%;
+    font-size: 12px;
+    padding: 3px 8px;
+    display: flex;
+    flex-direction: column;
+    dt{
+      flex: 2.2;
+    }
+    dd{
+      text-align: center;
+      flex: 1;
+    }
+  }
   .deviceMsg {
     margin: 0 10px;
     border: 1px solid #B7DEEF;
     padding: 2px;
     cursor: pointer;
-    color: #07a8ff;
+    color: #1290A2;
   }
   .mountingTr {
     background-color: #d0e2f8;

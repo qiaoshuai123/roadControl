@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
-import Header from '../Header/Header'
 import { Select, Input } from 'antd'
+import styles from './optimize.scss'
+import Header from '../Header/Header'
 import OptimizeList from './optimizeList/optimizeList'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import OptimizeListT from './optimizeListT/optimizeListT'
 import { echartsprogramme, echarts } from './chartsOptions'
 import OptimizeMsg from './optimizeMsg/optimizeMsg'
-import styles from './optimize.scss'
-
 
 class Optimize extends Component {
   constructor(props) {
     super(props)
     this.state = {
       num: 1,
-      showOpeMessage: false,
+      showOpeMessage: 'none',
+      lefts: 0, // 底部ul偏移位置
     }
     this.echartsprogramme = echartsprogramme
     this.echarts = echarts
+    this.uls = React.createRef()
     this.dataList = [ // 模拟数据
       { id: 1, num: 1 },
       { id: 2, num: 2 },
@@ -44,33 +45,33 @@ class Optimize extends Component {
     ]
   }
   componentDidMount() {
-    // eslint-disable-next-line react/no-string-refs
-    this.uls = this.refs.uls
-    // eslint-disable-next-line prefer-destructuring
-    const length = this.dataList.length
-    this.uls.style.width = `${length * 317} px`
+    const ulss = this.uls.current
+    const lengths = this.dataList.length
+    ulss.style.width = `${lengths * 317} px`
   }
   // 路口图片上一页
   intersectionPre = () => {
+    const ulss = this.uls.current
     if (this.num <= 4) {
       return
     }
-    // eslint-disable-next-line no-plusplus
-    this.nums--
-    // eslint-disable-next-line no-plusplus
-    this.num--
-    this.uls.style.left = `${-317 * this.nums}px`
+    this.nums -= 1
+    this.num -= 1
+    this.setState({
+      lefts: -317 * this.nums
+    })
   }
   // 路口图片下一页
   intersectionNext = () => {
+    const ulss = this.uls.current
     if (this.num >= this.dataList.length) {
       return
     }
-    // eslint-disable-next-line no-plusplus
-    this.nums++
-    // eslint-disable-next-line no-plusplus
-    this.num++
-    this.uls.style.left = `${-317 * this.nums}px`
+    this.nums += 1
+    this.num += 1
+    this.setState({
+      lefts: -317 * this.nums
+    })
   }
   // 方案评估按钮切换
   AssessmentBtn(id) {
@@ -81,13 +82,13 @@ class Optimize extends Component {
   // 打开路口监控弹窗
   monitorMessage = () => {
     this.setState({
-      showOpeMessage: true,
+      showOpeMessage: 'block',
     })
   }
   // 关闭路口监控弹窗
   monitorMessageNone = () => {
     this.setState({
-      showOpeMessage: false,
+      showOpeMessage: 'none',
     })
   }
   // 头部城市选择
@@ -101,7 +102,8 @@ class Optimize extends Component {
   render() {
     const { Option } = Select
     const { Search } = Input
-    const { num, showOpeMessage } = this.state
+    const { num, showOpeMessage, lefts } = this.state
+    console.log(1)
     return (
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
@@ -189,10 +191,10 @@ class Optimize extends Component {
                 </div>
               </div>
               <div className={styles.swiperRig_center}>
-                <ul className={styles.ulList} ref="uls">
+                <ul className={styles.ulList} style={{ left: `${lefts}px` }} ref={this.uls}>
                   {
-                    this.dataList.map(item =>
-                      (<li key={item.id}>
+                    this.dataList.map(item => (
+                      <li key={item.id}>
                         <p>设备编号:1000227$1$041</p>
                         <p>位置:世纪大道-********</p>
                         <div>{item.num}</div>
@@ -207,30 +209,26 @@ class Optimize extends Component {
               </div>
             </div>
           </div>
-          {
-            showOpeMessage ?
-              <div className={styles.optimizeMessage}>
-                <div className={styles.optimizeMessage_top}>
-                  <ul className={styles.optimizeMessage_top_left}>
-                    <span>方向:</span>
-                    <li>北x</li>
-                    <li>北x</li>
-                    <li>北x</li>
-                  </ul>
-                  <div className={styles.optimizeMessage_top_center}>
-                    <span>方向:</span>
-                    <li>左转x</li>
-                    <li>直行x</li>
-                    <li>掉头x</li>
-                  </div>
-                  <div className={styles.optimizeMessage_top_right}>
-                    <span onClick={this.monitorMessageNone}>x</span>
-                  </div>
-                </div>
-                <OptimizeMsg />
-              </div> : ''
-          }
-
+          <div style={{ display: showOpeMessage }} className={styles.optimizeMessage}>
+            <div className={styles.optimizeMessage_top}>
+              <ul className={styles.optimizeMessage_top_left}>
+                <span>方向:</span>
+                <li>北x</li>
+                <li>北x</li>
+                <li>北x</li>
+              </ul>
+              <div className={styles.optimizeMessage_top_center}>
+                <span>方向:</span>
+                <li>左转x</li>
+                <li>直行x</li>
+                <li>掉头x</li>
+              </div>
+              <div className={styles.optimizeMessage_top_right}>
+                <span onClick={this.monitorMessageNone}>x</span>
+              </div>
+            </div>
+            <OptimizeMsg />
+          </div>
         </div>
       </div>
     )

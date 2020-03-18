@@ -41,7 +41,7 @@ class TimingMessage extends Component {
           <div className={styles.mountingTh}>协调相位差(秒)</div>
           <div className={styles.mountingTh}>开始时间</div>
           <div className={styles.mountingTh}>结束时间</div>
-          <div className={styles.mountingTh}>关联接段</div>
+          <div className={`${styles.mountingTh} ${styles.mountingThs}`}>关联接段</div>
           <div className={styles.mountingTh}>操作</div>
         </div>
         <div className={styles.mountingTbody}>
@@ -54,7 +54,24 @@ class TimingMessage extends Component {
             <div className={styles.mountingTd}>****</div>
             <div className={styles.mountingTd}>****</div>
             <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
+            <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
+              <dl>
+                <dt></dt>
+                <dd></dd>
+              </dl>
+              <dl>
+                <dt>1</dt>
+                <dd>30</dd>
+              </dl>
+              <dl>
+                <dt>1</dt>
+                <dd>30</dd>
+              </dl>
+              <dl>
+                <dt>1</dt>
+                <dd>30</dd>
+              </dl>
+            </div>
             <div className={styles.mountingTd}>
               <span className={styles.deviceMsg}>修改</span>
               <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>

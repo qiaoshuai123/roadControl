@@ -72,10 +72,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        span{
+          cursor: pointer;
+        }
       }
       .deviceMsg {
         margin: 0 10px;
-        cursor: pointer;
         color: #07a8ff;
       }
       .mountingTr:nth-child(odd) {
@@ -125,5 +127,8 @@
   }
   :global(.ant-pagination-item-active) {
     background-color: #1890ff;
+  }
+  :global(path){
+    color: white;
   }
 }

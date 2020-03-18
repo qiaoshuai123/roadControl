@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-
+import { Pagination, Button, Input, Icon } from 'antd'
 import styles from './Timing.scss'
 import Header from '../Header/Header'
 import TimingMessage from './TimingMessage/TimingMessage'
-import { Pagination, Button, Input } from 'antd'
+
 
 class Timing extends Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class Timing extends Component {
               <div className={styles.mountingTbody}>
                 <div>
                   <div className={styles.mountingTr}>
-                    <div className={styles.mountingTd}>+</div>
+                    <div className={styles.mountingTd}><span><Icon type="plus" /></span></div>
                     <div className={styles.mountingTd}>*************</div>
                     <div className={styles.mountingTd}>*************</div>
                     <div className={styles.mountingTd}>*************</div>
@@ -84,7 +84,7 @@ class Timing extends Component {
                   </div>
                 </div>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}>+</div>
+                  <div className={styles.mountingTd}><span><Icon type="plus" /></span></div>
                   <div className={styles.mountingTd}>*************</div>
                   <div className={styles.mountingTd}>*************</div>
                   <div className={styles.mountingTd}>*************</div>

@@ -61,6 +61,7 @@
       .swiperRig_left span {
         width: 0;
         height: 0;
+        margin-left: 12px;
         border: 10px solid;
         transform: rotate(45deg);
         border-color: transparent transparent white white;
@@ -68,6 +69,7 @@
       .swiperRig_right span {
         width: 0;
         height: 0;
+        margin-left: -12px;
         border: 10px solid;
         transform: rotate(-135deg);
         border-color: transparent transparent white white;
@@ -84,12 +86,14 @@
           height: 100%;
           li {
             float: left;
+            padding: 0 15px 5px;
             height: 100%;
             width: 315px;
             display: flex;
             flex-direction: column;
             p {
               height: 20px;
+              padding-left: 15px;
             }
             div {
               flex: 1;
@@ -168,6 +172,7 @@
         height: 25px;
       }
       .speciaContainerLB_canvas {
+        overflow: hidden;
         flex: 3;
         display: flex;
         div {
