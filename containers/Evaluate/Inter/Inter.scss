@@ -11,7 +11,7 @@
         height: calc(100% - 100px);
         display: flex;
         .interTreeBox {
-            width: 400px;
+            width: 360px;
             height: 100%;
             padding: 10px 0 0 30px;
             background-color: #02183D;
@@ -52,7 +52,7 @@
                 }
             }
             .interTree {
-                height: 100%;
+                height: calc(100% - 40px);
                 overflow-y: auto;
             }
         }

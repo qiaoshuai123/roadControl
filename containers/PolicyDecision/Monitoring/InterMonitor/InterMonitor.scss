@@ -5,6 +5,7 @@
     width: 320px;
     height: 100%;
     background-color: rgba(6, 35, 79, .8);
+    transition: all .3s;
     .hideIcon {
         position: absolute;
         right: -20px;
@@ -36,6 +37,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
             & > div {
                 width: 50px;
                 height: 50px;
@@ -57,15 +59,17 @@
         padding-top: 20px;
         .statusBox {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             .statusTitle {
                 position: relative;
                 width: 200px;
                 height: 30px;
                 text-align: center;
-                line-height: 30px;
+                line-height: 28px;
                 border-radius: 50px;
                 border: 1px solid #00A9C0;
                 background-color: transparent;
@@ -80,11 +84,9 @@
                 }
             }
             .statusList {
-                position: absolute;
-                top: 40px;
-                left: 60px;
                 width: 200px;
                 max-height: 0;
+                margin-top: 10px;
                 overflow: hidden;
                 transition: all .2s;
                 .statusItems {
@@ -111,6 +113,19 @@
     width: 320px;
     height: 100%;
     background-color: rgba(6, 35, 79, .8);
+    transition: all .3s;
+    .hideIcon {
+        position: absolute;
+        left: -20px;
+        top: 5px;
+        width: 20px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        font-size: 24px;
+        color: #f1f1fb;
+        cursor: pointer;
+    }
     .title {
         position: relative;
         height: 40px;
@@ -122,13 +137,203 @@
     }
     .systemPoint {
         padding: 20px 0;
+        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
         & > div {
+            position: relative;
             height: 30px;
             display: flex;
             align-items: center;
+            padding-left: 50px;
             .upIconBox {
-                
+                position: relative;
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                margin-right: 20px;
+                & > i {
+                    position: absolute;
+                    bottom: 4px;
+                    left: -2px;
+                    width: 20px;
+                    border-top: 1px solid #02F5F7;
+                }
+                & > b {
+                    position: absolute;
+                    top: 8px;
+                    left: 1px;
+                    width: 14px;
+                    height: 14px;
+                    border-top: 1px solid #02F5F7;
+                    border-right: 1px solid #02F5F7;
+                    transform: rotate(-45deg);
+                }
+            }
+            .squareBox {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                margin-right: 20px;
+                border: 1px solid #02F5F7;
+            }
+            .circleBox {
+                width: 18px;
+                height: 18px;
+                margin-right: 20px;
+                border: 1px solid #02F5F7;
+                border-radius: 50%;
+            }
+            .checkeBox {
+                position: absolute;
+                right: 100px;
             }
         }
+    }
+    .statusDetails {
+        height: calc(100% - 180px);
+        padding-top: 20px;
+        overflow-y: auto;
+        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        .pointList {
+            height: 30px;
+            padding-left: 50px;
+            display: flex;
+            align-items: center;
+            .circleColor {
+                width: 18px;
+                height: 18px;
+                margin: 2px 20px 0 0;
+                border-radius: 50%;
+                box-shadow: inset 0 0 5px black;
+                background-color: #ff0000;
+                vertical-align: -3px;
+            }
+            .pointText {
+                display: inline-block;
+                width: 120px;
+            }
+        }
+    }
+}
+.interListPop {
+    position: absolute;
+    bottom: 0;
+    left: 360px;
+    width: 320px;
+    height: 100%;
+    background-color: #06234D;
+    transition: all .3s;
+    .title {
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 15px;
+        font-size: 16px;
+        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        .popCloseBox {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-size: 15px;
+            color: #02F5F7;
+            cursor: pointer;
+        }
+    }
+    .administration {
+        padding: 5px 15px 5px 0;
+        .btn {
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #018DA8;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    }
+    .interTreeBox {
+        width: 320px;
+        height: calc(100% - 150px);
+        padding: 10px 0 0 15px;
+        background-color: #02183D;
+        .interSearch {
+            display: flex;
+            :global(.ant-select-selection) {
+                width: 100px;
+                background-color: #063657;
+                border: 1px solid #063657;
+                outline: none;
+                color: #F1F1FB;
+                box-shadow: none;
+            }
+            :global(.ant-select-arrow) {
+                color: #F1F1FB;
+            }
+            .searchBox {
+                position: relative;
+                .searchInput {
+                    width: 180px;
+                    height: 32px;
+                    padding-left: 5px;
+                    margin-left: 10px;
+                    background-color: #063657;
+                    border: 1px solid #063657;
+                    border-radius: 4px;
+                    outline: none;
+                    color: #F1F1FB;
+                }
+                .searchIcon {
+                    position: absolute;
+                    right: 10px;
+                    top: 8px;
+                    font-size: 18px;
+                    color: #07BDFB;
+                    cursor: pointer;
+                }
+            }
+        }
+        .interTree {
+            height: calc(100% - 40px);
+            overflow-y: auto;
+        }
+    }
+    .interAreaLineBox {
+        padding: 15px;
+        .areaLineBtn {
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: #023757;
+            letter-spacing: 5px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+    }
+}
+.pieWrapper {
+    position: absolute;
+    top: 0;
+    left: 360px;
+    width: 400px;
+    height: 400px;
+    background-color: rgba(2,24,61, .8);
+    transition: all .3s;
+    .title {
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 15px;
+        font-size: 16px;
+        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        .popCloseBox {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-size: 15px;
+            color: #02F5F7;
+            cursor: pointer;
+        }
+    }
+    .pieChartsBox {
+        height: calc(100% - 40px);
     }
 }
