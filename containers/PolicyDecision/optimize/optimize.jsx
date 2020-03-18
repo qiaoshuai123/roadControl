@@ -144,7 +144,7 @@ class Optimize extends Component {
               <OptimizeList />
             </div>
             <div className={styles.speciaContainer_right_two}>
-              <p>实时优化方案控制 <span>方案编号:2020202022202-1</span></p>
+              <p>实时优化方案控制 <span>方案编号 : 2020202022202-1</span></p>
               <p>实时优化方案产出时间:2019年05月25日 08:35,超出30分钟失效</p>
               <div className={styles.speciaContainerLB_canvas}>
                 <div> <EchartsPage {...this.echarts.echarts1} /></div>
@@ -178,34 +178,32 @@ class Optimize extends Component {
             </div>
           </div>
           <div className={styles.swipers}>
-            <ul className={styles.uls}>
-              <li onClick={this.monitorMessage}>流量</li>
-              <li>延误</li>
-              <li>停车</li>
-              <li>排队</li>
-            </ul>
-            <div className={styles.swiperRig}>
-              <div className={styles.swiperRig_left}>
-                <div onClick={this.intersectionPre}>
-                  <span />
-                </div>
+            <div className={styles.chartsType} onClick={this.monitorMessage}>流量</div>
+            <div className={styles.chartsType}>延误</div>
+            <div className={styles.chartsType}>停车</div>
+            <div className={styles.chartsType}>排队</div>
+          </div>
+          <div className={styles.swiperRig}>
+            <div className={styles.swiperRig_left}>
+              <div onClick={this.intersectionPre}>
+                <span />
               </div>
-              <div className={styles.swiperRig_center}>
-                <ul className={styles.ulList} style={{ left: `${lefts}px` }} ref={this.uls}>
-                  {
-                    this.dataList.map(item => (
-                      <li key={item.id}>
-                        <p>设备编号:1000227$1$041</p>
-                        <p>位置:世纪大道-********</p>
-                        <div>{item.num}</div>
-                      </li>))
-                  }
-                </ul>
-              </div>
-              <div className={styles.swiperRig_right}>
-                <div onClick={this.intersectionNext}>
-                  <span />
-                </div>
+            </div>
+            <div className={styles.swiperRig_center}>
+              <ul className={styles.ulList} style={{ left: `${lefts}px` }} ref={this.uls}>
+                {
+                  this.dataList.map(item => (
+                    <li key={item.id}>
+                      <p>设备编号:1000227$1$041</p>
+                      <p>位置:世纪大道-********</p>
+                      <div>{item.num}</div>
+                    </li>))
+                }
+              </ul>
+            </div>
+            <div className={styles.swiperRig_right}>
+              <div onClick={this.intersectionNext}>
+                <span />
               </div>
             </div>
           </div>
