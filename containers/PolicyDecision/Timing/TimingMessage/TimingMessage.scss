@@ -1,9 +1,9 @@
 
 .mountingTable {
     width: 100%;
-    color: black;
+    color: white;
     height: 175px;
-    background-color: #eef6ff;
+    background-color: #03385A;
     display: flex;
     flex-direction: column;
   .mountingThead {
@@ -35,11 +35,12 @@
     width: 25%;
     height: 100%;
     font-size: 12px;
-    padding: 3px 8px;
+    padding: 3px 10px;
     display: flex;
     flex-direction: column;
     dt{
       flex: 2.2;
+      background-color: red;
     }
     dd{
       text-align: center;
@@ -51,10 +52,10 @@
     border: 1px solid #B7DEEF;
     padding: 2px;
     cursor: pointer;
-    color: #1290A2;
+    color: white;
   }
   .mountingTr {
-    background-color: #d0e2f8;
+    background-color: #022A51;
   }
   //   .mountingTr:nth-child(even) {
   //     background-color: rgba(14, 28, 63, 0.7);
