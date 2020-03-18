@@ -85,6 +85,7 @@ class Optimize extends Component {
       showOpeMessage: 'block',
     })
   }
+  //
   // 关闭路口监控弹窗
   monitorMessageNone = () => {
     this.setState({
@@ -99,6 +100,7 @@ class Optimize extends Component {
   handleChange = (value) => {
     // console.log(`selected ${value}`)
   }
+
   render() {
     const { Option } = Select
     const { Search } = Input
@@ -208,7 +210,7 @@ class Optimize extends Component {
             </div>
           </div>
           <div style={{ display: showOpeMessage }} className={styles.optimizeMessage}>
-            <OptimizeMsg />
+            <OptimizeMsg monitorMessageNone={this.monitorMessageNone} />
           </div>
         </div>
       </div>

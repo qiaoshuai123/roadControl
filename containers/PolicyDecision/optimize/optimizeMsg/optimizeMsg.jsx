@@ -1,9 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { DatePicker, Select } from 'antd'
-
 import LineCharts from './LineCharts/LineCharts'
-
 import styles from './optimizeMsg.scss'
 
 class OptimizeMsg extends React.Component {
@@ -23,19 +21,21 @@ class OptimizeMsg extends React.Component {
   render() {
     const { Option } = Select
     const { searchName } = this.state
+    // eslint-disable-next-line react/prop-types
+    const { monitorMessageNone } = this.props
     return (
       <div className={styles.interMsgWrapper}>
         <div className={styles.optimizeMessage_top}>
           <ul className={styles.optimizeMessage_top_left}>
             <span>方向:</span>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
-            </Select>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
-            </Select>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
+            <Select
+              defaultValue={[1, 2]}
+              mode="multiple"
+              style={{ width: '260px', height: '30px', marginLeft: '5px' }}
+            >
+              <Option key={1}>1</Option>
+              <Option key={2}>2</Option>
+              <Option key={3}>3</Option>
             </Select>
             {/* <li>北x</li>
             <li>北x</li>
@@ -43,18 +43,18 @@ class OptimizeMsg extends React.Component {
           </ul>
           <div className={styles.optimizeMessage_top_center}>
             <span>方向:</span>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
-            </Select>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
-            </Select>
-            <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-              <Option key="1">sim</Option>
+            <Select
+              defaultValue={[1, 2]}
+              mode="multiple"
+              style={{ width: '260px', height: '30px', marginLeft: '5px' }}
+            >
+              <Option key={1}>1</Option>
+              <Option key={2}>2</Option>
+              <Option key={3}>3</Option>
             </Select>
           </div>
           <div className={styles.optimizeMessage_top_right}>
-            <span onClick={this.monitorMessageNone}>x</span>
+            <span onClick={() => monitorMessageNone()}>x</span>
           </div>
         </div>
         <div className={styles.chartsSearch}>
