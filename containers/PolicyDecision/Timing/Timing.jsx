@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
-<<<<<<< HEAD
 import { Pagination, Button, Input, Icon } from 'antd'
-=======
-import { Pagination, Button, Input } from 'antd'
 
->>>>>>> 984d6a4799354a4fc1b69e480428640a55dcb79c
 import styles from './Timing.scss'
 import Header from '../Header/Header'
 import TimingMessage from './TimingMessage/TimingMessage'

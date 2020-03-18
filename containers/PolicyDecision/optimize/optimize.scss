@@ -104,35 +104,36 @@
     }
   }
   .speciaContainer_left {
-    padding-left: 10px;
-    width: 441px;
-    height: 70%;
+    padding-top: 10px;
+    width: 361px;
+    height: calc(100% - 260px);
     flex-direction: column;
     display: flex;
     .speciaContainer_left_top {
-      padding-top: 10px;
+      padding-left: 20px;
       height: 50px;
     }
     .speciaContainer_left_bom {
       flex: 1;
-      overflow: auto;
-      display: flex;
-      flex-wrap: wrap;
+      overflow-y: auto;
       div{
+        float: left;
+        width: 160px;
         height: 155px;
-        width: 50%;
-        padding: 0 30px;
+        background-color: #ccc;
+        margin: 0 0 10px 20px;
       }
     }
   }
   .speciaContainer_center {
-    flex: 2.2;
+    flex: 1;
     height: 75px;
+    margin: 10px 20px 0;
+    padding: 5px 10px;
     display: flex;
     flex-direction: column;
     background-color: #011f53;
-    margin: 5px 20px 0;
-    padding: 5px 10px;
+    
     .speciaContainer_center_top {
       flex: 2.2;
     }

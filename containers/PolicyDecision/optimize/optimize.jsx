@@ -45,15 +45,9 @@ class Optimize extends Component {
     ]
   }
   componentDidMount() {
-<<<<<<< HEAD
     const ulss = this.uls.current
     const lengths = this.dataList.length
     ulss.style.width = `${lengths * 317} px`
-=======
-    this.uls = this.refs.uls
-    const length = this.dataList.length
-    this.uls.style.width = `${length * 317} px`
->>>>>>> 984d6a4799354a4fc1b69e480428640a55dcb79c
   }
   // 路口图片上一页
   intersectionPre = () => {
@@ -61,17 +55,11 @@ class Optimize extends Component {
     if (this.num <= 4) {
       return
     }
-<<<<<<< HEAD
     this.nums -= 1
     this.num -= 1
     this.setState({
-      lefts: -317 * this.nums
+      lefts: -317 * this.nums,
     })
-=======
-    this.nums--
-    this.num--
-    this.uls.style.left = `${-317 * this.nums}px`
->>>>>>> 984d6a4799354a4fc1b69e480428640a55dcb79c
   }
   // 路口图片下一页
   intersectionNext = () => {
@@ -79,17 +67,11 @@ class Optimize extends Component {
     if (this.num >= this.dataList.length) {
       return
     }
-<<<<<<< HEAD
     this.nums += 1
     this.num += 1
     this.setState({
-      lefts: -317 * this.nums
+      lefts: -317 * this.nums,
     })
-=======
-    this.nums++
-    this.num++
-    this.uls.style.left = `${-317 * this.nums}px`
->>>>>>> 984d6a4799354a4fc1b69e480428640a55dcb79c
   }
   // 方案评估按钮切换
   AssessmentBtn(id) {
@@ -128,7 +110,7 @@ class Optimize extends Component {
         <div className={styles.speciaContainer}>
           <div className={styles.speciaContainer_left}>
             <div className={styles.speciaContainer_left_top}>
-              <Select defaultValue="lucy" style={{ width: '33%', marginRight: '8px' }} onChange={this.cityChange}>
+              <Select defaultValue="lucy" style={{ width: '120px', marginRight: '10px' }} onChange={this.cityChange}>
                 <Option value="jack">Jack</Option>
                 <Option value="lucy">Lucy</Option>
                 <Option value="disabled">Disabled</Option>
@@ -137,7 +119,7 @@ class Optimize extends Component {
               <Search
                 placeholder="input search text"
                 onSearch={value => console.log(value)}
-                style={{ width: '65%' }}
+                style={{ width: '210px' }}
               />
             </div>
             <div className={styles.speciaContainer_left_bom}>
