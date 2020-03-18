@@ -208,23 +208,6 @@ class Optimize extends Component {
             </div>
           </div>
           <div style={{ display: showOpeMessage }} className={styles.optimizeMessage}>
-            <div className={styles.optimizeMessage_top}>
-              <ul className={styles.optimizeMessage_top_left}>
-                <span>方向:</span>
-                <li>北x</li>
-                <li>北x</li>
-                <li>北x</li>
-              </ul>
-              <div className={styles.optimizeMessage_top_center}>
-                <span>方向:</span>
-                <li>左转x</li>
-                <li>直行x</li>
-                <li>掉头x</li>
-              </div>
-              <div className={styles.optimizeMessage_top_right}>
-                <span onClick={this.monitorMessageNone}>x</span>
-              </div>
-            </div>
             <OptimizeMsg />
           </div>
         </div>

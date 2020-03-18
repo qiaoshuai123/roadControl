@@ -26,6 +26,7 @@ const echartss = {
       color: ['#3398DB'],
       title: {
         text: '实时信号控制状态',
+        padding: [5, 0, 0, 20],
         textStyle: {
           fontWeight: 'normal',
           color: '#FFFFFF',
@@ -145,6 +146,7 @@ const echartss = {
       color: ['#00cf4d', '#d3692f', '#0f85ff'],
       title: {
         text: '信号机实时状态统计',
+        padding: [5, 0, 0, 20],
         textStyle: {
           fontWeight: 'normal',
           color: '#FFFFFF',
@@ -222,6 +224,7 @@ const echartss = {
       color: ['#FBD106', '#2FF4F1'],
       title: {
         text: '折线图堆叠',
+        padding: [5, 0, 0, 20],
         textStyle: {
           fontWeight: 'normal',
           color: '#FFFFFF',
