@@ -12,30 +12,18 @@
   top: 100px;
   display: flex;
   .swipers {
-    width: calc(100% - 461px);
-    height: 235px;
-    overflow: hidden;
-    display: flex;
-    background-color: #021035;
     position: absolute;
-    left: 0;
-    bottom: 0;
-    .uls {
-      width: 110px;
-      display: flex;
-      padding: 15px 15px;
-      flex-direction: column;
-      li {
-        flex: 1;
-        color: white;
-        margin: 5px 0;
-        border: 1px solid #153b5a;
-        background-color: #012f51;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    left: 20px;
+    bottom: 40px;
+    .chartsType {
+      width: 80px;
+      height: 30px;
+      margin-bottom: 10px;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 3px;
+      background-color: #002E4F;
+      cursor: pointer;
     }
     .swiperRig {
       flex: 1;
@@ -106,12 +94,12 @@
   .speciaContainer_left {
     padding-top: 10px;
     width: 361px;
-    height: calc(100% - 260px);
+    height: calc(100% - 210px);
     flex-direction: column;
     display: flex;
     .speciaContainer_left_top {
       padding-left: 20px;
-      height: 50px;
+      height: 40px;
     }
     .speciaContainer_left_bom {
       flex: 1;
