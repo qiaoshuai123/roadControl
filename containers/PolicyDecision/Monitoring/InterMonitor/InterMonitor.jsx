@@ -3,6 +3,7 @@ import { Select, Icon, Checkbox } from 'antd'
 
 import styles from './InterMonitor.scss'
 import CustomTree from '../../../../components/CustomTree/CustomTree'
+import PieCharts from './PieCharts/PieCharts'
 
 function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow } = props
@@ -13,7 +14,7 @@ function DropDownList(props) {
         {title}
         <span className={styles.downIcon} style={{ transform: isShow ? 'rotate(180deg)' : 'rotate(0)' }}><Icon type="down" /></span>
       </p>
-      <div className={styles.statusList} style={{ maxHeight: isShow ? '300px' : 0 }}>
+      <div className={styles.statusList} style={{ maxHeight: isShow ? '500px' : 0 }}>
         {
           list &&
           list.map((item) => {
@@ -35,9 +36,11 @@ class InterMonitor extends React.Component {
     super(props)
     this.state = {
       statusName: null,
-      showInterList: false,
+      popName: null,
       interMonitorLeft: 15,
       interListLeft: 360,
+      distuibutionLeft: 360,
+      pointTypeRight: 10,
     }
     this.statusList = [
       { name: '单点离线' },
@@ -53,27 +56,37 @@ class InterMonitor extends React.Component {
       this.setState({ statusName })
     }
   }
-  hadleShowInterList = () => {
-    this.setState({ showInterList: true })
+  handleShowInterOrPie = (e) => {
+    const popName = e.currentTarget.getAttribute('popname')
+    this.setState({ popName })
   }
-  handleCloseInterList = () => {
-    this.setState({ showInterList: false })
+  handleClosePop = () => {
+    this.setState({ popName: null })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
       this.setState({
         interMonitorLeft: -315,
         interListLeft: 30,
+        distuibutionLeft: 30,
       })
     } else {
       this.setState({
         interMonitorLeft: 15,
         interListLeft: 360,
+        distuibutionLeft: 360,
       })
     }
   }
+  handleShowPointType = () => {
+    if (this.state.pointTypeRight > 0) {
+      this.setState({ pointTypeRight: -315 })
+    } else {
+      this.setState({ pointTypeRight: 10 })
+    }
+  }
   render() {
-    const { statusName, showInterList, interMonitorLeft, interListLeft } = this.state
+    const { statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft } = this.state
     const { Option } = Select
     return (
       <React.Fragment>
@@ -83,12 +96,12 @@ class InterMonitor extends React.Component {
           </span>
           <div className={styles.title}>路口监视功能</div>
           <div className={styles.interMsg}>
-            <div className={styles.msgShow} onClick={this.hadleShowInterList}>
+            <div className={styles.msgShow} popname="inter" onClick={this.handleShowInterOrPie}>
               <div className={styles.listIcon} />
               <p>系统路口列表</p>
             </div>
             <div className={styles.msgShow}>
-              <div className={styles.analysisIcon} />
+              <div className={styles.analysisIcon} popname="pie" onClick={this.handleShowInterOrPie} />
               <p>整体运行分析</p>
             </div>
           </div>
@@ -115,7 +128,10 @@ class InterMonitor extends React.Component {
             />
           </div>
         </div>
-        <div className={styles.pointTypeBox}>
+        <div className={styles.pointTypeBox} style={{ right: `${pointTypeRight}px` }}>
+          <span className={styles.hideIcon} onClick={this.handleShowPointType}>
+            { pointTypeRight > 0 ? <Icon type="forward" /> : <Icon type="backward" />}
+          </span>
           <div className={styles.title}>系统点位分布类型</div>
           <div className={styles.systemPoint}>
             <div><span className={styles.upIconBox}><i /><b /></span>海信系统<span className={styles.checkeBox}><Checkbox defaultChecked /></span></div>
@@ -136,11 +152,11 @@ class InterMonitor extends React.Component {
           </div>
         </div>
         {
-          showInterList &&
+          popName === 'inter' &&
           <div className={styles.interListPop} style={{ left: `${interListLeft}px` }}>
             <div className={styles.title}>
               路口列表
-              <span className={styles.popCloseBox} onClick={this.handleCloseInterList}><Icon type="close" /></span>
+              <span className={styles.popCloseBox} onClick={this.handleClosePop}><Icon type="close" /></span>
             </div>
             <div className={styles.interTreeBox}>
               <div className={styles.interSearch}>
@@ -165,7 +181,18 @@ class InterMonitor extends React.Component {
               <div className={styles.areaLineBtn}>线路</div>
             </div>
           </div>
-
+        }
+        {
+          popName === 'pie' &&
+          <div className={styles.pieWrapper} style={{ left: `${distuibutionLeft}px` }}>
+            <div className={styles.title}>
+              路口列表
+              <span className={styles.popCloseBox} onClick={this.handleClosePop}><Icon type="close" /></span>
+            </div>
+            <div className={styles.pieChartsBox}>
+              <PieCharts />
+            </div>
+          </div>
         }
       </React.Fragment>
     )

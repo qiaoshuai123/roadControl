@@ -113,6 +113,19 @@
     width: 320px;
     height: 100%;
     background-color: rgba(6, 35, 79, .8);
+    transition: all .3s;
+    .hideIcon {
+        position: absolute;
+        left: -20px;
+        top: 5px;
+        width: 20px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        font-size: 24px;
+        color: #f1f1fb;
+        cursor: pointer;
+    }
     .title {
         position: relative;
         height: 40px;
@@ -294,5 +307,33 @@
             margin-bottom: 15px;
             cursor: pointer;
         }
+    }
+}
+.pieWrapper {
+    position: absolute;
+    top: 0;
+    left: 360px;
+    width: 400px;
+    height: 400px;
+    background-color: rgba(2,24,61, .8);
+    transition: all .3s;
+    .title {
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 15px;
+        font-size: 16px;
+        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        .popCloseBox {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-size: 15px;
+            color: #02F5F7;
+            cursor: pointer;
+        }
+    }
+    .pieChartsBox {
+        height: calc(100% - 40px);
     }
 }
