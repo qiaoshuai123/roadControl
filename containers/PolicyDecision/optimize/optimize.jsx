@@ -58,7 +58,7 @@ class Optimize extends Component {
     this.nums -= 1
     this.num -= 1
     this.setState({
-      lefts: -317 * this.nums
+      lefts: -317 * this.nums,
     })
   }
   // 路口图片下一页
@@ -70,7 +70,7 @@ class Optimize extends Component {
     this.nums += 1
     this.num += 1
     this.setState({
-      lefts: -317 * this.nums
+      lefts: -317 * this.nums,
     })
   }
   // 方案评估按钮切换
@@ -110,7 +110,7 @@ class Optimize extends Component {
         <div className={styles.speciaContainer}>
           <div className={styles.speciaContainer_left}>
             <div className={styles.speciaContainer_left_top}>
-              <Select defaultValue="lucy" style={{ width: '33%', marginRight: '8px' }} onChange={this.cityChange}>
+              <Select defaultValue="lucy" style={{ width: '120px', marginRight: '10px' }} onChange={this.cityChange}>
                 <Option value="jack">Jack</Option>
                 <Option value="lucy">Lucy</Option>
                 <Option value="disabled">Disabled</Option>
@@ -119,7 +119,7 @@ class Optimize extends Component {
               <Search
                 placeholder="input search text"
                 onSearch={value => console.log(value)}
-                style={{ width: '65%' }}
+                style={{ width: '210px' }}
               />
             </div>
             <div className={styles.speciaContainer_left_bom}>
