@@ -6,18 +6,21 @@ const fromlist = {
     headOne: '区域',
     headTwo: '路口名称',
     headTre: '最新控制时间',
+    datas: [],
   },
   form2: {
     name: '本月手控路口次数TOP15',
     headOne: '路口名称',
     headTwo: '当月控制次数',
     headTre: '最新控制时间',
+    datas: [],
   },
   form3: {
     name: '最新方案配时变更路数TOP15',
     headOne: '区域名称',
     headTwo: '路口名称',
     headTre: '配时变更时间',
+    datas: [],
   },
 }
 const echartss = {
