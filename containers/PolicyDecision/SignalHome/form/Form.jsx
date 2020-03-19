@@ -26,7 +26,7 @@ class Form extends Component {
                 <div className={styles.mountingTd}>2019-07-12 16:29:39</div>
               </div>
               <div className={styles.mountingTr}>
-                <div className={styles.mountingTd}>*************</div>
+                <div className={styles.mountingTd}>居中</div>
                 <div className={styles.mountingTd}>*************</div>
                 <div className={styles.mountingTd}>*************</div>
               </div>

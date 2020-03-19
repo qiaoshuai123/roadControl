@@ -13,8 +13,8 @@ class Monitoring extends Component {
   componentDidMount() {
     this.renderMineMap()
   }
+  // 初始化地图
   renderMineMap = () => {
-    /* 初始化地图实例 */
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
@@ -30,9 +30,7 @@ class Monitoring extends Component {
     return (
       <div className={styles.monitorWrapper} id="mapContainer">
         <Header {...this.props} />
-        {/* <div className={styles.container}> */}
-          <InterMonitor />
-        {/* </div> */}
+        <InterMonitor />
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import styles from './AreaOptimize.scss'
+import Header from '../Header/Header'
 
 class AreaOptimize extends React.Component {
   constructor(props) {
@@ -10,7 +11,9 @@ class AreaOptimize extends React.Component {
   componentDidMount = () => {}
   render() {
     return (
-      <div>123</div>
+      <div className={styles.areaOptWrapper}>
+        <Header />
+      </div>
     )
   }
 }

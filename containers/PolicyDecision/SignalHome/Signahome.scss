@@ -15,19 +15,16 @@
   }
 }
 .signalHomeBox {
+  z-index: 9;
+  position: relative;
   width: 100%;
   height: 100%;
-  background-color: #021035;
-  display: flex;
-  flex-direction: column;
-}
-.signaContainer {
-  height: calc(100% - 100px);
-  position: absolute;
-  top: 100px;
-  display: flex;
   .signaContainer_left {
-    height: 100%;
+    z-index: 9;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: calc(100% - 100px);
     width: 448px;
     overflow: auto;
     flex-direction: column;
@@ -91,7 +88,11 @@
     }
   }
   .signaContainer_center {
-    flex: 1;
+    z-index: 9;
+    position: absolute;
+    top: 100px;
+    left: 450px;
+    width: calc(100% - 900px);
     height: 95px;
     display: flex;
     flex-wrap: wrap;
@@ -171,7 +172,11 @@
     }
   }
   .signaContainer_right {
-    overflow: auto;
+    z-index: 9;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: calc(100% - 100px);
     width: 448px;
     display: flex;
     flex-direction: column;
