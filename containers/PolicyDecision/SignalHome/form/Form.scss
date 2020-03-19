@@ -2,23 +2,24 @@
     height: 100%;
 }
 .pTop{
-    height: 30px;
-    font-size: 18px;
+    height: 40px;
+    font-size: 16px;
     padding-left: 20px;
-    line-height: 30px;
+    line-height: 40px;
+    background: linear-gradient(to bottom, #02183D 0%,#06234F 100%);
 }
 .mountingManage {
-    // height: calc(100% - 100px);
+    padding: 0 10px;
     .mountingTable {
       height: 100%;
+      font-size: 13px;
       .mountingThead {
-        font-size: 12px;
-        height: 25px;
+        height: 26px;
         color: #95EDF4;
         display: flex;
       }
       .mountingTr {
-        height: 25px;
+        height: 26px;
         display: flex;
       }
       .mountingThead {
