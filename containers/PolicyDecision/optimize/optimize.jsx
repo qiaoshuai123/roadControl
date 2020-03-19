@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input } from 'antd'
+import { Select, Input, Icon } from 'antd'
 import styles from './optimize.scss'
 import Header from '../Header/Header'
 import OptimizeList from './optimizeList/optimizeList'
@@ -18,7 +18,6 @@ class Optimize extends Component {
     }
     this.echartsprogramme = echartsprogramme
     this.echarts = echarts
-    this.uls = React.createRef()
     this.dataList = [ // 模拟数据
       { id: 1, num: 1 },
       { id: 2, num: 2 },
@@ -45,9 +44,6 @@ class Optimize extends Component {
     ]
   }
   componentDidMount() {
-    const ulss = this.uls.current
-    const lengths = this.dataList.length
-    ulss.style.width = `${lengths * 317} px`
   }
   // 路口图片上一页
   intersectionPre = () => {
@@ -186,27 +182,20 @@ class Optimize extends Component {
             <div className={styles.chartsType}>排队</div>
           </div>
           <div className={styles.swiperRig}>
-            <div className={styles.swiperRig_left}>
-              <div onClick={this.intersectionPre}>
-                <span />
+            <div className={styles.swiperRig_left} onClick={this.intersectionPre}>
+              <span><Icon type="caret-left" /></span>
+            </div>
+            <div className={styles.swiperBox}>
+              <div className={styles.swiperList}>
+                <div className={styles.swiperItems}>
+                  <p>设备编号:1000227$1$041</p>
+                  <p>位置:世纪大道-********</p>
+                  <div className={styles.videoBox}>123</div>
+                </div>
               </div>
             </div>
-            <div className={styles.swiperRig_center}>
-              <ul className={styles.ulList} style={{ left: `${lefts}px` }} ref={this.uls}>
-                {
-                  this.dataList.map(item => (
-                    <li key={item.id}>
-                      <p>设备编号:1000227$1$041</p>
-                      <p>位置:世纪大道-********</p>
-                      <div>{item.num}</div>
-                    </li>))
-                }
-              </ul>
-            </div>
-            <div className={styles.swiperRig_right}>
-              <div onClick={this.intersectionNext}>
-                <span />
-              </div>
+            <div className={styles.swiperRig_right} onClick={this.intersectionNext}>
+              <span><Icon type="caret-right" /></span>
             </div>
           </div>
           <div style={{ display: showOpeMessage }} className={styles.optimizeMessage}>
