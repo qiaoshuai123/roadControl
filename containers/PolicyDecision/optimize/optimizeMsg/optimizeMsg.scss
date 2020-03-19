@@ -1,73 +1,73 @@
-.interMsgWrapper {
-  .optimizeMessage_top {
-    height: 45px;
-    font-size: 16px;
+
+.optimizeMessage_top {
+  height: 45px;
+  font-size: 16px;
+  display: flex;
+  margin-top: 10px;
+  .optimizeMessage_top_left {
+    margin: 0;
+    width: 48%;
     display: flex;
-    .optimizeMessage_top_left {
-      margin: 0;
-      width: 48%;
-      display: flex;
-      align-items: center;
-      overflow: auto;
-      >span {
-        color: #b0f3fc;
-        margin: 0 15px;
-      }
-      >li {
-        margin-right: 15px;
-      }
-    }
-    .optimizeMessage_top_center {
-      width: 48%;
-      display: flex;
-      align-items: center;
-      >span {
-        color: #b0f3fc;
-        margin: 0 15px;
-      }
-      >li {
-        margin-right: 15px;
-      }
-    }
-    .optimizeMessage_top_right {
-      width: 4%;
-      font-size: 30px;
-      color: #22ced0;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-  .chartsTitle {
-    font-size: 15px;
-    color: #03cb47;
-  }
-  .chartsSearch {
-    height: 50px;
-    padding: 0 25px;
     align-items: center;
+    overflow: auto;
+    >span {
+      color: #b0f3fc;
+      margin: 0 15px;
+    }
+    >li {
+      margin-right: 15px;
+    }
+  }
+  .optimizeMessage_top_center {
+    width: 48%;
     display: flex;
-    flex-wrap: wrap;
-    .searchBtn {
-      width: 80px;
-      height: 30px;
-      margin-left: 5px;
-      text-align: center;
-      line-height: 30px;
-      border: 1px solid #032e55;
-      border-radius: 3px;
-      color: #f1f1fb;
-      cursor: pointer;
+    align-items: center;
+    >span {
+      color: #b0f3fc;
+      margin: 0 15px;
     }
-    .searchActive {
-      background-color: #00a9c0;
-      border-color: #00a9c0;
+    >li {
+      margin-right: 15px;
     }
   }
-  .lineChartsBox {
-    padding: 25px 45px;
+  .optimizeMessage_top_right {
+    width: 4%;
+    font-size: 30px;
+    color: #22ced0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+.chartsTitle {
+  font-size: 15px;
+  color: #03cb47;
+}
+.chartsSearch {
+  height: 50px;
+  padding: 0 25px;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  .searchBtn {
+    width: 80px;
+    height: 30px;
+    margin-left: 5px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #032e55;
+    border-radius: 3px;
+    color: #f1f1fb;
+    cursor: pointer;
+  }
+  .searchActive {
+    background-color: #00a9c0;
+    border-color: #00a9c0;
+  }
+}
+.lineChartsBox {
+  padding: 25px 45px;
 }
 .interMsgWrapper {
   :global(.ant-calendar-picker) {

@@ -21,10 +21,9 @@ class OptimizeMsg extends React.Component {
   render() {
     const { Option } = Select
     const { searchName } = this.state
-    // eslint-disable-next-line react/prop-types
     const { monitorMessageNone } = this.props
     return (
-      <div className={styles.interMsgWrapper}>
+      <React.Fragment>
         <div className={styles.optimizeMessage_top}>
           <ul className={styles.optimizeMessage_top_left}>
             <span>方向:</span>
@@ -37,9 +36,6 @@ class OptimizeMsg extends React.Component {
               <Option key={2}>2</Option>
               <Option key={3}>3</Option>
             </Select>
-            {/* <li>北x</li>
-            <li>北x</li>
-            <li>北x</li> */}
           </ul>
           <div className={styles.optimizeMessage_top_center}>
             <span>方向:</span>
@@ -76,8 +72,7 @@ class OptimizeMsg extends React.Component {
         <div className={styles.lineChartsBox}>
           <LineCharts />
         </div>
-
-      </div>
+      </React.Fragment>
     )
   }
 }
