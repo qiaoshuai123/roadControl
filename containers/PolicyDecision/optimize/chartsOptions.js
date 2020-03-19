@@ -94,11 +94,11 @@ export const echartsprogramme = {
 export const echarts = {
   echarts1: {
     option: {
-      color: ['#0189FF', '#FF8C3C', '#F10282'],
+      color: ['#01FC13', '#008BFF', '#FE0048', '#FDBF0C', '#FD00F9'],
       graphic: {
         type: 'text',
         left: 'center',
-        bottom: '40%',
+        bottom: '42%',
         style: {
           text: `10`,
           textAlign: 'center',
@@ -113,6 +113,7 @@ export const echarts = {
         trigger: 'item',
         showDelay: 20,
         hideDelay: 20,
+        position: [1, 1],
         backgroundColor: 'rgba(255,0,0,0.7)',
         textStyle: {
           fontSize: '16px',
@@ -125,7 +126,7 @@ export const echarts = {
           name: '未完成',
           type: 'pie',
           selectedMode: 'single',
-          radius: [20, '30%'],
+          radius: ['40%', '60%'],
 
           label: {
             normal: {
@@ -141,11 +142,13 @@ export const echarts = {
         {
           name: '已完成',
           type: 'pie',
-          radius: ['40%', '55%'],
+          radius: ['40%', '60%'],
           data: [
-            { value: 332, name: '离线设备' },
-            { value: 55, name: '异常设备' },
-            { value: 88, name: '在线设备' },
+            { value: 45, name: 'A45' },
+            { value: 68, name: 'B68' },
+            { value: 332, name: 'C332' },
+            { value: 55, name: 'D552' },
+            { value: 88, name: 'E88' },
           ],
           itemStyle: {
             emphasis: {
@@ -160,13 +163,13 @@ export const echarts = {
   },
   echarts2: {
     option: {
-      color: ['#0189FF', '#FF8C3C', '#F10282'],
+      color: ['#01FC13', '#008BFF', '#FE0048', '#FDBF0C', '#FD00F9'],
       graphic: {
         type: 'text',
         left: 'center',
-        bottom: '40%',
+        bottom: '42%',
         style: {
-          text: `20`,
+          text: `10`,
           textAlign: 'center',
           fontSize: 16,
           // font: 'italic bolder 30px cursive',
@@ -179,6 +182,7 @@ export const echarts = {
         trigger: 'item',
         showDelay: 20,
         hideDelay: 20,
+        position: [1, 1],
         backgroundColor: 'rgba(255,0,0,0.7)',
         textStyle: {
           fontSize: '16px',
@@ -191,7 +195,7 @@ export const echarts = {
           name: '未完成',
           type: 'pie',
           selectedMode: 'single',
-          radius: [20, '30%'],
+          radius: ['40%', '60%'],
 
           label: {
             normal: {
@@ -207,11 +211,13 @@ export const echarts = {
         {
           name: '已完成',
           type: 'pie',
-          radius: ['40%', '55%'],
+          radius: ['40%', '60%'],
           data: [
-            { value: 332, name: '离线设备' },
-            { value: 55, name: '异常设备' },
-            { value: 88, name: '在线设备' },
+            { value: 45, name: 'A45' },
+            { value: 68, name: 'B68' },
+            { value: 332, name: 'C332' },
+            { value: 55, name: 'D552' },
+            { value: 88, name: 'E88' },
           ],
           itemStyle: {
             emphasis: {

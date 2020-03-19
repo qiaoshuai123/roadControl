@@ -68,7 +68,7 @@
       flex: 1;
       display: flex;
       align-items: center;
-      motion: 0;
+      margin: 0;
       li {
         margin-right: 20px;
       }
@@ -140,6 +140,7 @@
           background-color: #04a8c3;
         }
         .spans:nth-child(1) {
+          padding: 5px 12px;
           margin: 0 4px 0;
         }
       }

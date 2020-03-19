@@ -82,6 +82,7 @@ class Optimize extends Component {
   monitorMessageNone = () => {
     this.setState({
       showOpeMessage: 'none',
+      nums: 0,
     })
   }
   // 头部城市选择
@@ -149,7 +150,7 @@ class Optimize extends Component {
               </div>
               <div className={styles.speciaContainerLB_bom}>
                 <span className={styles.spanOne}>优化控制操作 :</span>
-                <Select defaultValue="lucy" style={{ width: '40%' }} onChange={this.handleChange}>
+                <Select defaultValue="lucy" style={{ width: '36%' }} onChange={this.handleChange}>
                   <Option value="jack">Jack</Option>
                   <Option value="lucy">Lucy</Option>
                   <Option value="disabled">Disabled</Option>
