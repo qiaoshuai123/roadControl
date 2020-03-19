@@ -16,7 +16,7 @@ class EvaNav extends React.PureComponent {
     this.navItemsRight = [
       {
         name: '信号优化',
-        path: '/',
+        path: '/optimize',
         children: [
           { name: '路口优化', path: '/optimize' },
           { name: '区域优化', path: '/optimize' },
@@ -37,6 +37,7 @@ class EvaNav extends React.PureComponent {
       { name: '首页', path: '/signalhome' },
       { name: '全局监控', path: '/globalmonitor' },
       { name: '路口优化', path: '/optimize' },
+      { name: '配时管理', path: '/timing' },
     ]
   }
   componentDidMount = () => { }
