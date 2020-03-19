@@ -44,26 +44,27 @@ class CustomTree extends React.Component {
           },
         ],
       },
-      {
-        name: '龙华区',
-        id: 2,
-        children: [
-          {
-            name: '龙华路',
-            id: 22,
-            children: [
-              {
-                name: '龙华路世纪大道',
-                id: 222,
-              },
-            ],
-          },
-        ],
-      },
+      // {
+      //   name: '龙华区',
+      //   id: 2,
+      //   children: [
+      //     {
+      //       name: '龙华路',
+      //       id: 22,
+      //       children: [
+      //         {
+      //           name: '龙华路世纪大道',
+      //           id: 222,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
     ]
   }
   componentDidMount = () => { }
-  handleTreeSelect = (e) => {
+  handleTreeSelect = (e, s) => {
+    console.log(e, s, 'ss')
     e.stopPropagation()
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
@@ -83,7 +84,7 @@ class CustomTree extends React.Component {
         const isOpen = expendsKey.indexOf(item.id) >= 0
         if (item.children && item.children.length) {
           return (
-            <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+            <li className={styles.childLi} key={item.id} id={item.id} onClick={e => this.handleTreeSelect(e, item.name)}>
               <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
               <span className={styles.childNode}>{item.name}</span>
               {
@@ -96,7 +97,7 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+          <li className={styles.childLi} key={item.id} id={item.id} onClick={e => this.handleTreeSelect(e, item.name)}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
             <span className={styles.childNode}>{item.name}</span>
           </li>
@@ -117,7 +118,7 @@ class CustomTree extends React.Component {
                   <span className={styles.treeNode}>{item.name}</span> */}
                   {
                     isOpen &&
-                    <ul className={styles.childTree} onClick={this.handleTreeSelect} key={item.id}>
+                    <ul className={styles.childTree} onClick={e => this.handleTreeSelect(e, item.name)} key={item.id}>
                       {loop(item.children)}
                     </ul>
                   }

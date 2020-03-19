@@ -16,7 +16,7 @@ class SecretTask extends Component {
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
       this.setState({
-        interMonitorLeft: -315,
+        interMonitorLeft: -355,
       })
     } else {
       this.setState({
