@@ -56,51 +56,19 @@ class TimingMessage extends Component {
             <div className={styles.mountingTd}>****</div>
             <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
               <dl>
-                <dt></dt>
+                <dt>1</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
+                <dt>1</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
+                <dt>1</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
-                <dd>30</dd>
-              </dl>
-            </div>
-            <div className={styles.mountingTd}>
-              <span className={styles.deviceMsg}>修改</span>
-              <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>
-            </div>
-          </div>
-          <div className={styles.mountingTr}>
-            <div className={styles.mountingTd}>01</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
-              <dl>
-                <dt></dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt></dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt></dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt></dt>
+                <dt>1</dt>
                 <dd>30</dd>
               </dl>
             </div>
@@ -120,19 +88,51 @@ class TimingMessage extends Component {
             <div className={styles.mountingTd}>****</div>
             <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
               <dl>
-                <dt></dt>
+                <dt>2</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
+                <dt>2</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
+                <dt>2</dt>
                 <dd>30</dd>
               </dl>
               <dl>
-                <dt></dt>
+                <dt>2</dt>
+                <dd>30</dd>
+              </dl>
+            </div>
+            <div className={styles.mountingTd}>
+              <span className={styles.deviceMsg}>修改</span>
+              <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>
+            </div>
+          </div>
+          <div className={styles.mountingTr}>
+            <div className={styles.mountingTd}>01</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={styles.mountingTd}>****</div>
+            <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
+              <dl>
+                <dt>2</dt>
+                <dd>30</dd>
+              </dl>
+              <dl>
+                <dt>2</dt>
+                <dd>30</dd>
+              </dl>
+              <dl>
+                <dt>2</dt>
+                <dd>30</dd>
+              </dl>
+              <dl>
+                <dt>2</dt>
                 <dd>30</dd>
               </dl>
             </div>
