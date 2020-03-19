@@ -41,9 +41,9 @@ class SignalHome extends Component {
               <EchartsPage {...this.echarts.echarts1} />
             </div>
           </div>
+          <div className={styles.title}>信号机实时状态统计</div>
           <div className={`${styles.signaContainer_left_box} ${styles.signaContainer_left_boxer}`}>
             <div className={styles.signaContainerLB_left}>
-              <div className={styles.title}>信号机实时状态统计</div>
               <div style={{ height: 'calc(100% - 40px)' }}>
                 <EchartsPage {...this.echarts.echarts2} />
               </div>
