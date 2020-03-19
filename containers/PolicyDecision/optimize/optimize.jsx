@@ -13,6 +13,7 @@ class Optimize extends Component {
     super(props)
     this.state = {
       num: 1,
+      nums: 0,
       showOpeMessage: 'none',
       swiperListLeft: 0,
     }
@@ -42,6 +43,24 @@ class Optimize extends Component {
         name: '延迟时间',
       },
     ]
+    this.flowList = [
+      {
+        id: 1,
+        name: '流量',
+      },
+      {
+        id: 2,
+        name: '延续',
+      },
+      {
+        id: 3,
+        name: '停车',
+      },
+      {
+        id: 4,
+        name: '排队',
+      },
+    ]
   }
   componentDidMount() {
   }
@@ -52,9 +71,10 @@ class Optimize extends Component {
     })
   }
   // 打开路口监控弹窗
-  monitorMessage = () => {
+  monitorMessage = (item) => {
     this.setState({
       showOpeMessage: 'block',
+      nums: item.id,
     })
   }
   //
@@ -72,12 +92,12 @@ class Optimize extends Component {
   handleChange = (value) => {
     // console.log(`selected ${value}`)
   }
-  handleSwiperMoveLeft = () => {}
-  handleSwiperMoveRight = () => {}
+  handleSwiperMoveLeft = () => { }
+  handleSwiperMoveRight = () => { }
   render() {
     const { Option } = Select
     const { Search } = Input
-    const { num, showOpeMessage, swiperListLeft } = this.state
+    const { num, showOpeMessage, swiperListLeft, nums } = this.state
     return (
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
@@ -121,15 +141,15 @@ class Optimize extends Component {
               <p>实时优化方案控制 <span>方案编号 : 2020202022202-1</span></p>
               <p>实时优化方案产出时间:2019年05月25日 08:35,超出30分钟失效</p>
               <div className={styles.speciaContainerLB_canvas}>
-                <div> <EchartsPage {...this.echarts.echarts1} /></div>
-                <div> <EchartsPage {...this.echarts.echarts2} /></div>
+                <div className={styles.speciaContainerLB_left}> <EchartsPage {...this.echarts.echarts1} /><span>当前方案</span></div>
+                <div className={styles.speciaContainerLB_right}> <EchartsPage {...this.echarts.echarts2} /><span>建议方案</span></div>
               </div>
               <div className={styles.speciaContainerLB_list}>
                 <OptimizeListT />
               </div>
               <div className={styles.speciaContainerLB_bom}>
-                <span>优化控制操作:</span>
-                <Select defaultValue="lucy" style={{ width: '30%' }} onChange={this.handleChange}>
+                <span className={styles.spanOne}>优化控制操作 :</span>
+                <Select defaultValue="lucy" style={{ width: '40%' }} onChange={this.handleChange}>
                   <Option value="jack">Jack</Option>
                   <Option value="lucy">Lucy</Option>
                   <Option value="disabled">Disabled</Option>
@@ -143,7 +163,7 @@ class Optimize extends Component {
               <p>方案预评估</p>
               <ul>
                 {
-                  this.assessmentList.map(item => <li key={item.id} onClick={() => this.AssessmentBtn(item.id)}>{item.name}<span className={num === item.id ? styles.active : ''}> </span></li>)
+                  this.assessmentList.map(item => <li key={item.id} className={num === item.id ? styles.active : ''} onClick={() => this.AssessmentBtn(item.id)}>{item.name}</li>)
                 }
               </ul>
               <div>
@@ -152,10 +172,9 @@ class Optimize extends Component {
             </div>
           </div>
           <div className={styles.swipers}>
-            <div className={styles.chartsType} onClick={this.monitorMessage}>流量</div>
-            <div className={styles.chartsType}>延误</div>
-            <div className={styles.chartsType}>停车</div>
-            <div className={styles.chartsType}>排队</div>
+            {
+              this.flowList.map(item => <div key={item.id} className={`${styles.chartsType} ${nums === item.id ? styles.active : ''}`} onClick={() => this.monitorMessage(item)}>{item.name}</div>)
+            }
           </div>
           <div className={styles.swiperRig}>
             <div className={styles.swiperRig_left} onClick={this.handleSwiperMoveLeft}>
