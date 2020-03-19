@@ -14,8 +14,10 @@ class Optimize extends Component {
     this.state = {
       num: 1,
       showOpeMessage: 'none',
-      lefts: 0, // 底部ul偏移位置
+      swiperListLeft: 0,
     }
+    this.moveCount = 0
+    this.videoLength = 7
     this.echartsprogramme = echartsprogramme
     this.echarts = echarts
     this.dataList = [ // 模拟数据
@@ -26,8 +28,6 @@ class Optimize extends Component {
       { id: 5, num: 5 },
       { id: 6, num: 6 },
     ]
-    this.num = 4
-    this.nums = 0
     this.assessmentList = [
       {
         id: 1,
@@ -44,30 +44,6 @@ class Optimize extends Component {
     ]
   }
   componentDidMount() {
-  }
-  // 路口图片上一页
-  intersectionPre = () => {
-    const ulss = this.uls.current
-    if (this.num <= 4) {
-      return
-    }
-    this.nums -= 1
-    this.num -= 1
-    this.setState({
-      lefts: -317 * this.nums,
-    })
-  }
-  // 路口图片下一页
-  intersectionNext = () => {
-    const ulss = this.uls.current
-    if (this.num >= this.dataList.length) {
-      return
-    }
-    this.nums += 1
-    this.num += 1
-    this.setState({
-      lefts: -317 * this.nums,
-    })
   }
   // 方案评估按钮切换
   AssessmentBtn(id) {
@@ -96,12 +72,12 @@ class Optimize extends Component {
   handleChange = (value) => {
     // console.log(`selected ${value}`)
   }
-
+  handleSwiperMoveLeft = () => {}
+  handleSwiperMoveRight = () => {}
   render() {
     const { Option } = Select
     const { Search } = Input
-    const { num, showOpeMessage, lefts } = this.state
-    console.log(1)
+    const { num, showOpeMessage, swiperListLeft } = this.state
     return (
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
@@ -182,19 +158,30 @@ class Optimize extends Component {
             <div className={styles.chartsType}>排队</div>
           </div>
           <div className={styles.swiperRig}>
-            <div className={styles.swiperRig_left} onClick={this.intersectionPre}>
+            <div className={styles.swiperRig_left} onClick={this.handleSwiperMoveLeft}>
               <span><Icon type="caret-left" /></span>
             </div>
             <div className={styles.swiperBox}>
-              <div className={styles.swiperList}>
+              <div className={styles.swiperList} style={{ left: `${swiperListLeft}px` }}>
+                {
+                  new Array(6).fill(true).map((item, index) => {
+                    return (
+                      <div className={styles.swiperItems} key={index}>
+                        <p>设备编号 : 1000227$1$041</p>
+                        <p>位置 : 世纪大道-********</p>
+                        <div className={styles.videoBox}>{item && index}</div>
+                      </div>
+                    )
+                  })
+                }
                 <div className={styles.swiperItems}>
-                  <p>设备编号:1000227$1$041</p>
-                  <p>位置:世纪大道-********</p>
+                  <p>设备编号 : 1000227$1$041</p>
+                  <p>位置 : 世纪大道-********</p>
                   <div className={styles.videoBox}>123</div>
                 </div>
               </div>
             </div>
-            <div className={styles.swiperRig_right} onClick={this.intersectionNext}>
+            <div className={styles.swiperRig_right} onClick={this.handleSwiperMoveRight}>
               <span><Icon type="caret-right" /></span>
             </div>
           </div>
