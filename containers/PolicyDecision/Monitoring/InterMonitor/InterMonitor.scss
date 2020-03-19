@@ -1,9 +1,11 @@
 .interMonitorBox {
+    z-index: 9;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 15px;
     width: 320px;
-    height: 100%;
+    height: calc(100% - 110px);
+    font-size: 14px;
     background-color: rgba(6, 35, 79, .8);
     transition: all .3s;
     .hideIcon {
@@ -107,11 +109,13 @@
     }
 }
 .pointTypeBox {
+    z-index: 9;
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 10px;
     width: 320px;
-    height: 100%;
+    height: calc(100% - 110px);
+    font-size: 14px;
     background-color: rgba(6, 35, 79, .8);
     transition: all .3s;
     .hideIcon {
@@ -215,11 +219,13 @@
     }
 }
 .interListPop {
+    z-index: 9;
     position: absolute;
     bottom: 0;
     left: 360px;
     width: 320px;
-    height: 100%;
+    height: calc(100% - 110px);
+    font-size: 14px;
     background-color: #06234D;
     transition: all .3s;
     .title {
@@ -231,11 +237,19 @@
         background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
         .popCloseBox {
             position: absolute;
-            top: 0;
+            top: 10px;
             right: 10px;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
             font-size: 15px;
             color: #02F5F7;
             cursor: pointer;
+            transition: all .2s;
+            &:hover {
+                transform: rotate(-180deg) scale(1.2);
+            }
         }
     }
     .administration {
@@ -310,11 +324,13 @@
     }
 }
 .pieWrapper {
+    z-index: 9;
     position: absolute;
-    top: 0;
+    top: 110px;
     left: 360px;
     width: 400px;
     height: 400px;
+    font-size: 14px;
     background-color: rgba(2,24,61, .8);
     transition: all .3s;
     .title {
@@ -326,11 +342,19 @@
         background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
         .popCloseBox {
             position: absolute;
-            top: 0;
+            top: 10px;
             right: 10px;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
             font-size: 15px;
             color: #02F5F7;
             cursor: pointer;
+            transition: all .2s;
+            &:hover {
+                transform: rotate(-180deg) scale(1.2);
+            }
         }
     }
     .pieChartsBox {
