@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from 'antd'
+import { Icon, Tooltip } from 'antd'
 
 import styles from './CustomTree.scss'
 
@@ -15,11 +15,11 @@ class CustomTree extends React.Component {
         id: 1,
         children: [
           {
-            name: '海淀五西路',
+            name: '海淀五西路11111111111111111111111111111111',
             id: 11,
             children: [
               {
-                name: '海淀五西路世纪大道',
+                name: '海淀五西路世纪大道111111111111111111111',
                 id: 111,
               },
               {
@@ -63,8 +63,7 @@ class CustomTree extends React.Component {
     ]
   }
   componentDidMount = () => { }
-  handleTreeSelect = (e, s) => {
-    console.log(e, s, 'ss')
+  handleTreeSelect = (e) => {
     e.stopPropagation()
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
@@ -84,9 +83,12 @@ class CustomTree extends React.Component {
         const isOpen = expendsKey.indexOf(item.id) >= 0
         if (item.children && item.children.length) {
           return (
-            <li className={styles.childLi} key={item.id} id={item.id} onClick={e => this.handleTreeSelect(e, item.name)}>
+            <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
               <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-              <span className={styles.childNode}>{item.name}</span>
+              <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
+                {/* <span className={`${styles.childNode}`}> {item.name}</span> */}
+                <span className={styles.childNode}> {item.name}</span> {/* 点击切换样式 */}
+              </Tooltip>
               {
                 isOpen &&
                 <ul className={styles.childTree}>
@@ -97,9 +99,11 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} key={item.id} id={item.id} onClick={e => this.handleTreeSelect(e, item.name)}>
+          <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-            <span className={styles.childNode}>{item.name}</span>
+            <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
+              <span className={styles.childNode}>{item.name}</span>
+            </Tooltip>
           </li>
         )
       })
@@ -118,7 +122,7 @@ class CustomTree extends React.Component {
                   <span className={styles.treeNode}>{item.name}</span> */}
                   {
                     isOpen &&
-                    <ul className={styles.childTree} onClick={e => this.handleTreeSelect(e, item.name)} key={item.id}>
+                    <ul className={styles.childTree} onClick={this.handleTreeSelect} key={item.id}>
                       {loop(item.children)}
                     </ul>
                   }

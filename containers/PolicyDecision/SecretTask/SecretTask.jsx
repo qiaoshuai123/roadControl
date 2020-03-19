@@ -47,7 +47,9 @@ class SecretTask extends Component {
             <div className={styles.addtask}>
               <span>快速特勤任务</span>
             </div>
-            <CustomTree />
+            <div className={styles.treeBox}>
+              <CustomTree />
+            </div>
           </div>
         </div>
       </div>

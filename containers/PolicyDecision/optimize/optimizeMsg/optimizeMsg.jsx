@@ -54,8 +54,9 @@ class OptimizeMsg extends React.Component {
           </div>
         </div>
         <div className={styles.chartsSearch}>
-          <span>初始条件：</span>
+          <div className={styles.divs}>时间间隔：</div>
           <DatePicker /> - <DatePicker suffixIcon={null} />
+          <div className={styles.divs}>统计类型：</div>
           <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
             <Option key="1">sim</Option>
           </Select>

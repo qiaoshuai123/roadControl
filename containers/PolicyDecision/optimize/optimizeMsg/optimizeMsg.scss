@@ -2,6 +2,7 @@
 .optimizeMessage_top {
   height: 45px;
   font-size: 16px;
+  padding: 0 10px 0 20px;
   display: flex;
   margin-top: 10px;
   .optimizeMessage_top_left {
@@ -46,14 +47,16 @@
 }
 .chartsSearch {
   height: 50px;
-  padding: 0 25px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  .divs{
+    margin-left: 35px;
+  }
   .searchBtn {
     width: 80px;
     height: 30px;
-    margin-left: 5px;
+    margin-left: 15px;
     text-align: center;
     line-height: 30px;
     border: 1px solid #032e55;
@@ -69,7 +72,7 @@
 .lineChartsBox {
   padding: 25px 45px;
 }
-.interMsgWrapper {
+.optimizeMessage_top,.chartsSearch {
   :global(.ant-calendar-picker) {
     width: 110px;
     height: 30px;

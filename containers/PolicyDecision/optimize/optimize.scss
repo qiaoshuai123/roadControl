@@ -52,17 +52,23 @@
     flex: 1;
     height: 75px;
     margin: 10px 20px 0;
-    padding: 5px 10px;
+    padding: 5px 30px;
     display: flex;
     flex-direction: column;
     background-color: #011f53;
     
     .speciaContainer_center_top {
       flex: 2.2;
+      color: #16F8F7;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
     }
     .speciaContainer_center_bom {
       flex: 1;
       display: flex;
+      align-items: center;
+      motion: 0;
       li {
         margin-right: 20px;
       }
@@ -86,6 +92,7 @@
         font-size: 18px;
         line-height: 30px;
         height: 30px;
+        padding-left: 10px;
         span {
           font-size: 12px;
         }
@@ -94,6 +101,7 @@
         line-height: 25px;
         color: #db0500;
         height: 25px;
+        padding-left: 10px;
       }
       .speciaContainerLB_canvas {
         overflow: hidden;
@@ -102,16 +110,28 @@
         div {
           flex: 1;
         }
+        .speciaContainerLB_left,.speciaContainerLB_right{
+          position: relative;
+          span{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 3px;
+          }
+        }
       }
       .speciaContainerLB_list {
+    
         flex: 3;
       }
       .speciaContainerLB_bom {
         flex: 1;
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        .spanOne{
+          margin-right: 10px;
+        }
         .spans {
           color: white;
           padding: 5px;
@@ -242,7 +262,7 @@
   }
 }
 .active{
-  background-color: red;
+  background-color: #08899F !important;
 }
 .speciaContainer_left {
   :global(.ant-select .ant-select-enabled){
@@ -259,7 +279,7 @@
   }
 
   :global(.ant-input-affix-wrapper .ant-input) {
-    color: #376282;
+    color: white;
     background-color: #023052;
     border: 1px solid #1d425f;
   }
@@ -280,18 +300,18 @@
 }
 .speciaContainerLB_bom {
   :global(.ant-select) {
-    height: 25px;
+    height: 30px;
   }
   :global(.ant-select-selection) {
     color: white;
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
     background-color: #023052;
     border: 1px solid #1d425f;
   }
   :global(.ant-select-selection--single .ant-select-selection__rendered) {
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
   }
   :global(path) {
     color: white;
