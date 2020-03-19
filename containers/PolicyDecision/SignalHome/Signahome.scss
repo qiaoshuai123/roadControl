@@ -54,11 +54,13 @@
           flex: 1;
           display: flex;
           flex-direction: column;
+          padding: 15px 5px 5px;
           dt,
           dd {
             flex: 1;
             display: flex;
             b {
+              height: 45%;
               width: 20px;
               margin: 10px;
             }
@@ -76,9 +78,15 @@
             }
             li {
               flex: 1;
+              font-size: 16px;
+              font-weight: bolder;
             }
             .nums {
               color: #2ec8ea;
+            }
+            .lione,.litwo,.lithr{
+              flex: 1.3;
+              font-size: 14px;
             }
             .lione {
               color: #0abc52;

@@ -121,7 +121,7 @@ const echartss = {
         {
           name: '直接访问',
           type: 'bar',
-          barWidth: '60%',
+          barWidth: '50%',
           data: [60, 80, 120, 160, 120, 100, 60, 40],
           itemStyle: {// 柱状图圆角
             // emphasis: {
@@ -160,7 +160,7 @@ const echartss = {
       graphic: {
         type: 'text',
         left: 'center',
-        bottom: '35%',
+        bottom: '30%',
         style: {
           text: ` ${'215处'}  \n  ${'信号机总数'}  \n\n`,
           textAlign: 'center',
@@ -251,7 +251,7 @@ const echartss = {
           },
         ],
         right: '3%',
-        top: '5%',
+        top: '2%',
         textStyle: {
           color: '#FFF',
         },
@@ -259,6 +259,7 @@ const echartss = {
       grid: {
         left: '3%',
         right: '4%',
+        top: '15%',
         bottom: '3%',
         containLabel: true,
       },
