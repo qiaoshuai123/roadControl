@@ -12,9 +12,44 @@ class SignalHome extends Component {
     this.state = {}
     this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
+    this.marker = null
   }
   componentDidMount = () => {
     this.renderMineMap()
+  }
+  // 添加坐标点
+  addMarker = () => {
+    if (this.map) {
+      const el = document.createElement('div')
+      el.id = 'marker'
+      // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
+      el.style['background-color'] = '#ff0000'
+      el.style['background-size'] = 'cover'
+      el.style.width = '20px'
+      el.style.height = '20px'
+      el.style['border-radius'] = '50%'
+
+      const lnglat = this.map.getCenter()
+
+      // Marker构造函数接收两个参数，一个为自定义的DOM元素，一个是Object参数，其中包括偏移量等
+      // offset参数为标注点相对于其左上角偏移像素大小
+      // 调用setLngLat方法指定Marker的坐标位置
+      this.marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat(lnglat).addTo(this.map)
+    }
+  }
+  // 删除坐标点
+  delMarker = () => {
+    if (this.map && this.marker) {
+      this.marker.remove()
+      this.marker = null
+    }
+  }
+  // 更新坐标点
+  updateMarkerPosition = () => {
+    if (this.map && this.marker) {
+      const lnglat = this.map.getCenter()
+      this.marker.setLngLat([lnglat.lng + 0.01, lnglat.lat + 0.01])
+    }
   }
   // 初始化地图
   renderMineMap = () => {
@@ -28,6 +63,7 @@ class SignalHome extends Component {
       minZoom: 3,
     })
     this.map = map
+    this.addMarker()
   }
   render() {
     return (

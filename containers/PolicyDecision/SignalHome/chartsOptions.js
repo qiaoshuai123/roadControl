@@ -63,7 +63,7 @@ const echartss = {
           show: true,
           textStyle: {
             color: '#FFFFFF', // 更改坐标轴文字颜色
-            fontSize: 14, // 更改坐标轴文字大小
+            fontSize: 12, // 更改坐标轴文字大小
           },
           interval: 0,
           formatter(value) {
@@ -108,7 +108,7 @@ const echartss = {
           show: true,
           textStyle: {
             color: '#FFFFFF', // 更改坐标轴文字颜色
-            fontSize: 14, // 更改坐标轴文字大小
+            fontSize: 13, // 更改坐标轴文字大小
           },
         },
         axisLine: {
