@@ -73,9 +73,6 @@
                         border-left: 1px dashed #15AEE5;
                         content: ' ';
                     }
-                    &:first-child {
-                        margin-top: 7px;
-                    }
                     &:last-child::before {
                         height: 0;
                     }
