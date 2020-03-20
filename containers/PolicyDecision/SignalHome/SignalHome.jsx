@@ -15,6 +15,7 @@ class SignalHome extends Component {
     this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
     this.marker = null
+    this.infowindow = 0
   }
   componentDidMount = () => {
     this.renderMineMap()
@@ -22,6 +23,7 @@ class SignalHome extends Component {
   // 添加坐标点
   addMarker = () => {
     if (this.map) {
+      this.infowindow += 1
       const el = document.createElement('div')
       el.id = 'marker'
       // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
@@ -63,11 +65,12 @@ class SignalHome extends Component {
   showInterInfo = () => {
     this.removeInterInfo()
     const lnglat = this.map.getCenter()
+    const id = `removeInterInfo${this.infowindow}`
     const infoHtml = `
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
         <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
           路口名称 ：123456
-          <span id="removeInterInfo" style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
+          <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
         </div>
         <div style="height:200px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
@@ -85,11 +88,11 @@ class SignalHome extends Component {
         </div>
       </div>
     `
-    this.popup = new window.minemap.Popup({ closeOnClick: false, closeButton: false, offset: [-15, -25] })
+    this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-15, -25] })
       .setLngLat([lnglat.lng, lnglat.lat])
       .setHTML(infoHtml)
       .addTo(this.map)
-    document.getElementById('removeInterInfo').addEventListener('click', this.removeInterInfo)
+    document.getElementById(id).addEventListener('click', this.removeInterInfo)
     return this.popup
   }
   // 初始化地图
