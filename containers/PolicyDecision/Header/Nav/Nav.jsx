@@ -19,7 +19,7 @@ class EvaNav extends React.PureComponent {
         path: '/optimize',
         children: [
           { name: '路口优化', path: '/optimize' },
-          { name: '区域优化', path: '/optimize' },
+          { name: '区域优化', path: '/areaOptimize' },
         ],
       },
       {

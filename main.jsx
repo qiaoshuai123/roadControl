@@ -53,6 +53,11 @@ const SecretTask = Loadable({
   loading: Loading,
   delay: 0,
 })
+const AreaOptimize = Loadable({
+  loader: () => import('./containers/PolicyDecision/AreaOptimize/AreaOptimize'),
+  loading: Loading,
+  delay: 0,
+})
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -64,6 +69,7 @@ const Parent = () => (
     <Route path="/monitoring" component={Monitoring} />
     <Route path="/timing" component={Timing} />
     <Route path="/secretTask" component={SecretTask} />
+    <Route path="/areaOptimize" component={AreaOptimize} />
   </React.Fragment>
 )
 reactDom.render(

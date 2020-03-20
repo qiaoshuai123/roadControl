@@ -9,14 +9,13 @@ class EchartsPage extends Component {
   }
   componentDidMount() {
     const { option } = this.props
-    const cavs = this.refs.brokens
-    const myChart = echarts.init(cavs)
+    const myChart = echarts.init(this.brokens)
     myChart.setOption(option)
   }
   render() {
     return (
       <div className={styles.echartsbox}>
-        <div ref="brokens" style={{ width: '100%', height: '100%' }} />
+        <div ref={(input) => { this.brokens = input }} style={{ width: '100%', height: '100%' }} />
       </div>
     )
   }
