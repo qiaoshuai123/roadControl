@@ -6,6 +6,7 @@
   flex-direction: column;
   background: linear-gradient(to top, #031837, #06234F);
   margin: 0;
+  overflow: hidden;
 }
 .IntersectionItem_top {
   flex: 1;
@@ -23,8 +24,8 @@
     justify-content: center;
     span {
       background-color: red;
-      width: 48px;
-      height: 48px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
     }
   }
@@ -45,6 +46,7 @@
   .IntersectionItem_bomLeft {
     flex: 4.5;
     display: flex;
+    padding-bottom: 15px;
     dl {
       flex: 1;
       display: flex;

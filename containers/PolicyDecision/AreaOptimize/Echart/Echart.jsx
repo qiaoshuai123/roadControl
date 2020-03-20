@@ -35,7 +35,7 @@ class Echart extends React.Component {
                 [1.0, '#F13F16'],
 
               ],
-              width: 3,
+              width: 4,
             },
           },
           axisLabel: { // 刻度标签。
@@ -46,15 +46,15 @@ class Echart extends React.Component {
             splitNumber: 5, // 每份split细分多少段
             length: 12, // 属性length控制线长
             lineStyle: { // 属性lineStyle控制线条样式
-              color: '#F6E31D',
+              color: 'red',
               width: 1,
               type: 'solid',
             },
           },
           splitLine: { // 分隔线
-            length: 5, // 属性length控制线长
+            length: 7, // 属性length控制线长
             lineStyle: { // 属性lineStyle（详见lineStyle）控制线条样式
-              color: 'F6E31D',
+              color: '#F1EC2F',
             },
           },
           title: {
