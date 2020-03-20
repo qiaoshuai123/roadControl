@@ -112,3 +112,7 @@ a {
         display: block;
     }
 }
+.minemap-popup-content {
+    padding: 0;
+    background-color: transparent;
+}
