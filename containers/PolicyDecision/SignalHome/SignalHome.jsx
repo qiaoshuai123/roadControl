@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Icon, Checkbox } from 'antd'
+import { Select, Icon } from 'antd'
 import Header from '../Header/Header'
 import Form from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
