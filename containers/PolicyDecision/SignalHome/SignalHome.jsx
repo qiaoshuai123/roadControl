@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { Select, Icon, Checkbox } from 'antd'
 import Header from '../Header/Header'
 import Form from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
@@ -11,7 +11,9 @@ import InfoBg from './img/Infobg.png'
 class SignalHome extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      interListHeight: 0,
+    }
     this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
     this.marker = null
@@ -66,11 +68,12 @@ class SignalHome extends Component {
     this.removeInterInfo()
     const lnglat = this.map.getCenter()
     const id = `removeInterInfo${this.infowindow}`
+    // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
         <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
           路口名称 ：123456
-          <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
+          
         </div>
         <div style="height:200px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
@@ -92,8 +95,15 @@ class SignalHome extends Component {
       .setLngLat([lnglat.lng, lnglat.lat])
       .setHTML(infoHtml)
       .addTo(this.map)
-    document.getElementById(id).addEventListener('click', this.removeInterInfo)
+    console.log(document.getElementById(id))
+    // document.getElementById(id).addEventListener('click', this.removeInterInfo)
     return this.popup
+  }
+  handleSearchInterFocus = () => {
+    this.setState({ interListHeight: 300 })
+  }
+  handleSearchInterBlur = () => {
+    this.setState({ interListHeight: 0 })
   }
   // 初始化地图
   renderMineMap = () => {
@@ -110,15 +120,38 @@ class SignalHome extends Component {
     this.addMarker()
   }
   render() {
+    const { Option } = Select
+    const { interListHeight } = this.state
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
-        {/* <div className={styles.interInfo}>
-          <div className={styles.titles}>
-            路口名称：123456
-            <span className={styles.close}><Icon type="close" /></span>
+        <div className={styles.interListBox}>
+          <div className={styles.interSearch}>
+            <Select defaultValue="1">
+              <Option key="1">贵阳市</Option>
+              <Option key="2">南阳市</Option>
+            </Select>
+            <span className={styles.searchBox}>
+              <input className={styles.searchInput} onFocus={this.handleSearchInterFocus} onBlur={this.handleSearchInterBlur} type="text" placeholder="请输入你要搜索的内容" />
+              <Icon className={styles.searchIcon} type="search" />
+            </span>
           </div>
-        </div> */}
+          <div className={styles.interList} style={{ maxHeight: `${interListHeight}px` }}>
+            <div>
+              <div className={styles.interItem}>路口抿成</div>
+              <div className={styles.interItem}>路口抿成</div>
+              <div className={styles.interItem}>路口抿成</div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.interSysBox}>
+          <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
+          <div className={styles.systemPoint}>
+            <div><span className={styles.upIconBox}><i /><b /></span>海信系统</div>
+            <div><span className={styles.squareBox} />ATC系统</div>
+            <div><span className={styles.circleBox} />泰尔文特</div>
+          </div>
+        </div>
         <div className={styles.signaContainer_left}>
           <div className={styles.signaContainer_left_box}><Form {...this.fromlist.form1} /></div>
           <div className={styles.signaContainer_left_box}>
