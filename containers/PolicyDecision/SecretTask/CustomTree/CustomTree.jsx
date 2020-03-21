@@ -119,11 +119,8 @@ class CustomTree extends React.Component {
     console.log(id)
   }
   handleTreeSelect = (e, ids) => {
-    console.log(e, 2222)
-    // console.log(123456)
     e.stopPropagation()
     const id = Number(e.currentTarget.getAttribute('id'))
-    // const id = Number(ids)
     const index = this.state.expendsKey.indexOf(id)
     if (index >= 0) {
       this.state.expendsKey.splice(index, 1)
@@ -169,7 +166,6 @@ class CustomTree extends React.Component {
           {
             this.loopDate.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
-              console.log(isOpen, 'sssssee')
               return (
                 <li className={styles.treeLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
                   <span className={styles.treeIcon}>
@@ -177,10 +173,12 @@ class CustomTree extends React.Component {
                   </span>
                   <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
                     <span onClick={() => this.btns(item.id)} className={styles.childNode}>{item.name}</span>
-                    {visible ?
-                      <div ref={ref => { this.root = ref }} className="contextMenu">
+                    {
+                      visible &&
+                      <div ref={(ref) => { this.root = ref }} className="contextMenu">
                         <div>右键菜单内容</div>
-                      </div> : null}
+                      </div>
+                    }
                   </Tooltip>
                   {
                     isOpen &&
