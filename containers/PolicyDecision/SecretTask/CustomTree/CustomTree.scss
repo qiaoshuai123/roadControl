@@ -8,43 +8,33 @@
         }
         .treeLi {
             position: relative;
-            margin-top: 7px;
+            white-space: nowrap;
+            &:last-child::before {
+                height: 0;
+            }
             .treeIcon {
                 display: inline-block;
-                width: 24px;
-                height: 24px;
+                width: 20px;
+                height: 20px;
                 margin: 0;
-                line-height: 24px;
+                line-height: 20px;
                 text-align: center;
                 vertical-align: top;
                 border: 0 none;
                 outline: none;
-                font-size: 24px;
-                color: #F2B20F;
+                font-size: 20px;
+                color: #15AEE5;
                 cursor: pointer;
+                &::before {
+                    position: absolute;
+                    left: 25px;
+                    width: 10px;
+                    height: 1px;
+                    margin: 12px 0 0;
+                    border-top: 1px dashed #15AEE5;
+                    content: ' ';
+                }
             }
-            // .treeNode {
-            //     display: inline-block;
-            //     height: 24px;
-            //     margin: 0;
-            //     padding: 0 10px;
-            //     color: #f1f1fb;
-            //     line-height: 24px;
-            //     text-decoration: none;
-            //     vertical-align: top;
-            //     border-radius: 2px;
-            //     cursor: pointer;
-            //     transition: all 0.3s;
-            //     // &::before {
-            //     //     position: absolute;
-            //     //     left: 37px;
-            //     //     width: 1px;
-            //     //     height: 11px;
-            //     //     margin: 22px 0 0;
-            //     //     border-left: 1px dashed #15AEE5;
-            //     //     content: ' ';
-            //     // }
-            // }
             .childTree {
                 margin: 0;
                 padding: 0 0 0 25px;
@@ -100,23 +90,23 @@
                         content: ' ';
                     }
                 }
-                .childNode {
-                    display: inline-block;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    width: 80%;
-                    height: 24px;
-                    margin: 0;
-                    padding: 0 5px 0 15px;
-                    color: #f1f1fb;
-                    line-height: 24px;
-                    text-decoration: none;
-                    vertical-align: top;
-                    border-radius: 2px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                }
+            }
+            .childNode {
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 80%;
+                height: 24px;
+                margin: 0;
+                padding: 0 5px 0 15px;
+                color: #f1f1fb;
+                line-height: 24px;
+                text-decoration: none;
+                vertical-align: top;
+                border-radius: 2px;
+                cursor: pointer;
+                transition: all 0.3s;
             }
         }
     }

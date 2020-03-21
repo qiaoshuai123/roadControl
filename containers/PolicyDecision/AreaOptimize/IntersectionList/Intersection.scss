@@ -4,7 +4,7 @@
   display: flex;
   padding: 0 15px;
   flex-direction: column;
-  background: linear-gradient(to top, #031837, #06234F);
+  background: linear-gradient(to top, rgba(3,35,79,.7), rgba(2,19,45,.7));
   margin: 0;
   overflow: hidden;
 }
@@ -19,7 +19,7 @@
   dt {
     width: 55px;
     height: 100%;
-    display: flex;
+    display: flex;  
     align-items: center;
     justify-content: center;
     span {
