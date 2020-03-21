@@ -1,7 +1,6 @@
 .areaOptWrapper {
   width: 100%;
   height: 100%;
-  background-color: #021035;
   display: flex;
   flex-direction: column;
 }
@@ -14,7 +13,15 @@
     width: 360px;
     height: 100%;
     padding: 10px 0 0 30px;
-    background-color: #02183d;
+    z-index: 9;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 360;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(2,24,61,.7);
     .interSearch {
       display: flex;
       :global(.ant-select-selection) {
@@ -64,9 +71,10 @@
     right: 450px;
     padding: 15px;
     border-radius: 5px;
-    background-color: #072654;
+    background-color: rgba(2,24,61,.7);
     display: flex;
     flex-direction: column;
+    z-index: 9;
     li {
       flex: 1;
       display: flex;
@@ -135,7 +143,7 @@
     .signaContainer_right_bom {
       height: 280px;
       display: flex;
-      background-color: #06224C;
+      background-color: rgba(2,24,61,.7);
       flex-direction: column;
       .signaRB_top {
         height: 40px;
@@ -149,7 +157,7 @@
           align-items: center;
           cursor: pointer;
           margin: 0 1px;
-          border: 1px solid #0F3358;
+          border: 1px solid #0f3358;
         }
       }
       .signaRB_bom {
@@ -158,8 +166,8 @@
     }
   }
 }
-.active{
-  color: #03D2E6;
+.active {
+  color: #03d2e6;
 }
 .signaContainer_center {
   display: flex;
