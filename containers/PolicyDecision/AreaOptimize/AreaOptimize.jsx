@@ -120,6 +120,7 @@ class AreaOptimize extends React.Component {
   }
   handleShowConfig = () => {
     this.setState({ showConfig: true })
+  }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
