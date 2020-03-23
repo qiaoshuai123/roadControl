@@ -134,7 +134,7 @@ class SignalHome extends Component {
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
         console.log('信息窗体的路口监控')
-        // window.open('#/interdetails')
+        window.open('#/interdetails')
       })
     }
     return this.popup
