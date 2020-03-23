@@ -11,13 +11,16 @@ import styles from './Signahome.scss'
 
 import InfoBg from './img/Infobg.png'
 
-import { setInterId } from '../../../actions/data'
+import { getInterList, getControlRoads, getControlCount } from '../../../actions/data'
 
 class SignalHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      interList: null,
       interListHeight: 0,
+      controlRoads: null,
+      controlCounts: null,
     }
     this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
@@ -26,6 +29,34 @@ class SignalHome extends Component {
   }
   componentDidMount = () => {
     this.renderMineMap()
+    this.props.getInterList()
+    this.props.getControlRoads()
+    this.props.getControlCount()
+  }
+  componentDidUpdate = (prevState) => {
+    console.log(this.props)
+    const { interList, controlRoads, controlCounts } = this.props.data
+    if (prevState.data.interList !== interList) {
+      this.getInterList(interList)
+    }
+    if (prevState.data.controlRoads !== controlRoads) {
+      this.getControlRoads(controlRoads)
+    }
+    if (prevState.data.controlCounts !== controlCounts) {
+      this.getControlRoads(controlRoads)
+    }
+  }
+  // 路口列表
+  getInterList = (interList) => {
+    this.setState({ interList })
+  }
+  // 手控路口
+  getControlRoads = (controlRoads) => {
+    this.setState({ controlRoads })
+  }
+  // 手控次数
+  getControlCount = (controlCounts) => {
+    this.setState({ controlCounts })
   }
   // 添加坐标点
   addMarker = () => {
@@ -103,9 +134,7 @@ class SignalHome extends Component {
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
         console.log('信息窗体的路口监控')
-        this.props.setInterId('123')
-        console.log(this.props)
-        window.open('#/interdetails')
+        // window.open('#/interdetails')
       })
     }
     return this.popup
@@ -132,15 +161,20 @@ class SignalHome extends Component {
   }
   render() {
     const { Option } = Select
-    const { interListHeight } = this.state
+    const { interListHeight, interList } = this.state
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
         <div className={styles.interListBox}>
           <div className={styles.interSearch}>
             <Select defaultValue="1">
-              <Option key="1">贵阳市</Option>
-              <Option key="2">南阳市</Option>
+              <Option key="1">请选择</Option>
+              {
+                interList &&
+                interList.map(item => (
+                  <Option key={item.ID} value={item.UNIT_NAME} title={item.UNIT_NAME}>{item.UNIT_NAME}</Option>
+                ))
+              }
             </Select>
             <span className={styles.searchBox}>
               <input className={styles.searchInput} onFocus={this.handleSearchInterFocus} onBlur={this.handleSearchInterBlur} type="text" placeholder="请输入你要搜索的内容" />
@@ -164,7 +198,12 @@ class SignalHome extends Component {
           </div>
         </div>
         <div className={styles.signaContainer_left}>
-          <div className={styles.signaContainer_left_box}><Form {...this.fromlist.form1} /></div>
+          <div className={styles.signaContainer_left_box}>
+            {
+              this.state.controlRoads &&
+              <Form name="最新手控路口TOP15" headOne="区域" headTwo="路口名称" headTre="最新控制时间" datas={this.state.controlRoads} />
+            }
+          </div>
           <div className={styles.signaContainer_left_box}>
             <div className={styles.title}>实时信号控制状态</div>
             <div style={{ height: 'calc(100% - 40px)' }}>
@@ -250,7 +289,9 @@ const mapStateToProps = (state) => {
 }
 const mapDisPatchToProps = (dispatch) => {
   return {
-    setInterId: bindActionCreators(setInterId, dispatch),
+    getInterList: bindActionCreators(getInterList, dispatch),
+    getControlRoads: bindActionCreators(getControlRoads, dispatch),
+    getControlCount: bindActionCreators(getControlCount, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(SignalHome)

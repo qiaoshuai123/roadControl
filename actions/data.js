@@ -4,7 +4,7 @@
 
 import * as types from '../constants/ActionTypes'
 import RestUtil from '../utils/RestUtil'
-import { API_PLAN_INFO } from '../constants/API'
+import { API_PLAN_INFO, API_INTER_LIST, API_CONTROL_ROAD, API_CONTROL_COUNT } from '../constants/API'
 
 export const getPlanInfo = () => {
   return async (dispatch) => {
@@ -20,11 +20,46 @@ export const getPlanInfo = () => {
     }
   }
 }
-
-export const setInterId = (id) => {
+// 首页路口列表
+export const getInterList = () => {
   return async (dispatch) => {
     try {
-      dispatch({ type: types.SET_INTERID, payload: id })
+      const result = await RestUtil.get(API_INTER_LIST)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_INTER_LIST, payload: result.data.data })
+      } else {
+        console.log(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getControlRoads = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_CONTROL_ROAD)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_CONTROL_ROAD, payload: result.data.data })
+      } else {
+        console.log(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getControlCount = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_CONTROL_COUNT)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_CONTROL_COUNT, payload: result.data.data })
+      } else {
+        console.log(result.data.message)
+      }
     } catch (e) {
       console.log(e)
     }
