@@ -71,15 +71,18 @@ class CustomTree extends React.Component {
     } else {
       this.state.expendsKey.push(id)
     }
-    // console.log(this.state.expendsKey)
     this.setState({ expendsKey: this.state.expendsKey })
     this.props.visibleShowLeft('', '', false)
   }
-  rightDown = (e, id) => { // 鼠标右击
+  rightDown = (e, id, boolean) => { // 鼠标右击
     const { visibleShowLeft } = this.props
-    const { top } = e.target.getBoundingClientRect()
-    if (e.button === 2) {
-      visibleShowLeft(top, id, true)
+    if (boolean) {
+      const { top } = e.target.getBoundingClientRect()
+      if (e.button === 2) {
+        visibleShowLeft(top, id, true)
+      }
+    } else {
+      visibleShowLeft('', '', false)
     }
   }
   noShow = (e) => { // 禁止默认右键菜单
@@ -106,11 +109,9 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-            <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
-              <span className={styles.childNode}>{item.name}</span>
-            </Tooltip>
+            <span title={item.name} className={styles.childNode}>{item.name}</span>
           </li>
         )
       })
@@ -122,18 +123,11 @@ class CustomTree extends React.Component {
             this.loopDate.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
               return (
-                <li className={styles.treeLi} key={item.id} id={item.id} onContextMenu={this.noShow} onMouseDown={e => this.rightDown(e, item.id)} onClick={this.handleTreeSelect}>
+                <li className={styles.treeLi} key={item.id} id={item.id} onContextMenu={this.noShow} onClick={this.handleTreeSelect}>
                   <span className={styles.treeIcon}>
                     <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                   </span>
-                  <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
-                    <span onClick={() => this.btns(item.id)} className={styles.childNode}>{item.name}</span>
-                    {/* {visible === item.id ?
-                      <div className={styles.contextMenu}>
-                        <div>右键菜单内容</div>
-                      </div> : null
-                    } */}
-                  </Tooltip>
+                  <span title={item.name} onClick={() => this.btns(item.id)} onMouseDown={e => this.rightDown(e, item.id, true)} className={styles.childNode}>{item.name}</span>
                   {
                     isOpen &&
                     <ul className={styles.childTree} key={item.id}>
