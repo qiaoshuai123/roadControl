@@ -1,5 +1,8 @@
 .formBox{
     height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .pTop{
     height: 40px;
@@ -12,6 +15,8 @@
     padding: 0 10px;
     .mountingTable {
       height: 100%;
+      display: flex;
+      flex-direction: column;
       font-size: 13px;
       .mountingThead {
         height: 26px;
@@ -42,7 +47,8 @@
         background-color: rgba(14, 28, 63, .7);
       }
       .mountingTbody {
-        // height: calc(100% - 50px);
+        // flex: 1;
+        height: 200px;
         overflow-y: auto;
       }
     }

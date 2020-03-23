@@ -21,15 +21,13 @@ class Form extends Component {
             </div>
             <div className={styles.mountingTbody}>
               {
-                datas.map((item) => {
-                  return (
-                    <div className={styles.mountingTr} key={item.ID}>
-                      <div className={styles.mountingTd}>{item.DISTRICT_NAME}</div>
-                      <div className={styles.mountingTd}>{item.UNIT_NAME}</div>
-                      <div className={styles.mountingTd}>{item.CONTROL_TIME}</div>
-                    </div>
-                  )
-                })
+                datas.map(item => (
+                  <div className={styles.mountingTr} key={item.ID}>
+                    <div className={styles.mountingTd}>{item.DISTRICT_NAME}</div>
+                    <div className={styles.mountingTd}>{item.UNIT_NAME}</div>
+                    <div className={styles.mountingTd}>{item.CONTROL_TIME}</div>
+                  </div>
+                ))
               }
             </div>
           </div>
