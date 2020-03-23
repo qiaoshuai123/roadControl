@@ -1,11 +1,13 @@
 import React from 'react'
 import { Select, Icon, Switch } from 'antd'
 import styles from './AreaOptimize.scss'
+
 import Header from '../Header/Header'
 import CustomTree from './CustomTree/CustomTree'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import echartss from './chartsOptions'
 import Intersection from './IntersectionList/Intersection'
+import AreaConfig from './AreaConfig/AreaConfig'
 import InfoBg from './img/Infobg.png'
 
 class AreaOptimize extends React.Component {
@@ -13,6 +15,7 @@ class AreaOptimize extends React.Component {
     super(props)
     this.state = {
       num: 1,
+      showConfig: false,
     }
     this.echarts = echartss
     this.btnList = [
@@ -115,6 +118,9 @@ class AreaOptimize extends React.Component {
       num: id,
     })
   }
+  handleShowConfig = () => {
+    this.setState({ showConfig: true })
+  }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -131,11 +137,14 @@ class AreaOptimize extends React.Component {
   }
   render() {
     const { Option } = Select
-    const { num } = this.state
-    console.log(num)
+    const { num, showConfig } = this.state
     return (
       <div className={styles.areaOptWrapper} id="mapContainer">
         <Header {...this.props} />
+        {
+          showConfig &&
+          <AreaConfig />
+        }
         <div className={styles.areaOptContainer}>
           <div className={styles.interTreeBox}>
             <div className={styles.interSearch}>
@@ -180,7 +189,7 @@ class AreaOptimize extends React.Component {
             </li>
           </ul>
           <div className={styles.signaContainer_right}>
-            <div className={styles.title}><div>知春路</div><div><span>区域优化配置</span></div></div>
+            <div className={styles.title}><div>知春路</div><div><span onClick={this.handleShowConfig}>区域优化配置</span></div></div>
             <div className={styles.signaContainer_right_top}>
               {
                 new Array(6).fill(true).map(item => <Intersection key={item} />)

@@ -62,9 +62,8 @@ class CustomTree extends React.Component {
   btns = (id) => {
     // console.log(id)
   }
-  handleTreeSelect = (e, name) => {
+  handleTreeSelect = (e) => {
     e.stopPropagation()
-    console.log(name)
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
     if (index >= 0) {
@@ -83,7 +82,7 @@ class CustomTree extends React.Component {
         const isOpen = expendsKey.indexOf(item.id) >= 0
         if (item.children && item.children.length) {
           return (
-            <li className={styles.childLi} key={item.id} id={item.id} onClick={(e) => this.handleTreeSelect(e, 11)}>
+            <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
               <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
               <span className={styles.childNode}>{item.name}</span>
               {
@@ -96,7 +95,7 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} key={item.id} id={item.id} onClick={(e) => this.handleTreeSelect(e, 22)}>
+          <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
             <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
               <span className={styles.childNode}>{item.name}</span>
@@ -112,7 +111,7 @@ class CustomTree extends React.Component {
             this.loopDate.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
               return (
-                <li className={styles.treeLi} key={item.id} id={item.id} ref={(ref) => { this.root = ref }} onClick={(e) => this.handleTreeSelect(e, 33)}>
+                <li className={styles.treeLi} key={item.id} id={item.id} ref={(ref) => { this.root = ref }} onClick={this.handleTreeSelect}>
                   <span className={styles.treeIcon}>
                     <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                   </span>
@@ -121,7 +120,8 @@ class CustomTree extends React.Component {
                     {visible ?
                       <div className="contextMenu">
                         <div>右键菜单内容</div>
-                      </div> : null}
+                      </div> : null
+                    }
                   </Tooltip>
                   {
                     isOpen &&

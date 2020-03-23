@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Icon, Checkbox } from 'antd'
+import { Select, Icon } from 'antd'
 import Header from '../Header/Header'
 import Form from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
@@ -67,7 +67,7 @@ class SignalHome extends Component {
   showInterInfo = () => {
     this.removeInterInfo()
     const lnglat = this.map.getCenter()
-    const id = `removeInterInfo${this.infowindow}`
+    const id = `monitor${this.infowindow}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
@@ -80,7 +80,7 @@ class SignalHome extends Component {
             <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：兴宁区</p>
             <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：海信</p>
             <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：东西左转</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口监控</div>
+            <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口监控</div>
           </div>
           <div style="flex:1;">
             <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：本地多时段</p>
@@ -95,8 +95,12 @@ class SignalHome extends Component {
       .setLngLat([lnglat.lng, lnglat.lat])
       .setHTML(infoHtml)
       .addTo(this.map)
-    console.log(document.getElementById(id))
-    // document.getElementById(id).addEventListener('click', this.removeInterInfo)
+    if (document.getElementById(id)) {
+      document.getElementById(id).addEventListener('click', () => {
+        console.log('信息窗体的路口监控')
+        window.open('#/interdetails')
+      })
+    }
     return this.popup
   }
   handleSearchInterFocus = () => {
@@ -231,5 +235,6 @@ class SignalHome extends Component {
     )
   }
 }
+
 
 export default SignalHome
