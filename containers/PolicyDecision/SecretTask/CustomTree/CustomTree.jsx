@@ -8,7 +8,7 @@ class CustomTree extends React.Component {
     super(props)
     this.state = {
       expendsKey: [1, 11, 2, 22, 12],
-      visible: false, // 右键菜单
+      visible: 0, // 右键菜单
     }
     this.loopDate = [{
       name: '海淀五西路11',
@@ -73,10 +73,21 @@ class CustomTree extends React.Component {
     }
     // console.log(this.state.expendsKey)
     this.setState({ expendsKey: this.state.expendsKey })
+    this.props.visibleShowLeft('', '', false)
   }
-
+  rightDown = (e, id) => { // 鼠标右击
+    const { visibleShowLeft } = this.props
+    const { top } = e.target.getBoundingClientRect()
+    if (e.button === 2) {
+      visibleShowLeft(top, id, true)
+    }
+  }
+  noShow = (e) => { // 禁止默认右键菜单
+    e.stopPropagation()
+    e.preventDefault()
+  }
   render() {
-    const { expendsKey, visible } = this.state
+    const { expendsKey } = this.state
     const loop = data => (
       data.map((item) => {
         const isOpen = expendsKey.indexOf(item.id) >= 0
@@ -111,17 +122,17 @@ class CustomTree extends React.Component {
             this.loopDate.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
               return (
-                <li className={styles.treeLi} key={item.id} id={item.id} ref={(ref) => { this.root = ref }} onClick={this.handleTreeSelect}>
+                <li className={styles.treeLi} key={item.id} id={item.id} onContextMenu={this.noShow} onMouseDown={e => this.rightDown(e, item.id)} onClick={this.handleTreeSelect}>
                   <span className={styles.treeIcon}>
                     <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                   </span>
                   <Tooltip placement="topLeft" title={item.name} arrowPointAtCenter>
                     <span onClick={() => this.btns(item.id)} className={styles.childNode}>{item.name}</span>
-                    {visible ?
-                      <div className="contextMenu">
+                    {/* {visible === item.id ?
+                      <div className={styles.contextMenu}>
                         <div>右键菜单内容</div>
                       </div> : null
-                    }
+                    } */}
                   </Tooltip>
                   {
                     isOpen &&
