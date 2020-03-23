@@ -64,6 +64,7 @@ class CustomTree extends React.Component {
   }
   handleTreeSelect = (e) => {
     e.stopPropagation()
+    e.preventDefault()
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
     if (index >= 0) {
@@ -75,9 +76,11 @@ class CustomTree extends React.Component {
     this.props.visibleShowLeft('', '', false)
   }
   rightDown = (e, id, boolean) => { // 鼠标右击
+    e.stopPropagation()
+    e.preventDefault()
     const { visibleShowLeft } = this.props
     if (boolean) {
-      const { top } = e.target.getBoundingClientRect()
+      const top = e.pageY
       if (e.button === 2) {
         visibleShowLeft(top, id, true)
       }

@@ -11,6 +11,7 @@ class SecretTask extends Component {
       interMonitorLeft: 15,
       visible: false,
       visibleTop: 0,
+      visibleLeft: 0,
     }
   }
   componentDidMount() {
@@ -26,12 +27,11 @@ class SecretTask extends Component {
       })
     }
   }
-  visibleShowLeft = (left, id, show) => { // 框的跳转与位置
-    console.log(left, id, show)
-    if (left || id) {
+  visibleShowLeft = (top, id, show) => { // 框的跳转与位置
+    if (top || id) {
       this.setState({
         visible: show,
-        visibleTop: left,
+        visibleTop: top,
       })
     } else {
       this.setState({
@@ -39,8 +39,16 @@ class SecretTask extends Component {
       })
     }
   }
+  noShow = (e) => { // 禁止默认右键菜单
+    e.stopPropagation()
+    e.preventDefault()
+  }
   render() {
-    const { interMonitorLeft, visible, visibleTop } = this.state
+    const {
+      interMonitorLeft,
+      visible,
+      visibleTop,
+    } = this.state
     const { Search } = Input
     return (
       <div className={styles.secretTaskWrapper}>
@@ -66,7 +74,7 @@ class SecretTask extends Component {
           </div>
           {
             visible ?
-              <ul style={{ top: `${visibleTop - 100}px` }} className={styles.contextMenu}>
+              <ul style={{ top: `${visibleTop - 100}px` }} onContextMenu={this.noShow} className={styles.contextMenu}>
                 <li>打开</li>
                 <li>跳转</li>
               </ul> : null
