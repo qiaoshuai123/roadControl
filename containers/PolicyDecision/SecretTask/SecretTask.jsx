@@ -75,8 +75,8 @@ class SecretTask extends Component {
           {
             visible ?
               <ul style={{ top: `${visibleTop - 100}px` }} onContextMenu={this.noShow} className={styles.contextMenu}>
-                <li>打开</li>
-                <li>跳转</li>
+                <li>查看</li>
+                <li>删除</li>
               </ul> : null
           }
         </div>
