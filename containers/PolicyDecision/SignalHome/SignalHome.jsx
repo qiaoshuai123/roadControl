@@ -10,8 +10,12 @@ import chartsData from './chartsOptions'
 import styles from './Signahome.scss'
 
 import InfoBg from './img/Infobg.png'
+import OnlineH from './img/online_h.png'
+import OutlineH from './img/outline_h.png'
+import OnlineS from './img/online_s.png'
+import OutlineS from './img/ouline_s.png'
 
-import { getInterList, getControlRoads, getControlCount } from '../../../actions/data'
+import { getInterList, getControlRoads, getControlCount, getPlanTime } from '../../../actions/data'
 
 class SignalHome extends Component {
   constructor(props) {
@@ -21,10 +25,11 @@ class SignalHome extends Component {
       interListHeight: 0,
       controlRoads: null,
       controlCounts: null,
+      planTimes: null,
     }
     this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
-    this.marker = null
+    this.markers = []
     this.infowindow = 0
   }
   componentDidMount = () => {
@@ -32,10 +37,11 @@ class SignalHome extends Component {
     this.props.getInterList()
     this.props.getControlRoads()
     this.props.getControlCount()
+    this.props.getPlanTime()
   }
   componentDidUpdate = (prevState) => {
     console.log(this.props)
-    const { interList, controlRoads, controlCounts } = this.props.data
+    const { interList, controlRoads, controlCounts, planTimes } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
     }
@@ -43,12 +49,17 @@ class SignalHome extends Component {
       this.getControlRoads(controlRoads)
     }
     if (prevState.data.controlCounts !== controlCounts) {
-      this.getControlRoads(controlRoads)
+      this.getControlCount(controlCounts)
+    }
+    if (prevState.data.planTimes !== planTimes) {
+      this.getPlanTimes(planTimes)
     }
   }
   // 路口列表
   getInterList = (interList) => {
-    this.setState({ interList })
+    this.setState({ interList }, () => {
+      this.addMarker(interList)
+    })
   }
   // 手控路口
   getControlRoads = (controlRoads) => {
@@ -58,31 +69,61 @@ class SignalHome extends Component {
   getControlCount = (controlCounts) => {
     this.setState({ controlCounts })
   }
+  // 配时变更
+  getPlanTimes = (planTimes) => {
+    this.setState({ planTimes })
+  }
   // 添加坐标点
-  addMarker = () => {
+  addMarker = (interList) => {
     if (this.map) {
       this.infowindow += 1
-      const el = document.createElement('div')
-      el.id = 'marker'
-      // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
-      el.style['background-color'] = '#ff0000'
-      el.style['background-size'] = 'cover'
-      el.style.width = '20px'
-      el.style.height = '20px'
-      el.style['border-radius'] = '50%'
-      this.lnglat = this.map.getCenter()
-      this.marker = new window.minemap.Marker(el, { offset: [-25, -25] })
-        .setLngLat(this.lnglat)
-        .setPopup(this.showInterInfo())
-        .addTo(this.map)
+      interList.forEach((item, index) => {
+        if (index < 10) {
+          console.log(item)
+        }
+        const el = document.createElement('div')
+        el.id = `marker${this.infowindow}`
+        if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 6) {
+          const sysIcon = item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OutlineH :
+            item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OnlineH :
+              item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 6 ? OnlineS :
+                item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 6 ? OutlineS : null
+          el.style.background = `url(${sysIcon}) center center no-repeat`
+          // el.style['background-color'] = '#ff0000'
+          el.style['background-size'] = '100% 100%'
+          el.style.width = '22px'
+          el.style.height = '22px'
+          // el.style['border-radius'] = '50%'
+          const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
+            .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE))
+            .addTo(this.map)
+          this.markers.push(marker)
+        }
+      })
+      // const el = document.createElement('div')
+      // el.id = 'marker'
+      // // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
+      // el.style['background-color'] = '#ff0000'
+      // el.style['background-size'] = 'cover'
+      // el.style.width = '20px'
+      // el.style.height = '20px'
+      // el.style['border-radius'] = '50%'
+      // this.lnglat = this.map.getCenter()
+      // console.log('坐标：：：：', this.lnglat)
+      // this.marker = new window.minemap.Marker(el, { offset: [-25, -25] })
+      //   .setLngLat({ lng: 108.33445, lat: 22.838126 }) // {lng: 106.709075, lat: 26.586574}
+      //   .setPopup(this.showInterInfo(this.lnglat.lng, this.lnglat.lat))
+      //   .addTo(this.map)
       // el.addEventListener('click', this.showInterInfo)
     }
   }
   // 删除坐标点
   delMarker = () => {
-    if (this.map && this.marker) {
-      this.marker.remove()
-      this.marker = null
+    if (this.map && this.markers.length) {
+      this.markers.forEach((item) => {
+        item.remove()
+      })
+      this.markers = []
     }
   }
   // 更新坐标点
@@ -100,9 +141,8 @@ class SignalHome extends Component {
     }
   }
   // 自定义信息窗体
-  showInterInfo = () => {
+  showInterInfo = (lng, lat) => {
     this.removeInterInfo()
-    const lnglat = this.map.getCenter()
     const id = `monitor${this.infowindow}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
@@ -128,7 +168,7 @@ class SignalHome extends Component {
       </div>
     `
     this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-15, -25] })
-      .setLngLat([lnglat.lng, lnglat.lat])
+      .setLngLat([lng, lat])
       .setHTML(infoHtml)
       .addTo(this.map)
     if (document.getElementById(id)) {
@@ -150,14 +190,13 @@ class SignalHome extends Component {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [106.709075, 26.586574],
+      center: [108.322286, 22.810375],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
       minZoom: 3,
     })
     this.map = map
-    this.addMarker()
   }
   render() {
     const { Option } = Select
@@ -182,10 +221,13 @@ class SignalHome extends Component {
             </span>
           </div>
           <div className={styles.interList} style={{ maxHeight: `${interListHeight}px` }}>
-            <div>
-              <div className={styles.interItem}>路口抿成</div>
-              <div className={styles.interItem}>路口抿成</div>
-              <div className={styles.interItem}>路口抿成</div>
+            <div style={{ height: '300px', overflowY: 'auto' }}>
+              {
+                interList &&
+                interList.map(item => (
+                  <div className={styles.interItem} key={item.ID}>{item.UNIT_NAME}</div>
+                ))
+              }
             </div>
           </div>
         </div>
@@ -193,12 +235,12 @@ class SignalHome extends Component {
           <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
           <div className={styles.systemPoint}>
             <div><span className={styles.upIconBox}><i /><b /></span>海信系统</div>
-            <div><span className={styles.squareBox} />ATC系统</div>
-            <div><span className={styles.circleBox} />泰尔文特</div>
+            <div><span className={styles.squareBox} />西门子</div>
+            {/* <div><span className={styles.circleBox} />泰尔文特</div> */}
           </div>
         </div>
         <div className={styles.signaContainer_left}>
-          <div className={styles.signaContainer_left_box}>
+          <div className={`${styles.signaContainer_left_box} ${styles.controlRoadBox}`}>
             {
               this.state.controlRoads &&
               <Form name="最新手控路口TOP15" headOne="区域" headTwo="路口名称" headTre="最新控制时间" datas={this.state.controlRoads} />
@@ -206,14 +248,14 @@ class SignalHome extends Component {
           </div>
           <div className={styles.signaContainer_left_box}>
             <div className={styles.title}>实时信号控制状态</div>
-            <div style={{ height: 'calc(100% - 40px)' }}>
+            <div style={{ height: '260px' }}>
               <EchartsPage {...this.echarts.echarts1} />
             </div>
           </div>
           <div className={styles.title}>信号机实时状态统计</div>
           <div className={`${styles.signaContainer_left_box} ${styles.signaContainer_left_boxer}`}>
             <div className={styles.signaContainerLB_left}>
-              <div style={{ height: '245px' }}>
+              <div style={{ height: '260px' }}>
                 <EchartsPage {...this.echarts.echarts2} />
               </div>
             </div>
@@ -268,11 +310,23 @@ class SignalHome extends Component {
           </div>
         </div>
         <div className={styles.signaContainer_right}>
-          <div className={styles.signaContainer_left_box}><Form {...this.fromlist.form2} /></div>
-          <div className={styles.signaContainer_left_box}><Form {...this.fromlist.form3} /></div>
-          <div className={styles.signaContainer_left_box}>
+          <div className={styles.rightListPop}>
+            <div className={styles.listBox}>
+              {
+                this.state.controlCounts &&
+                <Form name="最新手控路口次数TOP15" headOne="路口名称" headTwo="当月控制次数" headTre="最新控制时间" datas={this.state.controlCounts} type="count" />
+              }
+            </div>
+            <div className={styles.listBox}>
+              {
+                this.state.planTimes &&
+                <Form name="最新方案配时变更路数TOP15" headOne="区域名称" headTwo="路口名称" headTre="配时变更时间" datas={this.state.planTimes} type="times" />
+              }
+            </div>
+          </div>
+          <div className={styles.malfunctionBox}>
             <div className={styles.title}>故障统计曲线图</div>
-            <div style={{ height: 'calc(100% - 40px)' }}>
+            <div style={{ height: '260px' }}>
               <EchartsPage {...this.echarts.echarts3} />
             </div>
           </div>
@@ -292,6 +346,7 @@ const mapDisPatchToProps = (dispatch) => {
     getInterList: bindActionCreators(getInterList, dispatch),
     getControlRoads: bindActionCreators(getControlRoads, dispatch),
     getControlCount: bindActionCreators(getControlCount, dispatch),
+    getPlanTime: bindActionCreators(getPlanTime, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(SignalHome)
