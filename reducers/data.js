@@ -8,6 +8,8 @@ const data = (state = {}, action) => {
   switch (type) {
     case types.GET_PLAN_INFO:
       return Object.assign({}, state, { planInfo: payload })
+    case types.SET_INTERID:
+      return Object.assign({}, state, { interList: payload })
     default:
       return state
   }

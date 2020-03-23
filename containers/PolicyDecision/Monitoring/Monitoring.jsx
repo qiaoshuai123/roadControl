@@ -27,6 +27,7 @@ class Monitoring extends Component {
     this.map = map
   }
   render() {
+    console.log('monitor:::', this.props)
     return (
       <div className={styles.monitorWrapper} id="mapContainer">
         <Header {...this.props} />

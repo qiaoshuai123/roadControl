@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Select, Icon } from 'antd'
+
 import Header from '../Header/Header'
 import Form from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
@@ -7,6 +10,8 @@ import chartsData from './chartsOptions'
 import styles from './Signahome.scss'
 
 import InfoBg from './img/Infobg.png'
+
+import { setInterId } from '../../../actions/data'
 
 class SignalHome extends Component {
   constructor(props) {
@@ -98,6 +103,8 @@ class SignalHome extends Component {
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
         console.log('信息窗体的路口监控')
+        this.props.setInterId('123')
+        console.log(this.props)
         window.open('#/interdetails')
       })
     }
@@ -236,5 +243,14 @@ class SignalHome extends Component {
   }
 }
 
-
-export default SignalHome
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    setInterId: bindActionCreators(setInterId, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(SignalHome)

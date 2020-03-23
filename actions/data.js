@@ -21,3 +21,13 @@ export const getPlanInfo = () => {
   }
 }
 
+export const setInterId = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: types.SET_INTERID, payload: id })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
