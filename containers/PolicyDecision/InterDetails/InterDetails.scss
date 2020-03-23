@@ -1,6 +1,156 @@
 .interDetailsBox {
-    width: 100%;
-    height: 100%;
-    background: url(./evaBg.png) center center no-repeat;
-    background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: url(./evaBg.png) center center no-repeat;
+  background-size: cover;
 }
+.interMonitorBox {
+  position: absolute;
+  top: 100px;
+  left: 15px;
+  width: 300px;
+  height: calc(100% - 350px);
+  z-index: 9;
+  padding: 0 20px;
+  background-color: rgba(6, 35, 79, 0.8);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  .hideIcon {
+    position: absolute;
+    right: -20px;
+    top: 5px;
+    width: 20px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 24px;
+    color: #f1f1fb;
+    cursor: pointer;
+  }
+  .title {
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+  }
+  .regionList {
+    flex: 1;
+    padding: 25px 0 25px;
+    display: flex;
+    flex-direction: column;
+    li {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      span {
+        color: #1bfd01;
+      }
+    }
+  }
+  .functionList {
+    flex: 3;
+    padding: 25px 0 25px 0;
+    display: flex;
+    flex-direction: column;
+    li {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+.AnimationTime {
+  width: 70%;
+  height: 80px;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  background-color: #0e3355;
+}
+.DeviceStatus {
+  height: 310px;
+  width: 27%;
+  background-color: #0e3355;
+  position: absolute;
+  right: 25px;
+  bottom: 15px;
+  display: flex;
+  .DeviceStatus_left,
+  .DeviceStatus_right {
+    flex: 1;
+    display: flex;
+  }
+  .DeviceStatus_left {
+    padding: 55px 40px;
+    flex-direction: column;
+    li {
+      flex: 1;
+      span {
+        color: #1bfd01;
+      }
+    }
+  }
+  .DeviceStatus_right {
+    flex-wrap: wrap;
+    padding: 30px 15px 15px;
+    dl {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      dt {
+        flex: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+          width: 48px;
+          height: 48px;
+          background-color: pink;
+        }
+      }
+      dd {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+.messageBox {
+    width: 420px;
+    height: 165px;
+    border: 1px solid #20667E;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 450px;
+    top: 200px;
+    .messageBox_top{
+        color: #44C1D1;
+        height: 40px;
+        line-height: 40px;
+        font-size: 24px;
+        text-align: right;
+        padding-right: 20px;
+    }
+    .messageBox_bottom{
+        flex: 1;
+        display: flex;
+        ul{
+            flex: 1;
+            padding: 0 35px 25px ;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            li{
+                flex: 1;
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+  }
