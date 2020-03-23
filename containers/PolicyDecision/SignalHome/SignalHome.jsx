@@ -6,6 +6,8 @@ import { Select, Icon } from 'antd'
 import Header from '../Header/Header'
 import Form from './form/Form'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
+import Histogram from '../../../components/Histogram/histogram'
+import HollowPie from '../../../components/HollowPie/HollewPie'
 import chartsData from './chartsOptions'
 import styles from './Signahome.scss'
 
@@ -15,7 +17,7 @@ import OutlineH from './img/outline_h.png'
 import OnlineS from './img/online_s.png'
 import OutlineS from './img/ouline_s.png'
 
-import { getInterList, getControlRoads, getControlCount, getPlanTime } from '../../../actions/data'
+import { getInterList, getControlRoads, getControlCount, getPlanTime, getControlStatus, getRealTimeStatus } from '../../../actions/data'
 
 class SignalHome extends Component {
   constructor(props) {
@@ -26,11 +28,14 @@ class SignalHome extends Component {
       controlRoads: null,
       controlCounts: null,
       planTimes: null,
+      controlStatus: null,
+      realTimeStatus: null,
+      realTimeState: null,
     }
-    this.fromlist = chartsData.fromlist
     this.echarts = chartsData.echartss
     this.markers = []
     this.infowindow = 0
+    this.pieColor = ['#00cf4d', '#d3692f', '#0f85ff', '#00E8FF']
   }
   componentDidMount = () => {
     this.renderMineMap()
@@ -38,10 +43,12 @@ class SignalHome extends Component {
     this.props.getControlRoads()
     this.props.getControlCount()
     this.props.getPlanTime()
+    this.props.getControlStatus()
+    this.props.getRealTimeStatus()
   }
   componentDidUpdate = (prevState) => {
     console.log(this.props)
-    const { interList, controlRoads, controlCounts, planTimes } = this.props.data
+    const { interList, controlRoads, controlCounts, planTimes, controlStatus, realTimeStatus } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
     }
@@ -53,6 +60,12 @@ class SignalHome extends Component {
     }
     if (prevState.data.planTimes !== planTimes) {
       this.getPlanTimes(planTimes)
+    }
+    if (prevState.data.controlStatus !== controlStatus) {
+      this.getControlState(controlStatus)
+    }
+    if (prevState.data.realTimeStatus !== realTimeStatus) {
+      this.getRealTimeState(realTimeStatus)
     }
   }
   // 路口列表
@@ -73,16 +86,45 @@ class SignalHome extends Component {
   getPlanTimes = (planTimes) => {
     this.setState({ planTimes })
   }
+  // 信号变更状态
+  getControlState = (controlStatus) => {
+    const xdata = []
+    const serise = []
+    const obj = {}
+    controlStatus.forEach((item) => {
+      xdata.push(item.CODE_NAME)
+      serise.push(item.C_CODE)
+    })
+    obj.xData = xdata
+    obj.seriseData = serise
+    this.setState({ controlStatus: obj })
+  }
+  // 实时状态
+  getRealTimeState = (realTimeStatus) => {
+    const serise = []
+    const obj = {}
+    let totleDevice = 0
+    realTimeStatus.forEach((item) => {
+      const devices = {}
+      devices.value = item.UNNORMALSIZE + item.NORMALSIZE
+      devices.name = item.CODE_NAME
+      totleDevice += devices.value
+      serise.push(devices)
+    })
+    obj.seriseData = serise
+    obj.totleDevice = totleDevice
+    this.setState({
+      realTimeStatus: obj,
+      realTimeState: realTimeStatus,
+    })
+  }
   // 添加坐标点
   addMarker = (interList) => {
     if (this.map) {
       this.infowindow += 1
       interList.forEach((item, index) => {
-        if (index < 10) {
-          console.log(item)
-        }
         const el = document.createElement('div')
-        el.id = `marker${this.infowindow}`
+        el.id = `marker${index}`
         if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 6) {
           const sysIcon = item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OutlineH :
             item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OnlineH :
@@ -100,21 +142,6 @@ class SignalHome extends Component {
           this.markers.push(marker)
         }
       })
-      // const el = document.createElement('div')
-      // el.id = 'marker'
-      // // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
-      // el.style['background-color'] = '#ff0000'
-      // el.style['background-size'] = 'cover'
-      // el.style.width = '20px'
-      // el.style.height = '20px'
-      // el.style['border-radius'] = '50%'
-      // this.lnglat = this.map.getCenter()
-      // console.log('坐标：：：：', this.lnglat)
-      // this.marker = new window.minemap.Marker(el, { offset: [-25, -25] })
-      //   .setLngLat({ lng: 108.33445, lat: 22.838126 }) // {lng: 106.709075, lat: 26.586574}
-      //   .setPopup(this.showInterInfo(this.lnglat.lng, this.lnglat.lat))
-      //   .addTo(this.map)
-      // el.addEventListener('click', this.showInterInfo)
     }
   }
   // 删除坐标点
@@ -249,29 +276,35 @@ class SignalHome extends Component {
           <div className={styles.signaContainer_left_box}>
             <div className={styles.title}>实时信号控制状态</div>
             <div style={{ height: '260px' }}>
-              <EchartsPage {...this.echarts.echarts1} />
+              {
+                this.state.controlStatus &&
+                <Histogram chartsDatas={this.state.controlStatus} />
+              }
             </div>
           </div>
           <div className={styles.title}>信号机实时状态统计</div>
           <div className={`${styles.signaContainer_left_box} ${styles.signaContainer_left_boxer}`}>
             <div className={styles.signaContainerLB_left}>
               <div style={{ height: '260px' }}>
-                <EchartsPage {...this.echarts.echarts2} />
+                {
+                  this.state.realTimeStatus &&
+                  <HollowPie chartsDatas={this.state.realTimeStatus} />
+                }
               </div>
             </div>
             <div className={styles.signaContainerLB_right}>
-              <dl>
-                <dt><b className={styles.bone} /><li>ATC</li><li className={styles.lione}>在线2处</li></dt>
-                <dd><b /><li className={styles.nums}>25%</li><li className={styles.lione}>离线0处</li></dd>
-              </dl>
-              <dl>
-                <dt><b className={styles.btwo} /><li>ATC</li><li className={styles.litwo}>在线2处</li></dt>
-                <dd><b /><li className={styles.nums}>25%</li><li className={styles.litwo}>离线0处</li></dd>
-              </dl>
-              <dl>
-                <dt><b className={styles.bthr} /><li>ATC</li><li className={styles.lithr}>在线2处</li></dt>
-                <dd><b /><li className={styles.nums}>25%</li><li className={styles.lithr}>离线0处</li></dd>
-              </dl>
+              {
+                this.state.realTimeState &&
+                this.state.realTimeState.map((item, index) => {
+                  const totle = this.state.realTimeStatus.totleDevice
+                  return (
+                    <dl key={item.CODE_NAME}>
+                      <dt><b className={styles.bone} /><li>{item.CODE_NAME}</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>在线{item.NORMALSIZE}处</li></dt>
+                      <dd><b /><li className={styles.nums}>{((item.NORMALSIZE + item.UNNORMALSIZE) / totle).toFixed(1) * 100}%</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>离线{item.UNNORMALSIZE}处</li></dd>
+                    </dl>
+                  )
+                })
+              }
             </div>
           </div>
         </div>
@@ -347,6 +380,8 @@ const mapDisPatchToProps = (dispatch) => {
     getControlRoads: bindActionCreators(getControlRoads, dispatch),
     getControlCount: bindActionCreators(getControlCount, dispatch),
     getPlanTime: bindActionCreators(getPlanTime, dispatch),
+    getControlStatus: bindActionCreators(getControlStatus, dispatch),
+    getRealTimeStatus: bindActionCreators(getRealTimeStatus, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(SignalHome)

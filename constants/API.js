@@ -8,4 +8,6 @@ export const API_INTER_LIST = '/atms/mainTree/listUnitInfos'
 export const API_CONTROL_ROAD = '/atms/mainTree/loadRecentControlUnitList'
 export const API_CONTROL_COUNT = '/atms/mainTree/loadThisMonthControlUnitList'
 export const API_PLAN_TIME = '/atms/mainTree/loadRecentSignalTimingChangeUnitList'
+export const API_CONTROL_STATUS = '/atms/mainTree/signalControlerStatus'
+export const API_REAL_STATUS = '/atms/mainTree/signalNormalAndUnNomalStatusSize'
 
