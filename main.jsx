@@ -5,10 +5,11 @@ import { HashRouter, Route, BrowserHistory, Redirect, Switch } from 'react-route
 import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import { ConfigProvider } from 'antd'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 import zhCN from 'antd/es/locale/zh_CN'
 
 import './app.css'
-import store from './configureStore'
+import { store, persistore } from './configureStore'
 import LoadingPage from './components/LoadingPage/LoadingPage'
 import RealTime from './TestRealTimeGreenWave'
 
@@ -82,13 +83,15 @@ reactDom.render(
   <AppContainer>
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
-        <HashRouter basename="" history={BrowserHistory}>
-          <Switch>
-            <Redirect exact from="/" to="/login" />
-            <Route exact path="/login" component={Login} />
-            <Route path="/" component={Parent} />
-          </Switch>
-        </HashRouter>
+        <PersistGate loading="null" persistor={persistore}>
+          <HashRouter basename="" history={BrowserHistory}>
+            <Switch>
+              <Redirect exact from="/" to="/login" />
+              <Route exact path="/login" component={Login} />
+              <Route path="/" component={Parent} />
+            </Switch>
+          </HashRouter>
+        </PersistGate>
       </Provider>
     </ConfigProvider>
   </AppContainer>
