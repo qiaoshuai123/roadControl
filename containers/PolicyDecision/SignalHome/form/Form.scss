@@ -12,6 +12,7 @@
     background: linear-gradient(to bottom, #02183D 0%,#06234F 100%);
 }
 .mountingManage {
+  height: 100%;
     padding: 0 10px;
     .mountingTable {
       height: 100%;
@@ -48,7 +49,7 @@
       }
       .mountingTbody {
         // flex: 1;
-        height: 200px;
+        height: calc(100% - 66px);
         overflow-y: auto;
       }
     }

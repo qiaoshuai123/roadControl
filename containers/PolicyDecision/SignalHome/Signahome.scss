@@ -32,7 +32,7 @@
       border-radius: 4px;
       background-color: rgba(0,0,0, .4);
       transition: all .2s;
-      overflow: hidden;
+      overflow-y: hidden;
       .interItem {
         height: 30px;
         padding-left: 10px;
@@ -160,12 +160,13 @@
     left: 0;
     height: calc(100% - 100px);
     width: 448px;
-    overflow: auto;
-    flex-direction: column;
-    display: flex;
+    overflow: hidden;
     .signaContainer_left_box {
-      flex: 1;
+      // flex: 1;
       background: linear-gradient(to top, #031837, #06234F)
+    }
+    .controlRoadBox {
+      height: calc(100% - 600px);
     }
     .signaContainer_left_boxer {
       display: flex;
@@ -174,7 +175,7 @@
       }
       .signaContainerLB_right {
         flex: 1;
-        padding: 40px 20px 20px 10px;
+        padding: 40px 20px 10px 10px;
         display: flex;
         flex-direction: column;
         dl {
@@ -322,9 +323,17 @@
     width: 448px;
     display: flex;
     flex-direction: column;
-    .signaContainer_left_box {
+    .rightListPop {
       flex: 1;
-      background: linear-gradient(to top, #031837, #06234F) 
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(to top, #031837, #06234F);
+      .listBox {
+        flex: 1;
+      }
+    }
+    .malfunctionBox {
+      background: linear-gradient(to top, #031837, #06234F);
     }
   }
 }

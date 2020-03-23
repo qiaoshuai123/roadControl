@@ -4,7 +4,7 @@
 
 import * as types from '../constants/ActionTypes'
 import RestUtil from '../utils/RestUtil'
-import { API_PLAN_INFO, API_INTER_LIST, API_CONTROL_ROAD, API_CONTROL_COUNT } from '../constants/API'
+import { API_PLAN_INFO, API_INTER_LIST, API_CONTROL_ROAD, API_CONTROL_COUNT, API_PLAN_TIME } from '../constants/API'
 
 export const getPlanInfo = () => {
   return async (dispatch) => {
@@ -28,7 +28,7 @@ export const getInterList = () => {
       if (result.data.code === 200) {
         dispatch({ type: types.GET_INTER_LIST, payload: result.data.data })
       } else {
-        console.log(result.data.message)
+        console.error(result.data.message)
       }
     } catch (e) {
       console.log(e)
@@ -43,7 +43,7 @@ export const getControlRoads = () => {
       if (result.data.code === 200) {
         dispatch({ type: types.GET_CONTROL_ROAD, payload: result.data.data })
       } else {
-        console.log(result.data.message)
+        console.error(result.data.message)
       }
     } catch (e) {
       console.log(e)
@@ -58,7 +58,22 @@ export const getControlCount = () => {
       if (result.data.code === 200) {
         dispatch({ type: types.GET_CONTROL_COUNT, payload: result.data.data })
       } else {
-        console.log(result.data.message)
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getPlanTime = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_PLAN_TIME)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PLAN_TIME, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
       }
     } catch (e) {
       console.log(e)

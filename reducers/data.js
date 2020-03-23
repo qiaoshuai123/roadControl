@@ -14,6 +14,8 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { controlRoads: payload })
     case types.GET_CONTROL_COUNT:
       return Object.assign({}, state, { controlCounts: payload })
+    case types.GET_PLAN_TIME:
+      return Object.assign({}, state, { planTimes: payload })
     default:
       return state
   }
