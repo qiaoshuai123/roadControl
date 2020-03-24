@@ -20,6 +20,10 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { controlStatus: payload })
     case types.GET_REAL_STATUS:
       return Object.assign({}, state, { realTimeStatus: payload })
+    case types.GET_FAULT_STATISTICS:
+      return Object.assign({}, state, { faultStatistics: payload })
+    case types.GET_INTER_INFO:
+      return Object.assign({}, state, { basicInterInfo: payload })
     default:
       return state
   }
