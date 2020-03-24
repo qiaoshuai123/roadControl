@@ -218,19 +218,20 @@ class SignalHome extends Component {
           路口名称 ：${interName}
           
         </div>
-        <div style="height:200px;display:flex;padding-top:20px;font-size:14px;">
+        <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
             <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
             <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
             <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText}</p>
-            <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口监控</div>
           </div>
           <div style="flex:1;">
             <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">控制状态 ：${this.controlState}</p>
             <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">信号机IP ：${this.singalIp}</p>
             <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">设备状态 ：${this.alarmState}</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口优化</div>
           </div>
+        </div>
+        <div style="height:40px;display:flex;justify-content:center;align-items:center;">
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口监控</div>
         </div>
       </div>
     `
@@ -241,7 +242,7 @@ class SignalHome extends Component {
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
         console.log('信息窗体的路口监控')
-        window.open('#/interdetails')
+        window.open(`#/interdetails/${interId}`)
       })
     }
     return this.popup

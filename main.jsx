@@ -76,7 +76,7 @@ const Parent = () => (
     <Route path="/timing" component={Timing} />
     <Route path="/secretTask" component={SecretTask} />
     <Route path="/areaOptimize" component={AreaOptimize} />
-    <Route path="/interdetails" component={InterDetails} />
+    <Route path="/interdetails/:id" component={InterDetails} />
   </React.Fragment>
 )
 reactDom.render(
