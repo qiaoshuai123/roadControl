@@ -2,6 +2,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  overflow-y: auto;
   background: url(./evaBg.png) center center no-repeat;
   background-size: cover;
 }
@@ -54,11 +55,16 @@
     padding: 25px 0 25px 0;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
     li {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      &:hover {
+        color: #20667e;
+      }
     }
   }
 }
@@ -77,6 +83,7 @@
   position: absolute;
   right: 25px;
   bottom: 15px;
+  padding: 5px 5px 5px 0;
   display: flex;
   .DeviceStatus_left,
   .DeviceStatus_right {
@@ -88,14 +95,24 @@
     flex-direction: column;
     li {
       flex: 1;
+      display: flex;
+      align-items: center;
       span {
         color: #1bfd01;
       }
+    }
+    .icons {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      background-color: red;
+      margin: 0 15px;
     }
   }
   .DeviceStatus_right {
     flex-wrap: wrap;
     padding: 30px 15px 15px;
+    background: linear-gradient(to top, #000928,#062251);
     dl {
       width: 50%;
       display: flex;
@@ -121,36 +138,54 @@
   }
 }
 .messageBox {
-    width: 420px;
-    height: 165px;
-    border: 1px solid #20667E;
-    position: absolute;
+  width: 420px;
+  height: 165px;
+  border: 1px solid #20667e;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 450px;
+  top: 200px;
+  .messageBox_top {
+    color: #44c1d1;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: right;
+    padding-right: 20px;
+  }
+  .messageBox_bottom {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    left: 450px;
-    top: 200px;
-    .messageBox_top{
-        color: #44C1D1;
-        height: 40px;
-        line-height: 40px;
-        font-size: 24px;
-        text-align: right;
-        padding-right: 20px;
-    }
-    .messageBox_bottom{
+    ul {
+      flex: 1;
+      padding: 0 35px 25px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      li {
         flex: 1;
         display: flex;
-        ul{
-            flex: 1;
-            padding: 0 35px 25px ;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            li{
-                flex: 1;
-                display: flex;
-                align-items: center;
-            }
-        }
+        align-items: center;
+      }
     }
   }
+}
+.intersectionHeader_left,
+.intersectionHeader_right {
+  font-size: 16px;
+  color: #01d8e8;
+  position: absolute;
+  height: 45px;
+  width: 210px;
+  top: 20px;
+}
+.intersectionHeader_left {
+  left: 50%;
+  transform: translateX(-135%);
+}
+.intersectionHeader_right {
+  right: 50%;
+  transform: translateX(135%);
+}
