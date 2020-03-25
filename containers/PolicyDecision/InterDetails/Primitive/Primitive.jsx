@@ -97,11 +97,25 @@ class Primitive extends Component {
   // }
   PullBoxMove = (e) => { // 鼠标移动盒子
     if (this.isPullBox) {
-      const offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
-      const offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
+      let offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
+      let offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
+      const PrimitWidth = this.PrimitiveInsideBox.offsetWidth - this.PullBox.offsetWidth
+      const PrimitHeight = this.PrimitiveInsideBox.offsetHeight - this.PullBox.offsetHeight
+      if (offsetX < 0) {
+        offsetX = 0
+      }
+      if (offsetY < 0) {
+        offsetY = 0
+      }
+      if (offsetX > PrimitWidth) {
+        offsetX = PrimitWidth
+      }
+      if (offsetY > PrimitHeight) {
+        offsetY = PrimitHeight
+      }
       console.log(offsetX, offsetY, this.defaultX)
-      this.PullBox.style.left = `${isposition(offsetX, 'x')}px`
-      this.PullBox.style.top = `${isposition(offsetY, 'y')}px`
+      this.PullBox.style.left = `${offsetX}px`
+      this.PullBox.style.top = `${offsetY}px`
     }
   }
   PullBoxUp = () => { // 取消盒子移动
