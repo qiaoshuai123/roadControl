@@ -13,6 +13,7 @@ class InterDetails extends React.Component {
     this.state = {
       interMonitorLeft: 15,
       Isprimitive: false, // 图元配置
+      Homeid: this.props.match.params.id,
     }
     this.functionList = [
       {
@@ -56,6 +57,7 @@ class InterDetails extends React.Component {
   componentDidMount = () => {
     // this.props.setInterId()
     // console.log(this.props)
+    console.log(this.state.Homeid)
   }
   componentDidUpdate = () => {
     // console.log(this.props)
@@ -144,12 +146,16 @@ class InterDetails extends React.Component {
               <dt><span></span></dt>
               <dd>锁定</dd>
             </dl>
+            <dl>
+              <dt><span></span></dt>
+              <dd>锁定</dd>
+            </dl>
 
           </div>
         </div>
         <div className={styles.messageBox}>
           <div className={styles.messageBox_top}>
-            x
+            <Icon type="close" />
           </div>
           <div className={styles.messageBox_bottom}>
             <ul className={styles.messageBox_bottom_left}>

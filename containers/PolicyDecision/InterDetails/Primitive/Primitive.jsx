@@ -10,7 +10,9 @@ class Primitive extends Component {
       ischeckbtninter: 'none',
       interMonitorLeft: 0,
       value: 1,
+      checkInterImgs: require('./img/equipment_for.png'),
     }
+    this.isPullBox = false
   }
 
   componentDidMount = () => {
@@ -62,9 +64,48 @@ class Primitive extends Component {
       ischeckbtninter: 'none',
     })
   }
-  ischeckListItem = (e) => {
+  ischeckListItem = (e) => { // 点击图片选择路口
     e.stopPropagation()
     console.log(1)
+    this.setState({
+      // checkInterImgs, // 切换预览图照片
+      ischeckbtninter: 'none',
+    })
+  }
+  saveBasePic = () => { // 保存底图
+
+  }
+  uploadPic = () => { // 上传底图
+
+  }
+  PullBoxDown = (e) => { // 鼠标点击盒子
+    this.isPullBox = true
+    console.log(e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft)
+    this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
+    this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
+    this.PullBox.style.cursor = 'move'
+    // this.moveBoxLeft = Math.abs(parseInt(this.PullBox.style.left, 0))
+    // this.moveBoxTop = Math.abs(parseInt(this.PullBox.style.top, 0))
+  }
+  PullBoxMove = (e) => { // 鼠标移动盒子
+    if (this.isPullBox) {
+      const offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft-this.defaultX
+      const offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop-this.defaultY
+      // const x = e.clientX
+      // const y = e.clientY
+      // const moveX = this.defaultX - x
+      // const moveY = this.defaultY - y
+      // const offsetX = this.moveBoxLeft + moveX > 0 ? 0 : this.moveBoxLeft + moveX
+      // const offsetY = this.moveBoxTop + moveY > 0 ? 0 : this.moveBoxTop + moveY
+      // // console.log(-offsetX,-offsetY)
+      console.log(offsetX,offsetY,this.defaultX)
+      this.PullBox.style.left = `${offsetX}px`
+      this.PullBox.style.top = `${offsetY}px`
+    }
+  }
+  PullBoxUp = () => { // 取消盒子移动
+    this.isPullBox = false
+    this.PullBox.style.cursor = 'default'
   }
   btnNoneStop = (e) => {
     e.stopPropagation()
@@ -85,10 +126,11 @@ class Primitive extends Component {
       interMonitorLeft,
       value, isMessageinter,
       ischeckbtninter,
+      checkInterImgs,
     } = this.state
     return (
       <div className={styles.PrimitiveBox}>
-        <div className={styles.PrimitiveInsideBox}>
+        <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           {/* <div className={styles.closeNone}>x</div> */}
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
@@ -138,7 +180,7 @@ class Primitive extends Component {
                   </Radio.Group>
                 </div>
                 <div className={styles.interPage_centerCenter}>
-                  <span><img src={require('./img/equipment_for.png')} alt="" /></span>
+                  <span><img src={checkInterImgs} alt="" /></span>
                 </div>
                 <div className={styles.interPage_centerRight}>
                   {
@@ -151,10 +193,15 @@ class Primitive extends Component {
                 </div>
               </div>
               <div className={styles.interPage_bottom} >
-                <span>保存</span>
                 <span onClick={this.isMessageinterNone}>取消</span>
+                {
+                  value === 1 ? <span onClick={this.saveBasePic}>保存</span> : <span onClick={this.uploadPic}>上传</span>
+                }
               </div>
             </div>
+          </div>
+          <div style={{ top: 0, left: 0 }} className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
+            123
           </div>
         </div>
       </div>
