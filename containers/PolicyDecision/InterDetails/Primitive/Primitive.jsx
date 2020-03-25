@@ -87,20 +87,21 @@ class Primitive extends Component {
     // this.moveBoxLeft = Math.abs(parseInt(this.PullBox.style.left, 0))
     // this.moveBoxTop = Math.abs(parseInt(this.PullBox.style.top, 0))
   }
+  // isposition = (length, type) => {
+  //   if (length < 0) {
+  //     return 0
+  //   }
+  //   if(type < 'x'){
+
+  //   }
+  // }
   PullBoxMove = (e) => { // 鼠标移动盒子
     if (this.isPullBox) {
-      const offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft-this.defaultX
-      const offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop-this.defaultY
-      // const x = e.clientX
-      // const y = e.clientY
-      // const moveX = this.defaultX - x
-      // const moveY = this.defaultY - y
-      // const offsetX = this.moveBoxLeft + moveX > 0 ? 0 : this.moveBoxLeft + moveX
-      // const offsetY = this.moveBoxTop + moveY > 0 ? 0 : this.moveBoxTop + moveY
-      // // console.log(-offsetX,-offsetY)
-      console.log(offsetX,offsetY,this.defaultX)
-      this.PullBox.style.left = `${offsetX}px`
-      this.PullBox.style.top = `${offsetY}px`
+      const offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
+      const offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
+      console.log(offsetX, offsetY, this.defaultX)
+      this.PullBox.style.left = `${isposition(offsetX, 'x')}px`
+      this.PullBox.style.top = `${isposition(offsetY, 'y')}px`
     }
   }
   PullBoxUp = () => { // 取消盒子移动
