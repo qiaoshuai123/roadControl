@@ -103,12 +103,16 @@ class InterDetails extends React.Component {
               <dt><span></span></dt>
               <dd>锁定</dd>
             </dl>
+            <dl>
+              <dt><span></span></dt>
+              <dd>锁定</dd>
+            </dl>
 
           </div>
         </div>
         <div className={styles.messageBox}>
           <div className={styles.messageBox_top}>
-            x
+            <Icon type="close" />
           </div>
           <div className={styles.messageBox_bottom}>
             <ul className={styles.messageBox_bottom_left}>

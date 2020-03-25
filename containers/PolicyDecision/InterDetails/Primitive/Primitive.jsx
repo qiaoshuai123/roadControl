@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Icon, Radio, Upload, message, Button } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getInterdetailIsSignalling } from '../../../../actions/interCofig'
 import styles from './Primitive.scss'
 
 class Primitive extends Component {
@@ -10,10 +13,57 @@ class Primitive extends Component {
       ischeckbtninter: 'none',
       interMonitorLeft: 0,
       value: 1,
+      checkInterImgs: require('./img/equipment_for.png'),
     }
+    this.isPullBox = false
+    this.equipmentList = [
+      {
+        id: 1,
+        name: '信号机',
+      },
+      {
+        id: 2,
+        name: '信号灯',
+      },
+      {
+        id: 3,
+        name: '相位',
+      },
+      {
+        id: 4,
+        name: '检测器',
+      },
+      {
+        id: 5,
+        name: '路段名称',
+      },
+    ]
   }
 
   componentDidMount = () => {
+    this.picPropsFun()
+    this.props.getInterdetailIsSignalling(1)
+    console.log(this.props)
+  }
+  componentDidUpdate = (prevState) => {
+    // if (prevState !== this.props) {
+    //   console.log(this.props)
+    // }
+    console.log(this.props)
+    const { issignaling } = this.props.data
+    if (prevState.data.issignaling !== issignaling) {
+      this.getIssignaling(issignaling)
+    }
+  }
+  getIssignaling = (issignaling) => { //判断路口有无信号机//content改成date后端统一
+
+  }
+  onChangeRadio = (e) => {
+    this.setState({
+      value: e.target.value,
+    })
+  };
+  picPropsFun = () => { // 上传底图
     this.picProps = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -32,11 +82,6 @@ class Primitive extends Component {
       },
     }
   }
-  onChangeRadio = (e) => {
-    this.setState({
-      value: e.target.value,
-    })
-  };
   closeNone = () => { // 关闭弹出页面
     this.props.IsprimitiveNone()
   }
@@ -62,12 +107,65 @@ class Primitive extends Component {
       ischeckbtninter: 'none',
     })
   }
-  ischeckListItem = (e) => {
+  ischeckListItem = (e) => { // 点击图片选择路口
     e.stopPropagation()
     console.log(1)
+    this.setState({
+      // checkInterImgs, // 切换预览图照片
+      ischeckbtninter: 'none',
+    })
+  }
+  saveBasePic = () => { // 保存底图
+
+  }
+  uploadPic = () => { // 上传底图
+
+  }
+  PullBoxDown = (e) => { // 鼠标点击盒子
+    this.isPullBox = true
+    this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
+    this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
+    this.PullBox.style.cursor = 'move'
+  }
+  PullBoxMove = (e) => { // 鼠标移动盒子
+    if (this.isPullBox) {
+      let offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
+      let offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
+      const PrimitWidth = this.PrimitiveInsideBox.offsetWidth - this.PullBox.offsetWidth
+      const PrimitHeight = this.PrimitiveInsideBox.offsetHeight - this.PullBox.offsetHeight
+      if (offsetX < 0) {
+        offsetX = 0
+      }
+      if (offsetY < 0) {
+        offsetY = 0
+      }
+      if (offsetX > PrimitWidth) {
+        offsetX = PrimitWidth
+      }
+      if (offsetY > PrimitHeight) {
+        offsetY = PrimitHeight
+      }
+      console.log(offsetX, offsetY, this.defaultX)
+      this.PullBox.style.left = `${offsetX}px`
+      this.PullBox.style.top = `${offsetY}px`
+    }
+  }
+  PullBoxUp = () => { // 取消盒子移动
+    this.isPullBox = false
+    this.PullBox.style.cursor = 'default'
   }
   btnNoneStop = (e) => {
     e.stopPropagation()
+  }
+  checkequipment = (id) => { // 添加新设备
+    switch (id) {
+      case 1:
+        this.props.getInterdetailIsSignalling(id)
+        break;
+
+      default:
+        break;
+    }
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft >= 0) {
@@ -81,41 +179,31 @@ class Primitive extends Component {
     }
   }
   render() {
+    console.log(this.props)
     const {
       interMonitorLeft,
       value, isMessageinter,
       ischeckbtninter,
+      checkInterImgs,
     } = this.state
     return (
       <div className={styles.PrimitiveBox}>
-        <div className={styles.PrimitiveInsideBox}>
-          {/* <div className={styles.closeNone}>x</div> */}
+        <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
               <Icon type="right" />
             </span>
             <p><span />设备配置</p>
             <div className={styles.EquipmentBox}>
-              <dl>
-                <dt><span /></dt>
-                <dd>信号机</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>信号灯</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>相位</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>检测器</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>路段名称</dd>
-              </dl>
+              {
+                this.equipmentList.map(item =>
+                  (
+                    <dl key={item.id}>
+                      <dt><span onClick={() => this.checkequipment(item.id)} /></dt>
+                      <dd>{item.name}</dd>
+                    </dl>
+                  ))
+              }
             </div>
           </div>
           <div className={styles.bottom}>
@@ -138,7 +226,7 @@ class Primitive extends Component {
                   </Radio.Group>
                 </div>
                 <div className={styles.interPage_centerCenter}>
-                  <span><img src={require('./img/equipment_for.png')} alt="" /></span>
+                  <span><img src={checkInterImgs} alt="" /></span>
                 </div>
                 <div className={styles.interPage_centerRight}>
                   {
@@ -151,10 +239,15 @@ class Primitive extends Component {
                 </div>
               </div>
               <div className={styles.interPage_bottom} >
-                <span>保存</span>
                 <span onClick={this.isMessageinterNone}>取消</span>
+                {
+                  value === 1 ? <span onClick={this.saveBasePic}>保存</span> : <span onClick={this.uploadPic}>上传</span>
+                }
               </div>
             </div>
+          </div>
+          <div className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
+            123
           </div>
         </div>
       </div>
@@ -162,4 +255,15 @@ class Primitive extends Component {
   }
 }
 
-export default Primitive
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterdetailIsSignalling: bindActionCreators(getInterdetailIsSignalling, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)
