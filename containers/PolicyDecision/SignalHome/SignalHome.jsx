@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Select, Icon } from 'antd'
+import { Select, Icon, message } from 'antd'
 
 import Header from '../Header/Header'
 import Form from './form/Form'
@@ -18,11 +18,12 @@ import OutlineS from './img/ouline_s.png'
 
 import { getInterList, getControlRoads, getControlCount, getPlanTime, getControlStatus, getRealTimeStatus, getfaultStatistics, getBasicInterInfo } from '../../../actions/data'
 
-class SignalHome extends Component {
+class SignalHome extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       interList: null,
+      searchInterList: null,
       interListHeight: 0,
       controlRoads: null,
       controlCounts: null,
@@ -31,7 +32,10 @@ class SignalHome extends Component {
       realTimeStatus: null,
       realTimeState: null,
       faultCompare: null,
+      hisenseSingal: null,
+      siemensSingal: '000',
     }
+    this.searchInterList = []
     this.markers = []
     this.infowindow = 0
     this.pieColor = ['#00cf4d', '#d3692f', '#0f85ff', '#00E8FF']
@@ -46,9 +50,16 @@ class SignalHome extends Component {
     this.props.getControlStatus()
     this.props.getRealTimeStatus()
     this.props.getfaultStatistics()
+    document.addEventListener('click', (e) => {
+      if (e.target !== this.searchInputBox) {
+        this.setState({ interListHeight: 0 })
+      }
+    })
   }
   componentDidUpdate = (prevState) => {
-    console.log(this.props)
+    if (prevState !== this.props) {
+      console.log(this.props)
+    }
     const { interList, controlRoads, controlCounts, planTimes, controlStatus, realTimeStatus, faultStatistics, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
@@ -77,7 +88,11 @@ class SignalHome extends Component {
   }
   // 路口列表
   getInterList = (interList) => {
-    this.setState({ interList }, () => {
+    this.searchInterList = interList
+    this.setState({
+      interList,
+      searchInterList: interList,
+    }, () => {
       this.addMarker(interList)
     })
   }
@@ -111,18 +126,24 @@ class SignalHome extends Component {
     const serise = []
     const obj = {}
     let totleDevice = 0
+    let hisenseSingal = 0
     realTimeStatus.forEach((item) => {
       const devices = {}
       devices.value = item.UNNORMALSIZE + item.NORMALSIZE
       devices.name = item.CODE_NAME
       totleDevice += devices.value
       serise.push(devices)
+      if (item.SIGNAL_SYSTEM_CODE === 4) {
+        const num = item.UNNORMALSIZE + item.NORMALSIZE
+        hisenseSingal = String(num).length === 2 ? '0' + num : String(num).length === 1 ? '00' + num : String(num)
+      }
     })
     obj.seriseData = serise
     obj.totleDevice = totleDevice
     this.setState({
       realTimeStatus: obj,
       realTimeState: realTimeStatus,
+      hisenseSingal,
     })
   }
   // 故障统计
@@ -145,7 +166,6 @@ class SignalHome extends Component {
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
-    console.log(basicInterInfo)
     this.belongArea = basicInterInfo.DISTRICT_NAME
     this.controlState = basicInterInfo.CONTROLSTATE
     this.alarmState = basicInterInfo.ALARMSTATE
@@ -157,9 +177,9 @@ class SignalHome extends Component {
   addMarker = (interList) => {
     if (this.map) {
       this.infowindow += 1
-      interList.forEach((item, index) => {
+      interList.forEach((item) => {
         const el = document.createElement('div')
-        el.id = `marker${index}`
+        el.id = `marker${item.ID}`
         if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 6) {
           const sysIcon = item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OutlineH :
             item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OnlineH :
@@ -216,22 +236,21 @@ class SignalHome extends Component {
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
         <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
           路口名称 ：${interName}
-          
         </div>
         <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
             <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
             <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
           </div>
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">控制状态 ：${this.controlState}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">信号机IP ：${this.singalIp}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px" key="${this.state.b}">设备状态 ：${this.alarmState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：${this.controlState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：${this.singalIp}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：${this.alarmState}</p>
           </div>
         </div>
         <div style="height:40px;display:flex;justify-content:center;align-items:center;">
-          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;">路口监控</div>
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
         </div>
       </div>
     `
@@ -241,17 +260,45 @@ class SignalHome extends Component {
       .addTo(this.map)
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
-        console.log('信息窗体的路口监控')
         window.open(`#/interdetails/${interId}`)
       })
     }
     return this.popup
   }
-  handleSearchInterFocus = () => {
+  handleSearchInterFocus = (e) => {
+    // e.stopPropagation()
     this.setState({ interListHeight: 300 })
   }
-  handleSearchInterBlur = () => {
-    this.setState({ interListHeight: 0 })
+  hanleSelectInter = (e) => {
+    const interId = e.target.getAttribute('interid')
+    const marker = document.getElementById('marker' + interId)
+    const lng = e.target.getAttribute('lng')
+    const lat = e.target.getAttribute('lat')
+    const interName = e.target.innerText
+    if (marker && this.map) {
+      this.map.setCenter([lng, lat])
+      marker.click()
+      this.searchInputBox.value = interName
+      this.setState({ interListHeight: 0 })
+    } else {
+      message.info('该路口尚未接入')
+    }
+  }
+  handleSearchInputChange = (e) => {
+    const { value } = e.target
+    const searchInters = []
+    if (this.searchTimer) {
+      clearTimeout(this.searchTimer)
+      this.searchTimer = null
+    }
+    this.searchTimer = setTimeout(() => {
+      this.searchInterList.forEach((item) => {
+        if (item.UNIT_NAME.indexOf(value) >= 0) {
+          searchInters.push(item)
+        }
+      })
+      this.setState({ searchInterList: searchInters })
+    }, 200)
   }
   // 初始化地图
   renderMineMap = () => {
@@ -268,32 +315,38 @@ class SignalHome extends Component {
   }
   render() {
     const { Option } = Select
-    const { interListHeight, interList } = this.state
+    const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList } = this.state
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
         <div className={styles.interListBox}>
           <div className={styles.interSearch}>
-            <Select defaultValue="1">
-              <Option key="1">请选择</Option>
-              {
-                interList &&
-                interList.map(item => (
-                  <Option key={item.ID} value={item.UNIT_NAME} title={item.UNIT_NAME}>{item.UNIT_NAME}</Option>
-                ))
-              }
-            </Select>
             <span className={styles.searchBox}>
-              <input className={styles.searchInput} onFocus={this.handleSearchInterFocus} onBlur={this.handleSearchInterBlur} type="text" placeholder="请输入你要搜索的内容" />
+              <input
+                className={styles.searchInput}
+                onClick={this.handleSearchInterFocus}
+                onChange={this.handleSearchInputChange}
+                type="text"
+                placeholder="请输入你要搜索的路口"
+                ref={(input) => { this.searchInputBox = input }}
+              />
               <Icon className={styles.searchIcon} type="search" />
             </span>
           </div>
-          <div className={styles.interList} style={{ maxHeight: `${interListHeight}px` }}>
-            <div style={{ height: '300px', overflowY: 'auto' }}>
+          <div className={styles.interList} style={{ maxHeight: `${interListHeight}px`, overflowY: 'auto' }}>
+            <div>
               {
-                interList &&
-                interList.map(item => (
-                  <div className={styles.interItem} key={item.ID}>{item.UNIT_NAME}</div>
+                searchInterList &&
+                searchInterList.map(item => (
+                  <div
+                    className={styles.interItem}
+                    key={item.ID}
+                    interid={item.ID}
+                    lng={item.LONGITUDE}
+                    lat={item.LATITUDE}
+                    onClick={this.hanleSelectInter}
+                  >{item.UNIT_NAME}
+                  </div>
                 ))
               }
             </div>
@@ -353,33 +406,34 @@ class SignalHome extends Component {
           <div className={`${styles.road_show_item} ${styles.buling}`}>
             <div><span>全市</span><span>信号点位</span></div>
             <div>
-              <span>2</span>
-              <span>3</span>
-              <span>0</span>
-            </div><div>处</div>
-          </div>
-          <div className={`${styles.road_show_item} ${styles.buling}`}>
-            <div><span>全市</span><span>信号点位</span></div>
-            <div>
-              <span>2</span>
-              <span>3</span>
-              <span>0</span>
+              {
+                interList &&
+                new Array(String(interList.length).length).fill(true).map((item, index) => (
+                  <span key={item + index}>{String(interList.length).charAt(index)}</span>
+                ))
+              }
             </div><div>处</div>
           </div>
           <div className={`${styles.road_show_item} ${styles.buling}`}>
             <div><span>海信</span><span>接入</span></div>
             <div>
-              <span>2</span>
-              <span>9</span>
-              <span>0</span>
+              {
+                hisenseSingal &&
+                new Array(hisenseSingal.length).fill(true).map((item, index) => (
+                  <span key={item + index}>{hisenseSingal.charAt(index)}</span>
+                ))
+              }
             </div><div>处</div>
           </div>
           <div className={`${styles.road_show_item} ${styles.buling}`}>
-            <div><span>ATC</span><span>接入</span></div>
+            <div><span>西门子</span><span>接入</span></div>
             <div>
-              <span>2</span>
-              <span>9</span>
-              <span>0</span>
+              {
+                siemensSingal &&
+                new Array(siemensSingal.length).fill(true).map((item, index) => (
+                  <span key={item + index}>{siemensSingal.charAt(index)}</span>
+                ))
+              }
             </div><div>处</div>
           </div>
         </div>
