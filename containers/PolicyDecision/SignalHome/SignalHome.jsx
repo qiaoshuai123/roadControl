@@ -57,7 +57,7 @@ class SignalHome extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    if (prevState !== this.props) {
+    if (prevState.data !== this.props.data) {
       console.log(this.props)
     }
     const { interList, controlRoads, controlCounts, planTimes, controlStatus, realTimeStatus, faultStatistics, basicInterInfo } = this.props.data
