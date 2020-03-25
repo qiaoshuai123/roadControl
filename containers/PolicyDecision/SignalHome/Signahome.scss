@@ -22,8 +22,8 @@
   .interListBox {
     z-index: 9;
     position: fixed;
-    top: 230px;
-    left: 480px;
+    top: 215px;
+    left: 460px;
     .interList {
       position: absolute;
       top: 35px;
@@ -47,25 +47,13 @@
     }
     .interSearch {
       display: flex;
-      :global(.ant-select-selection) {
-          width: 100px;
-          background-color: #063657;
-          border: 1px solid #063657;
-          outline: none;
-          color: #F1F1FB;
-          box-shadow: none;
-      }
-      :global(.ant-select-arrow) {
-          color: #F1F1FB;
-      }
       .searchBox {
           position: relative;
           .searchInput {
-              width: 200px;
+              width: 224px;
               height: 32px;
               padding-left: 5px;
-              margin-left: 10px;
-              background-color: #063657;
+              background-color: rgba(6,56,90, .8);
               border: 1px solid #063657;
               border-radius: 4px;
               outline: none;
@@ -239,7 +227,8 @@
     height: 95px;
     display: flex;
     flex-wrap: wrap;
-    margin: 25px 20px 0;
+    margin-top: 10px;
+    justify-content: space-between;
     .road_show_item {
       width: 224px;
       background: url(./img/showbg.png) center center no-repeat;
