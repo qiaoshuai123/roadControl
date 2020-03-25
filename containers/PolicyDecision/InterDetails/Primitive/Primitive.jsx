@@ -41,23 +41,7 @@ class Primitive extends Component {
   }
 
   componentDidMount = () => {
-    this.picProps = {
-      name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList)
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`)
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`)
-        }
-      },
-    }
+    this.picPropsFun()
     this.props.getInterdetailIsSignalling(1)
     console.log(this.props)
   }
@@ -79,6 +63,25 @@ class Primitive extends Component {
       value: e.target.value,
     })
   };
+  picPropsFun = () => { // 上传底图
+    this.picProps = {
+      name: 'file',
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList)
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`)
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`)
+        }
+      },
+    }
+  }
   closeNone = () => { // 关闭弹出页面
     this.props.IsprimitiveNone()
   }
