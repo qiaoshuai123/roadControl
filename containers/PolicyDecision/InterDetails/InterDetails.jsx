@@ -12,83 +12,42 @@ class InterDetails extends React.Component {
     super(props)
     this.state = {
       interMonitorLeft: 15,
-      Isprimitive: false, // 图元配置
+      configPop: null,
     }
     this.functionList = [
-      {
-        id: 1,
-        name: '图元配置',
-      },
-      {
-        id: 2,
-        name: '相位配置',
-      },
-      {
-        id: 3,
-        name: '跟随相位配置',
-      },
-      {
-        id: 4,
-        name: '阶段配置',
-      },
-      {
-        id: 5,
-        name: '配时方案配置',
-      },
-      {
-        id: 6,
-        name: '时基动作配置',
-      },
-      {
-        id: 7,
-        name: '时段表配置',
-      },
-      {
-        id: 8,
-        name: '调度表配置',
-      },
-      {
-        id: 9,
-        name: '信号机配置',
-      },
+      { id: 1, name: '图元配置' },
+      { id: 2, name: '相位配置' },
+      { id: 3, name: '跟随相位配置' },
+      { id: 4, name: '阶段配置' },
+      { id: 5, name: '配时方案配置' },
+      { id: 6, name: '时基动作配置' },
+      { id: 7, name: '时段表配置' },
+      { id: 8, name: '调度表配置' },
+      { id: 9, name: '信号机配置' },
     ]
   }
   componentDidMount = () => {
-    // this.props.setInterId()
-    // console.log(this.props)
+    this.InterId = this.props.match.params.id
+    console.log(this.InterId)
   }
   componentDidUpdate = () => {
     // console.log(this.props)
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
-      this.setState({
-        interMonitorLeft: -305,
-      })
+      this.setState({ interMonitorLeft: -300 })
     } else {
-      this.setState({
-        interMonitorLeft: 15,
-      })
+      this.setState({ interMonitorLeft: 15 })
     }
   }
-  IsprimitiveNone = () => { // 图元配置出发关闭
-    this.setState({
-      Isprimitive: false,
-    })
+  closeInterConfig = () => { // 图元配置出发关闭
+    this.setState({ configPop: null })
   }
-  showPrimitive = (id) => { // 展示图元配置
-    switch (id) {
-      case 1:
-        this.setState({
-          Isprimitive: true,
-        })
-        break
-      default:
-        break
-    }
+  showInterConfig = () => { // 展示图元配置
+    this.setState({ configPop: 'primitive' })
   }
   render() {
-    const { interMonitorLeft, Isprimitive } = this.state
+    const { interMonitorLeft, configPop } = this.state
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
@@ -171,7 +130,8 @@ class InterDetails extends React.Component {
           <span>上个路口:海淀路口2-2</span>
         </div>
         {
-          Isprimitive ? <Primitive IsprimitiveNone={this.IsprimitiveNone} /> : ''
+          configPop === 'primitive' &&
+          <Primitive IsprimitiveNone={this.closeInterConfig} InterId={this.InterId} />
         }
       </div>
     )

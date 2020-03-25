@@ -13,11 +13,7 @@
   width: 300px;
   height: calc(100% - 350px);
   z-index: 9;
-  padding: 0 20px;
-  background-color: rgba(6, 35, 79, 0.8);
   transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
   .hideIcon {
     position: absolute;
     right: -20px;
@@ -31,17 +27,20 @@
     cursor: pointer;
   }
   .title {
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    padding-left: 10px;
+    line-height: 40px;
     font-size: 16px;
+    background-color: #04183D;
   }
   .regionList {
-    flex: 1;
     padding: 25px 0 25px;
+    margin: 0;
     display: flex;
     flex-direction: column;
+    background-image: linear-gradient(to bottom, #05224C, #031636);
     li {
-      flex: 1;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -51,19 +50,19 @@
     }
   }
   .functionList {
-    flex: 3;
+    height: calc(100% - 240px);
     padding: 25px 0 25px 0;
-    display: flex;
-    flex-direction: column;
+    background-color: rgba(5,34,78, .5);
     overflow-y: auto;
     li {
-      flex: 1;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: all .2s;
       &:hover {
-        color: #20667e;
+        color: #01d8e8;
       }
     }
   }
