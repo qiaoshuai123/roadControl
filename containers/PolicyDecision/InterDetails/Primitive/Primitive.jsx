@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Icon, Radio, Upload, message, Button } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getInterdetailIsSignalling } from '../../../../actions/interCofig'
 import styles from './Primitive.scss'
 
 class Primitive extends Component {
@@ -13,6 +16,28 @@ class Primitive extends Component {
       checkInterImgs: require('./img/equipment_for.png'),
     }
     this.isPullBox = false
+    this.equipmentList = [
+      {
+        id: 1,
+        name: '信号机',
+      },
+      {
+        id: 2,
+        name: '信号灯',
+      },
+      {
+        id: 3,
+        name: '相位',
+      },
+      {
+        id: 4,
+        name: '检测器',
+      },
+      {
+        id: 5,
+        name: '路段名称',
+      },
+    ]
   }
 
   componentDidMount = () => {
@@ -33,6 +58,21 @@ class Primitive extends Component {
         }
       },
     }
+    this.props.getInterdetailIsSignalling(1)
+    console.log(this.props)
+  }
+  componentDidUpdate = (prevState) => {
+    // if (prevState !== this.props) {
+    //   console.log(this.props)
+    // }
+    console.log(this.props)
+    const { issignaling } = this.props.data
+    if (prevState.data.issignaling !== issignaling) {
+      this.getIssignaling(issignaling)
+    }
+  }
+  getIssignaling = (issignaling) => { //判断路口有无信号机//content改成date后端统一
+
   }
   onChangeRadio = (e) => {
     this.setState({
@@ -80,21 +120,10 @@ class Primitive extends Component {
   }
   PullBoxDown = (e) => { // 鼠标点击盒子
     this.isPullBox = true
-    console.log(e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft)
     this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
     this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
     this.PullBox.style.cursor = 'move'
-    // this.moveBoxLeft = Math.abs(parseInt(this.PullBox.style.left, 0))
-    // this.moveBoxTop = Math.abs(parseInt(this.PullBox.style.top, 0))
   }
-  // isposition = (length, type) => {
-  //   if (length < 0) {
-  //     return 0
-  //   }
-  //   if(type < 'x'){
-
-  //   }
-  // }
   PullBoxMove = (e) => { // 鼠标移动盒子
     if (this.isPullBox) {
       let offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
@@ -125,6 +154,16 @@ class Primitive extends Component {
   btnNoneStop = (e) => {
     e.stopPropagation()
   }
+  checkequipment = (id) => { // 添加新设备
+    switch (id) {
+      case 1:
+        this.props.getInterdetailIsSignalling(id)
+        break;
+
+      default:
+        break;
+    }
+  }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft >= 0) {
       this.setState({
@@ -137,6 +176,7 @@ class Primitive extends Component {
     }
   }
   render() {
+    console.log(this.props)
     const {
       interMonitorLeft,
       value, isMessageinter,
@@ -146,33 +186,21 @@ class Primitive extends Component {
     return (
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
-          {/* <div className={styles.closeNone}>x</div> */}
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
               <Icon type="right" />
             </span>
             <p><span />设备配置</p>
             <div className={styles.EquipmentBox}>
-              <dl>
-                <dt><span /></dt>
-                <dd>信号机</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>信号灯</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>相位</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>检测器</dd>
-              </dl>
-              <dl>
-                <dt><span /></dt>
-                <dd>路段名称</dd>
-              </dl>
+              {
+                this.equipmentList.map(item =>
+                  (
+                    <dl key={item.id}>
+                      <dt><span onClick={() => this.checkequipment(item.id)} /></dt>
+                      <dd>{item.name}</dd>
+                    </dl>
+                  ))
+              }
             </div>
           </div>
           <div className={styles.bottom}>
@@ -215,7 +243,7 @@ class Primitive extends Component {
               </div>
             </div>
           </div>
-          <div style={{ top: 0, left: 0 }} className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
+          <div className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
             123
           </div>
         </div>
@@ -224,4 +252,15 @@ class Primitive extends Component {
   }
 }
 
-export default Primitive
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterdetailIsSignalling: bindActionCreators(getInterdetailIsSignalling, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)

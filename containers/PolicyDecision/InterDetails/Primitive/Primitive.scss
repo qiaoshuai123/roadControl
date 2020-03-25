@@ -3,6 +3,8 @@
   height: 100%;
   position: absolute;
   z-index: 99;
+  overflow-y: auto;
+  background: rgba(0,0,0,.3);
   left: 0;
   top: 0;
 }
@@ -13,11 +15,9 @@
   position: absolute;
   //   background: url('../evaBg.png') center center no-repeat;
   background-color: pink;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
   .closeNone {
     width: 35px;
     height: 35px;
@@ -167,8 +167,8 @@
     }
   }
   .PullBox{
-      width: 200px;
-      height: 500px;
+      width: 100px;
+      height: 200px;
       position: absolute;
       background-color: blue;
   }
