@@ -8,6 +8,8 @@ const interConfig = (state = {}, action) => {
   switch (type) {
     case types.GET_ISSIGNALING:
       return Object.assign({}, state, { issignaling: payload })
+    case types.GET_SINGAL_INFO:
+      return Object.assign({}, state, { sinaglInfo: payload })
     default:
       return state
   }

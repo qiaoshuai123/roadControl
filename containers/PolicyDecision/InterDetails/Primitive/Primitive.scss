@@ -1,288 +1,288 @@
-.PrimitiveBox {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 99;
-  overflow-y: auto;
-  background: rgba(0,0,0,.3);
-  left: 0;
-  top: 0;
-}
-.PrimitiveInsideBox {
-  width: 1000px;
-  height: 800px;
-  overflow: hidden;
-  position: absolute;
-  //   background: url('../evaBg.png') center center no-repeat;
-  background-color: pink;
-  left: 50%;
-  top: 70px;
-  transform: translateX(-50%);
-  .closeNone {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: blue;
-    position: absolute;
-    right: 15px;
-    top: 15px;
-  }
-  .bottom {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 25px;
-    width: 210px;
-    display: flex;
-    justify-content: end;
-    div {
-      flex: 1;
-      background-color: #0095e3;
-      border: 1px solid #0b8ad5;
-      display: flex;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      border-radius: 3px;
-      &:nth-child(1) {
-        margin-right: 20px;
-      }
-    }
-  }
-  .checkinterPage {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: palevioletred;
-    z-index: 99;
-    left: 0;
-    top: 0;
-    .checkinterPageBox {
-      width: 870px;
-      height: 260px;
-      overflow-y: auto;
-      display: flex;
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      flex-wrap: wrap;
-      li {
-        width: 23%;
-        height: 120px;
-        margin: 5px;
-      }
-    }
-  }
-  .interPage {
-    width: 100%;
-    height: 100%;
-    background: pink;
-    position: absolute;
-    left: 0;
-    right: 0;
-    z-index: 9;
-    .interPageBox {
-      width: 360px;
-      height: 180px;
-      border: 1px solid #393f46;
-      position: absolute;
-      margin: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      p {
-        height: 45px;
-        line-height: 45px;
-        padding-left: 20px;
-        span {
-          float: right;
-          width: 35px;
-          height: 30px;
-          cursor: pointer;
-          line-height: 30px;
-          text-align: center;
-          color: #2d2c3b;
-          font-size: 24px;
-        }
-      }
-      .interPage_center {
-        height: 95px;
-        color: #333333;
-        display: flex;
-        border-bottom: 1px solid #dddddd;
-        .interPage_centerLeft {
-          flex: 1;
-          border-right: 1px solid #dddddd;
-          :global(.ant-radio-wrapper) {
-            margin: 10px;
-          }
-        }
-        .interPage_centerCenter {
-          flex: 1;
-          display: flex;
-          padding: 10px 15px;
-          justify-content: center;
-          align-items: center;
-          span {
-            width: 100%;
-            height: 100%;
-            img {
-              height: 100%;
-              width: 100%;
-            }
-          }
-        }
-        .interPage_centerRight {
-          flex: 0.8;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          > span {
-            padding: 5px 10px;
-            border: 1px solid #dddddd;
-            cursor: pointer;
-          }
-        }
-      }
-      .interPage_bottom {
-        padding-top: 7px;
-        height: 40px;
-        width: 100%;
-        span {
-          float: right;
-          padding: 3px;
-          border-radius: 4px;
-          cursor: pointer;
-          margin-right: 20px;
-          background-color: #2588ee;
-        }
-      }
-    }
-  }
-  .PullBox{
-      width: 100px;
-      height: 200px;
-      position: absolute;
-      background-color: blue;
-  }
-}
-.interMonitorBox {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
-  width: 120px;
-  height: calc(100% - 350px);
-  z-index: 9;
-  background-color: rgba(6, 35, 79, 0.8);
-  transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
-  .hideIcon {
-    position: absolute;
-    right: 120px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 100px;
-    cursor: pointer;
-    line-height: 100px;
-    text-align: center;
-    font-size: 24px;
-    color: #f1f1fb;
-    background-color: #007fe0;
-  }
-  p {
-    height: 40px;
-    padding-left: 10px;
-    display: flex;
-    align-items: center;
-    background-color: #007fe0;
-    span {
-      width: 30px;
-      height: 20px;
-      background-color: #ccc;
-      margin: 3px;
-    }
-  }
-  .EquipmentBox {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    dl {
-      flex: 1;
-      margin: 0;
-      flex-direction: column;
-      display: flex;
-      &:nth-child(1) {
-        span {
-          background: url("./img/equipment_one.png") center center no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      &:nth-child(2) {
-        span {
-          background: url("./img/equipment_two.png") center center no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      &:nth-child(3) {
-        span {
-          background: url("./img/equipment_thr.png") center center no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      &:nth-child(4) {
-        span {
-          background: url("./img/equipment_for.png") center center no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      &:nth-child(5) {
-        span {
-          background: url("./img/equipment_fiv.png") center center no-repeat;
-          background-size: 100% 100%;
-        }
-      }
-      dt {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        span {
-          width: 45px;
-          height: 45px;
-          cursor: pointer;
-        }
-      }
-      dd {
-        margin: 0;
-        line-height: 20px;
-        text-align: center;
-      }
-    }
-  }
-  .functionList {
-    flex: 3;
-    padding: 25px 0 25px 0;
-    display: flex;
-    flex-direction: column;
-    li {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      &:hover {
-        color: #20667e;
-      }
-    }
-  }
-}
+// .PrimitiveBox {
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   z-index: 99;
+//   overflow-y: auto;
+//   background: rgba(0,0,0,.3);
+//   left: 0;
+//   top: 0;
+// }
+// .PrimitiveInsideBox {
+//   width: 1000px;
+//   height: 800px;
+//   overflow: hidden;
+//   position: absolute;
+//   //   background: url('../evaBg.png') center center no-repeat;
+//   background-color: pink;
+//   left: 50%;
+//   top: 70px;
+//   transform: translateX(-50%);
+//   .closeNone {
+//     width: 35px;
+//     height: 35px;
+//     line-height: 35px;
+//     text-align: center;
+//     font-size: 18px;
+//     cursor: pointer;
+//     background-color: blue;
+//     position: absolute;
+//     right: 15px;
+//     top: 15px;
+//   }
+//   .bottom {
+//     position: absolute;
+//     bottom: 0;
+//     right: 0;
+//     height: 25px;
+//     width: 210px;
+//     display: flex;
+//     justify-content: end;
+//     div {
+//       flex: 1;
+//       background-color: #0095e3;
+//       border: 1px solid #0b8ad5;
+//       display: flex;
+//       cursor: pointer;
+//       align-items: center;
+//       justify-content: center;
+//       border-radius: 3px;
+//       &:nth-child(1) {
+//         margin-right: 20px;
+//       }
+//     }
+//   }
+//   .checkinterPage {
+//     width: 100%;
+//     height: 100%;
+//     position: absolute;
+//     background-color: palevioletred;
+//     z-index: 99;
+//     left: 0;
+//     top: 0;
+//     .checkinterPageBox {
+//       width: 870px;
+//       height: 260px;
+//       overflow-y: auto;
+//       display: flex;
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//       right: 0;
+//       bottom: 0;
+//       margin: auto;
+//       flex-wrap: wrap;
+//       li {
+//         width: 23%;
+//         height: 120px;
+//         margin: 5px;
+//       }
+//     }
+//   }
+//   .interPage {
+//     width: 100%;
+//     height: 100%;
+//     background: pink;
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     z-index: 9;
+//     .interPageBox {
+//       width: 360px;
+//       height: 180px;
+//       border: 1px solid #393f46;
+//       position: absolute;
+//       margin: auto;
+//       left: 0;
+//       top: 0;
+//       right: 0;
+//       bottom: 0;
+//       p {
+//         height: 45px;
+//         line-height: 45px;
+//         padding-left: 20px;
+//         span {
+//           float: right;
+//           width: 35px;
+//           height: 30px;
+//           cursor: pointer;
+//           line-height: 30px;
+//           text-align: center;
+//           color: #2d2c3b;
+//           font-size: 24px;
+//         }
+//       }
+//       .interPage_center {
+//         height: 95px;
+//         color: #333333;
+//         display: flex;
+//         border-bottom: 1px solid #dddddd;
+//         .interPage_centerLeft {
+//           flex: 1;
+//           border-right: 1px solid #dddddd;
+//           :global(.ant-radio-wrapper) {
+//             margin: 10px;
+//           }
+//         }
+//         .interPage_centerCenter {
+//           flex: 1;
+//           display: flex;
+//           padding: 10px 15px;
+//           justify-content: center;
+//           align-items: center;
+//           span {
+//             width: 100%;
+//             height: 100%;
+//             img {
+//               height: 100%;
+//               width: 100%;
+//             }
+//           }
+//         }
+//         .interPage_centerRight {
+//           flex: 0.8;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           > span {
+//             padding: 5px 10px;
+//             border: 1px solid #dddddd;
+//             cursor: pointer;
+//           }
+//         }
+//       }
+//       .interPage_bottom {
+//         padding-top: 7px;
+//         height: 40px;
+//         width: 100%;
+//         span {
+//           float: right;
+//           padding: 3px;
+//           border-radius: 4px;
+//           cursor: pointer;
+//           margin-right: 20px;
+//           background-color: #2588ee;
+//         }
+//       }
+//     }
+//   }
+//   .PullBox{
+//       width: 100px;
+//       height: 200px;
+//       position: absolute;
+//       background-color: blue;
+//   }
+// }
+// .interMonitorBox {
+//   position: absolute;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   right: 0;
+//   width: 120px;
+//   height: calc(100% - 350px);
+//   z-index: 9;
+//   background-color: rgba(6, 35, 79, 0.8);
+//   transition: all 0.3s;
+//   display: flex;
+//   flex-direction: column;
+//   .hideIcon {
+//     position: absolute;
+//     right: 120px;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     width: 20px;
+//     height: 100px;
+//     cursor: pointer;
+//     line-height: 100px;
+//     text-align: center;
+//     font-size: 24px;
+//     color: #f1f1fb;
+//     background-color: #007fe0;
+//   }
+//   p {
+//     height: 40px;
+//     padding-left: 10px;
+//     display: flex;
+//     align-items: center;
+//     background-color: #007fe0;
+//     span {
+//       width: 30px;
+//       height: 20px;
+//       background-color: #ccc;
+//       margin: 3px;
+//     }
+//   }
+//   .EquipmentBox {
+//     flex: 1;
+//     display: flex;
+//     flex-direction: column;
+//     dl {
+//       flex: 1;
+//       margin: 0;
+//       flex-direction: column;
+//       display: flex;
+//       &:nth-child(1) {
+//         span {
+//           background: url("./img/equipment_one.png") center center no-repeat;
+//           background-size: 100% 100%;
+//         }
+//       }
+//       &:nth-child(2) {
+//         span {
+//           background: url("./img/equipment_two.png") center center no-repeat;
+//           background-size: 100% 100%;
+//         }
+//       }
+//       &:nth-child(3) {
+//         span {
+//           background: url("./img/equipment_thr.png") center center no-repeat;
+//           background-size: 100% 100%;
+//         }
+//       }
+//       &:nth-child(4) {
+//         span {
+//           background: url("./img/equipment_for.png") center center no-repeat;
+//           background-size: 100% 100%;
+//         }
+//       }
+//       &:nth-child(5) {
+//         span {
+//           background: url("./img/equipment_fiv.png") center center no-repeat;
+//           background-size: 100% 100%;
+//         }
+//       }
+//       dt {
+//         flex: 1;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         span {
+//           width: 45px;
+//           height: 45px;
+//           cursor: pointer;
+//         }
+//       }
+//       dd {
+//         margin: 0;
+//         line-height: 20px;
+//         text-align: center;
+//       }
+//     }
+//   }
+//   .functionList {
+//     flex: 3;
+//     padding: 25px 0 25px 0;
+//     display: flex;
+//     flex-direction: column;
+//     li {
+//       flex: 1;
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
+//       cursor: pointer;
+//       &:hover {
+//         color: #20667e;
+//       }
+//     }
+//   }
+// }

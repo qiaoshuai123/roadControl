@@ -13,4 +13,5 @@ export const API_REAL_STATUS = '/atms/mainTree/signalNormalAndUnNomalStatusSize'
 export const API_FAULT_STATISTICS = '/atms/mainTree/loadTodayAndYesterdayAlarmList'
 export const API_INTER_INFO = '/atms/mainTree/unitBasicInfo'
 export const API_ISSIGNALING = '/atms/singleUnitMonitor/hasSignal'
+export const API_SINGALINFO = '/atms/monitor/unitBasicInfo'
 

@@ -5,6 +5,14 @@
   overflow-y: auto;
   background: url(./evaBg.png) center center no-repeat;
   background-size: cover;
+  .imgBox {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    margin-left: -500px;
+    width: 1000px;
+    height: 800px;
+  }
 }
 .interMonitorBox {
   position: absolute;

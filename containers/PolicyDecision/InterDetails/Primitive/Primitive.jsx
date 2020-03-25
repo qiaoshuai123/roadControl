@@ -55,14 +55,14 @@ class Primitive extends Component {
       this.getIssignaling(issignaling)
     }
   }
-  getIssignaling = (issignaling) => { //判断路口有无信号机//content改成date后端统一
-
-  }
   onChangeRadio = (e) => {
     this.setState({
       value: e.target.value,
     })
-  };
+  }
+  getIssignaling = (issignaling) => { // 判断路口有无信号机//content改成date后端统一
+
+  }
   picPropsFun = () => { // 上传底图
     this.picProps = {
       name: 'file',
@@ -161,10 +161,10 @@ class Primitive extends Component {
     switch (id) {
       case 1:
         this.props.getInterdetailIsSignalling(id)
-        break;
+        break
 
       default:
-        break;
+        break
     }
   }
   handleShowInterMonitor = () => {
@@ -212,7 +212,7 @@ class Primitive extends Component {
           </div>
           <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
             <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
-              <li onClick={(e) => this.ischeckListItem(e)}>1</li>
+              <li onClick={this.ischeckListItem}>1</li>
             </ul>
           </div>
           <div style={{ display: isMessageinter }} className={styles.interPage}>

@@ -1,18 +1,19 @@
 import React from 'react'
 import { Icon } from 'antd'
-// import { connect } from 'react-redux'
-// import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
 import styles from './InterDetails.scss'
 
-// import { setInterId } from '../../../actions/data'
+import { getSingalInfo } from '../../../actions/interCofig'
 
-class InterDetails extends React.Component {
+class InterDetails extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       interMonitorLeft: 15,
       configPop: null,
+      sinaglInfo: null,
     }
     this.functionList = [
       { id: 1, name: '图元配置' },
@@ -28,10 +29,17 @@ class InterDetails extends React.Component {
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
-    console.log(this.InterId)
+    this.props.getSingalInfo(this.InterId)
   }
-  componentDidUpdate = () => {
-    // console.log(this.props)
+  componentDidUpdate = (prevState) => {
+    const { sinaglInfo } = this.props.data
+    if (prevState.data.sinaglInfo !== sinaglInfo) {
+      this.getInterSingalInfo(sinaglInfo)
+    }
+  }
+  // 获取路口信号信息
+  getInterSingalInfo = (sinaglInfo) => {
+    this.setState({ sinaglInfo })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -47,19 +55,28 @@ class InterDetails extends React.Component {
     this.setState({ configPop: 'primitive' })
   }
   render() {
-    const { interMonitorLeft, configPop } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo } = this.state
     return (
       <div className={styles.interDetailsBox}>
+        <div className={styles.imgBox}>
+          {
+            sinaglInfo &&
+            <img width="100%" height="100%" src={`http://192.168.1.230:8080/atms-web/resources/imgs/backupsImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="图元" />
+          }
+        </div>
         <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
             {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
           <p className={styles.title}>勤务路线查询</p>
-          <ul className={styles.regionList}>
-            <li>所属区域:<span>兴宁区</span> </li>
-            <li>管理单位:指挥中心</li>
-            <li>信号机类型:海信</li>
-          </ul>
+          {
+            sinaglInfo &&
+            <ul className={styles.regionList}>
+              <li>所属区域 : <span>&nbsp;{sinaglInfo.DISTRICT_NAME}</span></li>
+              <li>管理单位 : 指挥中心</li>
+              <li>信号机类型 : {sinaglInfo.SIGNALSYSTEM}</li>
+            </ul>
+          }
           <p className={styles.title}>功能列表</p>
           <ul className={styles.functionList}>
             {
@@ -72,10 +89,10 @@ class InterDetails extends React.Component {
         </div>
         <div className={styles.DeviceStatus}>
           <ul className={styles.DeviceStatus_left}>
-            <li>设备状态:<span>正常在线</span></li>
-            <li>控制状态:本地多时段</li>
-            <li>当前时段: <span className={styles.icons}></span>东西自转</li>
-            <li>当前方案:方案01</li>
+            <li>设备状态 :<span>&nbsp;{sinaglInfo ? sinaglInfo.ALARMSTATE : ''}</span></li>
+            <li>控制状态 : {sinaglInfo ? sinaglInfo.CONTROLSTATE : ''}</li>
+            <li>当前时段 : <span className={styles.icons} />东西自转</li>
+            <li>当前方案 : 方案01</li>
             <li>2019/12/02 22:43:20</li>
           </ul>
           <div className={styles.DeviceStatus_right}>
@@ -142,15 +159,15 @@ class InterDetails extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     data: state.data,
-//   }
-// }
-// const mapDisPatchToProps = (dispatch) => {
-//   return {
-//     setInterId: bindActionCreators(setInterId, dispatch),
-//   }
-// }
-export default InterDetails
-// connect(mapStateToProps, mapDisPatchToProps)()
+const mapStateToProps = (state) => {
+  return {
+    data: state.interConfig,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getSingalInfo: bindActionCreators(getSingalInfo, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(InterDetails)
+
