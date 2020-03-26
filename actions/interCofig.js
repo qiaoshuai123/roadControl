@@ -14,7 +14,7 @@ export const getInterdetailIsSignalling = (interId) => {
     try {
       const result = await RestUtil.get(`${API_ISSIGNALING}?unitId=${interId}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_ISSIGNALING, payload: result.data.content })
+        dispatch({ type: types.GET_ISSIGNALING, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

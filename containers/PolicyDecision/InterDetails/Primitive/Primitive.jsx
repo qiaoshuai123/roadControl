@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux'
 import { getInterdetailIsSignalling } from '../../../../actions/interCofig'
 import styles from './Primitive.scss'
 
+import interImgs from './img/equipment_for.png'
+
 class Primitive extends Component {
   constructor(props) {
     super(props)
@@ -13,7 +15,7 @@ class Primitive extends Component {
       ischeckbtninter: 'none',
       interMonitorLeft: 0,
       value: 1,
-      checkInterImgs: require('./img/equipment_for.png'),
+      checkInterImgs: interImgs,
     }
     this.isPullBox = false
     this.equipmentList = [
@@ -44,24 +46,20 @@ class Primitive extends Component {
     this.picPropsFun()
   }
   componentDidUpdate = (prevState) => {
-    // if (prevState !== this.props) {
-    //   console.log(this.props)
-    // }
     console.log(this.props)
     const { issignaling } = this.props.data
     if (prevState.data.issignaling !== issignaling) {
       this.getIssignaling(issignaling)
     }
   }
-  getIssignaling = (issignaling) => { //判断路口有无信号机//content改成date后端统一
-
-  }
-
   onChangeRadio = (e) => {
     this.setState({
       value: e.target.value,
     })
-  };
+  }
+  getIssignaling = (issignaling = true) => { // 判断路口有无信号机//content改成date后端统一
+    console.log('接口返回的：：：', issignaling)
+  }
   picPropsFun = () => { // 上传底图
     this.picProps = {
       name: 'file',
@@ -158,11 +156,10 @@ class Primitive extends Component {
   checkequipment = (id) => { // 添加新设备
     switch (id) {
       case 1:
-        this.props.getInterdetailIsSignalling(id)
-        break;
-
+        this.props.getInterdetailIsSignalling(this.props.InterId)
+        break
       default:
-        break;
+        break
     }
   }
   handleShowInterMonitor = () => {
@@ -210,7 +207,7 @@ class Primitive extends Component {
           </div>
           <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
             <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
-              <li onClick={(e) => this.ischeckListItem(e)}>1</li>
+              <li onClick={this.ischeckListItem}>1</li>
             </ul>
           </div>
           <div style={{ display: isMessageinter }} className={styles.interPage}>
@@ -254,7 +251,6 @@ class Primitive extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state,'qiao')
   return {
     data: state.interConfig,
   }

@@ -16,7 +16,7 @@ class InterDetails extends React.PureComponent {
       sinaglInfo: null,
     }
     this.functionList = [
-      { id: 1, name: '图元配置' },
+      { id: 1, name: '图元配置', configname: 'primitive' },
       { id: 2, name: '相位配置' },
       { id: 3, name: '跟随相位配置' },
       { id: 4, name: '阶段配置' },
@@ -51,8 +51,9 @@ class InterDetails extends React.PureComponent {
   closeInterConfig = () => { // 图元配置出发关闭
     this.setState({ configPop: null })
   }
-  showInterConfig = () => { // 展示图元配置
-    this.setState({ configPop: 'primitive' })
+  showInterConfig = (e) => { // 展示图元配置
+    const configName = e.target.getAttribute('configname')
+    this.setState({ configPop: configName })
   }
   render() {
     const { interMonitorLeft, configPop, sinaglInfo } = this.state
@@ -80,7 +81,7 @@ class InterDetails extends React.PureComponent {
           <p className={styles.title}>功能列表</p>
           <ul className={styles.functionList}>
             {
-              this.functionList.map(item => <li key={item.id} >{item.name}</li>)
+              this.functionList.map(item => <li key={item.id} configname={item.configname} onClick={this.showInterConfig}>{item.name}</li>)
             }
           </ul>
         </div>
@@ -150,11 +151,10 @@ class InterDetails extends React.PureComponent {
         <div className={styles.intersectionHeader_right}>
           <span>上个路口:海淀路口2-2</span>
         </div>
-        {/* {
+        {
           configPop === 'primitive' &&
-         
-        }  */}
-        <Primitive IsprimitiveNone={this.closeInterConfig} InterId={this.InterId} />
+          <Primitive IsprimitiveNone={this.closeInterConfig} InterId={this.InterId} />
+        }
       </div>
     )
   }
