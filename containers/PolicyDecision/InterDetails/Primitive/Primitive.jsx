@@ -42,8 +42,6 @@ class Primitive extends Component {
 
   componentDidMount = () => {
     this.picPropsFun()
-    this.props.getInterdetailIsSignalling(1)
-    console.log(this.props)
   }
   componentDidUpdate = (prevState) => {
     // if (prevState !== this.props) {
@@ -54,11 +52,6 @@ class Primitive extends Component {
     if (prevState.data.issignaling !== issignaling) {
       this.getIssignaling(issignaling)
     }
-  }
-  onChangeRadio = (e) => {
-    this.setState({
-      value: e.target.value,
-    })
   }
   getIssignaling = (issignaling) => { //判断路口有无信号机//content改成date后端统一
 
@@ -151,7 +144,6 @@ class Primitive extends Component {
       if (offsetY > PrimitHeight) {
         offsetY = PrimitHeight
       }
-      console.log(offsetX, offsetY, this.defaultX)
       this.PullBox.style.left = `${offsetX}px`
       this.PullBox.style.top = `${offsetY}px`
     }
@@ -262,9 +254,9 @@ class Primitive extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
+  console.log(state,'qiao')
   return {
-    data: state.data,
+    data: state.interConfig,
   }
 }
 const mapDisPatchToProps = (dispatch) => {

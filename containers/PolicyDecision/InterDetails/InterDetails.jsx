@@ -150,10 +150,11 @@ class InterDetails extends React.PureComponent {
         <div className={styles.intersectionHeader_right}>
           <span>上个路口:海淀路口2-2</span>
         </div>
-        {
+        {/* {
           configPop === 'primitive' &&
-          <Primitive IsprimitiveNone={this.closeInterConfig} InterId={this.InterId} />
-        }
+         
+        }  */}
+        <Primitive IsprimitiveNone={this.closeInterConfig} InterId={this.InterId} />
       </div>
     )
   }
