@@ -80,7 +80,7 @@ class InterDetails extends React.PureComponent {
           <p className={styles.title}>功能列表</p>
           <ul className={styles.functionList}>
             {
-              this.functionList.map(item => <li key={item.id} onClick={() => this.showPrimitive(item.id)}>{item.name}</li>)
+              this.functionList.map(item => <li key={item.id} >{item.name}</li>)
             }
           </ul>
         </div>
