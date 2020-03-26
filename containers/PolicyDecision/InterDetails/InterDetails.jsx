@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
 import styles from './InterDetails.scss'
 
-import { getSingalInfo } from '../../../actions/interCofig'
+import { getSingalInfo, getPlanStage } from '../../../actions/interCofig'
 
 class InterDetails extends React.PureComponent {
   constructor(props) {
@@ -14,6 +14,7 @@ class InterDetails extends React.PureComponent {
       interMonitorLeft: 15,
       configPop: null,
       sinaglInfo: null,
+      planRunStage: null,
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
@@ -30,16 +31,24 @@ class InterDetails extends React.PureComponent {
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
     this.props.getSingalInfo(this.InterId)
+    this.props.getPlanStage(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { sinaglInfo } = this.props.data
+    const { sinaglInfo, planStage } = this.props.data
     if (prevState.data.sinaglInfo !== sinaglInfo) {
       this.getInterSingalInfo(sinaglInfo)
+    }
+    if (prevState.data.planStage !== planStage) {
+      this.getPlanRunStage(planStage)
     }
   }
   // 获取路口信号信息
   getInterSingalInfo = (sinaglInfo) => {
     this.setState({ sinaglInfo })
+  }
+  // 获取方案运行阶段
+  getPlanRunStage = (planStage) => {
+    this.setState({ planRunStage: planStage })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -56,7 +65,7 @@ class InterDetails extends React.PureComponent {
     this.setState({ configPop: configName })
   }
   render() {
-    const { interMonitorLeft, configPop, sinaglInfo } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo, planRunStage } = this.state
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.imgBox}>
@@ -70,14 +79,11 @@ class InterDetails extends React.PureComponent {
             {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
           <p className={styles.title}>勤务路线查询</p>
-          {
-            sinaglInfo &&
-            <ul className={styles.regionList}>
-              <li>所属区域 : <span>&nbsp;{sinaglInfo.DISTRICT_NAME}</span></li>
-              <li>管理单位 : 指挥中心</li>
-              <li>信号机类型 : {sinaglInfo.SIGNALSYSTEM}</li>
-            </ul>
-          }
+          <ul className={styles.regionList}>
+            <li>所属区域 : <span>&nbsp;{sinaglInfo ? sinaglInfo.DISTRICT_NAME : '--'}</span></li>
+            <li>管理单位 : 指挥中心</li>
+            <li>信号机类型 : {sinaglInfo ? sinaglInfo.SIGNALSYSTEM : '--'}</li>
+          </ul>
           <p className={styles.title}>功能列表</p>
           <ul className={styles.functionList}>
             {
@@ -86,70 +92,92 @@ class InterDetails extends React.PureComponent {
           </ul>
         </div>
         <div className={styles.AnimationTime}>
-          1
+          <div className={styles.palnRunBox}>
+            {
+              planRunStage &&
+              planRunStage.map((item) => {
+                const greenWid = item.GREEN * 2
+                const redWid = item.ALLRED * 2
+                const yellowWid = item.YELLOW * 2
+                return (
+                  <div className={styles.planRunStage}>
+                    <span className={styles.stageMsg}>阶段{item.STAGE_ID} &nbsp;&nbsp;</span>
+                    <div className={styles.runStage} style={{ width: '20px' }} />
+                    <div className={styles.greenStage} style={{ width: `${greenWid}px` }} />
+                    <div className={styles.redStage} style={{ width: `${redWid}px` }} />
+                    <div className={styles.yellowStage} style={{ width: `${yellowWid}px` }} />
+                  </div>
+                )
+              })
+            }
+          </div>
         </div>
         <div className={styles.DeviceStatus}>
           <ul className={styles.DeviceStatus_left}>
-            <li>设备状态 :<span>&nbsp;{sinaglInfo ? sinaglInfo.ALARMSTATE : ''}</span></li>
-            <li>控制状态 : {sinaglInfo ? sinaglInfo.CONTROLSTATE : ''}</li>
-            <li>当前时段 : <span className={styles.icons} />东西自转</li>
+            <li>设备状态 :<span>&nbsp;{sinaglInfo ? sinaglInfo.ALARMSTATE : '--'}</span></li>
+            <li>控制状态 : {sinaglInfo ? sinaglInfo.CONTROLSTATE : '--'}</li>
+            <li>
+              当前时段 :&nbsp;
+              {
+                sinaglInfo &&
+                <img width="30px" height="30px" src={`http://192.168.1.230:8080/atms-web/resources/imgs/stage/${sinaglInfo.STAGE_IMAGE}`} alt="" />
+              }
+              {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
+            </li>
             <li>当前方案 : 方案01</li>
             <li>2019/12/02 22:43:20</li>
           </ul>
           <div className={styles.DeviceStatus_right}>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
             <dl>
-              <dt><span></span></dt>
+              <dt><span /></dt>
               <dd>锁定</dd>
             </dl>
-
           </div>
         </div>
         <div className={styles.messageBox}>
-          <div className={styles.messageBox_top}>
-            <Icon type="close" />
-          </div>
+          <div className={styles.messageBox_top}><Icon type="close" /></div>
           <div className={styles.messageBox_bottom}>
-            <ul className={styles.messageBox_bottom_left}>
-              <li>关联编号:1001</li>
-              <li>维护单位:指挥中心</li>
-              <li>管理单位:指挥中心</li>
+            <ul className={styles.messageBox_bottom_left} style={{ paddingLeft: '34px' }}>
+              <li>关联编号 : 1001</li>
+              <li>维护单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
+              <li>管理单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
             </ul>
             <ul className={styles.messageBox_bottom_right}>
-              <li>设备型号:信号机1001</li>
-              <li>维护电话:110</li>
-              <li>设备转台:<span>正常</span></li>
+              <li>设备型号 : 信号机1001</li>
+              <li>维护电话 : 110</li>
+              <li>设备转台 :<span>&nbsp;正常</span></li>
             </ul>
           </div>
         </div>
         <div className={styles.intersectionHeader_left}>
-          <span>下个路口:海淀路口1-1</span>
+          <span>下个路口 : 海淀路口1-1</span>
         </div>
         <div className={styles.intersectionHeader_right}>
-          <span>上个路口:海淀路口2-2</span>
+          <span>上个路口 : 海淀路口2-2</span>
         </div>
         {
           configPop === 'primitive' &&
@@ -168,6 +196,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getSingalInfo: bindActionCreators(getSingalInfo, dispatch),
+    getPlanStage: bindActionCreators(getPlanStage, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterDetails)

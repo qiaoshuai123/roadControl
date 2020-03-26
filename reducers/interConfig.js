@@ -10,8 +10,11 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { issignaling: payload })
     case types.GET_SINGAL_INFO:
       return Object.assign({}, state, { sinaglInfo: payload })
+    case types.GET_PLAN_STAGE:
+      return Object.assign({}, state, { planStage: payload })
     default:
       return state
   }
 }
+
 export default interConfig
