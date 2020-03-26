@@ -19,26 +19,11 @@ class Primitive extends Component {
     }
     this.isPullBox = false
     this.equipmentList = [
-      {
-        id: 1,
-        name: '信号机',
-      },
-      {
-        id: 2,
-        name: '信号灯',
-      },
-      {
-        id: 3,
-        name: '相位',
-      },
-      {
-        id: 4,
-        name: '检测器',
-      },
-      {
-        id: 5,
-        name: '路段名称',
-      },
+      { id: 1, name: '信号机' },
+      { id: 2, name: '信号灯' },
+      { id: 3, name: '相位' },
+      { id: 4, name: '检测器' },
+      { id: 5, name: '路段名称' },
     ]
   }
 
