@@ -4,7 +4,7 @@
   position: absolute;
   z-index: 99;
   overflow-y: auto;
-  background: rgba(0,0,0,.3);
+  background: rgba(0, 0, 0, 0.3);
   left: 0;
   top: 0;
 }
@@ -18,18 +18,6 @@
   left: 50%;
   top: 70px;
   transform: translateX(-50%);
-  .closeNone {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: blue;
-    position: absolute;
-    right: 15px;
-    top: 15px;
-  }
   .bottom {
     position: absolute;
     bottom: 0;
@@ -166,11 +154,11 @@
       }
     }
   }
-  .PullBox{
-      width: 100px;
-      height: 200px;
-      position: absolute;
-      background-color: blue;
+  .PullBox {
+    width: 100px;
+    height: 200px;
+    position: absolute;
+    background-color: blue;
   }
 }
 .interMonitorBox {
@@ -283,6 +271,47 @@
       &:hover {
         color: #20667e;
       }
+    }
+  }
+}
+:global(.ant-modal-body) {
+  .mountingTable {
+    width: 640px;
+    height: 450px;
+    .mountingThead {
+      font-size: 12px;
+      height: 35px;
+      color: #95edf4;
+      display: flex;
+    }
+    .mountingTr {
+      height: 35px;
+      display: flex;
+    }
+    .mountingTd {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div{
+        &:first-child{
+          width: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        &:last-child{
+          flex: 1;
+          padding: 0 25px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+    .mountingTbody {
+      // height: calc(100% - 50px);
+      overflow-y: auto;
     }
   }
 }
