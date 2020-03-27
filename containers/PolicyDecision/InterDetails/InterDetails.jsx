@@ -105,7 +105,7 @@ class InterDetails extends React.PureComponent {
         <div className={styles.imgBox}>
           {
             sinaglInfo &&
-            <img width="100%" height="100%" src={`http://192.168.1.230:8080/atms-web/resources/imgs/backupsImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
+            <img width="100%" height="100%" src={`http://192.168.1.230:26001/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
           }
           {
             devicePics &&
