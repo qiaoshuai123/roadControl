@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Icon, Radio, Upload, message, Modal, Input } from 'antd'
+import { Icon, Radio, Upload, message, Modal, Input, Select, } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getInterdetailIsSignalling } from '../../../../actions/interCofig'
+import { getInterdetailIsSignalling, getprimitiveInutuitype } from '../../../../actions/interCofig'
 import styles from './Primitive.scss'
 
 import interImgs from './img/equipment_for.png'
@@ -10,6 +10,7 @@ import interImgs from './img/equipment_for.png'
 class Primitive extends Component {
   constructor(props) {
     super(props)
+    console.log(this.props, 'qoiao')
     this.state = {
       isMessageinter: 'none',
       ischeckbtninter: 'none',
@@ -17,27 +18,62 @@ class Primitive extends Component {
       value: 1,
       checkInterImgs: interImgs,
       isDeviceInformation: false, // 设备信息弹框
+      PrimitivBacImg: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG,
+      EquipmentList: [], // 右侧添加设备列表
+      deviceinformation: { // 设备添加弹窗
+        EquipmentModel: '', // 设备型号
+        CorrelationNumber: '', // 关联编号
+        EquipmentNumber: '', // 设备编号
+        FactoryNumber: '', // 出厂编号
+        EquipmentName: '', // 设备名称
+        Manufacturer: '', // 生产厂家
+        InstallationLocation: '', //安装位置
+        ManufacturerTelephone: '', //厂家电话
+        DateProduction: '', // 出厂日期
+        installDate: '', // 安装日期
+        SubordinateUnit: '', // 所属单位
+        WhetherToDisplay: '', // 是否显示
+        MaintenanceUnit: '', // 维护单位
+        MaintenancePhine: '', // 维护电话
+        EquipmentDetail: '', // 设备描述
+        EquipmentIcon: '', // 设备图标
+        PictWidth: '', // 图片宽
+        PicHeight: '', // 图片高
+      },
     }
     this.isPullBox = false
-    this.equipmentList = [
-      { id: 1, name: '信号机' },
-      { id: 2, name: '信号灯' },
-      { id: 3, name: '相位' },
-      { id: 4, name: '检测器' },
-      { id: 5, name: '路段名称' },
-    ]
+    // this.equipmentList = [
+    //   { id: 1, name: '信号机' },
+    //   { id: 2, name: '信号灯' },
+    //   { id: 3, name: '相位' },
+    //   { id: 4, name: '检测器' },
+    //   { id: 5, name: '路段名称' },
+    // ]
     this.InterId = this.props.InterId
   }
 
   componentDidMount = () => {
     this.picPropsFun()
+    this.props.getprimitiveInutuitype()
   }
   componentDidUpdate = (prevState) => {
-    console.log('111111')
+    if (prevState.data !== this.props.data) {
+      console.log(this.props)
+    }
+    const { primitiveInutuitype } = this.props.data
+    if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
+      this.getControlRoads(primitiveInutuitype)
+    }
   }
   onChangeRadio = (e) => {
     this.setState({
       value: e.target.value,
+    })
+  }
+  getControlRoads = (EquipmentList) => {
+    // console.log(primitiveInutuitype, 'ssss')
+    this.setState({
+      EquipmentList,
     })
   }
   getHasSingalDevice = () => {
@@ -161,10 +197,19 @@ class Primitive extends Component {
   btnNoneStop = (e) => {
     e.stopPropagation()
   }
-  checkequipment = (id) => { // 添加新设备
-    switch (id) {
-      case 1:
+  checkequipment = (item) => { // 添加新设备
+    console.log(item, '信号')
+    switch (item.UI_TYPE_NAME) {
+      case '信号机':
         this.getHasSingalDevice()
+        break
+      case '信号灯':
+        break
+      case '相位':
+        break
+      case '检测器':
+        break
+      case '路段名称':
         break
       default:
         break
@@ -181,6 +226,15 @@ class Primitive extends Component {
       })
     }
   }
+  SubordinateUnit = (value) => { // 所属单位
+    console.log(`selected ${value}`)
+  }
+  Isdisplay = (value) => { // 是否显示
+    console.log(`selected ${value}`)
+  }
+  Maintenanceunit = (value) => { // 维护单位
+    console.log(`selected ${value}`)
+  }
   render() {
     const {
       interMonitorLeft,
@@ -188,10 +242,16 @@ class Primitive extends Component {
       ischeckbtninter,
       checkInterImgs,
       isDeviceInformation,
+      PrimitivBacImg,
+      EquipmentList,
+      deviceinformation,
     } = this.state
+    const { Option } = Select
+    const { TextArea } = Input
     return (
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
+          <img src={`http://192.168.1.230:8080/atms-web/resources/imgs/backupsImg/${PrimitivBacImg}`} alt="" />
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
               <Icon type="right" />
@@ -199,11 +259,11 @@ class Primitive extends Component {
             <p><span />设备配置</p>
             <div className={styles.EquipmentBox}>
               {
-                this.equipmentList.map(item =>
+                EquipmentList && EquipmentList.map(item =>
                   (
-                    <dl key={item.id}>
-                      <dt><span onClick={() => this.checkequipment(item.id)} /></dt>
-                      <dd>{item.name}</dd>
+                    <dl key={item.ID}>
+                      <dt><span onClick={() => this.checkequipment(item)} /></dt>
+                      <dd>{item.UI_TYPE_NAME}</dd>
                     </dl>
                   ))
               }
@@ -255,10 +315,11 @@ class Primitive extends Component {
           <Modal
             title="保存信息"
             visible={isDeviceInformation}
-            onOk={this.handleOk}
+            // onOk={this.handleOk}
             onCancel={this.handleCancel}
+            footer={null}
             okText={'确认'}
-            width='680px'
+            width='720px'
           >
             <div className={styles.mountingTable}>
               <div className={styles.mountingTbody}>
@@ -275,28 +336,71 @@ class Primitive extends Component {
                   <div className={styles.mountingTd}><div>关联编号</div><div><Input /></div></div>
                 </div>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span>设备安装位置</span><Input /></div>
-                  <div className={styles.mountingTd}><span>生厂厂家联系方式</span><Input /></div>
+                  <div className={styles.mountingTd}><div>设备安装位置</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div>生厂厂家联系方式</div><div><Input /></div></div>
                 </div>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span>出厂日期</span><Input /></div>
-                  <div className={styles.mountingTd}><span>安装日期</span><Input /></div>
+                  <div className={styles.mountingTd}><div>出厂日期</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div>安装日期</div><div><Input /></div></div>
                 </div>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span>所属单位</span><Input /></div>
-                  <div className={styles.mountingTd}><span>是否显示</span><Input /></div>
+                  <div className={styles.mountingTd}><div>所属单位</div>
+                    <div>
+                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.SubordinateUnit}>
+                        <Option value="jack">Jack</Option>
+                        <Option value="lucy">Lucy</Option>
+                        <Option value="disabled" disabled>
+                          Disabled
+                        </Option>
+                        <Option value="Yiminghe">yiminghe</Option>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className={styles.mountingTd}><div>是否显示</div>
+                    <div>
+                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.Isdisplay}>
+                        <Option value="jack">Jack</Option>
+                        <Option value="lucy">Lucy</Option>
+                        <Option value="disabled" disabled>
+                          Disabled
+                        </Option>
+                        <Option value="Yiminghe">yiminghe</Option>
+                      </Select>
+                    </div>
+                  </div>
                 </div>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span>维护单位</span><Input /></div>
-                  <div className={styles.mountingTd}><span>维护电话</span><Input /></div>
+                  <div className={styles.mountingTd}><div>维护单位</div>
+                    <div>
+                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.Maintenanceunit}>
+                        <Option value="jack">Jack</Option>
+                        <Option value="lucy">Lucy</Option>
+                        <Option value="disabled" disabled>
+                          Disabled
+                        </Option>
+                        <Option value="Yiminghe">yiminghe</Option>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className={styles.mountingTd}><div>维护电话</div><div><Input /></div></div>
                 </div>
-                <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span>描述</span><Input /></div>
-                  <div className={styles.mountingTd}><span><b>*</b>请选择正常图标(点击图片选择)</span><Input /></div>
+                <div className={`${styles.mountingTr} ${styles.mountingTds}`}>
+                  <div className={styles.mountingTd}><div>描述</div><div><TextArea rows={2} /></div></div>
+                  <div className={styles.mountingTd}><div><span>*</span>请选择正常图标<br />(点击图片选择)</div>
+                    <div className={styles.PrimitiveBacimg}>123</div>
+                  </div>
                 </div>
+                {/* {`${styles.operationTop_box} ${styles.operationTopRightFor}`} */}
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}><span><b>*</b>宽</span><Input /></div>
-                  <div className={styles.mountingTd}><span><b>*</b>高</span><Input /></div>
+                  <div className={styles.mountingTd}><div><span>*</span>宽</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div><span>*</span>高</div><div><Input /></div></div>
+                </div>
+              </div>
+              <div className={styles.mountingTableBottom}>
+                <div>
+                  <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>提交</span>
+                  <span className={styles.mountingTableBottom_center}>删除</span>
+                  <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
                 </div>
               </div>
             </div>
@@ -315,6 +419,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterdetailIsSignalling: bindActionCreators(getInterdetailIsSignalling, dispatch),
+    getprimitiveInutuitype: bindActionCreators(getprimitiveInutuitype, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)
