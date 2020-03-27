@@ -302,7 +302,7 @@ class Primitive extends PureComponent {
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           {
-            getuiConfigs[1] && getuiConfigs[1].map(item => <PrimitiveEquipment items={item} key={item.ID} />)
+            getuiConfigs[1] && getuiConfigs[1].map(item => <PrimitiveEquipment itemimgs={item} key={item.ID} />)
           }
           <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} alt="" />
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
