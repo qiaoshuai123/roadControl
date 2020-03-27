@@ -16,3 +16,5 @@ export const API_ISSIGNALING = '/atms/singleUnitMonitor/hasSignal'
 export const API_SINGALINFO = '/atms/monitor/unitBasicInfo'
 export const API_PLAN_STAGE = '/atms/monitor/planRunning'
 export const API_PRIMITIVE_INUTUITYPE = '/atms/singleUnitMonitor/initUiType' // 图元设备配置//路口图元配置--初始化路口图元类型
+export const API_MONITOR_INFO = '/atms//monitor/monitorInfo'
+

@@ -9,6 +9,7 @@ import {
   API_SINGALINFO,
   API_PLAN_STAGE,
   API_PRIMITIVE_INUTUITYPE,
+  API_MONITOR_INFO,
 } from '../constants/API'
 
 export const getInterdetailIsSignalling = (interId) => {
@@ -61,6 +62,21 @@ export const getprimitiveInutuitype = () => { // 获取设备配置
       const result = await RestUtil.get(`${API_PRIMITIVE_INUTUITYPE}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_PRIMITIVE_INUTUITYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getMonitorInfo = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_MONITOR_INFO}/${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_MONITOR_INFO, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

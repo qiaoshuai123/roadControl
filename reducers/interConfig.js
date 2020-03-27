@@ -14,6 +14,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { planStage: payload })
     case types.GET_PRIMITIVE_INUTUITYPE:
       return Object.assign({}, state, { primitiveInutuitype: payload })
+    case types.GET_MONITOR_INFO:
+      return Object.assign({}, state, { monitorInfo: payload })
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Icon, Radio, Upload, message, Modal, Input, Select, } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -7,7 +7,7 @@ import styles from './Primitive.scss'
 
 import interImgs from './img/equipment_for.png'
 
-class Primitive extends Component {
+class Primitive extends PureComponent {
   constructor(props) {
     super(props)
     console.log(this.props, 'qoiao')
