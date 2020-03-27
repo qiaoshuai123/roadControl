@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Radio, Upload, message, Button } from 'antd'
+import { Icon, Radio, Upload, message, Modal, Input } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { getInterdetailIsSignalling } from '../../../../actions/interCofig'
@@ -16,6 +16,7 @@ class Primitive extends Component {
       interMonitorLeft: 0,
       value: 1,
       checkInterImgs: interImgs,
+      isDeviceInformation: false, // 设备信息弹框
     }
     this.isPullBox = false
     this.equipmentList = [
@@ -25,25 +26,31 @@ class Primitive extends Component {
       { id: 4, name: '检测器' },
       { id: 5, name: '路段名称' },
     ]
+    this.InterId = this.props.InterId
   }
 
   componentDidMount = () => {
     this.picPropsFun()
   }
   componentDidUpdate = (prevState) => {
-    console.log(this.props)
-    const { issignaling } = this.props.data
-    if (prevState.data.issignaling !== issignaling) {
-      this.getIssignaling(issignaling)
-    }
+    console.log('111111')
   }
   onChangeRadio = (e) => {
     this.setState({
       value: e.target.value,
     })
   }
-  getIssignaling = (issignaling = true) => { // 判断路口有无信号机//content改成date后端统一
-    console.log('接口返回的：：：', issignaling)
+  getHasSingalDevice = () => {
+    new Promise((resolve) => {
+      resolve(this.props.getInterdetailIsSignalling(this.InterId))
+    }).then(() => {
+      const { issignaling } = this.props.data
+      if (!issignaling) {
+        message.info('信号机已存在')
+      } else {
+        this.showModal()
+      }
+    })
   }
   picPropsFun = () => { // 上传底图
     this.picProps = {
@@ -64,7 +71,7 @@ class Primitive extends Component {
       },
     }
   }
-  closeNone = () => { // 关闭弹出页面
+  closeInter = () => { // 关闭弹出页面
     this.props.IsprimitiveNone()
   }
 
@@ -103,6 +110,22 @@ class Primitive extends Component {
   uploadPic = () => { // 上传底图
 
   }
+  showModal = () => { // 设备信息弹框显示
+    console.log(123456789)
+    this.setState({
+      isDeviceInformation: true,
+    })
+  }
+  handleOk = () => { // 设备信息弹框隐藏
+    this.setState({
+      isDeviceInformation: false,
+    })
+  }
+  handleCancel = () => { // 设备信息弹框隐藏
+    this.setState({
+      isDeviceInformation: false,
+    })
+  };
   PullBoxDown = (e) => { // 鼠标点击盒子
     this.isPullBox = true
     this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
@@ -141,7 +164,7 @@ class Primitive extends Component {
   checkequipment = (id) => { // 添加新设备
     switch (id) {
       case 1:
-        this.props.getInterdetailIsSignalling(this.props.InterId)
+        this.getHasSingalDevice()
         break
       default:
         break
@@ -159,12 +182,12 @@ class Primitive extends Component {
     }
   }
   render() {
-    console.log(this.props)
     const {
       interMonitorLeft,
       value, isMessageinter,
       ischeckbtninter,
       checkInterImgs,
+      isDeviceInformation,
     } = this.state
     return (
       <div className={styles.PrimitiveBox}>
@@ -188,7 +211,7 @@ class Primitive extends Component {
           </div>
           <div className={styles.bottom}>
             <div className={styles.bottom_left} onClick={this.Messageinter}>路口底图</div>
-            <div onClick={this.closeNone} className={styles.bottom_right}>返回</div>
+            <div onClick={this.closeInter} className={styles.bottom_right}>返回</div>
           </div>
           <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
             <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
@@ -229,6 +252,55 @@ class Primitive extends Component {
           <div className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
             123
           </div>
+          <Modal
+            title="保存信息"
+            visible={isDeviceInformation}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            okText={'确认'}
+            width='680px'
+          >
+            <div className={styles.mountingTable}>
+              <div className={styles.mountingTbody}>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><div><span>*</span>设备型号</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div>关联编号</div><div><Input /></div></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><div><span>*</span>设备编号</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div>出厂编号</div><div><Input /></div></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><div><span>*</span>设备型号</div><div><Input /></div></div>
+                  <div className={styles.mountingTd}><div>关联编号</div><div><Input /></div></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span>设备安装位置</span><Input /></div>
+                  <div className={styles.mountingTd}><span>生厂厂家联系方式</span><Input /></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span>出厂日期</span><Input /></div>
+                  <div className={styles.mountingTd}><span>安装日期</span><Input /></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span>所属单位</span><Input /></div>
+                  <div className={styles.mountingTd}><span>是否显示</span><Input /></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span>维护单位</span><Input /></div>
+                  <div className={styles.mountingTd}><span>维护电话</span><Input /></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span>描述</span><Input /></div>
+                  <div className={styles.mountingTd}><span><b>*</b>请选择正常图标(点击图片选择)</span><Input /></div>
+                </div>
+                <div className={styles.mountingTr}>
+                  <div className={styles.mountingTd}><span><b>*</b>宽</span><Input /></div>
+                  <div className={styles.mountingTd}><span><b>*</b>高</span><Input /></div>
+                </div>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     )
