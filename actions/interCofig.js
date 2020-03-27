@@ -119,14 +119,13 @@ export const getuiConfig = (interId) => {
 }
 
 export const getupdatebasemap = (interId, imgname) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     try {
-      const result = await RestUtil.post(`${API_PRIMITIVE_UPDATEBASEMAP}?unitId=${interId}&unitbackgroundimg=${imgname}`)
-      if (result.data.code === 200) {
-        dispatch({ type: types.GET_PRIMITIVE_UPDATEBASEMAP, payload: result.data.data })
-      } else {
-        console.error(result.data.message)
-      }
+      const promises = new Promise((resolve) => {
+        const result = RestUtil.post(`${API_PRIMITIVE_UPDATEBASEMAP}?unitId=${interId}&unitbackgroundimg=${imgname}`)
+        resolve(result)
+      })
+      dispatch({ type: types.GET_PRIMITIVE_UPDATEBASEMAP, payload: promises })
     } catch (e) {
       console.log(e)
     }

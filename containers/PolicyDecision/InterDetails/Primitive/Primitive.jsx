@@ -82,7 +82,6 @@ class Primitive extends PureComponent {
       this.getuiConfig(uiConfig)
     }
     if (prevState.data.updatebasemap !== updatebasemap) {
-      console.log(updatebasemap)
       this.getupdatebasemap(updatebasemap)
     }
   }
@@ -93,19 +92,20 @@ class Primitive extends PureComponent {
     })
   }
   getupdatebasemap = (updatebasemap) => {
-    console.log(123456)
-    if (updatebasemap === 1) {
-      message.success('保存成功')
-    }
+    updatebasemap.then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        console.log('success')
+      }
+      message.info(res.data.message)
+    })
   }
   getControlRoads = (EquipmentList) => {
-    // console.log(primitiveInutuitype, 'ssss')
     this.setState({
       EquipmentList,
     })
   }
   getbasemapImg = (basemapImgs) => {
-    //console.log(basemapImgs, 'qioa') //底图展示
     this.setState({
       basemapImgs,
     })
