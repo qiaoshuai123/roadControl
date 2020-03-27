@@ -89,8 +89,8 @@
     top: 0;
     z-index: 9;
     .interPageBox {
-      width: 360px;
-      height: 180px;
+      width: 450px;
+      height: 235px;
       background-color: white;
       position: absolute;
       margin: auto;
@@ -100,26 +100,28 @@
       bottom: 0;
       p {
         height: 45px;
+        color: #2d2c3b;
         line-height: 45px;
-        padding-left: 20px;
+        padding-left: 20px; 
         span {
           float: right;
           width: 35px;
-          height: 30px;
+          height: 60px;
           cursor: pointer;
-          line-height: 30px;
+          line-height: 60px;
           text-align: center;
           color: #2d2c3b;
           font-size: 24px;
         }
       }
       .interPage_center {
-        height: 95px;
+        height: 145px;
         color: #333333;
         display: flex;
         border-bottom: 1px solid #dddddd;
         .interPage_centerLeft {
           flex: 1;
+          padding-top: 30px;
           border-right: 1px solid #dddddd;
           :global(.ant-radio-wrapper) {
             margin: 10px;
@@ -154,11 +156,11 @@
       }
       .interPage_bottom {
         padding-top: 7px;
-        height: 40px;
+        height: 45px;
         width: 100%;
         span {
           float: right;
-          padding: 3px;
+          padding: 3px 17px;
           border-radius: 4px;
           cursor: pointer;
           margin-right: 20px;
