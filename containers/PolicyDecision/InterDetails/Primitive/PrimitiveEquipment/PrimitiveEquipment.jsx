@@ -7,7 +7,7 @@ class PrimitiveEquipment extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      imgs: this.props.itemimgs
+      // imgsObj: this.props.itemimgs
     }
   }
   componentDidMount() {
@@ -52,6 +52,8 @@ class PrimitiveEquipment extends Component {
     this.PullBox.style.cursor = 'default'
   }
   render() {
+    // console.log(this.props.data,'sssss')
+    const {sinaglInfo} =this.props.data
     // const {imgs} =this.state
     // const imgStyle = { position: 'absolute', top: `${imgs.P_TOP}px`, left: `${imgs.P_LEFT}px`, width: `${imgs.UI_WIDTH}px`, height: `${imgs.UI_HIGHT}px`, cursor: 'pointer' }
     // const srcs = imgs.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
@@ -66,9 +68,8 @@ class PrimitiveEquipment extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
-    // data: state.interConfig,
+    data: state.interConfig,
   }
 }
 const mapDisPatchToProps = (dispatch) => {
