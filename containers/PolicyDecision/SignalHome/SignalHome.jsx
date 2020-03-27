@@ -32,7 +32,7 @@ class SignalHome extends PureComponent {
       realTimeStatus: null,
       realTimeState: null,
       faultCompare: null,
-      hisenseSingal: null,
+      hisenseSingal: '000',
       siemensSingal: '000',
     }
     this.searchInterList = []
@@ -127,15 +127,21 @@ class SignalHome extends PureComponent {
     const obj = {}
     let totleDevice = 0
     let hisenseSingal = 0
+    let siemensSingal = 0
     realTimeStatus.forEach((item) => {
-      const devices = {}
-      devices.value = item.UNNORMALSIZE + item.NORMALSIZE
-      devices.name = item.CODE_NAME
-      totleDevice += devices.value
-      serise.push(devices)
-      if (item.SIGNAL_SYSTEM_CODE === 4) {
+      if (item.SIGNAL_SYSTEM_CODE === 3 || item.SIGNAL_SYSTEM_CODE === 4) {
+        const devices = {}
+        devices.value = item.UNNORMALSIZE + item.NORMALSIZE
+        devices.name = item.CODE_NAME
+        totleDevice += devices.value
+        serise.push(devices)
         const num = item.UNNORMALSIZE + item.NORMALSIZE
-        hisenseSingal = String(num).length === 2 ? '0' + num : String(num).length === 1 ? '00' + num : String(num)
+        if (item.SIGNAL_SYSTEM_CODE === 4) {
+          hisenseSingal = String(num).length === 2 ? '0' + num : String(num).length === 1 ? '00' + num : String(num)
+        }
+        if (item.SIGNAL_SYSTEM_CODE === 3) {
+          siemensSingal = String(num).length === 2 ? '0' + num : String(num).length === 1 ? '00' + num : String(num)
+        }
       }
     })
     obj.seriseData = serise
@@ -144,6 +150,7 @@ class SignalHome extends PureComponent {
       realTimeStatus: obj,
       realTimeState: realTimeStatus,
       hisenseSingal,
+      siemensSingal,
     })
   }
   // 故障统计
@@ -180,17 +187,15 @@ class SignalHome extends PureComponent {
       interList.forEach((item) => {
         const el = document.createElement('div')
         el.id = `marker${item.ID}`
-        if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 6) {
+        if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 3) {
           const sysIcon = item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OutlineH :
             item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OnlineH :
-              item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 6 ? OnlineS :
-                item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 6 ? OutlineS : null
+              item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 3 ? OutlineS :
+                item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 3 ? OnlineS : null
           el.style.background = `url(${sysIcon}) center center no-repeat`
-          // el.style['background-color'] = '#ff0000'
           el.style['background-size'] = '100% 100%'
           el.style.width = '22px'
           el.style.height = '22px'
-          // el.style['border-radius'] = '50%'
           new Promise((resolve) => {
             resolve(this.props.getBasicInterInfo(item.ID))
           }).then(() => {
@@ -199,7 +204,6 @@ class SignalHome extends PureComponent {
               .addTo(this.map)
             this.markers.push(marker)
           })
-          
         }
       })
     }
@@ -265,8 +269,7 @@ class SignalHome extends PureComponent {
     }
     return this.popup
   }
-  handleSearchInterFocus = (e) => {
-    // e.stopPropagation()
+  handleSearchInterFocus = () => {
     this.setState({ interListHeight: 300 })
   }
   hanleSelectInter = (e) => {
@@ -314,7 +317,6 @@ class SignalHome extends PureComponent {
     this.map = map
   }
   render() {
-    const { Option } = Select
     const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList } = this.state
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
@@ -391,12 +393,14 @@ class SignalHome extends PureComponent {
                 this.state.realTimeState &&
                 this.state.realTimeState.map((item, index) => {
                   const totle = this.state.realTimeStatus.totleDevice
-                  return (
-                    <dl key={item.CODE_NAME}>
-                      <dt><b className={styles.bone} /><li>{item.CODE_NAME}</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>在线{item.NORMALSIZE}处</li></dt>
-                      <dd><b /><li className={styles.nums}>{((item.NORMALSIZE + item.UNNORMALSIZE) / totle).toFixed(1) * 100}%</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>离线{item.UNNORMALSIZE}处</li></dd>
-                    </dl>
-                  )
+                  if (item.SIGNAL_SYSTEM_CODE === 3 || item.SIGNAL_SYSTEM_CODE === 4) {
+                    return (
+                      <dl key={item.CODE_NAME}>
+                        <dt><b className={styles.bone} style={{ backgroundColor: this.pieColor[index] }} /><li>{item.CODE_NAME}</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>在线{item.NORMALSIZE}处</li></dt>
+                        <dd><b /><li className={styles.nums}>{((item.NORMALSIZE + item.UNNORMALSIZE) / totle).toFixed(1) * 100}%</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>离线{item.UNNORMALSIZE}处</li></dd>
+                      </dl>
+                    )
+                  }
                 })
               }
             </div>
