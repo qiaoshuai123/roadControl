@@ -15,4 +15,5 @@ export const API_INTER_INFO = '/atms/mainTree/unitBasicInfo'
 export const API_ISSIGNALING = '/atms/singleUnitMonitor/hasSignal'
 export const API_SINGALINFO = '/atms/monitor/unitBasicInfo'
 export const API_PLAN_STAGE = '/atms/monitor/planRunning'
+export const API_MONITOR_INFO = '/atms//monitor/monitorInfo'
 
