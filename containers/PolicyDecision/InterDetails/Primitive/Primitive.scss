@@ -14,7 +14,6 @@
   overflow: hidden;
   position: absolute;
   //   background: url('../evaBg.png') center center no-repeat;
-  background-color: pink;
   left: 50%;
   top: 60px;
   transform: translateX(-50%);
@@ -26,14 +25,12 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    height: 25px;
+    height: 30px;
     width: 210px;
     display: flex;
     // justify-content: end;
     div {
       flex: 1;
-      background-color: #0095e3;
-      border: 1px solid #0b8ad5;
       display: flex;
       cursor: pointer;
       align-items: center;
@@ -41,6 +38,13 @@
       border-radius: 3px;
       &:nth-child(1) {
         margin-right: 20px;
+        background: url('./img/backbac.png') center center no-repeat;
+        background-size: 100% 100%;
+      }
+      &:nth-child(2){
+        background: url('./img/bacback.png') center center no-repeat;
+        background-size: 100% 100%;
+        padding-left: 15px;
       }
     }
   }
@@ -68,6 +72,11 @@
         width: 23%;
         height: 120px;
         margin: 5px;
+        img{
+          height: 100%;
+          width: 100%;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -202,6 +211,8 @@
       height: 20px;
       background-color: #ccc;
       margin: 3px;
+      background: url('./img/Equipment.png') center center no-repeat;
+      background-size: 100% 100%;
     }
   }
   .EquipmentBox {

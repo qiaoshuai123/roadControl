@@ -10,6 +10,10 @@ import {
   API_PLAN_STAGE,
   API_PRIMITIVE_INUTUITYPE,
   API_MONITOR_INFO,
+  API_PRIMITIVE_BASEMAPIMG,
+  API_PRIMITIVE_UICONFIG,
+  API_PRIMITIVE_UPDATEBASEMAP,
+  API_PRIMITIVE_UPLOAD
 } from '../constants/API'
 
 export const getInterdetailIsSignalling = (interId) => {
@@ -85,4 +89,62 @@ export const getMonitorInfo = (interId) => {
     }
   }
 }
+export const getbasemapImg = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PRIMITIVE_BASEMAPIMG}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_BASEMAPIMG, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+export const getuiConfig = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PRIMITIVE_UICONFIG}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_UICONFIG, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getupdatebasemap = (interId, imgname) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PRIMITIVE_UPDATEBASEMAP}?unitId=${interId}&unitbackgroundimg=${imgname}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_UPDATEBASEMAP, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+// // 未调试
+// export const getuiConfig = (interId) => {
+//   return async (dispatch) => {
+//     try {
+//       const result = await RestUtil.get(`${API_PRIMITIVE_UPLOAD}?unitId=${interId}`)
+//       if (result.data.code === 200) {
+//         dispatch({ type: types.GET_PRIMITIVE_UPLOAD, payload: result.data.data })
+//       } else {
+//         console.error(result.data.message)
+//       }
+//     } catch (e) {
+//       console.log(e)
+//     }
+//   }
+// }
 
