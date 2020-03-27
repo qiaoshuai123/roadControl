@@ -19,6 +19,9 @@ class InterDetails extends React.PureComponent {
       stagePics: null,
       planTimeInfo: null,
       showDeviceInfo: false,
+      systemTime: null,
+      deviceMsgT: 0,
+      deviceMsgL: 0,
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
@@ -52,6 +55,7 @@ class InterDetails extends React.PureComponent {
   }
   // 获取路口信号信息
   getInterSingalInfo = (sinaglInfo) => {
+    console.log(sinaglInfo)
     this.setState({ sinaglInfo })
   }
   // 获取方案运行阶段
@@ -65,6 +69,7 @@ class InterDetails extends React.PureComponent {
       devicePics: monitorInfo.UI_UNIT_CONFIGS,
       stagePics: monitorInfo.cfgStageInfos,
       planTimeInfo: monitorInfo.cfgPlan,
+      systemTime: monitorInfo.SINGE_SYSTEM_TIME,
     })
   }
   handleShowInterMonitor = () => {
@@ -78,7 +83,12 @@ class InterDetails extends React.PureComponent {
     console.log(item)
     this.setState({
       showDeviceInfo: true,
+      deviceMsgL: item.P_LEFT + 10,
+      deviceMsgT: item.P_TOP,
     })
+  }
+  handleCloseDeviceInfo = () => {
+    this.setState({ showDeviceInfo: false })
   }
   closeInterConfig = () => { // 图元配置出发关闭
     this.setState({ configPop: null })
@@ -88,19 +98,20 @@ class InterDetails extends React.PureComponent {
     this.setState({ configPop: configName })
   }
   render() {
-    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, planTimeInfo, showDeviceInfo } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, planTimeInfo, showDeviceInfo, systemTime } = this.state
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.imgBox}>
           {
             sinaglInfo &&
-            <img width="100%" height="100%" src={`http://192.168.1.230:8080/atms-web/resources/imgs/backupsImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="图元" />
+            <img width="100%" height="100%" src={`http://192.168.1.230:8080/atms-web/resources/imgs/backupsImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
           }
           {
             devicePics &&
             devicePics.map((item) => {
               const imgStyle = { position: 'absolute', top: `${item.P_TOP}px`, left: `${item.P_LEFT}px`, width: `${item.UI_WIDTH}px`, height: `${item.UI_HIGHT}px`, cursor: 'pointer' }
-              const srcs = item.DEVICE_NAME === '信号机' ? 'jm/' : ''
+              const srcs = item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
+                item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
               return (
                 <img
                   key={item.P_LEFT + item.P_TOP}
@@ -112,6 +123,24 @@ class InterDetails extends React.PureComponent {
               )
             })
           }
+          {
+            showDeviceInfo &&
+            <div className={styles.messageBox} style={{ top: `${this.state.deviceMsgT}px`, left: `${this.state.deviceMsgL}px` }}>
+              <div className={styles.messageBox_top} onClick={this.handleCloseDeviceInfo}><Icon type="close" /></div>
+              <div className={styles.messageBox_bottom}>
+                <ul className={styles.messageBox_bottom_left} style={{ paddingLeft: '34px' }}>
+                  <li>关联编号 : 1001</li>
+                  <li>维护单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
+                  <li>管理单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
+                </ul>
+                <ul className={styles.messageBox_bottom_right}>
+                  <li>设备型号 : 信号机1001</li>
+                  <li>维护电话 : 110</li>
+                  <li>设备转台 :<span>&nbsp;正常</span></li>
+                </ul>
+              </div>
+            </div>
+          }
         </div>
         <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
@@ -120,7 +149,7 @@ class InterDetails extends React.PureComponent {
           <p className={styles.title}>勤务路线查询</p>
           <ul className={styles.regionList}>
             <li>所属区域 : <span>&nbsp;{sinaglInfo ? sinaglInfo.DISTRICT_NAME : '--'}</span></li>
-            <li>管理单位 : 指挥中心</li>
+            <li>管理单位 : {sinaglInfo ? sinaglInfo.USER_GROUP_NAME : '--'}</li>
             <li>信号机类型 : {sinaglInfo ? sinaglInfo.SIGNALSYSTEM : '--'}</li>
           </ul>
           <p className={styles.title}>功能列表</p>
@@ -164,7 +193,7 @@ class InterDetails extends React.PureComponent {
               {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
             </li>
             <li>当前方案 : {planTimeInfo ? planTimeInfo.PLANNAME : '--'}</li>
-            <li>2019/12/02 22:43:20</li>
+            <li><span>{systemTime}</span></li>
           </ul>
           <div className={styles.DeviceStatus_right}>
             {
@@ -184,24 +213,6 @@ class InterDetails extends React.PureComponent {
             </dl> */}
           </div>
         </div>
-        {
-          showDeviceInfo &&
-          <div className={styles.messageBox}>
-            <div className={styles.messageBox_top}><Icon type="close" /></div>
-            <div className={styles.messageBox_bottom}>
-              <ul className={styles.messageBox_bottom_left} style={{ paddingLeft: '34px' }}>
-                <li>关联编号 : 1001</li>
-                <li>维护单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
-                <li>管理单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
-              </ul>
-              <ul className={styles.messageBox_bottom_right}>
-                <li>设备型号 : 信号机1001</li>
-                <li>维护电话 : 110</li>
-                <li>设备转台 :<span>&nbsp;正常</span></li>
-              </ul>
-            </div>
-          </div>
-        }
         <div className={styles.intersectionHeader_left}>
           <span>下个路口 : 海淀路口1-1</span>
         </div>
