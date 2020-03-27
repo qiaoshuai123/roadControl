@@ -22,6 +22,7 @@ class InterDetails extends React.PureComponent {
       systemTime: null,
       deviceMsgT: 0,
       deviceMsgL: 0,
+      deviceInfoMsg: null,
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
@@ -80,8 +81,8 @@ class InterDetails extends React.PureComponent {
     }
   }
   handleShowDeviceInfo = (item) => {
-    console.log(item)
     this.setState({
+      deviceInfoMsg: item,
       showDeviceInfo: true,
       deviceMsgL: item.P_LEFT + 10,
       deviceMsgT: item.P_TOP,
@@ -98,7 +99,7 @@ class InterDetails extends React.PureComponent {
     this.setState({ configPop: configName })
   }
   render() {
-    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, planTimeInfo, showDeviceInfo, systemTime } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg } = this.state
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.imgBox}>
@@ -129,14 +130,14 @@ class InterDetails extends React.PureComponent {
               <div className={styles.messageBox_top} onClick={this.handleCloseDeviceInfo}><Icon type="close" /></div>
               <div className={styles.messageBox_bottom}>
                 <ul className={styles.messageBox_bottom_left} style={{ paddingLeft: '34px' }}>
-                  <li>关联编号 : 1001</li>
-                  <li>维护单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
-                  <li>管理单位 : &nbsp;<span className={styles.unitName}>指挥中心</span></li>
+                  <li>关联编号 : {deviceInfoMsg.DEVICE_CODE}</li>
+                  <li>维护单位 : &nbsp;<span className={styles.unitName}>{deviceInfoMsg.MAINTENANCE_UNIT_NAME}</span></li>
+                  <li>管理单位 : &nbsp;<span className={styles.unitName}>{deviceInfoMsg.MANAGEMENT_UNIT_NAME}</span></li>
                 </ul>
                 <ul className={styles.messageBox_bottom_right}>
-                  <li>设备型号 : 信号机1001</li>
-                  <li>维护电话 : 110</li>
-                  <li>设备转台 :<span>&nbsp;正常</span></li>
+                  <li>设备型号 : {deviceInfoMsg.DEVICE_MODEL}</li>
+                  <li>维护电话 : {deviceInfoMsg.MAINTENANCE_UNIT_TEL}</li>
+                  <li>设备状态 :<span>&nbsp;{deviceInfoMsg.DEVICESTATENAME}</span></li>
                 </ul>
               </div>
             </div>
@@ -196,6 +197,14 @@ class InterDetails extends React.PureComponent {
             <li><span>{systemTime}</span></li>
           </ul>
           <div className={styles.DeviceStatus_right}>
+            <dl className={styles.deviceControlBtn}>
+              <dt><span>锁定</span></dt>
+              <dd>锁定</dd>
+            </dl>
+            <dl className={styles.deviceControlBtn}>
+              <dt><span>自动</span></dt>
+              <dd>取消步进</dd>
+            </dl>
             {
               stagePics &&
               stagePics.map((item) => {
