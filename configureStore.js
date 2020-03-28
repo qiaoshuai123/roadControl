@@ -8,7 +8,7 @@ function configureStore() {
   const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['data'],
+    whitelist: [],
   }
   const persistReducers = persistReducer(persistConfig, rootReducer)
   const store = createStore(persistReducers, applyMiddleware(thunk))

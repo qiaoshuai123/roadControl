@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from 'antd'
+import { Icon, Result } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
@@ -23,6 +23,8 @@ class InterDetails extends React.PureComponent {
       deviceMsgT: 0,
       deviceMsgL: 0,
       deviceInfoMsg: null,
+      presentTime: 0,
+      presentResidue: null,
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
@@ -40,7 +42,12 @@ class InterDetails extends React.PureComponent {
     this.InterId = this.props.match.params.id
     this.props.getSingalInfo(this.InterId)
     this.props.getPlanStage(this.InterId)
-    this.props.getMonitorInfo(this.InterId)
+    Promise.resolve(this.props.getMonitorInfo(this.InterId)).then((res) => {
+      console.log(res)
+      console.log(this.props)
+    })
+    console.log('didmount:::', this.props)
+    // this.props.getMonitorInfo(this.InterId)
   }
   componentDidUpdate = (prevState) => {
     const { sinaglInfo, planStage, monitorInfo } = this.props.data
@@ -53,15 +60,27 @@ class InterDetails extends React.PureComponent {
     if (prevState.data.monitorInfo !== monitorInfo) {
       this.getInfoMotor(monitorInfo)
     }
+    console.log(this.props)
   }
   // 获取路口信号信息
   getInterSingalInfo = (sinaglInfo) => {
-    console.log(sinaglInfo)
     this.setState({ sinaglInfo })
   }
   // 获取方案运行阶段
   getPlanRunStage = (planStage) => {
-    this.setState({ planRunStage: planStage })
+    this.setState({ planRunStage: planStage }, () => {
+      if (planStage.length > 0) {
+        const presentStage = (planStage.filter(item => item.STAGE_ID === item.STAGE_CODE))[0]
+        const { GREEN, ALLRED, YELLOW, stageAllIn, STAGE_TIME, CYCLELEN, COORDSYNCSTATUS } = presentStage
+        this.cycleTime = CYCLELEN
+        this.unitPx = 960 / CYCLELEN
+        const residue = stageAllIn - COORDSYNCSTATUS // 当前阶段剩余的时间
+        const presentResidue = residue > ALLRED + YELLOW ? residue - (ALLRED + YELLOW) :
+          residue > YELLOW && residue <= YELLOW + ALLRED ? (YELLOW + ALLRED) - residue :
+            YELLOW - residue
+        this.setState({ presentResidue, presentTime: COORDSYNCSTATUS })
+      }
+    })
   }
   // 获取设备图片信息
   getInfoMotor = (monitorInfo) => {
@@ -72,6 +91,7 @@ class InterDetails extends React.PureComponent {
       planTimeInfo: monitorInfo.cfgPlan,
       systemTime: monitorInfo.SINGE_SYSTEM_TIME,
     })
+    this.cycleTime = monitorInfo.PATTERNCYCLETIME
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -99,13 +119,17 @@ class InterDetails extends React.PureComponent {
     this.setState({ configPop: configName })
   }
   render() {
-    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics,
+      planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg, presentTime, presentResidue } = this.state
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.imgBox}>
+          <div className={styles.presentTimeBox}>
+            <div className={styles.presentTime} style={{ backgroundColor: '#008001' }}>{presentResidue}</div>
+          </div>
           {
             sinaglInfo &&
-            <img width="100%" height="100%" src={`http://192.168.1.230:26001/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
+            <img width="100%" height="100%" src={`http://192.168.1.123:26001/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
           }
           {
             devicePics &&
@@ -117,7 +141,7 @@ class InterDetails extends React.PureComponent {
                 <img
                   key={item.P_LEFT + item.P_TOP}
                   style={imgStyle}
-                  src={`http://192.168.1.230:8080/atms-web/resources/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
+                  src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
                   alt=""
                   onClick={() => { this.handleShowDeviceInfo(item) }}
                 />
@@ -162,16 +186,19 @@ class InterDetails extends React.PureComponent {
         </div>
         <div className={styles.AnimationTime}>
           <div className={styles.palnRunBox}>
+            <div className={styles.runStage} style={{ width: `${presentTime * this.unitPx}px` }} />
             {
               planRunStage &&
               planRunStage.map((item) => {
-                const greenWid = item.GREEN * 2
-                const redWid = item.ALLRED * 2
-                const yellowWid = item.YELLOW * 2
+                const greenWid = item.GREEN * this.unitPx
+                const redWid = item.ALLRED * this.unitPx
+                const yellowWid = item.YELLOW * this.unitPx
                 return (
                   <div className={styles.planRunStage} key={item.STAGE_ID}>
+                    {
+                      
+                    }
                     <span className={styles.stageMsg}>阶段{item.STAGE_ID} &nbsp;{item.GREEN + item.ALLRED + item.YELLOW}秒</span>
-                    <div className={styles.runStage} style={{ width: '20px' }} />
                     <div className={styles.greenStage} style={{ width: `${greenWid}px` }} />
                     <div className={styles.redStage} style={{ width: `${redWid}px` }} />
                     <div className={styles.yellowStage} style={{ width: `${yellowWid}px` }} />
@@ -189,7 +216,7 @@ class InterDetails extends React.PureComponent {
               当前时段 :&nbsp;
               {
                 sinaglInfo &&
-                <img width="30px" height="30px" src={`http://192.168.1.230:8080/atms-web/resources/imgs/stage/${sinaglInfo.STAGE_IMAGE}`} alt="" />
+                <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${sinaglInfo.STAGE_IMAGE}`} alt="" />
               }
               {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
             </li>
@@ -210,7 +237,7 @@ class InterDetails extends React.PureComponent {
               stagePics.map((item) => {
                 return (
                   <dl key={item.STAGENAME}>
-                    <dt><img width="30px" height="30px" src={`http://192.168.1.230:8080/atms-web/resources/imgs/stage/${item.STAGE_IMAGE}`} alt="" /></dt>
+                    <dt><img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${item.STAGE_IMAGE}`} alt="" /></dt>
                     <dd>{item.STAGENAME}</dd>
                   </dl>
                 )

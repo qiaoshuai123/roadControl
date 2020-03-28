@@ -12,6 +12,28 @@
     margin-left: -500px;
     width: 1000px;
     height: 800px;
+    .presentTimeBox {
+      z-index: 10;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      margin: -50px 0 0 -50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: pink;
+      .presentTime {
+        width: 70px;
+        height: 70px;
+        text-align: center;
+        line-height: 70px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+      }
+    }
   }
   .interMonitorBox {
     position: absolute;
@@ -76,17 +98,27 @@
   }
   .AnimationTime {
     position: absolute;
-    left: 25px;
-    bottom: 25px;
-    width:calc(100% - 580px);
+    left: 20px;
+    bottom: 15px;
+    width: 1000px;
     height: 80px;
-    padding-left: 20px;
+    // margin-left: -500px;
+    padding: 0 20px;
     background-color: #0e3355;
     display: flex;
     align-items: center;
     .palnRunBox {
+      position: relative;
       height: 60px;
       display: flex;
+      .runStage {
+        z-index: 5;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border-right: 2px solid black;
+      }
       .planRunStage {
         position: relative;
         height: 100%;
@@ -98,13 +130,6 @@
           font-size: 13px;
           font-weight: bold;
           color: black;
-        }
-        .runStage {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          border-right: 2px solid black;
         }
         .greenStage {
           width: 100px;
