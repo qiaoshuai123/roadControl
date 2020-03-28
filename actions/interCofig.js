@@ -11,9 +11,12 @@ import {
   API_PRIMITIVE_INUTUITYPE,
   API_MONITOR_INFO,
   API_PRIMITIVE_BASEMAPIMG,
-  API_PRIMITIVE_UICONFIG,
+  // API_PRIMITIVE_UICONFIG,
   API_PRIMITIVE_UPDATEBASEMAP,
-  API_PRIMITIVE_UPLOAD
+  API_PRIMITIVE_EDITDEVICEINFOPO,
+  API_PRIMITIVE_UPLOAD,
+  API_PRIMITIVE_SHOWDEVICEINFO,
+
 } from '../constants/API'
 
 export const getInterdetailIsSignalling = (interId) => {
@@ -103,20 +106,20 @@ export const getbasemapImg = () => {
     }
   }
 }
-export const getuiConfig = (interId) => {
-  return async (dispatch) => {
-    try {
-      const result = await RestUtil.get(`${API_PRIMITIVE_UICONFIG}?unitId=${interId}`)
-      if (result.data.code === 200) {
-        dispatch({ type: types.GET_PRIMITIVE_UICONFIG, payload: result.data.data })
-      } else {
-        console.error(result.data.message)
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
-}
+// export const getuiConfig = (interId) => {
+//   return async (dispatch) => {
+//     try {
+//       const result = await RestUtil.get(`${API_PRIMITIVE_UICONFIG}?unitId=${interId}`)
+//       if (result.data.code === 200) {
+//         dispatch({ type: types.GET_PRIMITIVE_UICONFIG, payload: result.data.data })
+//       } else {
+//         console.error(result.data.message)
+//       }
+//     } catch (e) {
+//       console.log(e)
+//     }
+//   }
+// }
 
 export const getupdatebasemap = (interId, imgname) => {
   return (dispatch) => {
@@ -126,6 +129,34 @@ export const getupdatebasemap = (interId, imgname) => {
         resolve(result)
       })
       dispatch({ type: types.GET_PRIMITIVE_UPDATEBASEMAP, payload: promises })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const geteditDeviceInfoPo = (interId, pLeft, pTop) => {
+  return (dispatch) => {
+    try {
+      const promises = new Promise((resolve) => {
+        const result = RestUtil.get(`${API_PRIMITIVE_EDITDEVICEINFOPO}?pLeft=${pLeft}&pTop=${pTop}&uiId=${interId}`)
+        resolve(result)
+      })
+      dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFOPO, payload: promises })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+export const getshowDeviceInfo = (uiId, unitId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PRIMITIVE_SHOWDEVICEINFO}?uiId=${uiId}&unitId=${unitId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_SHOWDEVICEINFO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
     } catch (e) {
       console.log(e)
     }
