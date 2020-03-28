@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Icon, Radio, Upload, message, Modal, Input, Select, } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getInterdetailIsSignalling, getprimitiveInutuitype, getbasemapImg, getuiConfig, getupdatebasemap } from '../../../../actions/interCofig'
+import { getInterdetailIsSignalling, getprimitiveInutuitype, getbasemapImg, getupdatebasemap, getshowDeviceInfo } from '../../../../actions/interCofig'
 import PrimitiveEquipment from './PrimitiveEquipment/PrimitiveEquipment'
 import styles from './Primitive.scss'
 // import interImgs from './img/Equipment.png' // 默认预览图
@@ -10,18 +10,19 @@ import styles from './Primitive.scss'
 class Primitive extends PureComponent {
   constructor(props) {
     super(props)
-    // console.log(this.props, 'qoiao')
     this.state = {
       isMessageinter: 'none',
       ischeckbtninter: 'none',
       interMonitorLeft: 0,
       value: 1,
-      checkInterImgs: '1.jpg',
+      checkInterImgs: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG,
       isDeviceInformation: false, // 设备信息弹框
       PrimitivBacImg: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG,
       EquipmentList: [], // 右侧添加设备列表
       basemapImgs: [], // 底图选择展示
       getuiConfigs: [], // 页面所有设备显示
+      SubordinateUnitLsit: [], //所属单位列表
+      MaintenanceUnitList: [], //维护单位列表
       deviceinformation: { // 设备添加弹窗
         EquipmentModel: '', // 设备型号
         CorrelationNumber: '', // 关联编号
@@ -53,12 +54,14 @@ class Primitive extends PureComponent {
     // ]
     this.InterId = this.props.InterId
     this.typeShowPic = false // 判断选择地图或选择图标
+    this.isShow = [{ id: 1, name: '是' }, { id: 2, name: '否' }]
   }
 
   componentDidMount = () => {
     this.picPropsFun()
     this.props.getprimitiveInutuitype()
-    this.props.getuiConfig(this.InterId)
+    this.primintBoxChild() // 给子盒子传递父级元素
+    // this.props.getuiConfig(this.InterId)
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG !== this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG) {
@@ -66,36 +69,45 @@ class Primitive extends PureComponent {
         PrimitivBacImg: nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG
       })
     }
+    if (nextProps.data.monitorInfo.UI_UNIT_CONFIGS !== this.props.data.monitorInfo.UI_UNIT_CONFIGS) {
+      this.setState({
+        getuiConfigs: nextProps.data.monitorInfo.UI_UNIT_CONFIGS
+      })
+    }
   }
   componentDidUpdate = (prevState) => {
-    if (prevState.data !== this.props.data) {
-      console.log(this.props)
-    }
-    const { primitiveInutuitype, basemapImg, uiConfig, updatebasemap } = this.props.data
+    // if (prevState.data !== this.props.data) {
+    //   console.log(this.props)
+    // }
+    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo } = this.props.data
     if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
       this.getControlRoads(primitiveInutuitype)
     }
     if (prevState.data.basemapImg !== basemapImg) {
       this.getbasemapImg(basemapImg)
     }
-    if (prevState.data.uiConfig !== uiConfig) {
-      this.getuiConfig(uiConfig)
-    }
+    // if (prevState.data.uiConfig !== uiConfig) {
+    //   this.getuiConfig(uiConfig)
+    // }
     if (prevState.data.updatebasemap !== updatebasemap) {
       this.getupdatebasemap(updatebasemap)
     }
+    if (prevState.data.showDeviceInfo !== showDeviceInfo) {
+      this.getshowDeviceInfo(showDeviceInfo)
+    }
   }
   onChangeRadio = (e) => {
+    const { PrimitivBacImg } = this.state
     this.setState({
       value: e.target.value,
-      checkInterImgs: '1.jpg',
+      checkInterImgs: PrimitivBacImg,
     })
   }
   getupdatebasemap = (updatebasemap) => {
     updatebasemap.then((res) => {
       const { code } = res.data
       if (code === 200) {
-        console.log('success')
+        this.isMessageinterNone()
       }
       message.info(res.data.message)
     })
@@ -110,21 +122,28 @@ class Primitive extends PureComponent {
       basemapImgs,
     })
   }
-  getuiConfig = (uiConfig) => {
+  getshowDeviceInfo = (showDeviceInfo) => {
+    console.log(showDeviceInfo, '弹窗信息')
     this.setState({
-      getuiConfigs: uiConfig,
+      SubordinateUnitLsit: showDeviceInfo.groups,
+      MaintenanceUnitList: showDeviceInfo.directCodes,
     })
-    // console.log(uiConfig)
   }
-  getHasSingalDevice = () => {
+  // getuiConfig = (uiConfig) => {
+  //   this.setState({
+  //     getuiConfigs: uiConfig,
+  //   })
+  //   // console.log(uiConfig)
+  // }
+  getHasSingalDevice = (id) => {
     new Promise((resolve) => {
       resolve(this.props.getInterdetailIsSignalling(this.InterId))
     }).then(() => {
       const { issignaling } = this.props.data
-      if (!issignaling) {
+      if (issignaling) {
         message.info('信号机已存在')
       } else {
-        this.showModal()
+        this.showModal(id)
       }
     })
   }
@@ -177,6 +196,7 @@ class Primitive extends PureComponent {
   }
   ischeckListItem = (e, imgs) => { // 点击图片选择路口
     e.stopPropagation()
+
     this.setState({
       // checkInterImgs, // 切换预览图照片
       ischeckbtninter: 'none',
@@ -189,10 +209,12 @@ class Primitive extends PureComponent {
   uploadPic = () => { // 上传底图
 
   }
-  showModal = () => { // 设备信息弹框显示
-    console.log(123456789)
+  showModal = (id) => { // 设备信息弹框显示
+    this.EquipmentConfigurationPic = id // 选择设备图标
     this.setState({
       isDeviceInformation: true,
+    }, () => {
+      this.props.getshowDeviceInfo(0, this.InterId)
     })
   }
   handleOk = () => { // 设备信息弹框隐藏
@@ -241,23 +263,23 @@ class Primitive extends PureComponent {
     e.stopPropagation()
   }
   checkequipment = (item) => { // 添加新设备
-    console.log(item, '信号')
+    // console.log(item, '信号')
     this.typeShowPic = false
     switch (item.UI_TYPE_NAME) {
       case '信号机':
-        this.getHasSingalDevice()
+        this.getHasSingalDevice(item)
         break
       case '信号灯':
-        this.showModal()
+        this.showModal(item.ID)
         break
       case '相位':
-        this.showModal()
+        this.showModal(item.ID)
         break
       case '检测器':
-        this.showModal()
+        this.showModal(item.ID)
         break
       case '路段名称':
-        this.showModal()
+        this.showModal(item.ID)
         break
       default:
         break
@@ -283,6 +305,11 @@ class Primitive extends PureComponent {
   Maintenanceunit = (value) => { // 维护单位
     console.log(`selected ${value}`)
   }
+  primintBoxChild = () => {
+    this.setState({
+      getuiConfigs: this.props.data.monitorInfo.UI_UNIT_CONFIGS,
+    })
+  }
   render() {
     const {
       interMonitorLeft,
@@ -295,14 +322,17 @@ class Primitive extends PureComponent {
       basemapImgs,
       getuiConfigs,
       deviceinformation,
+      SubordinateUnitLsit,
+      MaintenanceUnitList,
     } = this.state
+    console.log(MaintenanceUnitList, SubordinateUnitLsit)
     const { Option } = Select
     const { TextArea } = Input
     return (
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           {
-            getuiConfigs[1] && getuiConfigs[1].map(item => <PrimitiveEquipment itemimgs={item} key={item.ID} />)
+            getuiConfigs && getuiConfigs.map(item => <PrimitiveEquipment primintBox={this.PrimitiveInsideBox} itemimgs={item} key={item.ID} />)
           }
           <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} alt="" />
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
@@ -331,7 +361,11 @@ class Primitive extends PureComponent {
               {
                 this.typeShowPic && basemapImgs && basemapImgs.map((item, index) => (
                   <li key={index}>
-                    <img onClick={(e) => this.ischeckListItem(e, item)} src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`} alt="" />
+                    <img
+                      onClick={e => this.ischeckListItem(e, item)}
+                      src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
+                      alt=""
+                    />
                   </li>
                 ))
               }
@@ -405,25 +439,26 @@ class Primitive extends PureComponent {
                 <div className={styles.mountingTr}>
                   <div className={styles.mountingTd}><div>所属单位</div>
                     <div>
-                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.SubordinateUnit}>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled" disabled>
-                          Disabled
-                        </Option>
-                        <Option value="Yiminghe">yiminghe</Option>
+                      <Select
+                        style={{ width: '100%' }}
+                        // defaultValue={this.props.departmentId ? this.props.departmentId : ''}
+                        // optionFilterProp="children"
+                        onChange={this.SubordinateUnit}
+                      >
+                        {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
+                          <Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
                       </Select>
                     </div>
                   </div>
                   <div className={styles.mountingTd}><div>是否显示</div>
                     <div>
-                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.Isdisplay}>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled" disabled>
-                          Disabled
-                        </Option>
-                        <Option value="Yiminghe">yiminghe</Option>
+                      <Select
+                        // defaultValue="lucy"
+                        style={{ width: '100%' }}
+                        onChange={this.Isdisplay}
+                      >
+                        {this.isShow.map(item =>
+                          <Option value={item.id} key={item.id}>{item.name}</Option>)}
                       </Select>
                     </div>
                   </div>
@@ -431,13 +466,15 @@ class Primitive extends PureComponent {
                 <div className={styles.mountingTr}>
                   <div className={styles.mountingTd}><div>维护单位</div>
                     <div>
-                      <Select defaultValue="lucy" style={{ width: '100%' }} onChange={this.Maintenanceunit}>
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled" disabled>
-                          Disabled
-                        </Option>
-                        <Option value="Yiminghe">yiminghe</Option>
+                      <Select
+                        style={{ width: '100%' }}
+                        // defaultValue={this.props.departmentId ? this.props.departmentId : ''}
+                        // optionFilterProp="children"
+                        onChange={this.Maintenanceunit}
+                      >
+                        {
+                          MaintenanceUnitList && MaintenanceUnitList.map(item =>
+                            <Option value={item.ID} key={item.ID}>{item.CODE_NAME}</Option>)}
                       </Select>
                     </div>
                   </div>
@@ -480,8 +517,9 @@ const mapDisPatchToProps = (dispatch) => {
     getInterdetailIsSignalling: bindActionCreators(getInterdetailIsSignalling, dispatch),
     getprimitiveInutuitype: bindActionCreators(getprimitiveInutuitype, dispatch),
     getbasemapImg: bindActionCreators(getbasemapImg, dispatch),
-    getuiConfig: bindActionCreators(getuiConfig, dispatch),
+    // getuiConfig: bindActionCreators(getuiConfig, dispatch),
     getupdatebasemap: bindActionCreators(getupdatebasemap, dispatch),
+    getshowDeviceInfo: bindActionCreators(getshowDeviceInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)

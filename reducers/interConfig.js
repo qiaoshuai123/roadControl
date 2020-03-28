@@ -18,12 +18,16 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { monitorInfo: payload })
     case types.GET_PRIMITIVE_BASEMAPIMG:
       return Object.assign({}, state, { basemapImg: payload })
-    case types.GET_PRIMITIVE_UICONFIG:
-      return Object.assign({}, state, { uiConfig: payload })
+    // case types.GET_PRIMITIVE_UICONFIG:
+    //   return Object.assign({}, state, { uiConfig: payload })
     case types.GET_PRIMITIVE_UPDATEBASEMAP:
       return Object.assign({}, state, { updatebasemap: payload })
     case types.GET_PRIMITIVE_UPLOAD:
       return Object.assign({}, state, { upload: payload })
+    case types.GET_PRIMITIVE_EDITDEVICEINFOPO:
+      return Object.assign({}, state, { editDeviceInfoPo: payload })
+    case types.GET_PRIMITIVE_SHOWDEVICEINFO:
+      return Object.assign({}, state, { showDeviceInfo: payload })
     default:
       return state
   }
