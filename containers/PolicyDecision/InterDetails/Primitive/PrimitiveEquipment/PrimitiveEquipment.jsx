@@ -8,11 +8,12 @@ class PrimitiveEquipment extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      imgs: this.props.itemimgs
+      imgs: this.props.itemimgs,
     }
     // console.log(this.props,'sss')
     this.isPullBox = false
     this.PrimitiveInsideBox = this.props.primintBox
+    this.moveType = false
   }
   componentDidMount() {
 
@@ -20,12 +21,20 @@ class PrimitiveEquipment extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.itemimgs !== this.props.itemimgs) {
       this.setState({
-        imgs: nextProps.itemimgs
+        imgs: nextProps.itemimgs,
       })
     }
   }
+  componentDidUpdate = (prevState) => {
+    const { editDeviceInfoPo } = this.props.data
+    if (prevState.data.editDeviceInfoPo !== editDeviceInfoPo) {
+      this.getControlRoads(editDeviceInfoPo)
+    }
+  }
+  getControlRoads = (editDeviceInfoPo) => {
+    console.log(editDeviceInfoPo, '移动成功')
+  }
   PullBoxDown = (e) => { // 鼠标点击盒子
-    // console.log(e)
     this.isPullBox = true
     this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
     this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
@@ -33,6 +42,7 @@ class PrimitiveEquipment extends Component {
   }
   PullBoxMove = (e) => { // 鼠标移动盒子
     if (this.isPullBox) {
+      this.moveType = true
       this.offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
       this.offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
       const PrimitWidth = this.PrimitiveInsideBox.offsetWidth - this.PullBox.offsetWidth
@@ -54,16 +64,20 @@ class PrimitiveEquipment extends Component {
     }
   }
   PullBoxUp = () => { // 取消盒子移动
-    console.log(this.state.imgs, '盒子id')
+    // console.log(this.state.imgs, '盒子id')
     this.isPullBox = false
+    // if (this.moveType) {
     this.PullBox.style.cursor = 'default'
     this.props.geteditDeviceInfoPo(this.state.imgs.ID, this.offsetX, this.offsetY)
+    // }
   }
   render() {
     // console.log(this.props.data,'sssss')
     const { sinaglInfo } = this.props.data
     const { imgs } = this.state
-    const imgStyle = { position: 'absolute', top: `${imgs.P_TOP}px`, left: `${imgs.P_LEFT}px`, width: `${imgs.UI_WIDTH}px`, height: `${imgs.UI_HIGHT}px`, cursor: 'pointer' }
+    const imgStyle = {
+      position: 'absolute', top: `${imgs.P_TOP}px`, left: `${imgs.P_LEFT}px`, width: `${imgs.UI_WIDTH}px`, height: `${imgs.UI_HIGHT}px`, cursor: 'pointer',
+    }
     const srcs = imgs.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
       imgs.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
     return (
@@ -82,31 +96,10 @@ class PrimitiveEquipment extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.interConfig,
-  }
-}
-const mapDisPatchToProps = (dispatch) => {
-  return {
-    geteditDeviceInfoPo: bindActionCreators(geteditDeviceInfoPo, dispatch),
-  }
-}
+const mapStateToProps = state => ({
+  data: state.interConfig,
+})
+const mapDisPatchToProps = dispatch => ({
+  geteditDeviceInfoPo: bindActionCreators(geteditDeviceInfoPo, dispatch),
+})
 export default connect(mapStateToProps, mapDisPatchToProps)(PrimitiveEquipment)
-// {
-//   devicePics &&
-//   devicePics.map((item) => {
-//     const imgStyle = { position: 'absolute', top: `${item.P_TOP}px`, left: `${item.P_LEFT}px`, width: `${item.UI_WIDTH}px`, height: `${item.UI_HIGHT}px`, cursor: 'pointer' }
-//     const srcs = item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
-//       item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
-//     return (
-//       <img
-//         key={item.P_LEFT + item.P_TOP}
-//         style={imgStyle}
-//         src={`http://192.168.1.230:8080/atms-web/resources/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
-//         alt=""
-//         onClick={() => { this.handleShowDeviceInfo(item) }}
-//       />
-//     )
-//   })
-// }

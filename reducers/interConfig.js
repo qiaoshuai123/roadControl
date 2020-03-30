@@ -30,6 +30,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { showDeviceInfo: payload })
     case types.GET_SINGAL_CONTROL:
       return Object.assign({}, state, { singalControler: payload })
+    case types.GET_PRIMITIVE_SHOWUILIST:
+      return Object.assign({}, state, { showUiList: payload })
     default:
       return state
   }

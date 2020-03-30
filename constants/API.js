@@ -24,3 +24,4 @@ export const API_PRIMITIVE_UPLOAD = '/atms/basemap/upload' // 图元配置上传
 export const API_PRIMITIVE_EDITDEVICEINFOPO = '/atms/singleUnitMonitor/editDeviceInfoPo' // 更改设备位置
 export const API_PRIMITIVE_SHOWDEVICEINFO = '/atms/singleUnitMonitor/showDeviceInfo' // 添加设备获取下拉信息
 export const API_SINGAL_CONTROL = '/atms/singleUnitMonitor/sigalController'
+export const API_PRIMITIVE_SHOWUILIST = '/atms/singleUnitMonitor/showUiList' // 添加设备表单页面图标
