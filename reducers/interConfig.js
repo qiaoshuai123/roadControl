@@ -28,6 +28,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { editDeviceInfoPo: payload })
     case types.GET_PRIMITIVE_SHOWDEVICEINFO:
       return Object.assign({}, state, { showDeviceInfo: payload })
+    case types.GET_PRIMITIVE_SHOWUILIST:
+      return Object.assign({}, state, { showUiList: payload })
     default:
       return state
   }

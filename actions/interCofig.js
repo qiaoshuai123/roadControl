@@ -16,6 +16,7 @@ import {
   API_PRIMITIVE_EDITDEVICEINFOPO,
   API_PRIMITIVE_UPLOAD,
   API_PRIMITIVE_SHOWDEVICEINFO,
+  API_PRIMITIVE_SHOWUILIST,
 
 } from '../constants/API'
 
@@ -136,13 +137,14 @@ export const getupdatebasemap = (interId, imgname) => {
 }
 
 export const geteditDeviceInfoPo = (interId, pLeft, pTop) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     try {
-      const promises = new Promise((resolve) => {
-        const result = RestUtil.get(`${API_PRIMITIVE_EDITDEVICEINFOPO}?pLeft=${pLeft}&pTop=${pTop}&uiId=${interId}`)
-        resolve(result)
-      })
-      dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFOPO, payload: promises })
+      const result = await RestUtil.get(`${API_PRIMITIVE_EDITDEVICEINFOPO}?pLeft=${pLeft}&pTop=${pTop}&uiId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFOPO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
     } catch (e) {
       console.log(e)
     }
@@ -153,7 +155,21 @@ export const getshowDeviceInfo = (uiId, unitId) => {
     try {
       const result = await RestUtil.get(`${API_PRIMITIVE_SHOWDEVICEINFO}?uiId=${uiId}&unitId=${unitId}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_PRIMITIVE_SHOWDEVICEINFO, payload: result.data.data })
+        dispatch({ type: types.GET_PRIMITIVE_SHOWDEVICEINFO, payload: result.data }) // 接收唯一编号message
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+export const getshowUiList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PRIMITIVE_SHOWUILIST}?uiType=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_SHOWUILIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

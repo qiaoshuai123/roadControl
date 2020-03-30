@@ -38,11 +38,11 @@
       border-radius: 3px;
       &:nth-child(1) {
         margin-right: 20px;
-        background: url('./img/backbac.png') center center no-repeat;
+        background: url("./img/backbac.png") center center no-repeat;
         background-size: 100% 100%;
       }
-      &:nth-child(2){
-        background: url('./img/bacback.png') center center no-repeat;
+      &:nth-child(2) {
+        background: url("./img/bacback.png") center center no-repeat;
         background-size: 100% 100%;
         padding-left: 15px;
       }
@@ -68,11 +68,15 @@
       bottom: 0;
       margin: auto;
       flex-wrap: wrap;
-      li {
+      img{
+        margin: 10px;
+        float: left;
+      }
+      >li {
         width: 23%;
         height: 120px;
         margin: 5px;
-        img{
+        img {
           height: 100%;
           width: 100%;
           cursor: pointer;
@@ -102,7 +106,7 @@
         height: 45px;
         color: #2d2c3b;
         line-height: 45px;
-        padding-left: 20px; 
+        padding-left: 20px;
         span {
           float: right;
           width: 35px;
@@ -155,7 +159,7 @@
         }
       }
       .interPage_bottom {
-        border-top: 1px solid #dddddd;;
+        border-top: 1px solid #dddddd;
         padding-top: 7px;
         height: 45px;
         width: 100%;
@@ -214,7 +218,7 @@
       height: 20px;
       background-color: #ccc;
       margin: 3px;
-      background: url('./img/Equipment.png') center center no-repeat;
+      background: url("./img/Equipment.png") center center no-repeat;
       background-size: 100% 100%;
     }
   }
@@ -317,7 +321,12 @@
       }
     }
     .PrimitiveBacimg {
-      padding: 15px;
+      padding: 20px;
+      img {
+        max-width: 80px;
+        max-height: 60px;
+        cursor: pointer;
+      }
     }
     .mountingTd {
       flex: 1;
@@ -338,6 +347,7 @@
         &:last-child {
           flex: 1;
           // padding: 0 25px;
+          width: 177px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -359,7 +369,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      div{
+      div {
         height: 100%;
         width: 50%;
         display: flex;
