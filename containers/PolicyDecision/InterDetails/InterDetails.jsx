@@ -1,11 +1,11 @@
 import React from 'react'
-import { Icon, Result } from 'antd'
+import { Icon, Select } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
 import styles from './InterDetails.scss'
 
-import { getSingalInfo, getPlanStage, getMonitorInfo } from '../../../actions/interCofig'
+import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
 
 class InterDetails extends React.PureComponent {
   constructor(props) {
@@ -25,6 +25,9 @@ class InterDetails extends React.PureComponent {
       deviceInfoMsg: null,
       presentTime: 0,
       presentResidue: null,
+      stageCode: 0,
+      presentColor: '#008001',
+      singalControler: null,
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
@@ -40,17 +43,11 @@ class InterDetails extends React.PureComponent {
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
-    this.props.getSingalInfo(this.InterId)
-    this.props.getPlanStage(this.InterId)
-    Promise.resolve(this.props.getMonitorInfo(this.InterId)).then((res) => {
-      console.log(res)
-      console.log(this.props)
-    })
-    console.log('didmount:::', this.props)
-    // this.props.getMonitorInfo(this.InterId)
+    this.getInterAllDatas()
+    console.log('didmonut中的', this.props)
   }
   componentDidUpdate = (prevState) => {
-    const { sinaglInfo, planStage, monitorInfo } = this.props.data
+    const { sinaglInfo, planStage, monitorInfo, singalControler } = this.props.data
     if (prevState.data.sinaglInfo !== sinaglInfo) {
       this.getInterSingalInfo(sinaglInfo)
     }
@@ -61,6 +58,21 @@ class InterDetails extends React.PureComponent {
       this.getInfoMotor(monitorInfo)
     }
     console.log(this.props)
+    if (prevState.data.singalControler !== singalControler) {
+      this.getSingalControler(singalControler)
+    }
+  }
+  getInterAllDatas = () => {
+    const p1 = Promise.resolve(this.props.getSingalInfo(this.InterId))
+    const p2 = Promise.resolve(this.props.getPlanStage(this.InterId))
+    const p3 = Promise.resolve(this.props.getMonitorInfo(this.InterId))
+    this.realTimer = setTimeout(() => {
+      Promise.all([p1, p2, p3]).then(() => {
+        clearTimeout(this.realTimer)
+        this.realTimer = null
+        // this.getInterAllDatas()
+      })
+    }, 1100)
   }
   // 获取路口信号信息
   getInterSingalInfo = (sinaglInfo) => {
@@ -71,27 +83,34 @@ class InterDetails extends React.PureComponent {
     this.setState({ planRunStage: planStage }, () => {
       if (planStage.length > 0) {
         const presentStage = (planStage.filter(item => item.STAGE_ID === item.STAGE_CODE))[0]
-        const { GREEN, ALLRED, YELLOW, stageAllIn, STAGE_TIME, CYCLELEN, COORDSYNCSTATUS } = presentStage
-        this.cycleTime = CYCLELEN
-        this.unitPx = 960 / CYCLELEN
-        const residue = stageAllIn - COORDSYNCSTATUS // 当前阶段剩余的时间
-        const presentResidue = residue > ALLRED + YELLOW ? residue - (ALLRED + YELLOW) :
-          residue > YELLOW && residue <= YELLOW + ALLRED ? (YELLOW + ALLRED) - residue :
-            YELLOW - residue
-        this.setState({ presentResidue, presentTime: COORDSYNCSTATUS })
+        if (presentStage) {
+          const { GREEN, ALLRED, YELLOW, stageAllIn, STAGE_TIME, CYCLELEN, COORDSYNCSTATUS } = presentStage
+          this.cycleTime = CYCLELEN
+          this.unitPx = 960 / CYCLELEN
+          const residue = stageAllIn - COORDSYNCSTATUS // 当前阶段剩余的时间
+          const presentResidue = residue > ALLRED + YELLOW ? residue - (ALLRED + YELLOW) :
+            residue > YELLOW && residue <= YELLOW + ALLRED ? residue - YELLOW : residue
+          const presentColor = residue > ALLRED + YELLOW ? '#008001' :
+            residue > YELLOW && residue <= YELLOW + ALLRED ? '#ff0000' : 'yellow'
+          this.setState({ presentResidue, presentColor, presentTime: COORDSYNCSTATUS })
+        }
       }
     })
   }
   // 获取设备图片信息
   getInfoMotor = (monitorInfo) => {
-    console.log(monitorInfo)
     this.setState({
       devicePics: monitorInfo.UI_UNIT_CONFIGS,
       stagePics: monitorInfo.cfgStageInfos,
       planTimeInfo: monitorInfo.cfgPlan,
       systemTime: monitorInfo.SINGE_SYSTEM_TIME,
+      stageCode: monitorInfo.STAGE_CODE,
     })
     this.cycleTime = monitorInfo.PATTERNCYCLETIME
+  }
+  // 信号机控制
+  getSingalControler = (singalControler) => {
+    this.setState({ singalControler })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -117,36 +136,45 @@ class InterDetails extends React.PureComponent {
   showInterConfig = (e) => { // 展示图元配置
     const configName = e.target.getAttribute('configname')
     this.setState({ configPop: configName })
+    if (configName === 'singalConfig') {
+      this.props.getSingalController(this.InterId)
+    }
   }
   render() {
-    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics,
-      planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg, presentTime, presentResidue } = this.state
+    const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, stageCode, singalControler,
+      planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg, presentTime, presentResidue, presentColor } = this.state
+    const { Option } = Select
     return (
       <div className={styles.interDetailsBox}>
         <div className={styles.imgBox}>
           <div className={styles.presentTimeBox}>
-            <div className={styles.presentTime} style={{ backgroundColor: '#008001' }}>{presentResidue}</div>
+            <div className={styles.presentTime} style={{ backgroundColor: presentColor }}>{presentResidue}</div>
           </div>
           {
             sinaglInfo &&
             <img width="100%" height="100%" src={`http://192.168.1.123:26001/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
           }
           {
-            devicePics &&
-            devicePics.map((item) => {
-              const imgStyle = { position: 'absolute', top: `${item.P_TOP}px`, left: `${item.P_LEFT}px`, width: `${item.UI_WIDTH}px`, height: `${item.UI_HIGHT}px`, cursor: 'pointer' }
-              const srcs = item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
-                item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
-              return (
-                <img
-                  key={item.P_LEFT + item.P_TOP}
-                  style={imgStyle}
-                  src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
-                  alt=""
-                  onClick={() => { this.handleShowDeviceInfo(item) }}
-                />
-              )
-            })
+            devicePics && sinaglInfo ?
+              devicePics.map((item) => {
+                const imgStyle = { position: 'absolute', top: `${item.P_TOP}px`, left: `${item.P_LEFT}px`, width: `${item.UI_WIDTH}px`, height: `${item.UI_HIGHT}px`, cursor: 'pointer' }
+                const srcs = item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
+                  item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
+                if (!item.DEVICE_ID) {
+                  return (
+                    <div className={styles.deviceRoadName} key={item.P_LEFT + item.P_TOP} style={{ top: item.P_TOP, left: item.P_LEFT, width: item.UI_WIDTH > 0 ? 0 : 'auto' }}>{item.DETAIL}</div>
+                  )
+                }
+                return (
+                  <img
+                    key={item.P_LEFT + item.P_TOP}
+                    style={imgStyle}
+                    src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
+                    alt=""
+                    onClick={() => { this.handleShowDeviceInfo(item) }}
+                  />
+                )
+              }) : null
           }
           {
             showDeviceInfo &&
@@ -186,7 +214,7 @@ class InterDetails extends React.PureComponent {
         </div>
         <div className={styles.AnimationTime}>
           <div className={styles.palnRunBox}>
-            <div className={styles.runStage} style={{ width: `${presentTime * this.unitPx}px` }} />
+            <div className={styles.runStage} style={{ width: `${presentTime * this.unitPx}px` }}><span className={styles.stageInner} /></div>
             {
               planRunStage &&
               planRunStage.map((item) => {
@@ -195,9 +223,6 @@ class InterDetails extends React.PureComponent {
                 const yellowWid = item.YELLOW * this.unitPx
                 return (
                   <div className={styles.planRunStage} key={item.STAGE_ID}>
-                    {
-                      
-                    }
                     <span className={styles.stageMsg}>阶段{item.STAGE_ID} &nbsp;{item.GREEN + item.ALLRED + item.YELLOW}秒</span>
                     <div className={styles.greenStage} style={{ width: `${greenWid}px` }} />
                     <div className={styles.redStage} style={{ width: `${redWid}px` }} />
@@ -216,20 +241,22 @@ class InterDetails extends React.PureComponent {
               当前时段 :&nbsp;
               {
                 sinaglInfo &&
-                <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${sinaglInfo.STAGE_IMAGE}`} alt="" />
-              }
+                <span className={styles.stageImgBox}>
+                  <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${sinaglInfo.STAGE_IMAGE}`} alt="" />
+                </span>
+              }&nbsp;
               {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
             </li>
             <li>当前方案 : {planTimeInfo ? planTimeInfo.PLANNAME : '--'}</li>
-            <li><span>{systemTime}</span></li>
+            <li>{systemTime}</li>
           </ul>
           <div className={styles.DeviceStatus_right}>
             <dl className={styles.deviceControlBtn}>
-              <dt><span>锁定</span></dt>
+              <dt><span className={styles.stageImgBox}>锁定</span></dt>
               <dd>锁定</dd>
             </dl>
             <dl className={styles.deviceControlBtn}>
-              <dt><span>自动</span></dt>
+              <dt><span className={styles.stageImgBox}>自动</span></dt>
               <dd>取消步进</dd>
             </dl>
             {
@@ -237,7 +264,15 @@ class InterDetails extends React.PureComponent {
               stagePics.map((item) => {
                 return (
                   <dl key={item.STAGENAME}>
-                    <dt><img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${item.STAGE_IMAGE}`} alt="" /></dt>
+                    <dt>
+                      <span className={styles.stageImgBox}>
+                        {
+                          item.STAGENO === stageCode &&
+                          <span className={styles.runningStage}><Icon type="check" /></span>
+                        }
+                        <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${item.STAGE_IMAGE}`} alt="" />
+                      </span>
+                    </dt>
                     <dd>{item.STAGENAME}</dd>
                   </dl>
                 )
@@ -263,7 +298,72 @@ class InterDetails extends React.PureComponent {
           configPop === 'singalConfig' &&
           <div className={styles.singalConfigBox}>
             <div className={styles.singlConfig}>
-              123
+              <div className={styles.title}>
+                信号机控制
+                <span className={styles.colseSingalConfig} onClick={this.closeInterConfig}><Icon type="close" /></span>
+              </div>
+              <div className={styles.controlStagePic}>
+                {
+                  singalControler && singalControler.cfgPlan.cfgStageInfos.length > 0 ?
+                    singalControler.cfgPlan.cfgStageInfos.map((item) => {
+                      const picname = singalControler.STAGE_CODE === item.STAGENO ? item.STAGE_IMAGE : item.STAGE_IMAGE.replace('_ch.gif', '.gif')
+                      return (
+                        <div key={item.STAGENO} className={styles.stagePic} style={{ cursor: 'pointer' }}>
+                          <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${picname}`} alt="" />
+                        </div>
+                      )
+                    }) : null
+                }
+                {
+                  singalControler &&
+                  new Array(15 - singalControler.cfgPlan.cfgStageInfos.length).fill(true).map((item, index) => {
+                    return (
+                      <div key={item + index} className={styles.stagePic}>未配置</div>
+                    )
+                  })
+                }
+                <div className={styles.stagePic} style={{ fontSize: '13px', color: '#f1f1fb', cursor: 'pointer' }}>自动</div>
+              </div>
+              <div className={styles.controlStage}>
+                <div>当前控制方式 ：{singalControler ? singalControler.ControlStateName : '---'}</div>
+                <div className={styles.controlStageList}>
+                  <span>锁定控制方式 ：</span>
+                  {
+                    singalControler && singalControler.controlCodes.length > 0 ?
+                      <Select defaultValue={singalControler.CONTROL_STATE}>
+                        {
+                          singalControler.controlCodes.map((item) => {
+                            return (
+                              <Option key={item.C_CODE} value={item.C_CODE}>{item.CODE_NAME}</Option>
+                            )
+                          })
+                        }
+                      </Select> : '---'
+                  }
+                  
+                  <span className={styles.controlExcute}>执行控制</span>
+                </div>
+              </div>
+              <div className={styles.controlStage}>
+                <div>当前方案 ：{singalControler ? singalControler.cfgPlan.PLANNAME : '---'}</div>
+                <div className={styles.controlStageList}>
+                  <span>锁定控制方案 ：</span>
+                  {
+                    singalControler && singalControler.cfgPlans.length > 0 ?
+                      <Select defaultValue={singalControler.PLAN_ID}>
+                        {
+                          singalControler.cfgPlans.map((item) => {
+                            return (
+                              <Option key={item.PLANNO} value={item.PLANNO}>{item.PLANNAME}</Option>
+                            )
+                          })
+                        }
+                      </Select> : '---'
+                  }
+                  
+                  <span className={styles.controlExcute}>执行控制</span>
+                </div>
+              </div>
             </div>
           </div>
         }
@@ -282,6 +382,7 @@ const mapDisPatchToProps = (dispatch) => {
     getSingalInfo: bindActionCreators(getSingalInfo, dispatch),
     getPlanStage: bindActionCreators(getPlanStage, dispatch),
     getMonitorInfo: bindActionCreators(getMonitorInfo, dispatch),
+    getSingalController: bindActionCreators(getSingalController, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterDetails)
