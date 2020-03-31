@@ -29,7 +29,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #BAD5AC;
+      background-color: #bad5ac;
       .presentTime {
         width: 70px;
         height: 70px;
@@ -66,14 +66,14 @@
       padding-left: 10px;
       line-height: 40px;
       font-size: 16px;
-      background-color: #04183D;
+      background-color: #04183d;
     }
     .regionList {
       padding: 25px 0 25px;
       margin: 0;
       display: flex;
       flex-direction: column;
-      background-image: linear-gradient(to bottom, #05224C, #031636);
+      background-image: linear-gradient(to bottom, #05224c, #031636);
       li {
         height: 34px;
         display: flex;
@@ -87,7 +87,7 @@
     .functionList {
       height: calc(100% - 240px);
       padding: 25px 0 25px 0;
-      background-color: rgba(5,34,78, .5);
+      background-color: rgba(5, 34, 78, 0.5);
       overflow-y: auto;
       li {
         height: 32px;
@@ -95,7 +95,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all .2s;
+        transition: all 0.2s;
         &:hover {
           color: #01d8e8;
         }
@@ -155,7 +155,7 @@
         }
         .yellowStage {
           width: 20px;
-          background-color: #FFFF01;
+          background-color: #ffff01;
         }
       }
     }
@@ -174,7 +174,7 @@
       width: 230px;
       padding: 55px 40px 45px 25px;
       flex-direction: column;
-      color: #9BE8ED;
+      color: #9be8ed;
       li {
         flex: 1;
         display: flex;
@@ -196,7 +196,7 @@
       display: flex;
       flex-wrap: wrap;
       padding: 30px 15px 15px;
-      background: linear-gradient(to top, #000928,#062251);
+      background: linear-gradient(to top, #000928, #062251);
       overflow-y: auto;
       font-size: 13px;
       .deviceControlBtn {
@@ -220,7 +220,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 0 8px #029FB7;
+            box-shadow: inset 0 0 8px #029fb7;
             border-radius: 4px;
             .runningStage {
               position: absolute;
@@ -232,7 +232,7 @@
               line-height: 14px;
               color: #fff;
               font-weight: bold;
-              background-color: #FFCB01;
+              background-color: #ffcb01;
             }
           }
         }
@@ -267,7 +267,7 @@
       font-size: 16px;
       color: #44c1d1;
       cursor: pointer;
-      transition: all .2s;
+      transition: all 0.2s;
       &:hover {
         transform: rotate(-180deg);
       }
@@ -285,7 +285,7 @@
           flex: 1;
           display: flex;
           align-items: center;
-          color: #A3F7FC;
+          color: #a3f7fc;
           .unitName {
             display: inline-block;
             width: 80px;
@@ -322,12 +322,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0, .4);
+    background-color: rgba(0, 0, 0, 0.4);
     .singlConfig {
       width: 500px;
       height: 50%;
       margin-top: -5%;
-      background-image: linear-gradient(to bottom, rgba(14,51,85, .8), rgba(1,14,48, .8));
+      background-image: linear-gradient(to bottom, rgba(14, 51, 85, 0.8), rgba(1, 14, 48, 0.8));
       border-radius: 4px;
       overflow: hidden;
       .title {
@@ -335,7 +335,7 @@
         height: 40px;
         padding-left: 10px;
         line-height: 40px;
-        background-color: rgba(14,51,85, .8);
+        background-color: rgba(14, 51, 85, 0.8);
         .colseSingalConfig {
           position: absolute;
           top: 10px;
@@ -346,7 +346,7 @@
           line-height: 20px;
           font-size: 16px;
           cursor: pointer;
-          transition: all .2s;
+          transition: all 0.2s;
           &:hover {
             transform: rotate(-180deg);
           }
@@ -362,7 +362,7 @@
           height: 45px;
           margin: 0 0 10px 15px;
           border-radius: 3px;
-          box-shadow: inset 0 0 8px #029FB7;
+          box-shadow: inset 0 0 8px #029fb7;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -380,11 +380,11 @@
             background-color: #063657;
             border: 1px solid #063657;
             outline: none;
-            color: #F1F1FB;
+            color: #f1f1fb;
             box-shadow: none;
           }
           :global(.ant-select-arrow) {
-              color: #F1F1FB;
+            color: #f1f1fb;
           }
           :global(.ant-select-dropdown-menu-item) {
             padding: 0 12px;
@@ -392,7 +392,7 @@
           .controlExcute {
             padding: 5px 15px 6px;
             margin-left: 20px;
-            background-color: #029FB7;
+            background-color: #029fb7;
             border-radius: 3px;
             cursor: pointer;
           }
@@ -401,7 +401,8 @@
     }
   }
 }
-
-
-
-
+.wrapbox{
+  :global(.ant-modal-body){
+    background-color: '';
+  }
+}
