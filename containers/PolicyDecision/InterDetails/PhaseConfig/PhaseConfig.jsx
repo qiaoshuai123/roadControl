@@ -35,10 +35,10 @@ class PhaseConfig extends React.PureComponent {
               <div className={styles.phaseConfigBoxTop_left}>相位配置</div>
               <div className={styles.phaseConfigBoxTop_right} onClick={this.closePhaseAdd}><Icon type="close" /></div>
             </div>
-            <div className={styles.phaseConfigBox_center}>
-              <span>相位编号:</span><Input />
-              <span>相位名称:</span><Input />
-              <span>相位特征:</span><Input />
+            <div className={styles.messagePhaseBox_center}>
+              <div><span>相位编号:</span><Input /></div>
+              <div><span>相位名称:</span><Input /></div>
+              <div><span>相位特征:</span><Input /></div>
             </div>
             <ul className={styles.phaseConfigBox_pavement}>
               <li><Checkbox onChange={this.ChangeCheck}>北</Checkbox></li>
