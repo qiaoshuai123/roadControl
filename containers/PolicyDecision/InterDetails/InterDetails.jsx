@@ -141,6 +141,9 @@ class InterDetails extends React.PureComponent {
       this.props.getSingalController(this.InterId)
     }
   }
+  handleCancel = () => { // 相位配置出发关闭
+    this.setState({ configPop: null })
+  }
   render() {
     const { interMonitorLeft, configPop, sinaglInfo, planRunStage, devicePics, stagePics, stageCode, singalControler,
       planTimeInfo, showDeviceInfo, systemTime, deviceInfoMsg, presentTime, presentResidue, presentColor } = this.state
@@ -369,13 +372,18 @@ class InterDetails extends React.PureComponent {
         <Modal
           visible={configPop === 'phaseConfig'}
           closable={false}
+          bodyStyle={{ backgroundColor: '', backgroundImage: `linear-gradient(to bottom, rgba(14, 51, 85,.8), rgba(1, 14, 48,.8))`, padding: 0 }}
+          getContainer={document.getElementsByClassName('div')[0]}
+          style={{ backgroundColor: '' }}
           centered
+          onCancel={this.handleCancel}
           footer={null}
+          wrapClassName="wrapbox"
           width="700"
         >
-          <PhaseConfig />
+          <PhaseConfig closePhaseAdd={this.handleCancel} />
         </Modal>
-      </div>
+      </div >
     )
   }
 }
