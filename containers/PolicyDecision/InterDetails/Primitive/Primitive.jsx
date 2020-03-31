@@ -11,7 +11,7 @@ import {
   getshowDeviceInfo,
   getshowUiList,
 } from '../../../../actions/interCofig'
-import PrimitiveEquipment from './PrimitiveEquipment/PrimitiveEquipment'
+import DeviceDetails from './DeviceDetails/DeviceDetails'
 // import formImg from "http://192.168.1.123:26001/atms/imgs/baseImg/1.jpg"
 import styles from './Primitive.scss'
 // import interImgs from './img/Equipment.png' // 默认预览图
@@ -30,7 +30,6 @@ class Primitive extends PureComponent {
       EquipmentList: [], // 右侧添加设备列表
       basemapImgs: [], // 底图选择展示
       picList: [], // 添加设备图标展示
-      getuiConfigs: [], // 页面所有设备显示
       SubordinateUnitLsit: [], // 所属单位列表
       MaintenanceUnitList: [], // 维护单位列表
       EquipmentModel: '', // 设备型号
@@ -69,18 +68,12 @@ class Primitive extends PureComponent {
   componentDidMount = () => {
     this.picPropsFun()
     this.props.getprimitiveInutuitype()
-    this.primintBoxChild() // 给子盒子传递父级元素
     // this.props.getuiConfig(this.InterId)
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG !== this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG) {
       this.setState({
         PrimitivBacImg: nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG
-      })
-    }
-    if (nextProps.data.monitorInfo.UI_UNIT_CONFIGS !== this.props.data.monitorInfo.UI_UNIT_CONFIGS) {
-      this.setState({
-        getuiConfigs: nextProps.data.monitorInfo.UI_UNIT_CONFIGS
       })
     }
   }
@@ -147,12 +140,6 @@ class Primitive extends PureComponent {
       MaintenanceUnit: showDeviceInfo.data.directCodes[0].CODE_NAME,
     })
   }
-  // getuiConfig = (uiConfig) => {
-  //   this.setState({
-  //     getuiConfigs: uiConfig,
-  //   })
-  //   // console.log(uiConfig)
-  // }
 
   getupdatebasemap = (updatebasemap) => {
     updatebasemap.then((res) => {
@@ -514,11 +501,6 @@ class Primitive extends PureComponent {
       this.props.getshowUiList(this.uiType)
     })
   }
-  primintBoxChild = () => {
-    this.setState({
-      getuiConfigs: this.props.data.monitorInfo.UI_UNIT_CONFIGS,
-    })
-  }
   render() {
     const {
       interMonitorLeft,
@@ -529,7 +511,6 @@ class Primitive extends PureComponent {
       PrimitivBacImg,
       EquipmentList,
       basemapImgs,
-      getuiConfigs,
       SubordinateUnitLsit,
       MaintenanceUnitList,
       EquipmentModel,
@@ -554,13 +535,21 @@ class Primitive extends PureComponent {
     } = this.state
     const { Option } = Select
     const { TextArea } = Input
+    console.log('jizizhongxianhsi', this.props)
+    const { UI_UNIT_CONFIGS } = this.props.data.monitorInfo
+    const { SIGNALSYSTEM } = this.props.data.sinaglInfo
     return (
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           {
-            getuiConfigs && getuiConfigs.map(item => <PrimitiveEquipment showModal={this.showModal} primintBox={this.PrimitiveInsideBox} itemimgs={item} key={item.ID} />)
+            UI_UNIT_CONFIGS && UI_UNIT_CONFIGS.length > 0 ?
+              UI_UNIT_CONFIGS.map((item) => {
+                return (
+                  <DeviceDetails key={item.DEVICE_CODE} imgMsg={item} system={SIGNALSYSTEM} />
+                )
+              }) : null
           }
-          <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} alt="" />
+          <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
               <Icon type="right" />
@@ -585,8 +574,8 @@ class Primitive extends PureComponent {
           <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
             <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
               {
-                this.typeShowPic && basemapImgs && basemapImgs.map((item, index) => (
-                  <li key={index}>
+                this.typeShowPic && basemapImgs && basemapImgs.map(item => (
+                  <li key={item}>
                     <img
                       onClick={e => this.ischeckListItem(e, item)}
                       src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
