@@ -31,8 +31,8 @@ class Primitive extends PureComponent {
       basemapImgs: [], // 底图选择展示
       picList: [], // 添加设备图标展示
       getuiConfigs: [], // 页面所有设备显示
-      SubordinateUnitLsit: [], //所属单位列表
-      MaintenanceUnitList: [], //维护单位列表
+      SubordinateUnitLsit: [], // 所属单位列表
+      MaintenanceUnitList: [], // 维护单位列表
       EquipmentModel: '', // 设备型号
       CorrelationNumber: 1, // 关联编号
       EquipmentNumber: '', // 设备编号
@@ -204,7 +204,7 @@ class Primitive extends PureComponent {
     })
   }
   numberBox = () => {
-    return this.props.data.monitorInfo.UI_UNIT_CONFIGS.sort(function (a, b) { return b.DEVICE_ID - a.DEVICE_ID })[0].DEVICE_ID
+    return this.props.data.monitorInfo.UI_UNIT_CONFIGS.sort((a, b) => b.DEVICE_ID - a.DEVICE_ID)[0].DEVICE_ID
   }
   formatDate = (value) => {// 时间戳转换日期格式方法
     if (value == null) {
@@ -379,7 +379,7 @@ class Primitive extends PureComponent {
       return message.warning('请输入设备高度')
     }
   }
-  handleOk = () => { // 设备信息保存添加设备
+  handleOk = () => { // 设备信息
     this.isFormParameters()
     // this.setState({
     //   isDeviceInformation: false,
@@ -558,7 +558,7 @@ class Primitive extends PureComponent {
       <div className={styles.PrimitiveBox}>
         <div ref={(PrimitiveInsideBox) => { this.PrimitiveInsideBox = PrimitiveInsideBox }} className={styles.PrimitiveInsideBox}>
           {
-            getuiConfigs && getuiConfigs.map(item => <PrimitiveEquipment primintBox={this.PrimitiveInsideBox} itemimgs={item} key={item.ID} />)
+            getuiConfigs && getuiConfigs.map(item => <PrimitiveEquipment showModal={this.showModal} primintBox={this.PrimitiveInsideBox} itemimgs={item} key={item.ID} />)
           }
           <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} alt="" />
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
@@ -648,8 +648,7 @@ class Primitive extends PureComponent {
             // onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={null}
-            okText={'确认'}
-            width='720px'
+            width="720px"
           >
             <div className={styles.mountingTable}>
               <div className={styles.mountingTbody}>

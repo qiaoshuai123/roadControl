@@ -28,23 +28,22 @@ class PrimitiveEquipment extends Component {
   componentDidUpdate = (prevState) => {
     const { editDeviceInfoPo } = this.props.data
     if (prevState.data.editDeviceInfoPo !== editDeviceInfoPo) {
-      this.getControlRoads(editDeviceInfoPo)
+      this.getIneditDeviceInfoPo(editDeviceInfoPo)
     }
   }
-  getControlRoads = (editDeviceInfoPo) => {
-    console.log(editDeviceInfoPo, '移动成功')
+  getIneditDeviceInfoPo = (editDeviceInfoPo) => {
+    // console.log(editDeviceInfoPo, '移动成功')
   }
   PullBoxDown = (e) => { // 鼠标点击盒子
     this.isPullBox = true
-    this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
-    this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
-    this.PullBox.style.cursor = 'move'
+    this.defaultX = e.pageX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
+    this.defaultY = e.pageY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
   }
   PullBoxMove = (e) => { // 鼠标移动盒子
     if (this.isPullBox) {
-      this.moveType = true
-      this.offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
-      this.offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
+      this.PullBox.style.cursor = 'move'
+      this.offsetX = e.pageX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
+      this.offsetY = e.pageY - this.PrimitiveInsideBox.offsetTop - this.defaultY
       const PrimitWidth = this.PrimitiveInsideBox.offsetWidth - this.PullBox.offsetWidth
       const PrimitHeight = this.PrimitiveInsideBox.offsetHeight - this.PullBox.offsetHeight
       if (this.offsetX < 0) {
@@ -64,12 +63,14 @@ class PrimitiveEquipment extends Component {
     }
   }
   PullBoxUp = () => { // 取消盒子移动
-    // console.log(this.state.imgs, '盒子id')
-    this.isPullBox = false
-    // if (this.moveType) {
+    console.log('mouseUp')
     this.PullBox.style.cursor = 'default'
     this.props.geteditDeviceInfoPo(this.state.imgs.ID, this.offsetX, this.offsetY)
-    // }
+  }
+  PullClick = (e) => { // 双击子盒子对其修改
+    e.stopPropagation()
+    console.log('盒子单击')
+    // this.props.showModal(1)
   }
   render() {
     // console.log(this.props.data,'sssss')
@@ -81,17 +82,22 @@ class PrimitiveEquipment extends Component {
     const srcs = imgs.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '海信' ? 'jm/' :
       imgs.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
     return (
-      <img
+      <div
         style={imgStyle}
         ref={(input) => { this.PullBox = input }}
         onMouseDown={this.PullBoxDown}
         onMouseMove={this.PullBoxMove}
         onMouseUp={this.PullBoxUp}
-        draggable="false"
-        src={`http://192.168.1.123:26001/atms/imgs/${imgs.UI_TYPE_ID}/${srcs}${imgs.UI_IMAGE_NAME}`}
-        className={styles.PrimitiveEquipmentbox}
-        alt="显示失败"
-      />
+      >
+        <img
+          width="100%"
+          height="100%"
+          // onClick={this.PullClick}
+          draggable="false"
+          src={`http://192.168.1.123:26001/atms/imgs/${imgs.UI_TYPE_ID}/${srcs}${imgs.UI_IMAGE_NAME}`}
+          alt="显示失败"
+        />
+      </div>
     )
   }
 }

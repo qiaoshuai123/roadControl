@@ -25,3 +25,4 @@ export const API_PRIMITIVE_EDITDEVICEINFOPO = '/atms/singleUnitMonitor/editDevic
 export const API_PRIMITIVE_SHOWDEVICEINFO = '/atms/singleUnitMonitor/showDeviceInfo' // 添加设备获取下拉信息
 export const API_SINGAL_CONTROL = '/atms/singleUnitMonitor/sigalController'
 export const API_PRIMITIVE_SHOWUILIST = '/atms/singleUnitMonitor/showUiList' // 添加设备表单页面图标
+export const API_PRIMITIVE_EDITDEVICEINFO = '/atms/singleUnitMonitor/showUiList' // 添加设备
