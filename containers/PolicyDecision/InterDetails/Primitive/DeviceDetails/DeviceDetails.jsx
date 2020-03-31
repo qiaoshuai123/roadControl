@@ -27,7 +27,7 @@ class DeviceDetails extends React.Component {
   }
   handleDeviceUp = () => {
     const nowTime = new Date().getTime()
-    if (nowTime - this.timeStap < 300) {
+    if (nowTime - this.timeStap < 200) {
       console.log('未拖动')
     } else {
       console.log('拖动中。。。')

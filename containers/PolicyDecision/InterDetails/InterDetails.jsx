@@ -372,14 +372,14 @@ class InterDetails extends React.PureComponent {
         <Modal
           visible={configPop === 'phaseConfig'}
           closable={false}
-          bodyStyle={{ backgroundColor: '', backgroundImage: `linear-gradient(to bottom, rgba(14, 51, 85,.8), rgba(1, 14, 48,.8))`, padding: 0 }}
-          getContainer={document.getElementsByClassName('div')[0]}
+          bodyStyle={{ borderRadius: '5px', backgroundColor: '#3D5772', padding: 0, overflow: 'hidden' }}
+          // getContainer={document.getElementsByClassName('div')[0]}
           style={{ backgroundColor: '' }}
           centered
           onCancel={this.handleCancel}
           footer={null}
           wrapClassName="wrapbox"
-          width="700"
+          width="60%"
         >
           <PhaseConfig closePhaseAdd={this.handleCancel} />
         </Modal>
