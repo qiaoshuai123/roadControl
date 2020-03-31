@@ -1,8 +1,9 @@
 import React from 'react'
-import { Icon, Select } from 'antd'
+import { Icon, Select, Modal } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
+import PhaseConfig from './PhaseConfig/PhaseConfig'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -31,7 +32,7 @@ class InterDetails extends React.PureComponent {
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
-      { id: 2, name: '相位配置' },
+      { id: 2, name: '相位配置', configname: 'phaseConfig' },
       { id: 3, name: '跟随相位配置' },
       { id: 4, name: '阶段配置' },
       { id: 5, name: '配时方案配置' },
@@ -365,6 +366,15 @@ class InterDetails extends React.PureComponent {
             </div>
           </div>
         }
+        <Modal
+          visible={configPop === 'phaseConfig'}
+          closable={false}
+          centered
+          footer={null}
+          width="700"
+        >
+          <PhaseConfig />
+        </Modal>
       </div>
     )
   }
