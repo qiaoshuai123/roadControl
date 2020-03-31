@@ -27,6 +27,9 @@ const webpackConfig = {
               name: '[hash:8].[name].[ext]',
             },
           },
+          {
+            loader: 'image-webpack-loader',
+          },
         ],
       },
       {

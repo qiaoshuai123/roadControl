@@ -340,7 +340,6 @@ class InterDetails extends React.PureComponent {
                         }
                       </Select> : '---'
                   }
-                  
                   <span className={styles.controlExcute}>执行控制</span>
                 </div>
               </div>
@@ -360,7 +359,6 @@ class InterDetails extends React.PureComponent {
                         }
                       </Select> : '---'
                   }
-                  
                   <span className={styles.controlExcute}>执行控制</span>
                 </div>
               </div>
