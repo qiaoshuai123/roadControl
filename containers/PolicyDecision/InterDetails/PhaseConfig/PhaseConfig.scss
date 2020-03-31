@@ -5,6 +5,28 @@
   display: flex;
   flex-direction: column;
 }
+.messagePhase{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(0,0,0,.6);
+  left: 0;
+  top: 0;
+}
+.messagePhaseBox{
+  width: 540px;
+  height: 400px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  .messagePhaseBox_center{
+    height: 55px;
+    display: flex;
+  }
+}
 .phaseConfigBox_top {
   height: 45px;
   padding-left: 10px;
