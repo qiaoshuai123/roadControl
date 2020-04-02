@@ -12,7 +12,7 @@ class PhaseConfig extends React.PureComponent {
     this.props.closePhaseAdd()
   }
   PhaseAdd = () => { // 添加相位
-
+    
   }
   PhaseUpload = () => { // 上载相位
 
@@ -33,7 +33,7 @@ class PhaseConfig extends React.PureComponent {
           <div className={styles.messagePhaseBox}>
             <div className={styles.phaseConfigBox_top}>
               <div className={styles.phaseConfigBoxTop_left}>相位配置</div>
-              <div className={styles.phaseConfigBoxTop_right} onClick={this.closePhaseAdd}><Icon type="close" /></div>
+              <div className={styles.phaseConfigBoxTop_right} onClick={}><Icon type="close" /></div>
             </div>
             <div className={styles.messagePhaseBox_center}>
               <div><span>相位编号:</span><Input /></div>

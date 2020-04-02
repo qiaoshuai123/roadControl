@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Icon, Radio, Upload, message, Modal, Input, Select, DatePicker, } from 'antd'
+import { Icon, Radio, Upload, message, Modal, Input, Select, DatePicker } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -10,6 +10,7 @@ import {
   getbasemapImg, getupdatebasemap,
   getshowDeviceInfo,
   getshowUiList,
+  geteditDeviceInfo,
 } from '../../../../actions/interCofig'
 import DeviceDetails from './DeviceDetails/DeviceDetails'
 // import formImg from "http://192.168.1.123:26001/atms/imgs/baseImg/1.jpg"
@@ -39,17 +40,21 @@ class Primitive extends PureComponent {
       EquipmentName: '相位', // 设备名称
       Manufacturer: '北京博研智通有限公司', // 生产厂家
       sInstallationLocation: '', // 所属单位
+      sInstallationLocationNumber: '',
       ManufacturerTelephone: 110, // 厂家电话
-      DateProduction: '' || new Date() * 1, // 出厂日期
-      installDate: '' || new Date() * 1, // 安装日期
+      DateProduction: this.formatDate(new Date() * 1), // 出厂日期
+      installDate: this.formatDate(new Date() * 1), // 安装日期
       SubordinateUnit: '', // 维护单位
+      SubordinateUnitNumber: '',
       WhetherToDisplay: '是', // 是否显示
       MaintenanceUnit: '', // 设备安装位置
+      MaintenanceUnitNumber: '',
       MaintenancePhine: 110, // 维护电话
       EquipmentDetail: '无', // 设备描述
-      EquipmentIcon: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG, // 设备图标
+      EquipmentIcon: '/baseImg/ylt.jpg', // 设备图标
       PictWidth: 0, // 图片宽
       PicHeight: 0, // 图片高
+      isshowSubmission: true, // 展示提交或修改按钮
     }
     this.isPullBox = false
     // this.equipmentList = [
@@ -61,10 +66,9 @@ class Primitive extends PureComponent {
     // ]
     this.InterId = this.props.InterId
     this.typeShowPic = false // 判断选择地图或选择图标
-    this.isShow = [{ id: 1, name: '是' }, { id: 2, name: '否' }]
+    this.isShow = [{ id: 1, us: 1, name: '是' }, { id: 2, us: 0, name: '否' }]
     this.dateFormat = 'YYYY-MM-DD'
   }
-
   componentDidMount = () => {
     this.picPropsFun()
     this.props.getprimitiveInutuitype()
@@ -81,7 +85,7 @@ class Primitive extends PureComponent {
     // if (prevState.data !== this.props.data) {
     //   console.log(this.props)
     // }
-    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList } = this.props.data
+    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, editDeviceInfo, } = this.props.data
     if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
       this.getControlRoads(primitiveInutuitype)
     }
@@ -100,6 +104,9 @@ class Primitive extends PureComponent {
     if (prevState.data.showUiList !== showUiList) {
       this.getshowUiList(showUiList)
     }
+    if (prevState.data.editDeviceInfo !== editDeviceInfo) {
+      this.geteditDeviceInfo(editDeviceInfo)
+    }
   }
   onChangeRadio = (e) => {
     const { PrimitivBacImg } = this.state
@@ -108,14 +115,16 @@ class Primitive extends PureComponent {
       checkInterImgs: PrimitivBacImg,
     })
   }
-  onChangDateStart(date) { // 出厂日期
+  onChangDateStart = (date) => { // 出厂日期
+    console.log(this.formatDate(new Date(date._d) * 1), '出厂日期')
     this.setState({
-      DateProduction: new Date(date._d) * 1
+      DateProduction: this.formatDate(new Date(date._d) * 1),
     })
   }
-  onChangDateEnd(date) { // 安装日期
+  onChangDateEnd = (date) => { // 安装日期
+    console.log(this.formatDate(new Date(date._d) * 1), '安装日期')
     this.setState({
-      installDate: new Date(date._d) * 1
+      installDate: this.formatDate(new Date(date._d) * 1),
     })
   }
   getControlRoads = (EquipmentList) => {
@@ -130,17 +139,64 @@ class Primitive extends PureComponent {
   }
   getshowDeviceInfo = (showDeviceInfo) => {
     console.log(showDeviceInfo, '弹窗信息')
-    this.setState({
-      SubordinateUnitLsit: showDeviceInfo.data.groups,
-      MaintenanceUnitList: showDeviceInfo.data.directCodes,
-      EquipmentModel: `相位${showDeviceInfo.message}`,
-      EquipmentNumber: showDeviceInfo.message,
-      SubordinateUnit: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
-      sInstallationLocation: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
-      MaintenanceUnit: showDeviceInfo.data.directCodes[0].CODE_NAME,
+
+    if (showDeviceInfo.data.FACTORY_NAME) {
+      const isviews = this.isShow.find(item => item.us === showDeviceInfo.data.IS_VIEW).name
+      const MaintenanceUnitNumbers = showDeviceInfo.data.directCodes.find(item => item.ID === showDeviceInfo.data.INSTALL_LOCATION).CODE_NAME
+      const sInstallationLocations = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MAINTENANCE_UNIT_ID).USER_GROUP_NAME
+      const SubordinateUnitNumbers = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
+      this.setState({
+        isDeviceInformation: true,
+        isshowSubmission: false,
+        EquipmentModel: showDeviceInfo.data.DEVICE_MODEL,
+        CorrelationNumber: showDeviceInfo.data.CONFIG_CODE,
+        EquipmentNumber: showDeviceInfo.data.DEVICE_CODE,
+        FactoryNumber: showDeviceInfo.data.FACTORY_CODE,
+        EquipmentName: showDeviceInfo.data.DEVICE_CODE,
+        Manufacturer: showDeviceInfo.data.FACTORY_NAME,
+        ManufacturerTelephone: showDeviceInfo.data.MAINTENANCE_UNIT_TEL,
+        MaintenancePhine: showDeviceInfo.data.FACTORY_TEL,
+        EquipmentDetail: showDeviceInfo.data.DETAIL,
+        PictWidth: showDeviceInfo.data.UI_WIDTH,
+        PicHeight: showDeviceInfo.data.UI_HIGHT,
+        EquipmentIcon: `${showDeviceInfo.data.UI_TYPE_ID}/${showDeviceInfo.data.UI_IMAGE_NAME}`,
+        SubordinateUnitLsit: showDeviceInfo.data.groups,
+        MaintenanceUnitList: showDeviceInfo.data.directCodes,
+        SubordinateUnitNumber: showDeviceInfo.data.MANAGEMENT_UNIT_ID,
+        sInstallationLocationNumber: showDeviceInfo.data.MAINTENANCE_UNIT_ID,
+        MaintenanceUnitNumber: showDeviceInfo.data.INSTALL_LOCATION,
+        SubordinateUnit: SubordinateUnitNumbers,
+        sInstallationLocation: sInstallationLocations,
+        MaintenanceUnit: MaintenanceUnitNumbers,
+        WhetherToDisplay: isviews,
+        DateProduction: this.formatDate(showDeviceInfo.data.FACTORY_DAY),
+        installDate: this.formatDate(showDeviceInfo.data.INSTALL_DAY),
+      })
+    } else {
+      this.setState({
+        SubordinateUnitLsit: showDeviceInfo.data.groups,
+        MaintenanceUnitList: showDeviceInfo.data.directCodes,
+        EquipmentModel: `相位${showDeviceInfo.message}`,
+        EquipmentNumber: showDeviceInfo.message,
+        SubordinateUnit: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
+        sInstallationLocation: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
+        MaintenanceUnit: showDeviceInfo.data.directCodes[0].CODE_NAME,
+        SubordinateUnitNumber: showDeviceInfo.data.groups[0].ID,
+        sInstallationLocationNumber: showDeviceInfo.data.groups[0].ID,
+        MaintenanceUnitNumber: showDeviceInfo.data.directCodes[0].ID,
+      })
+    }
+  }
+  geteditDeviceInfo = (editDeviceInfo) => {
+    console.log(editDeviceInfo, '添加成功')
+    editDeviceInfo.then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        this.handleCancel()
+        message.success('添加成功')
+      }
     })
   }
-
   getupdatebasemap = (updatebasemap) => {
     updatebasemap.then((res) => {
       const { code } = res.data
@@ -150,7 +206,7 @@ class Primitive extends PureComponent {
       message.info(res.data.message)
     })
   }
-  getHasSingalDevice = (id) => {
+  getHasSingalDevice = (item) => {
     new Promise((resolve) => {
       resolve(this.props.getInterdetailIsSignalling(this.InterId))
     }).then(() => {
@@ -158,7 +214,7 @@ class Primitive extends PureComponent {
       if (issignaling) {
         message.info('信号机已存在')
       } else {
-        this.showModal(id)
+        this.showModal(item)
       }
     })
   }
@@ -178,14 +234,16 @@ class Primitive extends PureComponent {
       Manufacturer: '北京博研智通有限公司', // 生产厂家
       sInstallationLocation: '', // 所属单位
       ManufacturerTelephone: 110, // 厂家电话
-      DateProduction: '' || new Date() * 1, // 出厂日期
-      installDate: '' || new Date() * 1, // 安装日期
+      DateProduction: this.formatDate(new Date() * 1), // 出厂日期
+      installDate: this.formatDate(new Date() * 1), // 安装日期
       SubordinateUnit: '', // 维护单位
       WhetherToDisplay: '是', // 是否显示
       MaintenanceUnit: '', // 设备安装位置
+      SubordinateUnitLsit: [], // 所属单位列表
+      MaintenanceUnitList: [], // 维护单位列表
       MaintenancePhine: 110, // 维护电话
       EquipmentDetail: '无', // 设备描述
-      EquipmentIcon: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG, // 设备图标
+      EquipmentIcon: '/baseImg/ylt.jpg', // 设备图标
       PictWidth: 0, // 图片宽
       PicHeight: 0, // 图片高
     })
@@ -209,8 +267,7 @@ class Primitive extends PureComponent {
     m = m < 10 ? (`0${m}`) : m
     let s = date.getSeconds()// 秒
     s = s < 10 ? (`0${s}`) : s
-    return `${y}-${MM}-${d}`
-
+    return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   picPropsFun = () => { // 上传底图
     this.picProps = {
@@ -257,6 +314,7 @@ class Primitive extends PureComponent {
     // console.log(e)
     this.setState({
       ischeckbtninter: 'none',
+      isDeviceInformation: true,
     })
   }
   ischeckListItem = (e, imgs) => { // 点击图片选择路口
@@ -267,11 +325,15 @@ class Primitive extends PureComponent {
       checkInterImgs: imgs,
     })
   }
-  ischeckbacitem = (e, imgs, type) => {
+  ischeckbacitem = (e, imgs, type, id) => {
+    this.uiCodeId = id
     e.stopPropagation()
+    console.log(id, 'qiaoshai')
     this.setState({
       // checkInterImgs, // 切换预览图照片
       ischeckbtninter: 'none',
+      PictWidth: e.target.width,
+      PicHeight: e.target.height,
       isDeviceInformation: true,
       EquipmentIcon: `${type}/${imgs}`,
     })
@@ -282,10 +344,11 @@ class Primitive extends PureComponent {
   uploadPic = () => { // 上传底图
 
   }
-  showModal = (id) => { // 设备信息弹框显示
-    this.EquipmentConfigurationPic = id // 选择设备图标
+  showModal = (item) => { // 设备信息弹框显示
+    this.EquipmentConfigurationPic = item.DEVICE_TYPE // 选择设备图标
     this.setState({
       isDeviceInformation: true,
+      isshowSubmission: true,
     }, () => {
       this.props.getshowDeviceInfo(0, this.InterId)
     })
@@ -311,7 +374,7 @@ class Primitive extends PureComponent {
       PictWidth,
       PicHeight,
     } = this.state
-    if (EquipmentIcon === this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG) {
+    if (EquipmentIcon === '/baseImg/ylt.jpg') {
       return message.error('请选择正常图标')
     }
     if (!EquipmentModel) {
@@ -366,17 +429,52 @@ class Primitive extends PureComponent {
       return message.warning('请输入设备高度')
     }
   }
-  handleOk = () => { // 设备信息
-    this.isFormParameters()
+  handleOk = async () => { // 保存设备信息
+    const addimg = await this.isFormParameters()
+    if (!addimg) {
+      const {
+        EquipmentModel,
+        CorrelationNumber,
+        EquipmentNumber,
+        FactoryNumber,
+        EquipmentName,
+        Manufacturer,
+        MaintenanceUnitNumber,
+        sInstallationLocation,
+        sInstallationLocationNumber,
+        ManufacturerTelephone,
+        DateProduction,
+        installDate,
+        SubordinateUnit,
+        WhetherToDisplay,
+        MaintenanceUnit,
+        SubordinateUnitNumber,
+        MaintenancePhine,
+        EquipmentDetail,
+        EquipmentIcon,
+        PictWidth,
+        PicHeight,
+      } = this.state
+      const nameId = this.isShow.find(item => item.name === WhetherToDisplay).us
+      this.props.geteditDeviceInfo(
+        '', 10, 10, this.InterId, '', EquipmentModel, CorrelationNumber,
+        EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
+        MaintenanceUnitNumber, ManufacturerTelephone, DateProduction,
+        installDate, sInstallationLocationNumber, MaintenancePhine, nameId,
+        SubordinateUnitNumber, EquipmentDetail, PictWidth, PicHeight, 1, 1,
+        this.EquipmentConfigurationPic, this.uiCodeId,
+      )
+    }
+
     // this.setState({
     //   isDeviceInformation: false,
     // })
   }
   handleCancel = () => { // 设备信息弹框隐藏
+    this.textInput()
     this.setState({
       isDeviceInformation: false,
     })
-    this.textInput()
   }
   handDelect = () => { // 设备信息关闭或删除设备
     if (!this.typeShowPic) { // 隐藏窗口
@@ -421,7 +519,7 @@ class Primitive extends PureComponent {
     e.stopPropagation()
   }
   checkequipment = (item) => { // 添加新设备
-    // console.log(item, '信号')
+    console.log(item, '信号')
     this.typeShowPic = false
     this.uiType = item.ID
     switch (item.UI_TYPE_NAME) {
@@ -429,16 +527,16 @@ class Primitive extends PureComponent {
         this.getHasSingalDevice(item)
         break
       case '信号灯':
-        this.showModal(item.ID)
+        this.showModal(item)
         break
       case '相位':
-        this.showModal(item.ID)
+        this.showModal(item)
         break
       case '检测器':
-        this.showModal(item.ID)
+        this.showModal(item)
         break
       case '路段名称':
-        this.showModal(item.ID)
+        this.showModal(item)
         break
       default:
         break
@@ -460,6 +558,7 @@ class Primitive extends PureComponent {
     const sInstallationLocation = SubordinateUnitLsit.find(item => item.ID === value)
     this.setState({
       sInstallationLocation: sInstallationLocation.USER_GROUP_NAME,
+      sInstallationLocationNumber: sInstallationLocation.ID,
     })
   }
   Isdisplay = (value) => { // 是否显示
@@ -473,6 +572,7 @@ class Primitive extends PureComponent {
     const SubordinateUnit = SubordinateUnitLsit.find(item => item.ID === value)
     this.setState({
       SubordinateUnit: SubordinateUnit.USER_GROUP_NAME,
+      SubordinateUnitNumber: SubordinateUnit.ID,
     })
   }
   IssInstallationLocation = (value) => { // 设备安装位置
@@ -480,6 +580,7 @@ class Primitive extends PureComponent {
     const MaintenanceUnit = MaintenanceUnitList.find(item => item.ID === value)
     this.setState({
       MaintenanceUnit: MaintenanceUnit.CODE_NAME,
+      MaintenanceUnitNumber: MaintenanceUnit.ID,
     })
   }
   changValue = (e) => { // 页面所有input事件改变
@@ -532,6 +633,7 @@ class Primitive extends PureComponent {
       PictWidth,
       PicHeight,
       picList,
+      isshowSubmission,
     } = this.state
     const { Option } = Select
     const { TextArea } = Input
@@ -545,7 +647,7 @@ class Primitive extends PureComponent {
             UI_UNIT_CONFIGS && UI_UNIT_CONFIGS.length > 0 ?
               UI_UNIT_CONFIGS.map((item) => {
                 return (
-                  <DeviceDetails key={item.DEVICE_CODE} imgMsg={item} system={SIGNALSYSTEM} />
+                  <DeviceDetails key={item.DEVICE_CODE} InterIds={this.InterId} imgMsg={item} system={SIGNALSYSTEM} />
                 )
               }) : null
           }
@@ -572,30 +674,37 @@ class Primitive extends PureComponent {
             <div onClick={this.closeInter} className={styles.bottom_right}>返回</div>
           </div>
           <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
-            <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
-              {
-                this.typeShowPic && basemapImgs && basemapImgs.map(item => (
-                  <li key={item}>
-                    <img
-                      onClick={e => this.ischeckListItem(e, item)}
-                      src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
-                      alt=""
-                    />
-                  </li>
-                ))
-              }
-              {
-                !this.typeShowPic && picList && picList.map(item => (
-                  <li key={item.ID}>
-                    <img
-                      onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID)}
-                      src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
-                      alt=""
-                    />
-                  </li>
-                ))
-              }
-            </ul>
+            {
+              this.typeShowPic ?
+                <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
+                  {
+                    this.typeShowPic && basemapImgs && basemapImgs.map(item => (
+                      <li key={item}>
+                        <img
+                          onClick={e => this.ischeckListItem(e, item)}
+                          src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
+                          alt=""
+                        />
+                      </li>
+                    ))
+                  }
+                </ul> : null
+            }
+            {
+              !this.typeShowPic ?
+                <ul onClick={this.btnNoneStop} className={styles.checkinterPageBoxTwo}>
+                  {
+                    picList && picList.map(item => (
+                      <img
+                        key={item.ID}
+                        onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
+                        src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
+                        alt=""
+                      />
+                    ))
+                  }
+                </ul> : null
+            }
           </div>
           <div style={{ display: isMessageinter }} className={styles.interPage}>
             <div className={styles.interPageBox}>
@@ -673,12 +782,13 @@ class Primitive extends PureComponent {
                 <div className={styles.mountingTr}>
                   <div className={styles.mountingTd}><div>出厂日期</div>
                     <div>
-                      <DatePicker style={{ width: '177px' }} defaultValue={moment(this.formatDate(DateProduction), this.dateFormat)} format={this.dateFormat} onChange={this.onChangDateStart} />
+                      <DatePicker style={{ width: '177px' }} value={moment(this.formatDate(DateProduction), this.dateFormat)} format={this.dateFormat} onChange={this.onChangDateStart} />
+                      {/*  */}
                     </div>
                   </div>
                   <div className={styles.mountingTd}><div>安装日期</div>
                     <div>
-                      <DatePicker style={{ width: '177px' }} defaultValue={moment(this.formatDate(installDate), this.dateFormat)} format={this.dateFormat} onChange={this.onChangDateEnd} />
+                      <DatePicker style={{ width: '177px' }} value={moment(installDate, this.dateFormat)} format={this.dateFormat} onChange={this.onChangDateEnd} />
                     </div>
                   </div>
                 </div>
@@ -739,7 +849,11 @@ class Primitive extends PureComponent {
               </div>
               <div className={styles.mountingTableBottom}>
                 <div>
-                  <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>提交</span>
+                  <span className={styles.mountingTableBottom_left}>
+                    {
+                      isshowSubmission ? <b onClick={this.handleOk}>提交</b> : <b>修改</b>
+                    }
+                  </span>
                   <span onClick={this.handDelect} className={styles.mountingTableBottom_center}>删除</span>
                   <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
                 </div>
@@ -747,7 +861,7 @@ class Primitive extends PureComponent {
             </div>
           </Modal>
         </div>
-      </div>
+      </div >
     )
   }
 }
@@ -765,6 +879,7 @@ const mapDisPatchToProps = (dispatch) => {
     getupdatebasemap: bindActionCreators(getupdatebasemap, dispatch),
     getshowDeviceInfo: bindActionCreators(getshowDeviceInfo, dispatch),
     getshowUiList: bindActionCreators(getshowUiList, dispatch),
+    geteditDeviceInfo: bindActionCreators(geteditDeviceInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)
