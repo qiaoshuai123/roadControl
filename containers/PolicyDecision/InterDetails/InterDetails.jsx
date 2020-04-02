@@ -171,12 +171,12 @@ class InterDetails extends React.PureComponent {
                   item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
                 if (!item.DEVICE_ID) {
                   return (
-                    <div className={styles.deviceRoadName} key={item.P_LEFT + item.P_TOP} style={{ top: item.P_TOP, left: item.P_LEFT, width: item.UI_WIDTH > 0 ? 0 : 'auto' }}>{item.DETAIL}</div>
+                    <div className={styles.deviceRoadName} key={item.ID} style={{ top: item.P_TOP, left: item.P_LEFT, width: item.UI_WIDTH > 0 ? 0 : 'auto' }}>{item.DETAIL}</div>
                   )
                 }
                 return (
                   <img
-                    key={item.P_LEFT + item.P_TOP}
+                    key={item.DEVICE_CODE}
                     style={imgStyle}
                     src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
                     alt=""

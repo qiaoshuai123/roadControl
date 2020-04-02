@@ -17,6 +17,8 @@ import {
   API_SINGAL_CONTROL,
   API_PRIMITIVE_SHOWUILIST,
   API_TIME_TABLE,
+  API_DELETE_TIMETABLE,
+  API_TIMETABLE_ACTIONS,
 
 } from '../constants/API'
 
@@ -187,6 +189,28 @@ export const getTimeTable = (interId) => {
       const result = await RestUtil.post(`${API_TIME_TABLE}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_TIME_TABLE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDeleteTimeTable = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_TIMETABLE}?id=${id}`)
+    return result
+  }
+}
+
+export const getTimetableActions = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_TIMETABLE_ACTIONS}?id=0&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIMETABLE_ACTIONS, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Select, TimePicker } from 'antd'
+import { Icon, Select, TimePicker, message, Modal } from 'antd'
 import moment from 'moment'
 import styles from './TimeTable.scss'
 
-import { getTimeTable } from '../../../../actions/interCofig'
+import { getTimeTable, getDeleteTimeTable, getTimetableActions } from '../../../../actions/interCofig'
 
 class TimeTable extends React.PureComponent {
   constructor(props) {
@@ -13,6 +13,10 @@ class TimeTable extends React.PureComponent {
     this.state = {
       timeTable: null,
       showEditBox: false,
+      defaultOrderNo: null,
+      defaultTime: '12:00',
+      defaultAction: null,
+      timeTableActions: null,
     }
     this.orderList = []
   }
@@ -22,32 +26,70 @@ class TimeTable extends React.PureComponent {
     this.props.getTimeTable(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { timeTable } = this.props.data
+    const { timeTable, deleteTimeTable, timeTableActions } = this.props.data
     if (prevState.data.timeTable !== timeTable) {
       this.getTimeTable(timeTable)
+    }
+    if (prevState.data.deleteTimeTable !== deleteTimeTable) {
+      message.info(deleteTimeTable)
+    }
+    if (prevState.data.timeTableActions !== timeTableActions) {
+      this.getTimetableActionList(timeTableActions)
     }
   }
   getTimeTable = (timeTable) => {
     this.setState({ timeTable })
-    if (timeTable.length) {
-      timeTable.forEach((item) => {
-        this.orderList.push(item.ORDER_NO)
+  }
+  getTimetableActionList = (timeTableActions) => {
+    this.setState({ timeTableActions })
+  }
+  handleEdit = (items) => {
+    this.orderList = []
+    if (this.state.timeTable.length) {
+      this.state.timeTable.forEach((item) => {
+        if (item.ORDER_NO !== items.ORDER_NO) {
+          this.orderList.push(item.ORDER_NO)
+        }
       })
     }
-  }
-  handleEdit = () => {
-    this.setState({ showEditBox: true })
+    this.setState({
+      showEditBox: true,
+      defaultOrderNo: items.ORDER_NO,
+      defaultTime: items.START_TIME,
+      defaultAction: items.ACTION,
+    })
+    this.props.getTimetableActions(this.InterId)
   }
   handleCloseEdit = () => {
     this.setState({ showEditBox: false })
+  }
+  handleDelete = (e) => {
+    const id = e.target.getAttribute('id')
+    const { confirm } = Modal
+    const selfThis = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        selfThis.props.getDeleteTimeTable(id).then((res) => {
+          const { code } = res.data
+          if (code === 200) {
+            selfThis.props.getTimeTable(selfThis.InterId)
+          }
+          message.info(res.data.message)
+        })
+      },
+    })
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
-    const { timeTable, showEditBox } = this.state
+    const {
+      timeTable, showEditBox, defaultOrderNo, defaultTime, defaultAction, timeTableActions,
+    } = this.state
     const { Option } = Select
-    const format = 'hh:mm'
+    const format = 'HH:mm'
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -71,7 +113,7 @@ class TimeTable extends React.PureComponent {
                 </div>
                 <div className={styles.editItems}>时段号</div>
                 <div className={styles.editItems} style={{ flex: 1.2 }}>
-                  <Select>
+                  <Select defaultValue={defaultOrderNo}>
                     {
                       timeTable && timeTable.length > 0 &&
                       new Array(48).fill(true).map((item, index) => {
@@ -88,12 +130,19 @@ class TimeTable extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItems}>开始时间</div>
                 <div className={styles.editItems}>
-                  <TimePicker defaultValue={moment('12:15', format)} format={format} minuteStep={15} allowClear={false} />
+                  <TimePicker key={defaultTime} defaultValue={moment(defaultTime, format)} format={format} minuteStep={15} allowClear={false} />
                 </div>
                 <div className={styles.editItems}>关联动作</div>
                 <div className={styles.editItems} style={{ flex: 1.2 }}>
-                  <Select defaultValue={1}>
-                    <Option value="1">1</Option>
+                  <Select defaultValue={`动作${defaultAction}`}>
+                    {
+                      timeTableActions &&
+                      timeTableActions.map((item) => {
+                        return (
+                          <Option key={item} value={`动作${item}`}>动作{item}</Option>
+                        )
+                      })
+                    }
                   </Select>
                 </div>
               </div>
@@ -128,8 +177,8 @@ class TimeTable extends React.PureComponent {
                     <div className={styles.mountingTd}>{item.START_TIME}</div>
                     <div className={styles.mountingTd}>动作{item.ACTION}</div>
                     <div className={styles.mountingTd}>
-                      <div className={styles.deviceMsg}><span onClick={this.handleEdit}>修改</span></div>
-                      <div className={styles.deviceMsg}><span>删除</span></div>
+                      <div className={styles.deviceMsg}><span onClick={() => { this.handleEdit(item) }}>修改</span></div>
+                      <div className={styles.deviceMsg}><span id={item.ID} onClick={this.handleDelete}>删除</span></div>
                     </div>
                   </div>
                 )
@@ -150,6 +199,8 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getTimeTable: bindActionCreators(getTimeTable, dispatch),
+    getDeleteTimeTable: bindActionCreators(getDeleteTimeTable, dispatch),
+    getTimetableActions: bindActionCreators(getTimetableActions, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimeTable)
