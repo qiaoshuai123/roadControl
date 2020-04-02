@@ -16,6 +16,7 @@ import {
   API_PRIMITIVE_SHOWDEVICEINFO,
   API_SINGAL_CONTROL,
   API_PRIMITIVE_SHOWUILIST,
+  API_TIME_TABLE,
 
 } from '../constants/API'
 
@@ -171,6 +172,21 @@ export const getSingalController = (interId) => {
       const result = await RestUtil.post(`${API_SINGAL_CONTROL}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_SINGAL_CONTROL, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getTimeTable = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_TIME_TABLE}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIME_TABLE, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

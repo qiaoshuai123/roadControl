@@ -26,3 +26,4 @@ export const API_PRIMITIVE_SHOWDEVICEINFO = '/atms/singleUnitMonitor/showDeviceI
 export const API_SINGAL_CONTROL = '/atms/singleUnitMonitor/sigalController'
 export const API_PRIMITIVE_SHOWUILIST = '/atms/singleUnitMonitor/showUiList' // 添加设备表单页面图标
 export const API_PRIMITIVE_EDITDEVICEINFO = '/atms/singleUnitMonitor/showUiList' // 添加设备
+export const API_TIME_TABLE = '/atms/hisenseSignal/loadTimeintervalList'

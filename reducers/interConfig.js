@@ -32,6 +32,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { singalControler: payload })
     case types.GET_PRIMITIVE_SHOWUILIST:
       return Object.assign({}, state, { showUiList: payload })
+    case types.GET_TIME_TABLE:
+      return Object.assign({}, state, { timeTable: payload })
     default:
       return state
   }

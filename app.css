@@ -108,11 +108,14 @@ a {
     left: -40%;
     bottom: 15px;
     top: 45px;
-    &:hover {
-        display: block;
-    }
+}
+.MarkerTitle:hover {
+    display: block; 
 }
 .minemap-popup-content {
     padding: 0;
     background-color: transparent;
+}
+.ant-modal-content {
+    background-color: transparent !important;
 }

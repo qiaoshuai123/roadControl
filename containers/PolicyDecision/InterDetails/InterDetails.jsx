@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Primitive from './Primitive/Primitive'
 import PhaseConfig from './PhaseConfig/PhaseConfig'
+import TimingPlan from './TimingPlan/TimingPlan'
+import TimeTable from './TimeTable/TimeTable'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -32,14 +34,17 @@ class InterDetails extends React.PureComponent {
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
-      { id: 2, name: '相位配置', configname: 'phaseConfig' },
-      { id: 3, name: '跟随相位配置' },
-      { id: 4, name: '阶段配置' },
-      { id: 5, name: '配时方案配置' },
-      { id: 6, name: '时基动作配置' },
-      { id: 7, name: '时段表配置' },
-      { id: 8, name: '调度表配置' },
-      { id: 9, name: '信号机配置', configname: 'singalConfig' },
+      { id: 2, name: '车道配置' },
+      { id: 3, name: '通道配置' },
+      { id: 4, name: '相位配置', configname: 'phaseConfig' },
+      { id: 5, name: '跟随相位配置' },
+      { id: 6, name: '阶段配置' },
+      { id: 7, name: '配时方案配置', configname: 'timePlan' },
+      { id: 8, name: '时基动作配置' },
+      { id: 9, name: '时段表配置', configname: 'timetable' },
+      { id: 10, name: '调度表配置' },
+      { id: 11, name: '信号机控制', configname: 'singalConfig' },
+      { id: 12, name: '故障日志' },
     ]
   }
   componentDidMount = () => {
@@ -370,9 +375,9 @@ class InterDetails extends React.PureComponent {
           </div>
         }
         <Modal
-          visible={configPop === 'phaseConfig'}
+          visible={configPop && configPop !== 'singalConfig' && configPop !== 'primitive'}
           closable={false}
-          bodyStyle={{ borderRadius: '5px', backgroundColor: '#3D5772', padding: 0, overflow: 'hidden' }}
+          bodyStyle={{ borderRadius: '5px', backgroundColor: 'rgba(61, 87, 114, .8)', padding: 0, overflow: 'hidden' }}
           // getContainer={document.getElementsByClassName('div')[0]}
           style={{ backgroundColor: '' }}
           centered
@@ -381,7 +386,18 @@ class InterDetails extends React.PureComponent {
           wrapClassName="wrapbox"
           width="60%"
         >
-          <PhaseConfig closePhaseAdd={this.handleCancel} />
+          {
+            configPop === 'phaseConfig' &&
+            <PhaseConfig closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'timePlan' &&
+            <TimingPlan closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'timetable' &&
+            <TimeTable {...this.props} closeConfigPop={this.handleCancel} />
+          }
         </Modal>
       </div >
     )
