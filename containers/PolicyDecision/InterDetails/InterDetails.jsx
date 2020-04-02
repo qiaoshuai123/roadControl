@@ -388,7 +388,7 @@ class InterDetails extends React.PureComponent {
         >
           {
             configPop === 'phaseConfig' &&
-            <PhaseConfig closeConfigPop={this.handleCancel} />
+            <PhaseConfig {...this.props} closeConfigPop={this.handleCancel} />
           }
           {
             configPop === 'timePlan' &&

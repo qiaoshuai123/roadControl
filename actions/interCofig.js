@@ -19,6 +19,8 @@ import {
   API_TIME_TABLE,
   API_DELETE_TIMETABLE,
   API_TIMETABLE_ACTIONS,
+  API_TIMETABLE_SAVE,
+  API_PHASE_LIST,
 
 } from '../constants/API'
 
@@ -211,6 +213,28 @@ export const getTimetableActions = (interId) => {
       const result = await RestUtil.post(`${API_TIMETABLE_ACTIONS}?id=0&unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_TIMETABLE_ACTIONS, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getSaveTimeTable = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_TIMETABLE_SAVE, params)
+    return result
+  }
+}
+
+export const getPhaseList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PHASE_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PHASE_LIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
