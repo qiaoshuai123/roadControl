@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon } from 'antd'
+import { Icon, Input } from 'antd'
 import styles from './PhaseConfig.scss'
 
 import { getPhaseList } from '../../../../actions/interCofig'
@@ -13,6 +13,43 @@ class PhaseConfig extends React.PureComponent {
       phaseLists: null,
       showPhaseEditBox: false,
       editItemData: null,
+    }
+    this.saveParams = {
+      "UnitExtendGreenTime": 0,
+      "addInitialValue": 0,
+      "allRedTime": 0,
+      "beforeDecrementCarNumber": 0,
+      "beforeDecrementTime": 0,
+      "concurrentPhaseNos": "string",
+      "decrementTime": 0,
+      "direction": 0,
+      "firstCycleGreenTime": 0,
+      "flowDirection": 0,
+      "followOffPhaseNo": 0,
+      "greenFlashTime": 0,
+      "initialState": 0,
+      "maxGreenTimeOne": 0,
+      "maxGreenTimeTwo": 0,
+      "maxInitialValue": 0,
+      "maxRunTime": 0,
+      "minGreenTime": 0,
+      "minInterval": 0,
+      "minRedTime": 0,
+      "noninductive": 0,
+      "other": 0,
+      "peopleGreenFlashTime": 0,
+      "peopleGreenTime": 0,
+      "phaseName": "string",
+      "phaseNo": 0,
+      "redYellowTime": 0,
+      "ringNo": 0,
+      "runStepSize": 0,
+      "safeRedTime": 0,
+      "setByBit": 0,
+      "unitDecrementValue": 0,
+      "unitExtendGreenTime": 0,
+      "unitId": 0,
+      "yellowTime": 0
     }
   }
   componentDidMount = () => {
@@ -46,7 +83,7 @@ class PhaseConfig extends React.PureComponent {
       { name: '最小间隔', paramsName: 'minInterval', value: itemMsg.MIN_INTERVAL },
       { name: '行人放行', paramsName: 'peopleGreenTime', value: itemMsg.PEOPLE_GREEN_TIME },
       { name: '行人清空', paramsName: 'peopleGreenFlashTime', value: itemMsg.PEOPLE_GREEN_FLASH_TIME },
-      { name: '并发相位', paramsName: 'concurrentPhaseNos', value: itemMsg.CONCURRENT_PHASE_NO_LIST },
+      { name: '并发相位', paramsName: 'concurrentPhaseNos', value: itemMsg.CONCURRENT_PHASE_NO_LIST, type: 'select' },
       { name: '初始状态', paramsName: 'initialState', value: itemMsg.INITIAL_STATE },
       { name: '非感应', paramsName: 'noninductive', value: itemMsg.NONINDUCTIVE },
       { name: '对应方向', paramsName: 'direction', value: itemMsg.DIRECTION },
@@ -69,53 +106,35 @@ class PhaseConfig extends React.PureComponent {
     this.setState({ showPhaseEditBox: true })
     this.getPhaseEditMsg(itemMsg)
   }
+  handlePhaseMsgChange = (e) => {
+    const paramsName = e.target.getAttribute('paramsname')
+    const { value } = e.target
+    console.log(value, paramsName)
+    this.saveParams[paramsName] = value
+    console.log(this.saveParams)
+  }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
-    const { phaseLists, showPhaseEditBox } = this.state
+    const { phaseLists, showPhaseEditBox, editItemData } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
           showPhaseEditBox &&
           <div className={styles.phaseEditBox}>
             <div className={styles.phaseEditDetails}>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
-              <div className={styles.msgItems}>
-                <div className={styles.itemText}>1234</div>
-                <div className={styles.itemValue}><input type="text" /></div>
-              </div>
+              {
+                editItemData &&
+                editItemData.map((item) => {
+                  return (
+                    <div className={styles.msgItems} key={item.name + item.value}>
+                      <div className={styles.itemText}>{item.name}</div>
+                      <div className={styles.itemValue}><Input paramsname={item.paramsName} type="text" defaultValue={item.value} onChange={this.handlePhaseMsgChange} /></div>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
 

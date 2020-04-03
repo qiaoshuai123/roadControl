@@ -57,13 +57,6 @@ class Primitive extends PureComponent {
       isshowSubmission: true, // 展示提交或修改按钮
     }
     this.isPullBox = false
-    // this.equipmentList = [
-    //   { id: 1, name: '信号机' },
-    //   { id: 2, name: '信号灯' },
-    //   { id: 3, name: '相位' },
-    //   { id: 4, name: '检测器' },
-    //   { id: 5, name: '路段名称' },
-    // ]
     this.InterId = this.props.InterId
     this.typeShowPic = false // 判断选择地图或选择图标
     this.isShow = [{ id: 1, us: 1, name: '是' }, { id: 2, us: 0, name: '否' }]
@@ -77,7 +70,7 @@ class Primitive extends PureComponent {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG !== this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG) {
       this.setState({
-        PrimitivBacImg: nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG
+        PrimitivBacImg: nextProps.data.sinaglInfo.UNIT_BACKGROUND_IMG,
       })
     }
   }
@@ -157,7 +150,6 @@ class Primitive extends PureComponent {
       const MaintenanceUnitNumbers = showDeviceInfo.data.directCodes.find(item => item.ID === showDeviceInfo.data.INSTALL_LOCATION).CODE_NAME
       const sInstallationLocations = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MAINTENANCE_UNIT_ID).USER_GROUP_NAME
       const SubordinateUnitNumbers = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
-      console.log(this.uiCodeId, showDeviceInfo.data.UI_IMAGE_NAME, 'ssssssssssssssssssssdddd')
       this.setState({
         isDeviceInformation: true,
         isshowSubmission: false,
@@ -324,7 +316,6 @@ class Primitive extends PureComponent {
     })
   }
   checkinterPageBoxNone = () => { // 隐藏选择底图窗口
-    // console.log(e)
     this.setState({
       ischeckbtninter: 'none',
       isDeviceInformation: true,
@@ -333,7 +324,6 @@ class Primitive extends PureComponent {
   ischeckListItem = (e, imgs) => { // 点击图片选择路口
     e.stopPropagation()
     this.setState({
-      // checkInterImgs, // 切换预览图照片
       ischeckbtninter: 'none',
       checkInterImgs: imgs,
     })
@@ -343,7 +333,6 @@ class Primitive extends PureComponent {
     e.stopPropagation()
     console.log(id, 'qiaoshai')
     this.setState({
-      // checkInterImgs, // 切换预览图照片
       ischeckbtninter: 'none',
       PictWidth: e.target.width,
       PicHeight: e.target.height,
@@ -368,24 +357,8 @@ class Primitive extends PureComponent {
   }
   isFormParameters = () => { // 判断是否选择
     const {
-      EquipmentModel,
-      CorrelationNumber,
-      EquipmentNumber,
-      FactoryNumber,
-      EquipmentName,
-      Manufacturer,
-      sInstallationLocation,
-      ManufacturerTelephone,
-      DateProduction,
-      installDate,
-      SubordinateUnit,
-      WhetherToDisplay,
-      MaintenanceUnit,
-      MaintenancePhine,
-      EquipmentDetail,
-      EquipmentIcon,
-      PictWidth,
-      PicHeight,
+      EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer, sInstallationLocation, ManufacturerTelephone,
+      DateProduction, installDate, SubordinateUnit, WhetherToDisplay, MaintenanceUnit, MaintenancePhine, EquipmentDetail, EquipmentIcon, PictWidth, PicHeight,
     } = this.state
     if (EquipmentIcon === '/baseImg/ylt.jpg') {
       return message.error('请选择正常图标')
@@ -446,23 +419,9 @@ class Primitive extends PureComponent {
     const addimg = await this.isFormParameters()
     if (!addimg) {
       const {
-        EquipmentModel,
-        CorrelationNumber,
-        EquipmentNumber,
-        FactoryNumber,
-        EquipmentName,
-        Manufacturer,
-        MaintenanceUnitNumber,
-        sInstallationLocationNumber,
-        ManufacturerTelephone,
-        DateProduction,
-        installDate,
-        WhetherToDisplay,
-        SubordinateUnitNumber,
-        MaintenancePhine,
-        EquipmentDetail,
-        PictWidth,
-        PicHeight,
+        EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
+        MaintenanceUnitNumber, sInstallationLocationNumber, ManufacturerTelephone, DateProduction, installDate,
+        WhetherToDisplay, SubordinateUnitNumber, MaintenancePhine, EquipmentDetail, PictWidth, PicHeight,
       } = this.state
       const nameId = this.isShow.find(item => item.name === WhetherToDisplay).us
       const obj = {
@@ -500,23 +459,9 @@ class Primitive extends PureComponent {
   }
   changeOk = () => {
     const {
-      EquipmentModel,
-      CorrelationNumber,
-      EquipmentNumber,
-      FactoryNumber,
-      EquipmentName,
-      Manufacturer,
-      MaintenanceUnitNumber,
-      sInstallationLocationNumber,
-      ManufacturerTelephone,
-      DateProduction,
-      installDate,
-      WhetherToDisplay,
-      SubordinateUnitNumber,
-      MaintenancePhine,
-      EquipmentDetail,
-      PictWidth,
-      PicHeight,
+      EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
+      MaintenanceUnitNumber, sInstallationLocationNumber, ManufacturerTelephone, DateProduction, installDate,
+      WhetherToDisplay, SubordinateUnitNumber, MaintenancePhine, EquipmentDetail, PictWidth, PicHeight,
     } = this.state
     const nameId = this.isShow.find(item => item.name === WhetherToDisplay).us
     const obj = {
@@ -563,64 +508,17 @@ class Primitive extends PureComponent {
       this.props.getremovedeviceinfo(this.imgDeviceId)
     }
   }
-  PullBoxDown = (e) => { // 鼠标点击盒子
-    this.isPullBox = true
-    this.defaultX = e.clientX - e.target.offsetLeft - this.PrimitiveInsideBox.offsetLeft
-    this.defaultY = e.clientY - e.target.offsetTop - this.PrimitiveInsideBox.offsetTop
-    this.PullBox.style.cursor = 'move'
-  }
-  PullBoxMove = (e) => { // 鼠标移动盒子
-    if (this.isPullBox) {
-      let offsetX = e.clientX - this.PrimitiveInsideBox.offsetLeft - this.defaultX
-      let offsetY = e.clientY - this.PrimitiveInsideBox.offsetTop - this.defaultY
-      const PrimitWidth = this.PrimitiveInsideBox.offsetWidth - this.PullBox.offsetWidth
-      const PrimitHeight = this.PrimitiveInsideBox.offsetHeight - this.PullBox.offsetHeight
-      if (offsetX < 0) {
-        offsetX = 0
-      }
-      if (offsetY < 0) {
-        offsetY = 0
-      }
-      if (offsetX > PrimitWidth) {
-        offsetX = PrimitWidth
-      }
-      if (offsetY > PrimitHeight) {
-        offsetY = PrimitHeight
-      }
-      this.PullBox.style.left = `${offsetX}px`
-      this.PullBox.style.top = `${offsetY}px`
-    }
-  }
-  PullBoxUp = () => { // 取消盒子移动
-    this.isPullBox = false
-    this.PullBox.style.cursor = 'default'
-  }
   btnNoneStop = (e) => {
     e.stopPropagation()
   }
   checkequipment = (item) => { // 添加新设备
-    console.log(item, '信号')
     this.typeShowPic = false
     this.showAddChange = false
     this.uiType = item.ID
-    switch (item.UI_TYPE_NAME) {
-      case '信号机':
-        this.getHasSingalDevice(item)
-        break
-      case '信号灯':
-        this.showModal(item)
-        break
-      case '相位':
-        this.showModal(item)
-        break
-      case '检测器':
-        this.showModal(item)
-        break
-      case '路段名称':
-        this.showModal(item)
-        break
-      default:
-        break
+    if (item.UI_TYPE_NAME === '信号机') {
+      this.getHasSingalDevice(item)
+    } else {
+      this.showModal(item)
     }
   }
   handleShowInterMonitor = () => {
@@ -671,11 +569,6 @@ class Primitive extends PureComponent {
     })
   }
   FormpavementPic = () => { // 点击表单提交页面路面图标
-    //   this.setState({
-    //     ischeckbtninter: 'block',
-    //   }, () => {
-    //     this.props.getshowUiList(this.uiType)
-    //   })
     this.setState({
       ischeckbtninter: 'block',
       isDeviceInformation: false,
@@ -685,36 +578,10 @@ class Primitive extends PureComponent {
   }
   render() {
     const {
-      interMonitorLeft,
-      value, isMessageinter,
-      ischeckbtninter,
-      checkInterImgs,
-      isDeviceInformation,
-      PrimitivBacImg,
-      EquipmentList,
-      basemapImgs,
-      SubordinateUnitLsit,
-      MaintenanceUnitList,
-      EquipmentModel,
-      CorrelationNumber,
-      EquipmentNumber,
-      FactoryNumber,
-      EquipmentName,
-      Manufacturer,
-      ManufacturerTelephone,
-      DateProduction,
-      installDate,
-      SubordinateUnit,
-      WhetherToDisplay,
-      sInstallationLocation,
-      MaintenanceUnit,
-      MaintenancePhine,
-      EquipmentDetail,
-      EquipmentIcon,
-      PictWidth,
-      PicHeight,
-      picList,
-      isshowSubmission,
+      interMonitorLeft, value, isMessageinter, ischeckbtninter, checkInterImgs, isDeviceInformation, PrimitivBacImg, EquipmentList, basemapImgs,
+      SubordinateUnitLsit, MaintenanceUnitList, EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
+      ManufacturerTelephone, DateProduction, installDate, SubordinateUnit, WhetherToDisplay, sInstallationLocation, MaintenanceUnit, MaintenancePhine,
+      EquipmentDetail, EquipmentIcon, PictWidth, PicHeight, picList, isshowSubmission,
     } = this.state
     // const { confirm } = Modal
     const { Option } = Select
