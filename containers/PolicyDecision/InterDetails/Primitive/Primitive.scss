@@ -68,11 +68,7 @@
       bottom: 0;
       margin: auto;
       flex-wrap: wrap;
-      img{
-        margin: 10px;
-        float: left;
-      }
-      >li {
+      > li {
         width: 23%;
         height: 120px;
         margin: 5px;
@@ -81,6 +77,22 @@
           width: 100%;
           cursor: pointer;
         }
+      }
+    }
+    .checkinterPageBoxTwo {
+      position: absolute;
+      width: 870px;
+      height: 260px;
+      overflow-y: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      img {
+        border: 1px solid red;
+        margin: 3px;
+        cursor: pointer;
       }
     }
   }
@@ -296,6 +308,7 @@
     }
   }
 }
+
 :global(.ant-modal-body) {
   .mountingTable {
     width: 640px;
@@ -384,10 +397,21 @@
         padding: 3px 5px;
         margin: 0 10px;
         background-color: #119ff1;
+        font-weight: normal;;
+        b{
+          height: 100%;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
         &:hover {
           background-color: #31a9f5;
         }
       }
+    }
+    :global(.anticon-close-circle) {
+      display: none;
     }
   }
 }

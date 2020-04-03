@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { geteditDeviceInfoPo, getshowDeviceInfo } from '../../../../../actions/interCofig'
 
 class DeviceDetails extends React.Component {
   constructor(props) {
@@ -9,14 +12,41 @@ class DeviceDetails extends React.Component {
   componentDidMount = () => {
     document.addEventListener('mousemove', (e) => {
       if (this.drag) {
-        console.log('move move move')
         const movePageX = e.pageX
         const movePageY = e.pageY
-        this.imgBox.style.left = `${this.defaultLeft + (movePageX - this.defaultX)}px`
-        this.imgBox.style.top = `${this.defaultTop + (movePageY - this.defaultY)}px`
+        this.ImgLeft = `${this.defaultLeft + (movePageX - this.defaultX)}`
+        this.ImgTop = `${this.defaultTop + (movePageY - this.defaultY)}`
+        const PrimitWidth = 1000 - this.imgBox.offsetWidth
+        const PrimitHeight = 800 - this.imgBox.offsetHeight
+        if (this.ImgLeft < 0) {
+          this.ImgLeft = 0
+        }
+        if (this.ImgTop < 0) {
+          this.ImgTop = 0
+        }
+        if (this.ImgLeft > PrimitWidth) {
+          this.ImgLeft = PrimitWidth
+        }
+        if (this.ImgTop > PrimitHeight) {
+          this.ImgTop = PrimitHeight
+        }
+        this.imgBox.style.left = `${this.ImgLeft}px`
+        this.imgBox.style.top = `${this.ImgTop}px`
       }
     })
+    document.addEventListener('mouseup', () => {
+      this.drag = false
+    })
   }
+  componentDidUpdate = (prevState) => {
+    const { showDeviceInfo } = this.props.data
+    // if (prevState.data.showDeviceInfo !== showDeviceInfo) {
+    //   this.getshowDeviceInfo(showDeviceInfo)
+    // }
+  }
+  // getshowDeviceInfo = (showDeviceInfo) => {
+  //   console.log(showDeviceInfo, 'ssv')
+  // }
   handleDeviceDown = (e) => {
     this.timeStap = new Date().getTime()
     this.drag = true
@@ -24,15 +54,17 @@ class DeviceDetails extends React.Component {
     this.defaultY = e.pageY
     this.defaultLeft = parseInt(this.imgBox.style.left, 0)
     this.defaultTop = parseInt(this.imgBox.style.top, 0)
+    this.imgBox.style.cursor = 'move'
   }
   handleDeviceUp = () => {
     const nowTime = new Date().getTime()
+    this.imgBox.style.cursor = 'default'
+    const { ID } = this.props.imgMsg
     if (nowTime - this.timeStap < 200) {
-      console.log('未拖动')
+      this.props.getshowDeviceInfo(ID, this.props.InterIds)
     } else {
-      console.log('拖动中。。。')
+      this.props.geteditDeviceInfoPo(ID, this.ImgLeft, this.ImgTop)
     }
-    this.drag = false
   }
   render() {
     const { UI_WIDTH, UI_HIGHT, DEVICE_NAME, UI_TYPE_ID, UI_IMAGE_NAME, P_LEFT, P_TOP } = this.props.imgMsg
@@ -60,4 +92,15 @@ class DeviceDetails extends React.Component {
   }
 }
 
-export default DeviceDetails
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    geteditDeviceInfoPo: bindActionCreators(geteditDeviceInfoPo, dispatch),
+    getshowDeviceInfo: bindActionCreators(getshowDeviceInfo, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(DeviceDetails)

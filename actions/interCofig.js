@@ -16,9 +16,11 @@ import {
   API_PRIMITIVE_SHOWDEVICEINFO,
   API_SINGAL_CONTROL,
   API_PRIMITIVE_SHOWUILIST,
+  API_PRIMITIVE_EDITDEVICEINFO,
   API_TIME_TABLE,
   API_DELETE_TIMETABLE,
   API_TIMETABLE_ACTIONS,
+  API_PRIMITIVE_REMOVEDEVICEINFO,
   API_TIMETABLE_SAVE,
   API_PHASE_LIST,
 
@@ -184,7 +186,35 @@ export const getSingalController = (interId) => {
     }
   }
 }
+export const geteditDeviceInfo = obj => (dispatch) => {
+  try {
+    const promises = new Promise((resolve) => {
+      const result = RestUtil.post(
+        `${API_PRIMITIVE_EDITDEVICEINFO}`,
+        obj,
+      )
+      resolve(result)
+    })
+    dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFO, payload: promises })
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getremovedeviceinfo = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PRIMITIVE_REMOVEDEVICEINFO}?deviceId=${id}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
+}
 export const getTimeTable = (interId) => {
   return async (dispatch) => {
     try {
