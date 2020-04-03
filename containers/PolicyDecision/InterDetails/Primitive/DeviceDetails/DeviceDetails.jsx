@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { geteditDeviceInfoPo, getcfgPhaseInfo, getshowDeviceInfo } from '../../../../../actions/interCofig'
+import { geteditDeviceInfoPo, getshowDeviceInfo } from '../../../../../actions/interCofig'
 
 class DeviceDetails extends React.Component {
   constructor(props) {
@@ -100,7 +100,6 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     geteditDeviceInfoPo: bindActionCreators(geteditDeviceInfoPo, dispatch),
-    getcfgPhaseInfo: bindActionCreators(getcfgPhaseInfo, dispatch),
     getshowDeviceInfo: bindActionCreators(getshowDeviceInfo, dispatch),
   }
 }

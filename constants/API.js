@@ -18,7 +18,6 @@ export const API_PLAN_STAGE = '/atms/monitor/planRunning'
 export const API_PRIMITIVE_INUTUITYPE = '/atms/singleUnitMonitor/initUiType' // 图元设备配置//路口图元配置--初始化路口图元类型
 export const API_MONITOR_INFO = '/atms/monitor/monitorInfo'
 export const API_PRIMITIVE_BASEMAPIMG = '/atms/basemap/basemapImg' // 图元配置选择底图
-// export const API_PRIMITIVE_UICONFIG = '/atms/singleUnitMonitor/uiConfig' // 图片配置设备位置
 export const API_PRIMITIVE_UPDATEBASEMAP = '/atms/basemap/updatebasemap' // 图元配置修改底图
 export const API_PRIMITIVE_UPLOAD = '/atms/basemap/upload' // 图元配置上传图片底图 ??未调试
 export const API_PRIMITIVE_EDITDEVICEINFOPO = '/atms/singleUnitMonitor/editDeviceInfoPo' // 更改设备位置
@@ -26,5 +25,7 @@ export const API_PRIMITIVE_SHOWDEVICEINFO = '/atms/singleUnitMonitor/showDeviceI
 export const API_SINGAL_CONTROL = '/atms/singleUnitMonitor/sigalController'
 export const API_PRIMITIVE_SHOWUILIST = '/atms/singleUnitMonitor/showUiList' // 添加设备表单页面图标
 export const API_PRIMITIVE_EDITDEVICEINFO = '/atms/singleUnitMonitor/editDeviceInfo' // 添加设备
-export const API_PRIMITIVE_DELETEPHASE = '/atms/singleUnitMonitor/deletePhase' // 设备删除
-
+export const API_PRIMITIVE_REMOVEDEVICEINFO = '/atms/singleUnitMonitor/removedeviceinfo' // 设备删除
+export const API_TIME_TABLE = '/atms/hisenseSignal/loadTimeintervalList'
+export const API_DELETE_TIMETABLE = '/atms/hisenseSignal/deleteTimeinterval'
+export const API_TIMETABLE_ACTIONS = '/atms/hisenseSignal/loadActionNoList'

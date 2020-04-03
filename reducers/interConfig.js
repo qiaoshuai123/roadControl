@@ -34,8 +34,12 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { showUiList: payload })
     case types.GET_PRIMITIVE_EDITDEVICEINFO:
       return Object.assign({}, state, { editDeviceInfo: payload })
-    case types.GET_PRIMITIVE_DELETEPHASE:
-      return Object.assign({}, state, { deletePhase: payload })
+    case types.GET_PRIMITIVE_REMOVEDEVICEINFO:
+      return Object.assign({}, state, { removedeviceinfo: payload })
+    case types.GET_TIME_TABLE:
+      return Object.assign({}, state, { timeTable: payload })
+    case types.GET_TIMETABLE_ACTIONS:
+      return Object.assign({}, state, { timeTableActions: payload })
     default:
       return state
   }

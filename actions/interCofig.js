@@ -17,8 +17,10 @@ import {
   API_SINGAL_CONTROL,
   API_PRIMITIVE_SHOWUILIST,
   API_PRIMITIVE_EDITDEVICEINFO,
-  API_PRIMITIVE_CFGPHASEINFO,
-
+  API_TIME_TABLE,
+  API_DELETE_TIMETABLE,
+  API_TIMETABLE_ACTIONS,
+  API_PRIMITIVE_REMOVEDEVICEINFO,
 } from '../constants/API'
 
 export const getInterdetailIsSignalling = (interId) => {
@@ -181,46 +183,13 @@ export const getSingalController = (interId) => {
     }
   }
 }
-export const geteditDeviceInfo = (
-  id, pLeft, pTop, InterId, deviceInfoId, EquipmentModel, configCode,
-  EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer, MaintenanceUnitNumber,
-  ManufacturerTelephone, DateProduction, installDate, sInstallationLocationNumber,
-  MaintenancePhine, nameId, SubordinateUnitNumber, EquipmentDetail, PictWidth,
-  PicHeight, flag, deviceState, deviceType, uiCodeId,
-
-) => (dispatch) => {
+export const geteditDeviceInfo = obj => (dispatch) => {
   try {
     const promises = new Promise((resolve) => {
-      const result = RestUtil.post(`${API_PRIMITIVE_EDITDEVICEINFO}`, {
-        id,
-        pLeft,
-        pTop,
-        unitId: InterId,
-        isView: nameId,
-        detail: EquipmentDetail,
-        uiWidth: PictWidth,
-        uiHight: PicHeight,
-        uiId: uiCodeId,
-        configCode,
-        deviceInfo: {
-          id: deviceInfoId,
-          deviceModel: EquipmentModel,
-          deviceCode: EquipmentNumber,
-          factoryCode: FactoryNumber,
-          deviceName: EquipmentName,
-          factoryName: Manufacturer,
-          installLocation: MaintenanceUnitNumber,
-          factoryTel: ManufacturerTelephone,
-          factoryDay: DateProduction,
-          installDay: installDate,
-          userGroup1: sInstallationLocationNumber,
-          maintenanceUnitTel: MaintenancePhine,
-          userGroup2: SubordinateUnitNumber,
-          deviceState,
-          flag,
-          deviceType,
-        }
-      })
+      const result = RestUtil.post(
+        `${API_PRIMITIVE_EDITDEVICEINFO}`,
+        obj,
+      )
       resolve(result)
     })
     dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFO, payload: promises })
@@ -228,12 +197,49 @@ export const geteditDeviceInfo = (
     console.log(e)
   }
 }
-export const getcfgPhaseInfo = (id) => {
+export const getremovedeviceinfo = (id) => {
   return async (dispatch) => {
     try {
-      const result = await RestUtil.post(`${API_PRIMITIVE_DELETEPHASE}?id=${id}`)
+      const result = await RestUtil.post(`${API_PRIMITIVE_REMOVEDEVICEINFO}?deviceId=${id}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_PRIMITIVE_DELETEPHASE, payload: result.data.data })
+        dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+}
+export const getTimeTable = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_TIME_TABLE}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIME_TABLE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDeleteTimeTable = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_TIMETABLE}?id=${id}`)
+    return result
+  }
+}
+
+export const getTimetableActions = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_TIMETABLE_ACTIONS}?id=0&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIMETABLE_ACTIONS, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

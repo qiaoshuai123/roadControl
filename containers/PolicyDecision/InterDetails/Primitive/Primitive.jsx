@@ -7,15 +7,15 @@ import moment from 'moment'
 import {
   getInterdetailIsSignalling,
   getprimitiveInutuitype,
-  getbasemapImg, getupdatebasemap,
+  getbasemapImg,
+  getupdatebasemap,
   getshowDeviceInfo,
   getshowUiList,
   geteditDeviceInfo,
+  getremovedeviceinfo,
 } from '../../../../actions/interCofig'
 import DeviceDetails from './DeviceDetails/DeviceDetails'
-// import formImg from "http://192.168.1.123:26001/atms/imgs/baseImg/1.jpg"
 import styles from './Primitive.scss'
-// import interImgs from './img/Equipment.png' // 默认预览图
 
 class Primitive extends PureComponent {
   constructor(props) {
@@ -85,7 +85,7 @@ class Primitive extends PureComponent {
     // if (prevState.data !== this.props.data) {
     //   console.log(this.props)
     // }
-    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, editDeviceInfo, } = this.props.data
+    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, editDeviceInfo, removedeviceinfo } = this.props.data
     if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
       this.getControlRoads(primitiveInutuitype)
     }
@@ -106,6 +106,9 @@ class Primitive extends PureComponent {
     }
     if (prevState.data.editDeviceInfo !== editDeviceInfo) {
       this.geteditDeviceInfo(editDeviceInfo)
+    }
+    if (prevState.data.removedeviceinfo !== removedeviceinfo) {
+      this.getremovedeviceinfo(removedeviceinfo)
     }
   }
   onChangeRadio = (e) => {
@@ -137,14 +140,24 @@ class Primitive extends PureComponent {
       basemapImgs,
     })
   }
+  getremovedeviceinfo = (deletePhase) => {
+    console.log(deletePhase, '删除')
+  }
   getshowDeviceInfo = (showDeviceInfo) => {
     console.log(showDeviceInfo, '弹窗信息')
-
     if (showDeviceInfo.data.FACTORY_NAME) {
+      this.typeShowPic = false
+      this.showAddChange = true
+      this.imgID = showDeviceInfo.data.ID
+      this.imgDeviceId = showDeviceInfo.data.DEVICE_ID
+      this.EquipmentConfigurationPic = showDeviceInfo.data.DEVICE_TYPE
+      this.uiCodeId = showDeviceInfo.data.UI_ID
+      this.uiType = showDeviceInfo.data.UI_TYPE_ID
       const isviews = this.isShow.find(item => item.us === showDeviceInfo.data.IS_VIEW).name
       const MaintenanceUnitNumbers = showDeviceInfo.data.directCodes.find(item => item.ID === showDeviceInfo.data.INSTALL_LOCATION).CODE_NAME
       const sInstallationLocations = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MAINTENANCE_UNIT_ID).USER_GROUP_NAME
       const SubordinateUnitNumbers = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
+      console.log(this.uiCodeId, showDeviceInfo.data.UI_IMAGE_NAME, 'ssssssssssssssssssssdddd')
       this.setState({
         isDeviceInformation: true,
         isshowSubmission: false,
@@ -440,35 +453,102 @@ class Primitive extends PureComponent {
         EquipmentName,
         Manufacturer,
         MaintenanceUnitNumber,
-        sInstallationLocation,
         sInstallationLocationNumber,
         ManufacturerTelephone,
         DateProduction,
         installDate,
-        SubordinateUnit,
         WhetherToDisplay,
-        MaintenanceUnit,
         SubordinateUnitNumber,
         MaintenancePhine,
         EquipmentDetail,
-        EquipmentIcon,
         PictWidth,
         PicHeight,
       } = this.state
       const nameId = this.isShow.find(item => item.name === WhetherToDisplay).us
-      this.props.geteditDeviceInfo(
-        '', 10, 10, this.InterId, '', EquipmentModel, CorrelationNumber,
-        EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
-        MaintenanceUnitNumber, ManufacturerTelephone, DateProduction,
-        installDate, sInstallationLocationNumber, MaintenancePhine, nameId,
-        SubordinateUnitNumber, EquipmentDetail, PictWidth, PicHeight, 1, 1,
-        this.EquipmentConfigurationPic, this.uiCodeId,
-      )
+      const obj = {
+        id: '',
+        pLeft: 10,
+        pTop: 10,
+        unitId: this.InterId,
+        isView: nameId,
+        detail: EquipmentDetail,
+        uiWidth: PictWidth,
+        uiHight: PicHeight,
+        uiId: this.uiCodeId,
+        configCode: CorrelationNumber,
+        deviceInfo: {
+          id: '',
+          deviceModel: EquipmentModel,
+          deviceCode: EquipmentNumber,
+          factoryCode: FactoryNumber,
+          deviceName: EquipmentName,
+          factoryName: Manufacturer,
+          installLocation: MaintenanceUnitNumber,
+          factoryTel: ManufacturerTelephone,
+          factoryDay: DateProduction,
+          installDay: installDate,
+          userGroup1: sInstallationLocationNumber,
+          maintenanceUnitTel: MaintenancePhine,
+          userGroup2: SubordinateUnitNumber,
+          deviceState: 1,
+          flag: 1,
+          deviceType: this.EquipmentConfigurationPic,
+        },
+      }
+      this.props.geteditDeviceInfo(obj)
     }
-
-    // this.setState({
-    //   isDeviceInformation: false,
-    // })
+  }
+  changeOk = () => {
+    const {
+      EquipmentModel,
+      CorrelationNumber,
+      EquipmentNumber,
+      FactoryNumber,
+      EquipmentName,
+      Manufacturer,
+      MaintenanceUnitNumber,
+      sInstallationLocationNumber,
+      ManufacturerTelephone,
+      DateProduction,
+      installDate,
+      WhetherToDisplay,
+      SubordinateUnitNumber,
+      MaintenancePhine,
+      EquipmentDetail,
+      PictWidth,
+      PicHeight,
+    } = this.state
+    const nameId = this.isShow.find(item => item.name === WhetherToDisplay).us
+    const obj = {
+      id: this.imgID,
+      unitId: this.InterId,
+      isView: nameId,
+      detail: EquipmentDetail,
+      uiWidth: PictWidth,
+      uiHight: PicHeight,
+      uiId: this.uiCodeId,
+      configCode: CorrelationNumber,
+      deviceId: this.imgDeviceId,
+      deviceInfo: {
+        id: this.imgDeviceId,
+        deviceModel: EquipmentModel,
+        deviceCode: EquipmentNumber,
+        factoryCode: FactoryNumber,
+        deviceName: EquipmentName,
+        factoryName: Manufacturer,
+        installLocation: MaintenanceUnitNumber,
+        factoryTel: ManufacturerTelephone,
+        factoryDay: DateProduction,
+        installDay: installDate,
+        userGroup1: sInstallationLocationNumber,
+        maintenanceUnitTel: MaintenancePhine,
+        userGroup2: SubordinateUnitNumber,
+        deviceState: 1,
+        flag: 1,
+        deviceType: this.EquipmentConfigurationPic,
+      },
+    }
+    this.props.geteditDeviceInfo(obj)
   }
   handleCancel = () => { // 设备信息弹框隐藏
     this.textInput()
@@ -477,10 +557,10 @@ class Primitive extends PureComponent {
     })
   }
   handDelect = () => { // 设备信息关闭或删除设备
-    if (!this.typeShowPic) { // 隐藏窗口
+    if (!this.showAddChange) { // 隐藏窗口
       this.handleCancel()
     } else { // 删除设备
-
+      this.props.getremovedeviceinfo(this.imgDeviceId)
     }
   }
   PullBoxDown = (e) => { // 鼠标点击盒子
@@ -521,6 +601,7 @@ class Primitive extends PureComponent {
   checkequipment = (item) => { // 添加新设备
     console.log(item, '信号')
     this.typeShowPic = false
+    this.showAddChange = false
     this.uiType = item.ID
     switch (item.UI_TYPE_NAME) {
       case '信号机':
@@ -635,9 +716,9 @@ class Primitive extends PureComponent {
       picList,
       isshowSubmission,
     } = this.state
+    // const { confirm } = Modal
     const { Option } = Select
     const { TextArea } = Input
-    console.log('jizizhongxianhsi', this.props)
     const { UI_UNIT_CONFIGS } = this.props.data.monitorInfo
     const { SIGNALSYSTEM } = this.props.data.sinaglInfo
     return (
@@ -744,6 +825,7 @@ class Primitive extends PureComponent {
             title="保存信息"
             visible={isDeviceInformation}
             // onOk={this.handleOk}
+            bodyStyle={{ backgroundColor: 'rgba(61, 87, 114, .8)' }}
             onCancel={this.handleCancel}
             footer={null}
             width="720px"
@@ -851,7 +933,7 @@ class Primitive extends PureComponent {
                 <div>
                   <span className={styles.mountingTableBottom_left}>
                     {
-                      isshowSubmission ? <b onClick={this.handleOk}>提交</b> : <b>修改</b>
+                      isshowSubmission ? <b onClick={this.handleOk}>提交</b> : <b onClick={this.changeOk}>修改</b>
                     }
                   </span>
                   <span onClick={this.handDelect} className={styles.mountingTableBottom_center}>删除</span>
@@ -875,11 +957,11 @@ const mapDisPatchToProps = (dispatch) => {
     getInterdetailIsSignalling: bindActionCreators(getInterdetailIsSignalling, dispatch),
     getprimitiveInutuitype: bindActionCreators(getprimitiveInutuitype, dispatch),
     getbasemapImg: bindActionCreators(getbasemapImg, dispatch),
-    // getuiConfig: bindActionCreators(getuiConfig, dispatch),
     getupdatebasemap: bindActionCreators(getupdatebasemap, dispatch),
     getshowDeviceInfo: bindActionCreators(getshowDeviceInfo, dispatch),
     getshowUiList: bindActionCreators(getshowUiList, dispatch),
     geteditDeviceInfo: bindActionCreators(geteditDeviceInfo, dispatch),
+    getremovedeviceinfo: bindActionCreators(getremovedeviceinfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)
