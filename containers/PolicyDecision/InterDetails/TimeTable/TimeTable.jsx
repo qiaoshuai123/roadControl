@@ -5,7 +5,7 @@ import { Icon, Select, TimePicker, message, Modal } from 'antd'
 import moment from 'moment'
 import styles from './TimeTable.scss'
 
-import { getTimeTable, getDeleteTimeTable, getTimetableActions } from '../../../../actions/interCofig'
+import { getTimeTable, getDeleteTimeTable, getTimetableActions, getSaveTimeTable } from '../../../../actions/interCofig'
 
 class TimeTable extends React.PureComponent {
   constructor(props) {
@@ -19,11 +19,20 @@ class TimeTable extends React.PureComponent {
       timeTableActions: null,
     }
     this.orderList = []
+    this.saveParams = {
+      action: 0,
+      id: 0,
+      orderNo: 0,
+      startTime: '00:00',
+      timeintervalNo: 0,
+      unitId: 0,
+    }
   }
   componentDidMount = () => {
     console.log(this.props)
     this.InterId = this.props.match.params.id
     this.props.getTimeTable(this.InterId)
+    this.props.getTimetableActions(this.InterId)
   }
   componentDidUpdate = (prevState) => {
     const { timeTable, deleteTimeTable, timeTableActions } = this.props.data
@@ -44,6 +53,14 @@ class TimeTable extends React.PureComponent {
     this.setState({ timeTableActions })
   }
   handleEdit = (items) => {
+    this.saveParams = {
+      action: items.ACTION,
+      id: items.ID,
+      orderNo: items.ORDER_NO,
+      startTime: items.START_TIME,
+      timeintervalNo: items.TIME_INTERVAL_NO,
+      unitId: this.InterId,
+    }
     this.orderList = []
     if (this.state.timeTable.length) {
       this.state.timeTable.forEach((item) => {
@@ -58,7 +75,6 @@ class TimeTable extends React.PureComponent {
       defaultTime: items.START_TIME,
       defaultAction: items.ACTION,
     })
-    this.props.getTimetableActions(this.InterId)
   }
   handleCloseEdit = () => {
     this.setState({ showEditBox: false })
@@ -80,6 +96,39 @@ class TimeTable extends React.PureComponent {
         })
       },
     })
+  }
+  handleSaveTimeTalbe = () => {
+    this.props.getSaveTimeTable(this.saveParams).then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        this.props.getTimeTable(this.InterId)
+      }
+      this.setState({ showEditBox: false })
+      message.info(res.data.message)
+    })
+  }
+  handleChangeTimeNo = (value) => {
+    this.saveParams.timeintervalNo = value
+  }
+  handleChangeTimeOrder = (value) => {
+    this.saveParams.orderNo = value
+  }
+  handleChangeTime = (moment, time) => {
+    this.saveParams.startTime = time
+  }
+  handleChangeAction = (value, options) => {
+    this.saveParams.action = options.key
+  }
+  handleAddTimeTable = () => {
+    this.setState({ showEditBox: true })
+    this.saveParams = {
+      action: 1,
+      id: 0,
+      orderNo: 1,
+      startTime: '12:00',
+      timeintervalNo: 1,
+      unitId: this.InterId,
+    }
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
@@ -103,7 +152,7 @@ class TimeTable extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItems}>时段表号</div>
                 <div className={styles.editItems}>
-                  <Select defaultValue={1}>
+                  <Select defaultValue={1} onChange={this.handleChangeTimeNo}>
                     {
                       new Array(16).fill(true).map((item, index) => (
                         <Option key={item + index} value={index + 1}>{index + 1}</Option>
@@ -113,7 +162,7 @@ class TimeTable extends React.PureComponent {
                 </div>
                 <div className={styles.editItems}>时段号</div>
                 <div className={styles.editItems} style={{ flex: 1.2 }}>
-                  <Select defaultValue={defaultOrderNo}>
+                  <Select defaultValue={defaultOrderNo || 1} onChange={this.handleChangeTimeOrder}>
                     {
                       timeTable && timeTable.length > 0 &&
                       new Array(48).fill(true).map((item, index) => {
@@ -130,11 +179,11 @@ class TimeTable extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItems}>开始时间</div>
                 <div className={styles.editItems}>
-                  <TimePicker key={defaultTime} defaultValue={moment(defaultTime, format)} format={format} minuteStep={15} allowClear={false} />
+                  <TimePicker key={defaultTime} defaultValue={moment(defaultTime, format)} format={format} minuteStep={15} allowClear={false} onChange={this.handleChangeTime} />
                 </div>
                 <div className={styles.editItems}>关联动作</div>
                 <div className={styles.editItems} style={{ flex: 1.2 }}>
-                  <Select defaultValue={`动作${defaultAction}`}>
+                  <Select defaultValue={defaultAction ? `动作${defaultAction}` : `动作${timeTableActions[0]}`} onChange={this.handleChangeAction}>
                     {
                       timeTableActions &&
                       timeTableActions.map((item) => {
@@ -146,6 +195,10 @@ class TimeTable extends React.PureComponent {
                   </Select>
                 </div>
               </div>
+              <div className={styles.editBtnBox}>
+                <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
+                <div className={styles.editBtn} onClick={this.handleSaveTimeTalbe}>确定</div>
+              </div>
             </div>
           </div>
         }
@@ -156,7 +209,7 @@ class TimeTable extends React.PureComponent {
         <div className={styles.phaseConfigBox_center}>
           <div className={styles.phaseConfigBoxCenter_left}>上载</div>
           <div className={styles.phaseConfigBoxCenter_left}>下发</div>
-          <div className={styles.phaseConfigBoxCenter_left}>添加</div>
+          <div className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddTimeTable}>添加</div>
         </div>
         <div className={styles.phaseConfigBox_box}>
           <div className={styles.mountingThead}>
@@ -201,6 +254,7 @@ const mapDisPatchToProps = (dispatch) => {
     getTimeTable: bindActionCreators(getTimeTable, dispatch),
     getDeleteTimeTable: bindActionCreators(getDeleteTimeTable, dispatch),
     getTimetableActions: bindActionCreators(getTimetableActions, dispatch),
+    getSaveTimeTable: bindActionCreators(getSaveTimeTable, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimeTable)

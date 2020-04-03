@@ -40,6 +40,10 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { timeTable: payload })
     case types.GET_TIMETABLE_ACTIONS:
       return Object.assign({}, state, { timeTableActions: payload })
+    case types.GET_TIMETABLE_SAVE:
+      return Object.assign({}, state, { timeTableSave: payload })
+    case types.GET_PHASE_LIST:
+      return Object.assign({}, state, { phaseLists: payload })
     default:
       return state
   }
