@@ -97,9 +97,6 @@ class Primitive extends PureComponent {
     if (prevState.data.showUiList !== showUiList) {
       this.getshowUiList(showUiList)
     }
-    if (prevState.data.editDeviceInfo !== editDeviceInfo) {
-      this.geteditDeviceInfo(editDeviceInfo)
-    }
     if (prevState.data.removedeviceinfo !== removedeviceinfo) {
       this.getremovedeviceinfo(removedeviceinfo)
     }
@@ -191,16 +188,6 @@ class Primitive extends PureComponent {
         MaintenanceUnitNumber: showDeviceInfo.data.directCodes[0].ID,
       })
     }
-  }
-  geteditDeviceInfo = (editDeviceInfo) => {
-    console.log(editDeviceInfo, '添加成功')
-    editDeviceInfo.then((res) => {
-      const { code } = res.data
-      if (code === 200) {
-        this.handleCancel()
-        message.success('添加成功')
-      }
-    })
   }
   getupdatebasemap = (updatebasemap) => {
     updatebasemap.then((res) => {
@@ -454,7 +441,13 @@ class Primitive extends PureComponent {
           deviceType: this.EquipmentConfigurationPic,
         },
       }
-      this.props.geteditDeviceInfo(obj)
+      this.props.geteditDeviceInfo(obj).then((res) => {
+        const { code } = res.data
+        if (code === 200) {
+          this.handleCancel()
+          message.success('添加成功')
+        }
+      })
     }
   }
   changeOk = () => {
@@ -493,7 +486,13 @@ class Primitive extends PureComponent {
         deviceType: this.EquipmentConfigurationPic,
       },
     }
-    this.props.geteditDeviceInfo(obj)
+    this.props.geteditDeviceInfo(obj).then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        this.handleCancel()
+        message.success('添加成功')
+      }
+    })
   }
   handleCancel = () => { // 设备信息弹框隐藏
     this.textInput()

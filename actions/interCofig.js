@@ -186,20 +186,14 @@ export const getSingalController = (interId) => {
     }
   }
 }
-export const geteditDeviceInfo = obj => (dispatch) => {
-  try {
-    const promises = new Promise((resolve) => {
-      const result = RestUtil.post(
-        `${API_PRIMITIVE_EDITDEVICEINFO}`,
-        obj,
-      )
-      resolve(result)
-    })
-    dispatch({ type: types.GET_PRIMITIVE_EDITDEVICEINFO, payload: promises })
-  } catch (e) {
-    console.log(e)
+
+export const geteditDeviceInfo = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_PRIMITIVE_EDITDEVICEINFO, params)
+    return result
   }
 }
+
 export const getremovedeviceinfo = (id) => {
   return async (dispatch) => {
     try {
@@ -215,6 +209,7 @@ export const getremovedeviceinfo = (id) => {
   }
 
 }
+
 export const getTimeTable = (interId) => {
   return async (dispatch) => {
     try {
