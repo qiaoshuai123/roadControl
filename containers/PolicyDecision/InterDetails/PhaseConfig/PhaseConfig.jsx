@@ -15,41 +15,41 @@ class PhaseConfig extends React.PureComponent {
       editItemData: null,
     }
     this.saveParams = {
-      "UnitExtendGreenTime": 0,
-      "addInitialValue": 0,
-      "allRedTime": 0,
-      "beforeDecrementCarNumber": 0,
-      "beforeDecrementTime": 0,
-      "concurrentPhaseNos": "string",
-      "decrementTime": 0,
-      "direction": 0,
-      "firstCycleGreenTime": 0,
-      "flowDirection": 0,
-      "followOffPhaseNo": 0,
-      "greenFlashTime": 0,
-      "initialState": 0,
-      "maxGreenTimeOne": 0,
-      "maxGreenTimeTwo": 0,
-      "maxInitialValue": 0,
-      "maxRunTime": 0,
-      "minGreenTime": 0,
-      "minInterval": 0,
-      "minRedTime": 0,
-      "noninductive": 0,
-      "other": 0,
-      "peopleGreenFlashTime": 0,
-      "peopleGreenTime": 0,
-      "phaseName": "string",
-      "phaseNo": 0,
-      "redYellowTime": 0,
-      "ringNo": 0,
-      "runStepSize": 0,
-      "safeRedTime": 0,
-      "setByBit": 0,
-      "unitDecrementValue": 0,
-      "unitExtendGreenTime": 0,
-      "unitId": 0,
-      "yellowTime": 0
+      UnitExtendGreenTime: 0,
+      addInitialValue: 0,
+      allRedTime: 0,
+      beforeDecrementCarNumber: 0,
+      beforeDecrementTime: 0,
+      concurrentPhaseNos: 'string',
+      decrementTime: 0,
+      direction: 0,
+      firstCycleGreenTime: 0,
+      flowDirection: 0,
+      followOffPhaseNo: 0,
+      greenFlashTime: 0,
+      initialState: 0,
+      maxGreenTimeOne: 0,
+      maxGreenTimeTwo: 0,
+      maxInitialValue: 0,
+      maxRunTime: 0,
+      minGreenTime: 0,
+      minInterval: 0,
+      minRedTime: 0,
+      noninductive: 0,
+      other: 0,
+      peopleGreenFlashTime: 0,
+      peopleGreenTime: 0,
+      phaseName: 'string',
+      phaseNo: 0,
+      redYellowTime: 0,
+      ringNo: 0,
+      runStepSize: 0,
+      safeRedTime: 0,
+      setByBit: 0,
+      unitDecrementValue: 0,
+      unitExtendGreenTime: 0,
+      unitId: 0,
+      yellowTime: 0,
     }
   }
   componentDidMount = () => {
@@ -100,6 +100,9 @@ class PhaseConfig extends React.PureComponent {
       { name: '增加初始值', paramsName: 'addInitialValue', value: itemMsg.ADD_INITIAL_VALUE },
       { name: '按位设置', paramsName: 'setByBit', value: itemMsg.SET_BY_BIT },
     ]
+    editItem.forEach((item) => {
+      this.saveParams[item.paramsName] = item.value
+    })
     this.setState({ editItemData: editItem })
   }
   handleEditPhaseMsg = (itemMsg) => {
@@ -109,9 +112,11 @@ class PhaseConfig extends React.PureComponent {
   handlePhaseMsgChange = (e) => {
     const paramsName = e.target.getAttribute('paramsname')
     const { value } = e.target
-    console.log(value, paramsName)
     this.saveParams[paramsName] = value
     console.log(this.saveParams)
+  }
+  handleCloseEdit = () => {
+    this.setState({ showPhaseEditBox: false })
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
@@ -124,17 +129,27 @@ class PhaseConfig extends React.PureComponent {
           showPhaseEditBox &&
           <div className={styles.phaseEditBox}>
             <div className={styles.phaseEditDetails}>
-              {
-                editItemData &&
-                editItemData.map((item) => {
-                  return (
-                    <div className={styles.msgItems} key={item.name + item.value}>
-                      <div className={styles.itemText}>{item.name}</div>
-                      <div className={styles.itemValue}><Input paramsname={item.paramsName} type="text" defaultValue={item.value} onChange={this.handlePhaseMsgChange} /></div>
-                    </div>
-                  )
-                })
-              }
+              <div className={styles.editTitle}>
+                编辑车道表信息
+                <span className={styles.cloeEditIcon} onClick={this.handleCloseEdit}><Icon type="close" /></span>
+              </div>
+              <div className={styles.detailsBox}>
+                {
+                  editItemData &&
+                  editItemData.map((item) => {
+                    return (
+                      <div className={styles.msgItems} key={item.name + item.value}>
+                        <div className={styles.itemText}>{item.name}</div>
+                        <div className={styles.itemValue}><Input paramsname={item.paramsName} type="text" defaultValue={item.value} onChange={this.handlePhaseMsgChange} /></div>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+              <div className={styles.subBtnBox}>
+                <div className={styles.subBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
+                <div className={styles.subBtn}>确定</div>
+              </div>
             </div>
           </div>
 

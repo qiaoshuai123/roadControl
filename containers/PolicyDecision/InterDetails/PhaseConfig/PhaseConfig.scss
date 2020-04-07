@@ -2,7 +2,7 @@
   position: relative;
   color: white;
   width: 100%;
-  height: 400px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   .phaseEditBox {
@@ -19,33 +19,78 @@
       width: 80%;
       height: 100%;
       border-radius: 5px;
-      background-color: rgba(60,82,105,0.8);
-      .msgItems {
-        float: left;
-        width: 30%;
-        display: flex;
-        .itemText {
-          flex: 1;
-          width: 120px;
-          height: 40px;
-          line-height: 40px;
-          text-align: right;
-          padding-right: 10px;
+      background-color: rgba(14,51,85,0.9);
+      .editTitle {
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 10px;
+        border-bottom: 1px solid #3B5268;
+        .cloeEditIcon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all .2s;
+            &:hover {
+                transform: rotate(-180deg);
+            }
         }
-        .itemValue {
-          flex: 1;
-          width: 80px;
-          height: 40px;
+      }
+      .detailsBox {
+        height: calc(100% - 90px);
+        padding: 10px 0;
+        overflow-y: auto;
+        .msgItems {
+          float: left;
+          width: 30%;
           display: flex;
-          align-items: center;
-          input {
-            width: 100%;
-            height: 30px;
-            padding-left: 5px;
-            border: 1px solid #173959;
-            border-radius: 3px;
-            background-color: transparent;
+          .itemText {
+            flex: 1;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-align: right;
+            padding-right: 10px;
           }
+          .itemValue {
+            flex: 1;
+            width: 80px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            input {
+              width: 100%;
+              height: 30px;
+              padding-left: 5px;
+              color: #f1f1fb;
+              border: 1px solid #05204E;
+              border-radius: 3px;
+              background-color: transparent;
+            }
+          }
+        }
+      }
+      .subBtnBox {
+        height: 50px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: 1px solid #3B5268;
+        .subBtn {
+          width: 70px;
+          height: 28px;
+          margin-right: 20px;
+          text-align: center;
+          line-height: 28px;
+          border-radius: 4px;
+          background-color: #12A4F1;
+          cursor: pointer;
         }
       }
     }
