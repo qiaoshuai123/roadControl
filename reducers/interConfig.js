@@ -44,6 +44,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { timeTableSave: payload })
     case types.GET_PHASE_LIST:
       return Object.assign({}, state, { phaseLists: payload })
+    case types.GET_PHASE_GETDLNAME:
+      return Object.assign({}, state, { getDLName: payload })
     default:
       return state
   }

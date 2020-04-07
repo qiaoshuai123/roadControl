@@ -13,6 +13,7 @@ import {
   getshowUiList,
   geteditDeviceInfo,
   getremovedeviceinfo,
+  getDLNames,
 } from '../../../../actions/interCofig'
 import DeviceDetails from './DeviceDetails/DeviceDetails'
 import styles from './Primitive.scss'
@@ -56,6 +57,9 @@ class Primitive extends PureComponent {
       PicHeight: 0, // 图片高
       isshowSubmission: true, // 展示提交或修改按钮
       isupload: 'block', // 点击上传隐藏初始预览
+      RadioChangeValue: '', // 选择路段名称
+      isNameOfRoad: 'none', // 是否显示路口弹窗
+      RadeList: [], // 路道名称列表
     }
     this.isPullBox = false
     this.InterId = this.props.InterId
@@ -79,7 +83,7 @@ class Primitive extends PureComponent {
     // if (prevState.data !== this.props.data) {
     //   console.log(this.props)
     // }
-    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, removedeviceinfo } = this.props.data
+    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, removedeviceinfo, getDLName } = this.props.data
     if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
       this.getControlRoads(primitiveInutuitype)
     }
@@ -100,6 +104,9 @@ class Primitive extends PureComponent {
     }
     if (prevState.data.removedeviceinfo !== removedeviceinfo) {
       this.getremovedeviceinfo(removedeviceinfo)
+    }
+    if (prevState.data.getDLName !== getDLName) {
+      this.getDLNames(getDLName)
     }
   }
   onChangeRadio = (e) => {
@@ -132,12 +139,21 @@ class Primitive extends PureComponent {
       basemapImgs,
     })
   }
+  getDLNames = (getDLName) => {
+    // console.log(getDLName, 'ssssssssssss')
+    this.setState({
+      RadeList: getDLName,
+    })
+  }
   getremovedeviceinfo = (deletePhase) => {
     console.log(deletePhase, '删除')
+    if (deletePhase.code === 200) {
+      this.handleCancel()
+      message.success('删除成功')
+    }
   }
   getshowDeviceInfo = (showDeviceInfo) => {
-    console.log(showDeviceInfo, '弹窗信息')
-    if (showDeviceInfo.data.FACTORY_NAME) {
+    if (showDeviceInfo.data.DEVICE_NAME) {
       try {
         const {
           ID, DEVICE_ID, DEVICE_TYPE, UI_ID, UI_TYPE_ID, IS_VIEW, INSTALL_LOCATION,
@@ -355,6 +371,13 @@ class Primitive extends PureComponent {
   uploadPic = () => { // 上传底图
 
   }
+  showNameOfRoadBox = () => {
+    this.setState({
+      isNameOfRoad: 'block',
+    }, () => {
+      this.props.getDLNames(this.InterId)
+    })
+  }
   showModal = (item) => { // 设备信息弹框显示
     this.EquipmentConfigurationPic = item.DEVICE_TYPE // 选择设备图标
     this.setState({
@@ -424,6 +447,12 @@ class Primitive extends PureComponent {
       return message.warning('请输入设备高度')
     }
   }
+  RadioChange = (e) => {
+    this.setState({
+      RadioChangeValue: e.target.value,
+    })
+  }
+
   handleOk = async () => { // 保存设备信息
     const addimg = await this.isFormParameters()
     if (!addimg) {
@@ -522,7 +551,19 @@ class Primitive extends PureComponent {
       isDeviceInformation: false,
     })
   }
-  handDelect = () => { // 设备信息关闭或删除设备
+  handDelect = () => {
+    const { confirm } = Modal
+    const that = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        that.showDeleteConfirm()
+      },
+    })
+  }
+
+  showDeleteConfirm = () => { // 设备信息关闭或删除设备
     if (!this.showAddChange) { // 隐藏窗口
       this.handleCancel()
     } else { // 删除设备
@@ -538,6 +579,8 @@ class Primitive extends PureComponent {
     this.uiType = item.ID
     if (item.UI_TYPE_NAME === '信号机') {
       this.getHasSingalDevice(item)
+    } else if (item.UI_TYPE_NAME === '路段名称') {
+      this.showNameOfRoadBox()
     } else {
       this.showModal(item)
     }
@@ -607,14 +650,21 @@ class Primitive extends PureComponent {
       })
     }
   }
+  isNameOfRoadNone = () => { // 路段名称弹窗隐藏
+    this.setState({
+      isNameOfRoad: 'none',
+    })
+  }
+  btnNameOfRoad = () => {
+    // this.props.
+  }
   render() {
     const {
       interMonitorLeft, value, isMessageinter, ischeckbtninter, checkInterImgs, isDeviceInformation, PrimitivBacImg, EquipmentList, basemapImgs,
       SubordinateUnitLsit, MaintenanceUnitList, EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
       ManufacturerTelephone, DateProduction, installDate, SubordinateUnit, WhetherToDisplay, sInstallationLocation, MaintenanceUnit, MaintenancePhine,
-      EquipmentDetail, EquipmentIcon, PictWidth, PicHeight, picList, isshowSubmission, isupload,
+      EquipmentDetail, EquipmentIcon, PictWidth, PicHeight, picList, isshowSubmission, isupload, RadioChangeValue, isNameOfRoad, RadeList,
     } = this.state
-    // const { confirm } = Modal
     const { Option } = Select
     const { TextArea } = Input
     const { UI_UNIT_CONFIGS } = this.props.data.monitorInfo
@@ -722,6 +772,31 @@ class Primitive extends PureComponent {
                   value === 1 ? <span onClick={this.saveBasePic}>保存</span> : ''
                   //  <span onClick={this.uploadPic}>上传</span>
                 }
+              </div>
+            </div>
+          </div>
+          <div style={{ display: isNameOfRoad }} className={styles.NameOfRoad}>
+            <div className={styles.NameOfRoadBox}>
+              <p>添加道路名称<span onClick={this.isNameOfRoadNone}><Icon type="close" /></span></p>
+              <div className={styles.NameOfRoadBoxTop}>
+                <Radio.Group onChange={this.RadioChange} value={RadioChangeValue}>
+                  {
+                    RadeList && RadeList.map(item => (
+                      <div key={item.UNIT_DIRECTION} className={styles.NameOfRoadBoxList}>
+                        <div className={styles.NameOfRoadBoxList_left}>
+                          {item.CODE_NAME}
+                        </div>
+                        <div className={styles.NameOfRoadBoxList_right}>
+                          <Radio value={item.UNIT_DIRECTION}>{item.ROAD_DETAIL}</Radio>
+                        </div>
+                      </div>
+                    ))
+                  }
+                </Radio.Group>
+              </div>
+              <div className={styles.NameOfRoadBoxBom}>
+                <span onClick={this.btnNameOfRoad}>提交</span>
+                <span onClick={this.isNameOfRoadNone}>取消</span>
               </div>
             </div>
           </div>
@@ -866,6 +941,7 @@ const mapDisPatchToProps = (dispatch) => {
     getshowUiList: bindActionCreators(getshowUiList, dispatch),
     geteditDeviceInfo: bindActionCreators(geteditDeviceInfo, dispatch),
     getremovedeviceinfo: bindActionCreators(getremovedeviceinfo, dispatch),
+    getDLNames: bindActionCreators(getDLNames, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Primitive)

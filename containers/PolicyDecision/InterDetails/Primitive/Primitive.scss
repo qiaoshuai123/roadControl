@@ -96,6 +96,84 @@
       }
     }
   }
+  .NameOfRoad {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+    .NameOfRoadBox {
+      width: 435px;
+      height: 270px;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(61, 87, 114, 0.8);
+      display: flex;
+      flex-direction: column;
+      p {
+        height: 45px;
+        color: white;
+        line-height: 45px;
+        padding-left: 20px;
+        border-bottom: 1px solid #0A7295;
+        span {
+          float: right;
+          width: 35px;
+          height: 45px;
+          cursor: pointer;
+          line-height: 45px;
+          text-align: center;
+          color: white;
+          font-size: 18px;
+        }
+      }
+      .NameOfRoadBoxTop{
+        flex: 1;
+        overflow-y: auto;
+      }
+      .NameOfRoadBoxBom{
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        span{
+          padding: 3px 17px;
+          background-color: #2588ee;
+          border-radius: 3px;
+          cursor: pointer;
+          margin: 0 20px;
+          &:hover {
+            background-color: #31a9f5;
+          }
+        }
+      }
+      .NameOfRoadBoxList {
+        width: 100%;
+        height: 35px;
+        display: flex;
+        border-bottom: 1px solid #0A7295;
+      }
+      .NameOfRoadBoxList_left {
+        color: white;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid #0A7295;
+      }
+      .NameOfRoadBoxList_right {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
   .interPage {
     width: 100%;
     height: 100%;
@@ -188,12 +266,6 @@
         }
       }
     }
-  }
-  .PullBox {
-    width: 100px;
-    height: 200px;
-    position: absolute;
-    background-color: blue;
   }
 }
 .interMonitorBox {
@@ -432,7 +504,18 @@
   color: white;
 }
 :global(.ant-radio-wrapper) {
-  span:nth-child(2){
+  span:nth-child(2) {
     color: white;
+  }
+}
+.confirmBox {
+  background-color: rgba(25, 59, 91, 0.8);
+  :global(.ant-modal-confirm-title) {
+    color: #f1f1fb;
+  }
+}
+.NameOfRoadBox{
+  :global(.ant-radio-group){
+    width: 100%;
   }
 }

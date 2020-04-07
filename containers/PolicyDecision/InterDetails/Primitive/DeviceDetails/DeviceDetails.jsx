@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { geteditDeviceInfoPo, getshowDeviceInfo } from '../../../../../actions/interCofig'
+import styles from './DeviceDetails.scss'
 
 class DeviceDetails extends React.Component {
   constructor(props) {
@@ -67,27 +68,55 @@ class DeviceDetails extends React.Component {
     }
   }
   render() {
-    const { UI_WIDTH, UI_HIGHT, DEVICE_NAME, UI_TYPE_ID, UI_IMAGE_NAME, P_LEFT, P_TOP } = this.props.imgMsg
+    const {
+      UI_WIDTH,
+      UI_HIGHT,
+      DEVICE_NAME,
+      UI_TYPE_ID,
+      UI_IMAGE_NAME,
+      P_LEFT, P_TOP,
+      DETAIL, DEVICE_ID,
+    } = this.props.imgMsg
     const imgStyle = {
-      position: 'absolute', top: `${P_TOP}px`, left: `${P_LEFT}px`, width: `${UI_WIDTH}px`, height: `${UI_HIGHT}px`, cursor: 'pointer',
+      position: 'absolute', top: `${P_TOP}px`, left: `${P_LEFT}px`, width: `${UI_WIDTH}px`, height: `${UI_HIGHT}px`, userSelect: 'none', cursor: 'pointer',
     }
     const deviceSrc = DEVICE_NAME === '信号机' && this.props.system === '海信' ? 'jm/' :
       DEVICE_NAME === '信号机' && this.props.system === '西门子' ? 'byzt/' : ''
     return (
-      <div
-        style={imgStyle}
-        onMouseDown={this.handleDeviceDown}
-        onMouseUp={this.handleDeviceUp}
-        ref={(input) => { this.imgBox = input }}
-      >
-        <img
-          width="100%"
-          height="100%"
-          draggable="false"
-          src={`http://192.168.1.123:26001/atms/imgs/${UI_TYPE_ID}/${deviceSrc}${UI_IMAGE_NAME}`}
-          alt=""
-        />
-      </div>
+      <React.Fragment>
+        {
+          DEVICE_ID ?
+            <img
+              onMouseDown={this.handleDeviceDown}
+              onMouseUp={this.handleDeviceUp}
+              style={imgStyle}
+              ref={(input) => { this.imgBox = input }}
+              width="100%"
+              height="100%"
+              draggable="false"
+              src={`http://192.168.1.123:26001/atms/imgs/${UI_TYPE_ID}/${deviceSrc}${UI_IMAGE_NAME}`}
+              alt=""
+            />
+            :
+            <div
+              className={styles.deviceRoadName}
+              style={{
+                width: (UI_WIDTH > 0) ? 0 : 'auto',
+                position: 'absolute',
+                top: `${P_TOP}px`,
+                left: `${P_LEFT}px`,
+                height: `${UI_HIGHT}px`,
+                userSelect: 'none',
+                cursor: 'pointer',
+              }}
+              onMouseDown={this.handleDeviceDown}
+              onMouseUp={this.handleDeviceUp}
+              ref={(input) => { this.imgBox = input }}
+            >
+              {DETAIL}
+            </div>
+        }
+      </React.Fragment>
     )
   }
 }

@@ -23,6 +23,7 @@ import {
   API_PRIMITIVE_REMOVEDEVICEINFO,
   API_TIMETABLE_SAVE,
   API_PHASE_LIST,
+  API_PHASE_GETDLNAME,
 
 } from '../constants/API'
 
@@ -199,7 +200,7 @@ export const getremovedeviceinfo = (id) => {
     try {
       const result = await RestUtil.post(`${API_PRIMITIVE_REMOVEDEVICEINFO}?deviceId=${id}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFO, payload: result.data.data })
+        dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFO, payload: result.data })
       } else {
         console.error(result.data.message)
       }
@@ -207,7 +208,6 @@ export const getremovedeviceinfo = (id) => {
       console.log(e)
     }
   }
-
 }
 
 export const getTimeTable = (interId) => {
@@ -260,6 +260,21 @@ export const getPhaseList = (interId) => {
       const result = await RestUtil.post(`${API_PHASE_LIST}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_PHASE_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDLNames = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PHASE_GETDLNAME}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PHASE_GETDLNAME, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
