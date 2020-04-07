@@ -107,7 +107,7 @@
     .interPageBox {
       width: 450px;
       height: 235px;
-      background-color: white;
+      background: rgba(61, 87, 114, 0.8);
       position: absolute;
       margin: auto;
       left: 0;
@@ -116,26 +116,26 @@
       bottom: 0;
       p {
         height: 45px;
-        color: #2d2c3b;
+        color: white;
         line-height: 45px;
         padding-left: 20px;
         span {
           float: right;
           width: 35px;
-          height: 60px;
+          height: 45px;
           cursor: pointer;
-          line-height: 60px;
+          line-height: 45px;
           text-align: center;
-          color: #2d2c3b;
-          font-size: 24px;
+          color: white;
+          font-size: 18px;
         }
       }
       .interPage_center {
         height: 145px;
-        color: #333333;
+        color: white;
         display: flex;
         .interPage_centerLeft {
-          flex: 1;
+          width: 154px;
           padding-top: 30px;
           padding-left: 25px;
           border-right: 1px solid #dddddd;
@@ -172,7 +172,7 @@
       }
       .interPage_bottom {
         border-top: 1px solid #dddddd;
-        padding-top: 7px;
+        padding-top: 9px;
         height: 45px;
         width: 100%;
         span {
@@ -182,6 +182,9 @@
           cursor: pointer;
           margin-right: 20px;
           background-color: #2588ee;
+          &:hover {
+            background-color: #31a9f5;
+          }
         }
       }
     }
@@ -397,8 +400,8 @@
         padding: 3px 5px;
         margin: 0 10px;
         background-color: #119ff1;
-        font-weight: normal;;
-        b{
+        font-weight: normal;
+        b {
           height: 100%;
           flex: 1;
           display: flex;
@@ -413,5 +416,23 @@
     :global(.anticon-close-circle) {
       display: none;
     }
+  }
+}
+:global(.ant-modal-header) {
+  background: rgba(61, 87, 114, 0.8);
+  border-bottom: none;
+}
+:global(.ant-modal-title) {
+  color: white;
+}
+:global(.ant-modal-close-x) {
+  color: white;
+}
+.mountingTable {
+  color: white;
+}
+:global(.ant-radio-wrapper) {
+  span:nth-child(2){
+    color: white;
   }
 }
