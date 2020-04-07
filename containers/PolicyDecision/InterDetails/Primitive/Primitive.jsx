@@ -55,6 +55,7 @@ class Primitive extends PureComponent {
       PictWidth: 0, // 图片宽
       PicHeight: 0, // 图片高
       isshowSubmission: true, // 展示提交或修改按钮
+      isupload: 'block', // 点击上传隐藏初始预览
     }
     this.isPullBox = false
     this.InterId = this.props.InterId
@@ -63,8 +64,8 @@ class Primitive extends PureComponent {
     this.dateFormat = 'YYYY-MM-DD'
   }
   componentDidMount = () => {
-    this.picPropsFun()
     this.props.getprimitiveInutuitype()
+    this.picPropsFun()
     // this.props.getuiConfig(this.InterId)
   }
   componentWillReceiveProps(nextProps) {
@@ -78,7 +79,7 @@ class Primitive extends PureComponent {
     // if (prevState.data !== this.props.data) {
     //   console.log(this.props)
     // }
-    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, editDeviceInfo, removedeviceinfo } = this.props.data
+    const { primitiveInutuitype, basemapImg, updatebasemap, showDeviceInfo, showUiList, removedeviceinfo } = this.props.data
     if (prevState.data.primitiveInutuitype !== primitiveInutuitype) {
       this.getControlRoads(primitiveInutuitype)
     }
@@ -106,6 +107,7 @@ class Primitive extends PureComponent {
     this.setState({
       value: e.target.value,
       checkInterImgs: PrimitivBacImg,
+      isupload: 'block',
     })
   }
   onChangDateStart = (date) => { // 出厂日期
@@ -136,56 +138,67 @@ class Primitive extends PureComponent {
   getshowDeviceInfo = (showDeviceInfo) => {
     console.log(showDeviceInfo, '弹窗信息')
     if (showDeviceInfo.data.FACTORY_NAME) {
-      this.typeShowPic = false
-      this.showAddChange = true
-      this.imgID = showDeviceInfo.data.ID
-      this.imgDeviceId = showDeviceInfo.data.DEVICE_ID
-      this.EquipmentConfigurationPic = showDeviceInfo.data.DEVICE_TYPE
-      this.uiCodeId = showDeviceInfo.data.UI_ID
-      this.uiType = showDeviceInfo.data.UI_TYPE_ID
-      const isviews = this.isShow.find(item => item.us === showDeviceInfo.data.IS_VIEW).name
-      const MaintenanceUnitNumbers = showDeviceInfo.data.directCodes.find(item => item.ID === showDeviceInfo.data.INSTALL_LOCATION).CODE_NAME
-      const sInstallationLocations = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MAINTENANCE_UNIT_ID).USER_GROUP_NAME
-      const SubordinateUnitNumbers = showDeviceInfo.data.groups.find(item => item.ID === showDeviceInfo.data.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
-      this.setState({
-        isDeviceInformation: true,
-        isshowSubmission: false,
-        EquipmentModel: showDeviceInfo.data.DEVICE_MODEL,
-        CorrelationNumber: showDeviceInfo.data.CONFIG_CODE,
-        EquipmentNumber: showDeviceInfo.data.DEVICE_CODE,
-        FactoryNumber: showDeviceInfo.data.FACTORY_CODE,
-        EquipmentName: showDeviceInfo.data.DEVICE_CODE,
-        Manufacturer: showDeviceInfo.data.FACTORY_NAME,
-        ManufacturerTelephone: showDeviceInfo.data.MAINTENANCE_UNIT_TEL,
-        MaintenancePhine: showDeviceInfo.data.FACTORY_TEL,
-        EquipmentDetail: showDeviceInfo.data.DETAIL,
-        PictWidth: showDeviceInfo.data.UI_WIDTH,
-        PicHeight: showDeviceInfo.data.UI_HIGHT,
-        EquipmentIcon: `${showDeviceInfo.data.UI_TYPE_ID}/${showDeviceInfo.data.UI_IMAGE_NAME}`,
-        SubordinateUnitLsit: showDeviceInfo.data.groups,
-        MaintenanceUnitList: showDeviceInfo.data.directCodes,
-        SubordinateUnitNumber: showDeviceInfo.data.MANAGEMENT_UNIT_ID,
-        sInstallationLocationNumber: showDeviceInfo.data.MAINTENANCE_UNIT_ID,
-        MaintenanceUnitNumber: showDeviceInfo.data.INSTALL_LOCATION,
-        SubordinateUnit: SubordinateUnitNumbers,
-        sInstallationLocation: sInstallationLocations,
-        MaintenanceUnit: MaintenanceUnitNumbers,
-        WhetherToDisplay: isviews,
-        DateProduction: this.formatDate(showDeviceInfo.data.FACTORY_DAY),
-        installDate: this.formatDate(showDeviceInfo.data.INSTALL_DAY),
-      })
+      try {
+        const {
+          ID, DEVICE_ID, DEVICE_TYPE, UI_ID, UI_TYPE_ID, IS_VIEW, INSTALL_LOCATION,
+          MAINTENANCE_UNIT_ID, MANAGEMENT_UNIT_ID, DEVICE_MODEL, CONFIG_CODE, DEVICE_CODE, FACTORY_CODE,
+          FACTORY_NAME, MAINTENANCE_UNIT_TEL, FACTORY_TEL, DETAIL, UI_WIDTH, UI_HIGHT, UI_IMAGE_NAME,
+          groups, directCodes, FACTORY_DAY, INSTALL_DAY,
+        } = showDeviceInfo.data
+        this.typeShowPic = false
+        this.showAddChange = true
+        this.imgID = ID
+        this.imgDeviceId = DEVICE_ID
+        this.EquipmentConfigurationPic = DEVICE_TYPE
+        this.uiCodeId = UI_ID
+        this.uiType = UI_TYPE_ID
+        const isviews = this.isShow.find(item => item.us === IS_VIEW).name
+        const MaintenanceUnitNumbers = directCodes.find(item => item.ID === INSTALL_LOCATION).CODE_NAME
+        const sInstallationLocations = groups.find(item => item.ID === MAINTENANCE_UNIT_ID).USER_GROUP_NAME
+        const SubordinateUnitNumbers = groups.find(item => item.ID === MANAGEMENT_UNIT_ID).USER_GROUP_NAME
+        this.setState({
+          isDeviceInformation: true,
+          isshowSubmission: false,
+          EquipmentModel: DEVICE_MODEL,
+          CorrelationNumber: CONFIG_CODE,
+          EquipmentNumber: DEVICE_CODE,
+          FactoryNumber: FACTORY_CODE,
+          EquipmentName: DEVICE_CODE,
+          Manufacturer: FACTORY_NAME,
+          ManufacturerTelephone: MAINTENANCE_UNIT_TEL,
+          MaintenancePhine: FACTORY_TEL,
+          EquipmentDetail: DETAIL,
+          PictWidth: UI_WIDTH,
+          PicHeight: UI_HIGHT,
+          EquipmentIcon: `${UI_TYPE_ID}/${UI_IMAGE_NAME}`,
+          SubordinateUnitLsit: groups,
+          MaintenanceUnitList: directCodes,
+          SubordinateUnitNumber: MANAGEMENT_UNIT_ID,
+          sInstallationLocationNumber: MAINTENANCE_UNIT_ID,
+          MaintenanceUnitNumber: INSTALL_LOCATION,
+          SubordinateUnit: SubordinateUnitNumbers,
+          sInstallationLocation: sInstallationLocations,
+          MaintenanceUnit: MaintenanceUnitNumbers,
+          WhetherToDisplay: isviews,
+          DateProduction: this.formatDate(FACTORY_DAY),
+          installDate: this.formatDate(INSTALL_DAY),
+        })
+      } catch (err) {
+        message.error('设备信息不完善')
+      }
     } else {
+      const { groups, directCodes } = showDeviceInfo.data
       this.setState({
-        SubordinateUnitLsit: showDeviceInfo.data.groups,
-        MaintenanceUnitList: showDeviceInfo.data.directCodes,
+        SubordinateUnitLsit: groups,
+        MaintenanceUnitList: directCodes,
         EquipmentModel: `相位${showDeviceInfo.message}`,
         EquipmentNumber: showDeviceInfo.message,
-        SubordinateUnit: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
-        sInstallationLocation: showDeviceInfo.data.groups[0].USER_GROUP_NAME,
-        MaintenanceUnit: showDeviceInfo.data.directCodes[0].CODE_NAME,
-        SubordinateUnitNumber: showDeviceInfo.data.groups[0].ID,
-        sInstallationLocationNumber: showDeviceInfo.data.groups[0].ID,
-        MaintenanceUnitNumber: showDeviceInfo.data.directCodes[0].ID,
+        SubordinateUnit: groups[0].USER_GROUP_NAME,
+        sInstallationLocation: groups[0].USER_GROUP_NAME,
+        MaintenanceUnit: directCodes[0].CODE_NAME,
+        SubordinateUnitNumber: groups[0].ID,
+        sInstallationLocationNumber: groups[0].ID,
+        MaintenanceUnitNumber: directCodes[0].ID,
       })
     }
   }
@@ -240,10 +253,8 @@ class Primitive extends PureComponent {
       PicHeight: 0, // 图片高
     })
   }
-  numberBox = () => {
-    return this.props.data.monitorInfo.UI_UNIT_CONFIGS.sort((a, b) => b.DEVICE_ID - a.DEVICE_ID)[0].DEVICE_ID
-  }
-  formatDate = (value) => {// 时间戳转换日期格式方法
+  numberBox = () => this.props.data.monitorInfo.UI_UNIT_CONFIGS.sort((a, b) => b.DEVICE_ID - a.DEVICE_ID)[0].DEVICE_ID
+  formatDate = (value) => { // 时间戳转换日期格式方法
     if (value == null) {
       return ''
     }
@@ -264,7 +275,7 @@ class Primitive extends PureComponent {
   picPropsFun = () => { // 上传底图
     this.picProps = {
       name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      action: `/atms/basemap/upload?unitId=${this.InterId}`,
       headers: {
         authorization: 'authorization-text',
       },
@@ -273,9 +284,9 @@ class Primitive extends PureComponent {
           console.log(info.file, info.fileList)
         }
         if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`)
+          message.success(`${info.file.name} 上传成功！！`)
         } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`)
+          message.error(`${info.file.name} 上传失败！！`)
         }
       },
     }
@@ -290,11 +301,14 @@ class Primitive extends PureComponent {
       isMessageinter: 'block',
     })
   }
+
   isMessageinterNone = () => { // 路口底图隐藏
     this.setState({
       isMessageinter: 'none',
+      isupload: 'block',
     })
   }
+
   checkbtninter = () => { // 选择底图窗口
     this.setState({
       ischeckbtninter: 'block',
@@ -302,12 +316,20 @@ class Primitive extends PureComponent {
       this.props.getbasemapImg()
     })
   }
+
   checkinterPageBoxNone = () => { // 隐藏选择底图窗口
-    this.setState({
-      ischeckbtninter: 'none',
-      isDeviceInformation: true,
-    })
+    if (!this.typeShowPic) {
+      this.setState({
+        ischeckbtninter: 'none',
+        isDeviceInformation: true,
+      })
+    } else {
+      this.setState({
+        ischeckbtninter: 'none',
+      })
+    }
   }
+
   ischeckListItem = (e, imgs) => { // 点击图片选择路口
     e.stopPropagation()
     this.setState({
@@ -318,7 +340,7 @@ class Primitive extends PureComponent {
   ischeckbacitem = (e, imgs, type, id) => {
     this.uiCodeId = id
     e.stopPropagation()
-    console.log(id, 'qiaoshai')
+    console.log(type, imgs, 'qiaoshaisssssss')
     this.setState({
       ischeckbtninter: 'none',
       PictWidth: e.target.width,
@@ -575,12 +597,22 @@ class Primitive extends PureComponent {
       this.props.getshowUiList(this.uiType)
     })
   }
+  beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('请上传格式为 JPG/PNG 文件!')
+    } else {
+      this.setState({
+        isupload: 'none',
+      })
+    }
+  }
   render() {
     const {
       interMonitorLeft, value, isMessageinter, ischeckbtninter, checkInterImgs, isDeviceInformation, PrimitivBacImg, EquipmentList, basemapImgs,
       SubordinateUnitLsit, MaintenanceUnitList, EquipmentModel, CorrelationNumber, EquipmentNumber, FactoryNumber, EquipmentName, Manufacturer,
       ManufacturerTelephone, DateProduction, installDate, SubordinateUnit, WhetherToDisplay, sInstallationLocation, MaintenanceUnit, MaintenancePhine,
-      EquipmentDetail, EquipmentIcon, PictWidth, PicHeight, picList, isshowSubmission,
+      EquipmentDetail, EquipmentIcon, PictWidth, PicHeight, picList, isshowSubmission, isupload,
     } = this.state
     // const { confirm } = Modal
     const { Option } = Select
@@ -598,7 +630,13 @@ class Primitive extends PureComponent {
                 )
               }) : null
           }
-          <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
+          {
+            PrimitivBacImg.length > 16 ?
+              <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
+              :
+              <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
+          }
+
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
               <Icon type="right" />
@@ -655,7 +693,7 @@ class Primitive extends PureComponent {
           </div>
           <div style={{ display: isMessageinter }} className={styles.interPage}>
             <div className={styles.interPageBox}>
-              <p>选择底图<span onClick={this.isMessageinterNone}>x</span></p>
+              <p>选择底图<span onClick={this.isMessageinterNone}><Icon type="close" /></span></p>
               <div className={styles.interPage_center}>
                 <div className={styles.interPage_centerLeft}>
                   <Radio.Group onChange={this.onChangeRadio} value={this.state.value}>
@@ -663,14 +701,16 @@ class Primitive extends PureComponent {
                     <Radio value={2}>上传底图</Radio>
                   </Radio.Group>
                 </div>
-                <div className={styles.interPage_centerCenter}>
-                  <span><img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${checkInterImgs}`} alt="" /></span>
+                <div style={{ display: isupload }} className={styles.interPage_centerCenter}>
+                  <span>
+                    <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${checkInterImgs}`} draggable="false" alt="" />
+                  </span>
                 </div>
                 <div className={styles.interPage_centerRight}>
                   {
                     value === 1 ?
                       <span onClick={this.checkbtninter}>选择</span> :
-                      <Upload {...this.picProps}>
+                      <Upload {...this.picProps} beforeUpload={this.beforeUpload} >
                         浏览
                       </Upload>
                   }
@@ -679,13 +719,11 @@ class Primitive extends PureComponent {
               <div className={styles.interPage_bottom} >
                 <span onClick={this.isMessageinterNone}>取消</span>
                 {
-                  value === 1 ? <span onClick={this.saveBasePic}>保存</span> : <span onClick={this.uploadPic}>上传</span>
+                  value === 1 ? <span onClick={this.saveBasePic}>保存</span> : ''
+                  //  <span onClick={this.uploadPic}>上传</span>
                 }
               </div>
             </div>
-          </div>
-          <div className={styles.PullBox} ref={(input) => { this.PullBox = input }} onMouseDown={this.PullBoxDown} onMouseMove={this.PullBoxMove} onMouseUp={this.PullBoxUp}>
-            123
           </div>
           <Modal
             title="保存信息"
