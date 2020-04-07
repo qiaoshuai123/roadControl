@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Input } from 'antd'
+import { Icon, Input, Select } from 'antd'
 import styles from './PhaseConfig.scss'
 
 import { getPhaseList } from '../../../../actions/interCofig'
@@ -51,6 +51,17 @@ class PhaseConfig extends React.PureComponent {
       unitId: 0,
       yellowTime: 0,
     }
+    this.direction = [
+      { dir: '无', id: 0 },
+      { dir: '北', id: 1 },
+      { dir: '东北', id: 2 },
+      { dir: '东', id: 3 },
+      { dir: '东南', id: 4 },
+      { dir: '南', id: 5 },
+      { dir: '西南', id: 6 },
+      { dir: '西', id: 7 },
+      { dir: '西北', id: 8 },
+    ]
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -83,10 +94,10 @@ class PhaseConfig extends React.PureComponent {
       { name: '最小间隔', paramsName: 'minInterval', value: itemMsg.MIN_INTERVAL },
       { name: '行人放行', paramsName: 'peopleGreenTime', value: itemMsg.PEOPLE_GREEN_TIME },
       { name: '行人清空', paramsName: 'peopleGreenFlashTime', value: itemMsg.PEOPLE_GREEN_FLASH_TIME },
-      { name: '并发相位', paramsName: 'concurrentPhaseNos', value: itemMsg.CONCURRENT_PHASE_NO_LIST, type: 'select' },
+      { name: '并发相位', paramsName: 'concurrentPhaseNos', value: itemMsg.CONCURRENT_PHASE_NO_LIST },
       { name: '初始状态', paramsName: 'initialState', value: itemMsg.INITIAL_STATE },
       { name: '非感应', paramsName: 'noninductive', value: itemMsg.NONINDUCTIVE },
-      { name: '对应方向', paramsName: 'direction', value: itemMsg.DIRECTION },
+      { name: '对应方向', paramsName: 'direction', value: itemMsg.DIRECTION, type: 'select' },
       { name: '对应车道方向', paramsName: 'flowDirection', value: itemMsg.FLOW_DIRECTION },
       { name: '最小绿', paramsName: 'minGreenTime', value: itemMsg.MIN_GREEN_TIME },
       { name: '最大绿1', paramsName: 'maxGreenTimeOne', value: itemMsg.MAX_GREEN_TIME_ONE },
@@ -123,6 +134,7 @@ class PhaseConfig extends React.PureComponent {
   }
   render() {
     const { phaseLists, showPhaseEditBox, editItemData } = this.state
+    const { Option } = Select
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -140,7 +152,19 @@ class PhaseConfig extends React.PureComponent {
                     return (
                       <div className={styles.msgItems} key={item.name + item.value}>
                         <div className={styles.itemText}>{item.name}</div>
-                        <div className={styles.itemValue}><Input paramsname={item.paramsName} type="text" defaultValue={item.value} onChange={this.handlePhaseMsgChange} /></div>
+                        <div className={styles.itemValue}>
+                          {
+                            item.type ?
+                              <Select>
+                                {
+                                  this.direction.map(dirItem => (
+                                    <Option key={dirItem.id} value={dirItem.dir}>{dirItem.dir}</Option>
+                                  ))
+                                }
+                              </Select> :
+                              <Input paramsname={item.paramsName} type="text" defaultValue={item.value} onChange={this.handlePhaseMsgChange} />
+                          }
+                        </div>
                       </div>
                     )
                   })
