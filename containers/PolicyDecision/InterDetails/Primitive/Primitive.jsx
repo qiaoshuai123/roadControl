@@ -184,7 +184,7 @@ class Primitive extends PureComponent {
           installDate: this.formatDate(INSTALL_DAY),
         })
       } catch (err) {
-        message.error('设备信息不完善')
+        message.warning('暂无设备信息')
       }
     } else {
       const { groups, directCodes } = showDeviceInfo.data
