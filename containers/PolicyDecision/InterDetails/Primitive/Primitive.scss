@@ -107,7 +107,7 @@
     .interPageBox {
       width: 450px;
       height: 235px;
-      background-color: white;
+      background: rgba(61, 87, 114, 0.8);
       position: absolute;
       margin: auto;
       left: 0;
@@ -116,7 +116,7 @@
       bottom: 0;
       p {
         height: 45px;
-        color: #2d2c3b;
+        color: white;
         line-height: 45px;
         padding-left: 20px;
         span {
@@ -126,13 +126,13 @@
           cursor: pointer;
           line-height: 45px;
           text-align: center;
-          color: #2d2c3b;
+          color: white;
           font-size: 18px;
         }
       }
       .interPage_center {
         height: 145px;
-        color: #333333;
+        color: white;
         display: flex;
         .interPage_centerLeft {
           width: 154px;
@@ -422,12 +422,17 @@
   background: rgba(61, 87, 114, 0.8);
   border-bottom: none;
 }
-:global(.ant-modal-title){
+:global(.ant-modal-title) {
   color: white;
 }
-:global(.ant-modal-close-x){
+:global(.ant-modal-close-x) {
   color: white;
 }
-.mountingTable{
+.mountingTable {
   color: white;
+}
+:global(.ant-radio-wrapper) {
+  span:nth-child(2){
+    color: white;
+  }
 }
