@@ -23,6 +23,11 @@ import {
   API_PRIMITIVE_REMOVEDEVICEINFO,
   API_TIMETABLE_SAVE,
   API_PHASE_LIST,
+  API_SAVE_PHASEINFO,
+  API_DELETE_PHASE,
+  API_TIMING_PLAN,
+  API_ROAD_LIST,
+  API_PHASENO_INFO,
 
 } from '../constants/API'
 
@@ -260,6 +265,65 @@ export const getPhaseList = (interId) => {
       const result = await RestUtil.post(`${API_PHASE_LIST}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_PHASE_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getSavePhaseInfo = (type, params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_SAVE_PHASEINFO}?type=${type}`, params)
+    return result
+  }
+}
+
+export const getDeletePhaseInfo = (phaseNo, interId) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_PHASE}?phaseNo=${phaseNo}&unitId=${interId}`)
+    return result
+  }
+}
+
+export const getTimingPlan = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_TIMING_PLAN}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIMING_PLAN, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getRoadLists = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_ROAD_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_ROAD_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const gePhaseNoInfo = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PHASENO_INFO}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PHASENO_INFO, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

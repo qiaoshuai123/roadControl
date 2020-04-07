@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Input, Select } from 'antd'
+import { Icon, Input, Select, Modal, message } from 'antd'
 import styles from './PhaseConfig.scss'
 
-import { getPhaseList } from '../../../../actions/interCofig'
+import { getPhaseList, getSavePhaseInfo, getDeletePhaseInfo } from '../../../../actions/interCofig'
 
 class PhaseConfig extends React.PureComponent {
   constructor(props) {
@@ -65,6 +65,7 @@ class PhaseConfig extends React.PureComponent {
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
+    this.saveParams.unitId = this.InterId
     this.props.getPhaseList(this.InterId)
   }
   componentDidUpdate = (prevState) => {
@@ -77,6 +78,7 @@ class PhaseConfig extends React.PureComponent {
     this.setState({ phaseLists })
   }
   getPhaseEditMsg = (itemMsg) => {
+    console.log(itemMsg)
     const editItem = [
       { name: '相位编号', paramsName: 'phaseNo', value: itemMsg.PHASE_NO },
       { name: '相位名称', paramsName: 'phaseName', value: itemMsg.PHASE_NAME },
@@ -114,9 +116,11 @@ class PhaseConfig extends React.PureComponent {
     editItem.forEach((item) => {
       this.saveParams[item.paramsName] = item.value
     })
+    console.log(this.saveParams)
     this.setState({ editItemData: editItem })
   }
   handleEditPhaseMsg = (itemMsg) => {
+    this.saveType = 1
     this.setState({ showPhaseEditBox: true })
     this.getPhaseEditMsg(itemMsg)
   }
@@ -128,6 +132,80 @@ class PhaseConfig extends React.PureComponent {
   }
   handleCloseEdit = () => {
     this.setState({ showPhaseEditBox: false })
+  }
+  handleDirChange = (val, options) => {
+    const { value, paramsname } = options.props
+    this.saveParams[paramsname] = value
+  }
+  handleSavePhaseInfo = () => {
+    this.props.getSavePhaseInfo(this.saveType, this.saveParams).then((res) => {
+      console.log(res)
+      const { code } = res.data
+      if (code === 200) {
+        this.getPhaseList(this.InterId)
+        this.setState({ showPhaseEditBox: false })
+      }
+      message.info(res.data.message)
+    })
+  }
+  handleAddPhase = () => {
+    const defaultPhaseMsg = {
+      MIN_GREEN_TIME: 14,
+      FLOW_DIRECTION: 0,
+      UNIT_ID: this.InterId,
+      FIRST_CYCLE_GREEN_TIME: 0,
+      MAX_GREEN_TIME_ONE: 60,
+      PEOPLE_GREEN_TIME: 0,
+      MIN_RED_TIME: 0,
+      RING_NO: 1,
+      MAX_RUN_TIME: 0,
+      PHASE_NAME: '相位0',
+      RED_YELLOW_TIME: 3,
+      MAX_INITIAL_VALUE: 80,
+      ALL_RED_TIME: 0,
+      UNIT_EXTEND_GREEN_TIME: 0,
+      PHASE_NO: 1,
+      NONINDUCTIVE: 1,
+      BEFORE_DECREMENT_CAR_NUMBER: 0,
+      CONCURRENT_PHASE_NO_LIST: '5,6,7,8',
+      UNIT_DECREMENT_VALUE: 0,
+      YELLOW_TIME: 30,
+      BEFORE_DECREMENT_TIME: 120,
+      MIN_INTERVAL: 0,
+      PEOPLE_GREEN_FLASH_TIME: 5,
+      SET_BY_BIT: 34,
+      SAFE_RED_TIME: 0,
+      DIRECTION: 0,
+      RUN_STEP_SIZE: 0,
+      MAX_GREEN_TIME_TWO: 0,
+      OTHER: 28,
+      GREEN_FLASH_TIME: 4,
+      DECREMENT_TIME: 0,
+      INITIAL_STATE: 0,
+      ADD_INITIAL_VALUE: 100,
+      FOLLOW_OFF_PHASE_NO: 0,
+    }
+    this.saveType = 0
+    this.setState({ showPhaseEditBox: true })
+    this.getPhaseEditMsg(defaultPhaseMsg)
+  }
+  handleDeletePhase = (e) => {
+    const phaseNo = e.target.getAttribute('phaseno')
+    const { confirm } = Modal
+    const selfThis = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        selfThis.props.getDeletePhaseInfo(phaseNo, selfThis.InterId).then((res) => {
+          const { code } = res.data
+          if (code === 200) {
+            selfThis.props.getPhaseList(selfThis.InterId)
+          }
+          message.info(res.data.message)
+        })
+      },
+    })
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
@@ -155,10 +233,10 @@ class PhaseConfig extends React.PureComponent {
                         <div className={styles.itemValue}>
                           {
                             item.type ?
-                              <Select>
+                              <Select defaultValue={item.value} onChange={this.handleDirChange}>
                                 {
                                   this.direction.map(dirItem => (
-                                    <Option key={dirItem.id} value={dirItem.dir}>{dirItem.dir}</Option>
+                                    <Option key={dirItem.id} value={dirItem.id} paramsname={item.paramsName}>{dirItem.dir}</Option>
                                   ))
                                 }
                               </Select> :
@@ -172,7 +250,7 @@ class PhaseConfig extends React.PureComponent {
               </div>
               <div className={styles.subBtnBox}>
                 <div className={styles.subBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
-                <div className={styles.subBtn}>确定</div>
+                <div className={styles.subBtn} onClick={this.handleSavePhaseInfo}>确定</div>
               </div>
             </div>
           </div>
@@ -185,7 +263,7 @@ class PhaseConfig extends React.PureComponent {
         <div className={styles.phaseConfigBox_center}>
           <div className={styles.phaseConfigBoxCenter_left}>上载</div>
           <div className={styles.phaseConfigBoxCenter_left}>下发</div>
-          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left}>添加</div>
+          <div className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddPhase}>添加</div>
         </div>
         <div className={styles.phaseConfigBox_box}>
           <div className={styles.mountingThead}>
@@ -211,7 +289,7 @@ class PhaseConfig extends React.PureComponent {
                     <div className={styles.mountingTd}>{item.MAX_GREEN_TIME_TWO}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditPhaseMsg(item) }}>修改</span></div>
-                      <div className={styles.deviceMsg}><span>删除</span></div>
+                      <div className={styles.deviceMsg}><span phaseno={item.PHASE_NO} onClick={this.handleDeletePhase}>删除</span></div>
                     </div>
                   </div>
                 )
@@ -232,6 +310,8 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getPhaseList: bindActionCreators(getPhaseList, dispatch),
+    getSavePhaseInfo: bindActionCreators(getSavePhaseInfo, dispatch),
+    getDeletePhaseInfo: bindActionCreators(getDeletePhaseInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(PhaseConfig)

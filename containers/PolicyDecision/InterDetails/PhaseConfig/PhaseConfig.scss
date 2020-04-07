@@ -73,6 +73,20 @@
               border-radius: 3px;
               background-color: transparent;
             }
+            :global(.ant-select-selection) {
+              width: 132px;
+              background-color: transparent;
+              border: 1px solid #05204E;
+              outline: none;
+              color: #f1f1fb;
+              box-shadow: none;
+            }
+            :global(.ant-select-arrow) {
+              color: #f1f1fb;
+            }
+            :global(.ant-select-dropdown-menu-item) {
+              padding: 0 12px;
+            }
           }
         }
       }
@@ -233,5 +247,11 @@
     // height: calc(100% - 50px);
     flex: 1;
     overflow-y: auto;
+  }
+}
+.confirmBox {
+  background-color: rgba(25,59,91, .8);
+  :global(.ant-modal-confirm-title) {
+    color: #f1f1fb;
   }
 }

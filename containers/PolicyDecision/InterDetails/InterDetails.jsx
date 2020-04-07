@@ -6,6 +6,7 @@ import Primitive from './Primitive/Primitive'
 import PhaseConfig from './PhaseConfig/PhaseConfig'
 import TimingPlan from './TimingPlan/TimingPlan'
 import TimeTable from './TimeTable/TimeTable'
+import RoadConfig from './RoadConfig/RoadConfig'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -34,7 +35,7 @@ class InterDetails extends React.PureComponent {
     }
     this.functionList = [
       { id: 1, name: '图元配置', configname: 'primitive' },
-      { id: 2, name: '车道配置' },
+      { id: 2, name: '车道配置', configname: 'roadConfig' },
       { id: 3, name: '通道配置' },
       { id: 4, name: '相位配置', configname: 'phaseConfig' },
       { id: 5, name: '跟随相位配置' },
@@ -378,7 +379,7 @@ class InterDetails extends React.PureComponent {
           visible={configPop && configPop !== 'singalConfig' && configPop !== 'primitive'}
           closable={false}
           bodyStyle={{ borderRadius: '5px', backgroundColor: 'rgba(61, 87, 114, .8)', padding: 0, overflow: 'hidden' }}
-          // getContainer={document.getElementsByClassName('div')[0]}
+          maskClosable={false}
           style={{ backgroundColor: '' }}
           centered
           onCancel={this.handleCancel}
@@ -392,11 +393,15 @@ class InterDetails extends React.PureComponent {
           }
           {
             configPop === 'timePlan' &&
-            <TimingPlan closeConfigPop={this.handleCancel} />
+            <TimingPlan {...this.props} closeConfigPop={this.handleCancel} />
           }
           {
             configPop === 'timetable' &&
             <TimeTable {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'roadConfig' &&
+            <RoadConfig {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >
