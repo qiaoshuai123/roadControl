@@ -172,7 +172,7 @@ class InterDetails extends React.PureComponent {
                   item.DEVICE_NAME === '信号机' && sinaglInfo.SIGNALSYSTEM === '西门子' ? 'byzt/' : ''
                 if (!item.DEVICE_ID) {
                   return (
-                    <div className={styles.deviceRoadName} key={item.ID} style={{ top: item.P_TOP, left: item.P_LEFT, width: item.UI_WIDTH > 0 ? 0 : 'auto' }}>{item.DETAIL}</div>
+                    <div className={styles.deviceRoadName} key={item.ID + item.DETAIL} style={{ top: item.P_TOP, left: item.P_LEFT, width: item.UI_WIDTH > 0 ? 0 : 'auto' }}>{item.DETAIL}</div>
                   )
                 }
                 return (
@@ -218,7 +218,7 @@ class InterDetails extends React.PureComponent {
           <p className={styles.title}>功能列表</p>
           <ul className={styles.functionList}>
             {
-              this.functionList.map(item => <li key={item.id} configname={item.configname} onClick={this.showInterConfig}>{item.name}</li>)
+              this.functionList.map(item => <li key={item.id + item.name} configname={item.configname} onClick={this.showInterConfig}>{item.name}</li>)
             }
           </ul>
         </div>
@@ -232,7 +232,7 @@ class InterDetails extends React.PureComponent {
                 const redWid = item.ALLRED * this.unitPx
                 const yellowWid = item.YELLOW * this.unitPx
                 return (
-                  <div className={styles.planRunStage} key={item.STAGE_ID}>
+                  <div className={styles.planRunStage} key={item.STAGE_ID + item.GREEN + item.ALLRED + item.YELLOW}>
                     <span className={styles.stageMsg}>阶段{item.STAGE_ID} &nbsp;{item.GREEN + item.ALLRED + item.YELLOW}秒</span>
                     <div className={styles.greenStage} style={{ width: `${greenWid}px` }} />
                     <div className={styles.redStage} style={{ width: `${redWid}px` }} />
@@ -318,7 +318,7 @@ class InterDetails extends React.PureComponent {
                     singalControler.cfgPlan.cfgStageInfos.map((item) => {
                       const picname = singalControler.STAGE_CODE === item.STAGENO ? item.STAGE_IMAGE : item.STAGE_IMAGE.replace('_ch.gif', '.gif')
                       return (
-                        <div key={item.STAGENO} className={styles.stagePic} style={{ cursor: 'pointer' }}>
+                        <div key={picname} className={styles.stagePic} style={{ cursor: 'pointer' }}>
                           <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${picname}`} alt="" />
                         </div>
                       )
@@ -328,7 +328,7 @@ class InterDetails extends React.PureComponent {
                   singalControler &&
                   new Array(15 - singalControler.cfgPlan.cfgStageInfos.length).fill(true).map((item, index) => {
                     return (
-                      <div key={item + index} className={styles.stagePic}>未配置</div>
+                      <div key={index} className={styles.stagePic}>未配置</div>
                     )
                   })
                 }
@@ -344,7 +344,7 @@ class InterDetails extends React.PureComponent {
                         {
                           singalControler.controlCodes.map((item) => {
                             return (
-                              <Option key={item.C_CODE} value={item.C_CODE}>{item.CODE_NAME}</Option>
+                              <Option key={item.C_CODE + item.CODE_NAME} value={item.C_CODE}>{item.CODE_NAME}</Option>
                             )
                           })
                         }
@@ -363,7 +363,7 @@ class InterDetails extends React.PureComponent {
                         {
                           singalControler.cfgPlans.map((item) => {
                             return (
-                              <Option key={item.PLANNO} value={item.PLANNO}>{item.PLANNAME}</Option>
+                              <Option key={item.PLANNO + item.PLANNAME} value={item.PLANNO}>{item.PLANNAME}</Option>
                             )
                           })
                         }

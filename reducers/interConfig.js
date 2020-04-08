@@ -48,10 +48,10 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { timingPlan: payload })
     case types.GET_ROAD_LIST:
       return Object.assign({}, state, { roadList: payload })
-    case types.GET_PHASENO_INFO:
-      return Object.assign({}, state, { phaseNoInfo: payload })
     case types.GET_PHASE_GETDLNAME:
       return Object.assign({}, state, { getDLName: payload })
+    case types.GET_TIMEPLAN_INFO:
+      return Object.assign({}, state, { timePlanInfo: payload })
     default:
       return state
   }

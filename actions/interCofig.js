@@ -29,6 +29,7 @@ import {
   API_ROAD_LIST,
   API_PHASENO_INFO,
   API_PHASE_GETDLNAME,
+  API_TIMEPLAN_INFO,
 
 } from '../constants/API'
 
@@ -318,12 +319,12 @@ export const getRoadLists = (interId) => {
   }
 }
 
-export const gePhaseNoInfo = (interId) => {
+export const getDLNames = (interId) => {
   return async (dispatch) => {
     try {
-      const result = await RestUtil.get(`${API_PHASENO_INFO}?unitId=${interId}`)
+      const result = await RestUtil.get(`${API_PHASE_GETDLNAME}?unitId=${interId}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_PHASENO_INFO, payload: result.data.data })
+        dispatch({ type: types.GET_PHASE_GETDLNAME, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
@@ -333,12 +334,12 @@ export const gePhaseNoInfo = (interId) => {
   }
 }
 
-export const getDLNames = (interId) => {
+export const getTimePlanInfo = (id, planNo, interId) => {
   return async (dispatch) => {
     try {
-      const result = await RestUtil.get(`${API_PHASE_GETDLNAME}?unitId=${interId}`)
+      const result = await RestUtil.get(`${API_TIMEPLAN_INFO}?id=${id}&planNo=${planNo}&unitId=${interId}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_PHASE_GETDLNAME, payload: result.data.data })
+        dispatch({ type: types.GET_TIMEPLAN_INFO, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

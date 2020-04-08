@@ -4,44 +4,48 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './TimingPlan.scss'
 
-import { getTimingPlan, gePhaseNoInfo } from '../../../../actions/interCofig'
+import { getTimingPlan, getTimePlanInfo } from '../../../../actions/interCofig'
 
 class TimingPlan extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       timingPlans: null,
-      phaseNoInfo: null,
-      timingMsg: null,
       showEditTiming: false,
+      planDetails: null,
+      planStageList: null,
+      phaseNoList: null,
     }
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
     this.props.getTimingPlan(this.InterId)
-    this.props.gePhaseNoInfo(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { timingPlan, phaseNoInfo } = this.props.data
+    const { timingPlan, timePlanInfo } = this.props.data
     if (prevState.data.timingPlan !== timingPlan) {
       this.getTimingPlanList(timingPlan)
     }
-    if (prevState.data.phaseNoInfo !== phaseNoInfo) {
-      this.getPhaseNumber(phaseNoInfo)
+    if (prevState.data.timePlanInfo !== timePlanInfo) {
+      this.getTimePlanDetails(timePlanInfo)
     }
   }
   getTimingPlanList = (timingPlans) => {
     this.setState({ timingPlans })
   }
-  getPhaseNumber = (phaseNoInfo) => {
-    this.setState({ phaseNoInfo: phaseNoInfo.phaseNoList })
+  getTimePlanDetails = (timePlanInfo) => {
+    console.log(timePlanInfo)
+    this.setState({
+      planDetails: timePlanInfo.planInfo,
+      planStageList: timePlanInfo.planStageList,
+      phaseNoList: timePlanInfo.phaseNoList,
+    }, () => {
+      console.log(this.state.planDetails, 'palnDetails')
+    })
   }
   handleEditTimingMsg = (timingMsg) => {
-    console.log(timingMsg)
-    this.setState({
-      timingMsg,
-      showEditTiming: true,
-    })
+    this.props.getTimePlanInfo(timingMsg.ID, timingMsg.PLANNO, this.InterId)
+    this.setState({ showEditTiming: true })
   }
   handleCloseEdit = () => {
     this.setState({ showEditTiming: false })
@@ -50,7 +54,7 @@ class TimingPlan extends React.PureComponent {
     this.props.closeConfigPop()
   }
   render() {
-    const { timingPlans, phaseNoInfo, timingMsg, showEditTiming } = this.state
+    const { timingPlans, showEditTiming, planDetails, phaseNoList, planStageList } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -64,31 +68,31 @@ class TimingPlan extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>方案编号</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={timingMsg && timingMsg.PLANNO} />
+                  <Input defaultValue={planDetails && planDetails.PLANNO} key={planDetails && planDetails.PLANNO} />
                 </div>
                 <div className={styles.editItemsName}>方案名称</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={timingMsg && timingMsg.PLANNAME} />
+                  <Input defaultValue={planDetails && planDetails.PLANNAME} key={planDetails && planDetails.PLANNAME} />
                 </div>
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>周期长</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={timingMsg && timingMsg.CYCLELEN} />
+                  <Input defaultValue={planDetails && planDetails.CYCLELEN} key={planDetails && planDetails.CYCLELEN} />
                 </div>
                 <div className={styles.editItemsName}>协调相位差</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={timingMsg && timingMsg.OFFSET} />
+                  <Input defaultValue={planDetails && planDetails.OFFSET} key={planDetails && planDetails.OFFSET} />
                 </div>
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>协调相位</div>
                 <div className={styles.editItems}>
                   {
-                    phaseNoInfo &&
-                    phaseNoInfo.map((item) => {
+                    phaseNoList &&
+                    phaseNoList.map((item, index) => {
                       return (
-                        <span className={styles.phaseSelBox} key={item}><Checkbox>相位{item}</Checkbox></span>
+                        <span className={styles.phaseSelBox} key={item + index}><Checkbox>相位{item}</Checkbox></span>
                       )
                     })
                   }
@@ -98,12 +102,12 @@ class TimingPlan extends React.PureComponent {
                 <div className={styles.editItemsName}>关联阶段 <br />(含过渡时间)</div>
                 <div className={styles.editItems}>
                   {
-                    timingMsg && timingMsg.STAGEIMAGES &&
-                    timingMsg.STAGEIMAGES.split(',').map((stage, indexs) => {
+                    planStageList &&
+                    planStageList.map((stage, indexs) => {
                       return (
-                        <div key={stage + indexs}>
-                          <p className={styles.phaseNo}>{(timingMsg.STAGENOLIST.split(','))[indexs]}</p>
-                          <img width="35px" height="35px" style={{ marginRight: '5px' }} src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage}`} alt="" />
+                        <div key={stage.STAGE_ID + indexs}>
+                          <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
+                          <img width="35px" height="35px" style={{ marginRight: '5px' }} src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
                         </div>
                       )
                     })
@@ -139,7 +143,6 @@ class TimingPlan extends React.PureComponent {
             {
               timingPlans &&
               timingPlans.map((item) => {
-                console.log(item)
                 return (
                   <div className={styles.mountingTr} key={item.ID}>
                     <div className={styles.mountingTd}>{item.PLANNO}</div>
@@ -180,7 +183,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getTimingPlan: bindActionCreators(getTimingPlan, dispatch),
-    gePhaseNoInfo: bindActionCreators(gePhaseNoInfo, dispatch),
+    getTimePlanInfo: bindActionCreators(getTimePlanInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimingPlan)
