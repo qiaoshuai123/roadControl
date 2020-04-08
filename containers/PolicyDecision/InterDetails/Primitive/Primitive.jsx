@@ -24,7 +24,7 @@ class Primitive extends PureComponent {
     super(props)
     this.state = {
       isMessageinter: 'none',
-      ischeckbtninter: 'none',
+      ischeckbtninter: false,
       interMonitorLeft: 0,
       value: 1,
       checkInterImgs: this.props.data.sinaglInfo.UNIT_BACKGROUND_IMG,
@@ -346,7 +346,7 @@ class Primitive extends PureComponent {
 
   checkbtninter = () => { // 选择底图窗口
     this.setState({
-      ischeckbtninter: 'block',
+      ischeckbtninter: true,
     }, () => {
       this.props.getbasemapImg()
     })
@@ -355,12 +355,12 @@ class Primitive extends PureComponent {
   checkinterPageBoxNone = () => { // 隐藏选择底图窗口
     if (!this.typeShowPic) {
       this.setState({
-        ischeckbtninter: 'none',
+        ischeckbtninter: false,
         isDeviceInformation: true,
       })
     } else {
       this.setState({
-        ischeckbtninter: 'none',
+        ischeckbtninter: false,
       })
     }
   }
@@ -368,16 +368,15 @@ class Primitive extends PureComponent {
   ischeckListItem = (e, imgs) => { // 点击图片选择路口
     e.stopPropagation()
     this.setState({
-      ischeckbtninter: 'none',
+      ischeckbtninter: false,
       checkInterImgs: imgs,
     })
   }
   ischeckbacitem = (e, imgs, type, id) => {
     this.uiCodeId = id
     e.stopPropagation()
-    console.log(type, imgs, 'qiaoshaisssssss')
     this.setState({
-      ischeckbtninter: 'none',
+      ischeckbtninter: false,
       PictWidth: e.target.width,
       PicHeight: e.target.height,
       isDeviceInformation: true,
@@ -480,7 +479,6 @@ class Primitive extends PureComponent {
       this.UI_WIDTH = 10
       this.UI_HIGHT = 0
     }
-    console.log(direction, '474ssss')
     this.setState({
       RadioChangeValue: e.target.value,
     })
@@ -667,7 +665,7 @@ class Primitive extends PureComponent {
   }
   FormpavementPic = () => { // 点击表单提交页面路面图标
     this.setState({
-      ischeckbtninter: 'block',
+      ischeckbtninter: true,
       isDeviceInformation: false,
     }, () => {
       this.props.getshowUiList(this.uiType)
@@ -817,39 +815,42 @@ class Primitive extends PureComponent {
             <div className={styles.bottom_left} onClick={this.Messageinter}>路口底图</div>
             <div onClick={this.closeInter} className={styles.bottom_right}>返回</div>
           </div>
-          <div style={{ display: ischeckbtninter }} onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
-            {
-              this.typeShowPic ?
-                <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
-                  {
-                    this.typeShowPic && basemapImgs && basemapImgs.map(item => (
-                      <li key={item}>
-                        <img
-                          onClick={e => this.ischeckListItem(e, item)}
-                          src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
-                          alt=""
-                        />
-                      </li>
-                    ))
-                  }
-                </ul> : null
-            }
-            {
-              !this.typeShowPic ?
-                <ul onClick={this.btnNoneStop} className={styles.checkinterPageBoxTwo}>
-                  {
-                    picList && picList.map(item => (
-                      <img
-                        key={item.ID}
-                        onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
-                        src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
-                        alt=""
-                      />
-                    ))
-                  }
-                </ul> : null
-            }
-          </div>
+          {
+            ischeckbtninter &&
+              <div onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
+                {
+                  this.typeShowPic ?
+                    <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
+                      {
+                        this.typeShowPic && basemapImgs && basemapImgs.map(item => (
+                          <li key={item}>
+                            <img
+                              onClick={e => this.ischeckListItem(e, item)}
+                              src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
+                              alt=""
+                            />
+                          </li>
+                        ))
+                      }
+                    </ul> : null
+                }
+                {
+                  !this.typeShowPic ?
+                    <ul onClick={this.btnNoneStop} className={styles.checkinterPageBoxTwo}>
+                      {
+                        picList && picList.map(item => (
+                          <img
+                            key={item.ID}
+                            onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
+                            src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
+                            alt=""
+                          />
+                        ))
+                      }
+                    </ul> : null
+                }
+              </div>
+          }
           <div style={{ display: isMessageinter }} className={styles.interPage}>
             <div className={styles.interPageBox}>
               <p>选择底图<span onClick={this.isMessageinterNone}><Icon type="close" /></span></p>

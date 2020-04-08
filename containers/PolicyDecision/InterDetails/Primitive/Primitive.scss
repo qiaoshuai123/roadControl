@@ -56,17 +56,13 @@
     z-index: 99;
     left: 0;
     top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
     .checkinterPageBox {
-      width: 870px;
-      height: 260px;
-      overflow-y: auto;
+      padding: 10px;
       display: flex;
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
       flex-wrap: wrap;
       > li {
         width: 23%;
@@ -80,15 +76,7 @@
       }
     }
     .checkinterPageBoxTwo {
-      position: absolute;
-      width: 870px;
-      height: 260px;
-      overflow-y: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
+      padding: 10px;
       img {
         border: 1px solid red;
         margin: 3px;
