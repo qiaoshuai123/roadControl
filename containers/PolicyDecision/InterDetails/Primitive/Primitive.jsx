@@ -184,7 +184,7 @@ class Primitive extends PureComponent {
         this.uiCodeId = UI_ID
         this.uiType = UI_TYPE_ID
         const isviews = this.isShow.find(item => item.us === IS_VIEW).name
-        const MaintenanceUnitNumbers = directCodes.find(item => item.ID === INSTALL_LOCATION).CODE_NAME
+        const MaintenanceUnitNumbers = directCodes.find(item => Number(item.C_CHARACTER) === INSTALL_LOCATION).CODE_NAME
         const sInstallationLocations = groups.find(item => item.ID === MAINTENANCE_UNIT_ID).USER_GROUP_NAME
         const SubordinateUnitNumbers = groups.find(item => item.ID === MANAGEMENT_UNIT_ID).USER_GROUP_NAME
         this.setState({
@@ -215,6 +215,7 @@ class Primitive extends PureComponent {
           installDate: this.formatDate(INSTALL_DAY),
         })
       } catch (err) {
+        console.log(err)
         message.warning('暂无设备信息')
       }
     } else {
@@ -230,7 +231,7 @@ class Primitive extends PureComponent {
           MaintenanceUnit: directCodes[0].CODE_NAME,
           SubordinateUnitNumber: groups[0].ID,
           sInstallationLocationNumber: groups[0].ID,
-          MaintenanceUnitNumber: directCodes[0].ID,
+          MaintenanceUnitNumber: directCodes[0].C_CHARACTER,
         })
       } catch (error) {
         console.log(error)
@@ -654,7 +655,7 @@ class Primitive extends PureComponent {
     const MaintenanceUnit = MaintenanceUnitList.find(item => item.ID === value)
     this.setState({
       MaintenanceUnit: MaintenanceUnit.CODE_NAME,
-      MaintenanceUnitNumber: MaintenanceUnit.ID,
+      MaintenanceUnitNumber: MaintenanceUnit.C_CHARACTER,
     })
   }
   changValue = (e) => { // 页面所有input事件改变
@@ -817,39 +818,39 @@ class Primitive extends PureComponent {
           </div>
           {
             ischeckbtninter &&
-              <div onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
-                {
-                  this.typeShowPic ?
-                    <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
-                      {
-                        this.typeShowPic && basemapImgs && basemapImgs.map(item => (
-                          <li key={item}>
-                            <img
-                              onClick={e => this.ischeckListItem(e, item)}
-                              src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
-                              alt=""
-                            />
-                          </li>
-                        ))
-                      }
-                    </ul> : null
-                }
-                {
-                  !this.typeShowPic ?
-                    <ul onClick={this.btnNoneStop} className={styles.checkinterPageBoxTwo}>
-                      {
-                        picList && picList.map(item => (
+            <div onClick={this.checkinterPageBoxNone} className={styles.checkinterPage}>
+              {
+                this.typeShowPic ?
+                  <ul onClick={this.btnNoneStop} className={styles.checkinterPageBox}>
+                    {
+                      this.typeShowPic && basemapImgs && basemapImgs.map(item => (
+                        <li key={item}>
                           <img
-                            key={item.ID}
-                            onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
-                            src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
+                            onClick={e => this.ischeckListItem(e, item)}
+                            src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
                             alt=""
                           />
-                        ))
-                      }
-                    </ul> : null
-                }
-              </div>
+                        </li>
+                      ))
+                    }
+                  </ul> : null
+              }
+              {
+                !this.typeShowPic ?
+                  <ul onClick={this.btnNoneStop} className={styles.checkinterPageBoxTwo}>
+                    {
+                      picList && picList.map(item => (
+                        <img
+                          key={item.ID}
+                          onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
+                          src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
+                          alt=""
+                        />
+                      ))
+                    }
+                  </ul> : null
+              }
+            </div>
           }
           <div style={{ display: isMessageinter }} className={styles.interPage}>
             <div className={styles.interPageBox}>
