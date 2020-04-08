@@ -391,6 +391,7 @@ class Primitive extends PureComponent {
 
   }
   showNameOfRoadBox = () => {
+    this.RadeRoads = ''
     this.setState({
       isNameOfRoad: 'block',
       isRoadshow: true,
@@ -704,6 +705,9 @@ class Primitive extends PureComponent {
     }
   }
   btnNameOfRoad = () => { // 添加路段名称
+    if (!this.RadeRoads) {
+      return message.warning('请选择路段名称')
+    }
     const obj = {
       uiId: 187,
       isView: 1,
