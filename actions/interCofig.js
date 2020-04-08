@@ -21,17 +21,15 @@ import {
   API_DELETE_TIMETABLE,
   API_TIMETABLE_ACTIONS,
   API_PRIMITIVE_REMOVEDEVICEINFO,
+  API_PRIMITIVE_REMOVEDEVICEINFOBYID,
   API_TIMETABLE_SAVE,
   API_PHASE_LIST,
-<<<<<<< HEAD
   API_SAVE_PHASEINFO,
   API_DELETE_PHASE,
   API_TIMING_PLAN,
   API_ROAD_LIST,
   API_PHASENO_INFO,
-=======
   API_PHASE_GETDLNAME,
->>>>>>> 9fb723a3dbf054bdb737db23dc790c8e8b5610b5
 
 } from '../constants/API'
 
@@ -209,6 +207,20 @@ export const getremovedeviceinfo = (id) => {
       const result = await RestUtil.post(`${API_PRIMITIVE_REMOVEDEVICEINFO}?deviceId=${id}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFO, payload: result.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+export const getremovedeviceinfoById = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PRIMITIVE_REMOVEDEVICEINFOBYID}?id=${id}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PRIMITIVE_REMOVEDEVICEINFOBYID, payload: result.data })
       } else {
         console.error(result.data.message)
       }
