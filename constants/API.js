@@ -39,3 +39,7 @@ export const API_ROAD_LIST = '/atms/hisenseSignal/loadLaneList'
 export const API_PHASE_GETDLNAME = '/atms/singleUnitMonitor/getDLName'
 export const API_TIMEPLAN_INFO = '/atms/hisenseSignal/loadPlanInfo'
 export const API_CHANNLE_LIST = '/atms/hisenseSignal/loadChannelList'
+export const API_SAVE_CHANNELINFO = '/atms/hisenseSignal/saveChannelInfo'
+export const API_DELETE_CHANNELINFO = '/atms/hisenseSignal/deleteChannel'
+export const API_FLOW_DIRECTION = '/atms/hisenseSignal/loadFlowDirectionList'
+

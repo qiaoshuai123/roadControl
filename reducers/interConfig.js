@@ -56,6 +56,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { timePlanInfo: payload })
     case types.GET_CHANNLE_LIST:
       return Object.assign({}, state, { channelList: payload })
+    case types.GET_FLOW_DIRECTION:
+      return Object.assign({}, state, { flowDirections: payload })
     default:
       return state
   }
