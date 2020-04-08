@@ -36,6 +36,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { editDeviceInfo: payload })
     case types.GET_PRIMITIVE_REMOVEDEVICEINFO:
       return Object.assign({}, state, { removedeviceinfo: payload })
+    case types.GET_PRIMITIVE_REMOVEDEVICEINFOBYID:
+      return Object.assign({}, state, { removedeviceinfoById: payload })
     case types.GET_TIME_TABLE:
       return Object.assign({}, state, { timeTable: payload })
     case types.GET_TIMETABLE_ACTIONS:

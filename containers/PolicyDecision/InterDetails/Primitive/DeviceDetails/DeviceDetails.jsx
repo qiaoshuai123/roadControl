@@ -60,9 +60,19 @@ class DeviceDetails extends React.Component {
   handleDeviceUp = () => {
     const nowTime = new Date().getTime()
     this.imgBox.style.cursor = 'default'
-    const { ID } = this.props.imgMsg
+    const {
+      ID,
+      DEVICE_ID,
+      DETAIL,
+      UI_WIDTH,
+      UI_HIGHT,
+    } = this.props.imgMsg
     if (nowTime - this.timeStap < 200) {
-      this.props.getshowDeviceInfo(ID, this.props.InterIds)
+      if (DEVICE_ID) {
+        this.props.getshowDeviceInfo(ID, this.props.InterIds)
+      } else {
+        this.props.showNameOfRoad(DETAIL, ID, UI_WIDTH, UI_HIGHT)
+      }
     } else {
       this.props.geteditDeviceInfoPo(ID, this.ImgLeft, this.ImgTop)
     }
@@ -75,7 +85,8 @@ class DeviceDetails extends React.Component {
       UI_TYPE_ID,
       UI_IMAGE_NAME,
       P_LEFT, P_TOP,
-      DETAIL, DEVICE_ID,
+      DETAIL,
+      DEVICE_ID,
     } = this.props.imgMsg
     const imgStyle = {
       position: 'absolute', top: `${P_TOP}px`, left: `${P_LEFT}px`, width: `${UI_WIDTH}px`, height: `${UI_HIGHT}px`, userSelect: 'none', cursor: 'pointer',
