@@ -28,9 +28,9 @@ import {
   API_DELETE_PHASE,
   API_TIMING_PLAN,
   API_ROAD_LIST,
-  API_PHASENO_INFO,
   API_PHASE_GETDLNAME,
   API_TIMEPLAN_INFO,
+  API_CHANNLE_LIST,
 
 } from '../constants/API'
 
@@ -355,6 +355,21 @@ export const getTimePlanInfo = (id, planNo, interId) => {
       const result = await RestUtil.get(`${API_TIMEPLAN_INFO}?id=${id}&planNo=${planNo}&unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_TIMEPLAN_INFO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getChannelConfig = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_CHANNLE_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_CHANNLE_LIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
