@@ -42,4 +42,8 @@ export const API_CHANNLE_LIST = '/atms/hisenseSignal/loadChannelList'
 export const API_SAVE_CHANNELINFO = '/atms/hisenseSignal/saveChannelInfo'
 export const API_DELETE_CHANNELINFO = '/atms/hisenseSignal/deleteChannel'
 export const API_FLOW_DIRECTION = '/atms/hisenseSignal/loadFlowDirectionList'
+export const API_BASE_ACTION = '/atms/timing/loadCfgActionInfo'
+export const API_SAVE_TIMINGPLAN = '/atms/hisenseSignal/savePlanTime'
+export const API_ADD_TIMINGPLAN = '/atms/hisenseSignal/loadPlanInfo_add'
+export const API_DELETE_TIMINGPLAN = '/atms/hisenseSignal/deletePlanInfo_hx'
 

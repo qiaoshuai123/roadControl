@@ -34,6 +34,10 @@ import {
   API_SAVE_CHANNELINFO,
   API_DELETE_CHANNELINFO,
   API_FLOW_DIRECTION,
+  API_BASE_ACTION,
+  API_SAVE_TIMINGPLAN,
+  API_ADD_TIMINGPLAN,
+  API_DELETE_TIMINGPLAN,
 
 } from '../constants/API'
 
@@ -396,12 +400,56 @@ export const getDeleteChannelInfo = (channelNo, interId) => {
   }
 }
 
+export const getSaveTimingPlan = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_SAVE_TIMINGPLAN, params)
+    return result
+  }
+}
+
+export const getDeleteTimingPlan = (planNo, interId) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_TIMINGPLAN}?planNo=${planNo}&unitId=${interId}`)
+    return result
+  }
+}
+
 export const getFlowDirections = (direction) => {
   return async (dispatch) => {
     try {
       const result = await RestUtil.post(`${API_FLOW_DIRECTION}?direction=${direction}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_FLOW_DIRECTION, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getBaseAction = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_BASE_ACTION}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_BASE_ACTION, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getAddTimingPlan = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_ADD_TIMINGPLAN}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_ADD_TIMINGPLAN, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

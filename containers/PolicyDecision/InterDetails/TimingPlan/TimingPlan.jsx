@@ -1,10 +1,10 @@
 import React from 'react'
-import { Icon, Input, Checkbox } from 'antd'
+import { Icon, Input, Checkbox, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './TimingPlan.scss'
 
-import { getTimingPlan, getTimePlanInfo } from '../../../../actions/interCofig'
+import { getTimingPlan, getTimePlanInfo, getSaveTimingPlan, getAddTimingPlan, getDeleteTimingPlan } from '../../../../actions/interCofig'
 
 class TimingPlan extends React.PureComponent {
   constructor(props) {
@@ -16,39 +16,145 @@ class TimingPlan extends React.PureComponent {
       planStageList: null,
       phaseNoList: null,
     }
+    this.saveParams = {
+      coordPhase: 'string',
+      id: 'string',
+      lose_phase: 'string',
+      offset: 'string',
+      phase_Sequence_No: 'string',
+      planName: 'string',
+      planNo: 'string',
+      stageNos: 'string',
+      stageTimes: 'string',
+      unitId: 'string',
+    }
+    this.stageTimes = []
+    this.coordPhases = []
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
+    this.saveParams.unitId = this.InterId
     this.props.getTimingPlan(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { timingPlan, timePlanInfo } = this.props.data
+    const { timingPlan, timePlanInfo, addTimingPlan } = this.props.data
     if (prevState.data.timingPlan !== timingPlan) {
       this.getTimingPlanList(timingPlan)
     }
     if (prevState.data.timePlanInfo !== timePlanInfo) {
       this.getTimePlanDetails(timePlanInfo)
     }
+    if (prevState.data.addTimingPlan !== addTimingPlan) {
+      this.getAdd(addTimingPlan)
+    }
+  }
+  getAdd = (addTimingPlan) => {
+    const planInfo = {
+      COORD_PHASE: null,
+      LOSE_PHASE: null,
+      CYCLELEN: 0,
+      PLANNAME: '添加方案',
+      PHASE_SEQUENCE_NO: 1,
+      OFFSET: 0,
+      PLANNO: 1,
+    }
+    this.setState({
+      planDetails: planInfo,
+      planStageList: addTimingPlan.planStageList,
+      phaseNoList: addTimingPlan.phaseNoList,
+    }, () => {
+      console.log(this.state.planDetails, '???????????????')
+    })
+    addTimingPlan.planStageList.forEach((item) => {
+      this.stageTimes.push(item.GREEN)
+    })
   }
   getTimingPlanList = (timingPlans) => {
     this.setState({ timingPlans })
   }
   getTimePlanDetails = (timePlanInfo) => {
-    console.log(timePlanInfo)
     this.setState({
       planDetails: timePlanInfo.planInfo,
       planStageList: timePlanInfo.planStageList,
       phaseNoList: timePlanInfo.phaseNoList,
-    }, () => {
-      console.log(this.state.planDetails, 'palnDetails')
+    })
+    timePlanInfo.planStageList.forEach((item) => {
+      this.stageTimes.push(item.GREEN)
     })
   }
   handleEditTimingMsg = (timingMsg) => {
+    this.stageTimes = []
+    this.coordPhases = []
+    this.saveParams = {
+      coordPhase: timingMsg.COORD_PHASE,
+      id: timingMsg.ID,
+      lose_phase: timingMsg.LOSE_PHASE,
+      offset: timingMsg.OFFSET,
+      phase_Sequence_No: timingMsg.PHASE_SEQUENCE_NO,
+      planName: timingMsg.PLANNAME,
+      planNo: timingMsg.PLANNO,
+      stageNos: timingMsg.STAGENOLIST,
+      stageTimes: '',
+      unitId: this.InterId,
+    }
+    this.coordPhases = timingMsg.COORD_PHASE ? timingMsg.COORD_PHASE.split(',') : []
     this.props.getTimePlanInfo(timingMsg.ID, timingMsg.PLANNO, this.InterId)
     this.setState({ showEditTiming: true })
   }
   handleCloseEdit = () => {
     this.setState({ showEditTiming: false })
+  }
+  handleEditChange = (e) => {
+    const paramsName = e.target.getAttribute('pname')
+    this.saveParams[paramsName] = e.target.value
+  }
+  handlePhaseChange = (e) => {
+    const { id } = e.target
+    const isChecked = e.target.checked
+    if (isChecked) {
+      this.coordPhases.push(id)
+    } else {
+      const index = this.coordPhases.indexOf(id)
+      this.coordPhases.splice(index, 1)
+    }
+  }
+  handleStageTimeChange = (e, indexs) => {
+    this.stageTimes[indexs] = e.target.value
+  }
+  handleAddTimingPlan = () => {
+    this.stageTimes = []
+    this.coordPhases = []
+    this.saveParams.id = 0
+    this.props.getAddTimingPlan(this.InterId)
+    this.setState({ showEditTiming: true })
+  }
+  handleSaveTimingPlan = () => {
+    this.saveParams.stageTimes = this.stageTimes.join(',')
+    this.saveParams.coordPhase = this.coordPhases.join(',')
+    this.props.getSaveTimingPlan(this.saveParams).then((res) => {
+      if (res.data.code === 200) {
+        this.props.getTimingPlan(this.InterId)
+      }
+      message.info(res.data.message)
+      this.setState({ showEditTiming: false })
+    })
+  }
+  handleDelete = (e) => {
+    const planNo = e.target.getAttribute('planno')
+    const { confirm } = Modal
+    const selfThis = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        selfThis.props.getDeleteTimingPlan(planNo, selfThis.InterId).then((res) => {
+          if (res.data.code === 200) {
+            selfThis.props.getTimingPlan(selfThis.InterId)
+          }
+          message.info(res.data.message)
+        })
+      },
+    })
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
@@ -68,21 +174,21 @@ class TimingPlan extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>方案编号</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.PLANNO} key={planDetails && planDetails.PLANNO} />
+                  <Input defaultValue={planDetails && planDetails.PLANNO} key={planDetails && planDetails.PLANNO} pname="planNO" onChange={this.handleEditChange} />
                 </div>
                 <div className={styles.editItemsName}>方案名称</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.PLANNAME} key={planDetails && planDetails.PLANNAME} />
+                  <Input defaultValue={planDetails && planDetails.PLANNAME} key={planDetails && planDetails.PLANNAME} pname="planName" onChange={this.handleEditChange} />
                 </div>
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>周期长</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.CYCLELEN} key={planDetails && planDetails.CYCLELEN} />
+                  <Input defaultValue={planDetails && planDetails.CYCLELEN} key={planDetails && planDetails.CYCLELEN} disabled />
                 </div>
                 <div className={styles.editItemsName}>协调相位差</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.OFFSET} key={planDetails && planDetails.OFFSET} />
+                  <Input defaultValue={planDetails && planDetails.OFFSET} key={planDetails && planDetails.OFFSET} pname="offset" onChange={this.handleEditChange} />
                 </div>
               </div>
               <div className={styles.editContent}>
@@ -92,7 +198,9 @@ class TimingPlan extends React.PureComponent {
                     phaseNoList &&
                     phaseNoList.map((item, index) => {
                       return (
-                        <span className={styles.phaseSelBox} key={item + index}><Checkbox>相位{item}</Checkbox></span>
+                        <span className={styles.phaseSelBox} key={item + index}>
+                          <Checkbox id={item} onChange={this.handlePhaseChange} defaultChecked={this.coordPhases.indexOf(item) >= 0}>相位{item}</Checkbox>
+                        </span>
                       )
                     })
                   }
@@ -103,11 +211,12 @@ class TimingPlan extends React.PureComponent {
                 <div className={styles.editItems}>
                   {
                     planStageList &&
-                    planStageList.map((stage, indexs) => {
+                    planStageList.map((stage, index) => {
                       return (
-                        <div key={stage.STAGE_ID + indexs}>
+                        <div className={styles.stageBox} key={stage.STAGE_ID + stage.GREEN}>
                           <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
-                          <img width="35px" height="35px" style={{ marginRight: '5px' }} src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
+                          <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
+                          <input type="text" defaultValue={stage.GREEN} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
                         </div>
                       )
                     })
@@ -116,7 +225,7 @@ class TimingPlan extends React.PureComponent {
               </div>
               <div className={styles.editBtnBox}>
                 <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
-                <div className={styles.editBtn} onClick={this.handleSaveTimeTalbe}>确定</div>
+                <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
               </div>
             </div>
           </div>
@@ -126,7 +235,7 @@ class TimingPlan extends React.PureComponent {
           <div className={styles.phaseConfigBoxTop_right} onClick={this.closeConfigPop}><Icon type="close" /></div>
         </div>
         <div className={styles.phaseConfigBox_center}>
-          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left}>添加</div>
+          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddTimingPlan}>添加</div>
           <div className={styles.phaseConfigBoxCenter_left}>上载</div>
         </div>
         <div className={styles.phaseConfigBox_box}>
@@ -148,8 +257,8 @@ class TimingPlan extends React.PureComponent {
                     <div className={styles.mountingTd}>{item.PLANNO}</div>
                     <div className={styles.mountingTd}>{item.PLANNAME}</div>
                     <div className={styles.mountingTd}>{item.CYCLELEN}</div>
+                    <div className={styles.mountingTd}>{item.COORD_PHASE}</div>
                     <div className={styles.mountingTd}>{item.OFFSET}</div>
-                    <div className={styles.mountingTd}>{item.PHASE_SEQUENCE_NO}</div>
                     <div className={`${styles.mountingTd} ${styles.mountingcar}`}>
                       {
                         item.STAGEIMAGES &&
@@ -162,7 +271,7 @@ class TimingPlan extends React.PureComponent {
                     </div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditTimingMsg(item) }}>修改</span></div>
-                      <div className={styles.deviceMsg}><span>删除</span></div>
+                      <div className={styles.deviceMsg}><span planno={item.PLANNO} onClick={this.handleDelete}>删除</span></div>
                     </div>
                   </div>
                 )
@@ -184,6 +293,9 @@ const mapDisPatchToProps = (dispatch) => {
   return {
     getTimingPlan: bindActionCreators(getTimingPlan, dispatch),
     getTimePlanInfo: bindActionCreators(getTimePlanInfo, dispatch),
+    getSaveTimingPlan: bindActionCreators(getSaveTimingPlan, dispatch),
+    getAddTimingPlan: bindActionCreators(getAddTimingPlan, dispatch),
+    getDeleteTimingPlan: bindActionCreators(getDeleteTimingPlan, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimingPlan)

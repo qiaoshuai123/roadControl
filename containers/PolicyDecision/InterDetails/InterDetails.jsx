@@ -7,11 +7,12 @@ import PhaseConfig from './PhaseConfig/PhaseConfig'
 import TimingPlan from './TimingPlan/TimingPlan'
 import TimeTable from './TimeTable/TimeTable'
 import RoadConfig from './RoadConfig/RoadConfig'
-import channelConfig from './ChannelConfig/ChannelConfig'
+import ChannelConfig from './ChannelConfig/ChannelConfig'
+import BaseAction from './BaseAction/BaseAction'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
-import ChannelConfig from './ChannelConfig/ChannelConfig'
+
 
 class InterDetails extends React.PureComponent {
   constructor(props) {
@@ -43,7 +44,7 @@ class InterDetails extends React.PureComponent {
       { id: 5, name: '跟随相位配置' },
       { id: 6, name: '阶段配置' },
       { id: 7, name: '配时方案配置', configname: 'timePlan' },
-      { id: 8, name: '时基动作配置' },
+      { id: 8, name: '时基动作配置', configname: 'baseAction' },
       { id: 9, name: '时段表配置', configname: 'timetable' },
       { id: 10, name: '调度表配置' },
       { id: 11, name: '信号机控制', configname: 'singalConfig' },
@@ -408,6 +409,10 @@ class InterDetails extends React.PureComponent {
           {
             configPop === 'channelConfig' &&
             <ChannelConfig {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'baseAction' &&
+            <BaseAction {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >
