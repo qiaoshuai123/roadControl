@@ -39,10 +39,13 @@
     }
     .phaseConfigBoxTop_right {
       float: right;
-      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      margin-top: 12px;
+      text-align: center;
+      line-height: 20px;
       font-size: 16px;
-      height: 100%;
-      line-height: 45px;
+      cursor: pointer;
       transition: all 0.2s;
       &:hover {
         transform: rotate(-180deg);

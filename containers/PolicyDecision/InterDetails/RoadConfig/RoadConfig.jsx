@@ -63,15 +63,15 @@ class RoadConfig extends React.PureComponent {
               roadList.map((item, index) => {
                 return (
                   <div className={styles.mountingTr} key={item.LANE_ORDER + index}>
-                    <div className={styles.mountingTd}>{item.DIRECTION}</div>
-                    <div className={styles.mountingTd}>{item.IN_OR_OUT}</div>
+                    <div className={styles.mountingTd}>{item.DIRECTION_NAME}</div>
+                    <div className={styles.mountingTd}>{item.IN_OR_OUT_NAME}</div>
                     <div className={styles.mountingTd}>{item.LANE_ORDER}</div>
-                    <div className={styles.mountingTd}>{item.LANE_TYPE}</div>
+                    <div className={styles.mountingTd}>{item.LANE_TYPE_NAME}</div>
                     <div className={styles.mountingTd}>{item.CHANNEL_NO}</div>
                     <div className={styles.mountingTd}>{item.LEFT_RATIO}</div>
                     <div className={styles.mountingTd}>{item.STRAIGHT_RATIO}</div>
                     <div className={styles.mountingTd}>{item.RIGHT_RATIO}</div>
-                    <div className={styles.mountingTd}>{item.FLOW_DIRECTION}</div>
+                    <div className={styles.mountingTd}>{item.FLOW_DIRECTION_NAME}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span>修改</span></div>
                       <div className={styles.deviceMsg}><span>删除</span></div>
