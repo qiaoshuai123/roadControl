@@ -50,4 +50,8 @@ export const API_DELETE_BASEACTION = '/atms/hisenseSignal/deleteAction'
 export const API_PLAN_NOLIST = '/atms/hisenseSignal/loadPlanNoList'
 export const API_ACTION_NO = '/atms/hisenseSignal/loadActionNoList'
 export const API_ADD_ACTION = '/atms/hisenseSignal/saveActionInfo'
+export const API_DIRECTION_LIST = '/atms/hisenseSignal/loadDirectionList'
+export const API_DIRECTION_FORLANE = '/atms/hisenseSignal/loadFlowDirectionListForLane'
+export const API_ROAD_TYPE = '/atms/hisenseSignal/loadLaneTypeList'
+export const API_DELETE_ROAD = '/atms/hisenseSignal/deleteLane'
 

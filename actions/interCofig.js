@@ -42,6 +42,10 @@ import {
   API_ACTION_NO,
   API_PLAN_NOLIST,
   API_ADD_ACTION,
+  API_DIRECTION_LIST,
+  API_DIRECTION_FORLANE,
+  API_ROAD_TYPE,
+  API_DELETE_ROAD,
 
 } from '../constants/API'
 
@@ -432,6 +436,13 @@ export const getAddActions = (params) => {
   }
 }
 
+export const getDeleteRoad = (params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_ROAD}${params}`)
+    return result
+  }
+}
+
 export const getFlowDirections = (direction) => {
   return async (dispatch) => {
     try {
@@ -498,6 +509,51 @@ export const getPlanNoList = (interId) => {
       const result = await RestUtil.post(`${API_PLAN_NOLIST}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_PLAN_NOLIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDirectionList = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_DIRECTION_LIST)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_DIRECTION_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDirectionForLane = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_DIRECTION_FORLANE)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_DIRECTION_FORLANE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getRoadTypeList = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_ROAD_TYPE)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_ROAD_TYPE, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
