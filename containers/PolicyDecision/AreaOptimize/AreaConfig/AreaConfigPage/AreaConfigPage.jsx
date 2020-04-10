@@ -143,7 +143,7 @@ class AreaConfigPage extends React.Component {
               <div className={styles.mountingTbody}>
                 <div className={styles.mountingTr}>
                   <div className={styles.mountingTd}>*************</div>
-                  <div className={styles.mountingTd}>*************</div>
+                  <div className={`${styles.mountingTd} ${styles.mountingTds}`}>*************</div>
                   <div className={styles.mountingTd}>*************</div>
                 </div>
               </div>
