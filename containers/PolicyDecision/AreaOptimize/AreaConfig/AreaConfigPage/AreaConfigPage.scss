@@ -1,0 +1,203 @@
+.AreaConfigWrapper {
+  height: 100%;
+}
+.AreaConfigWrapperTop {
+  height: 60px;
+  display: flex;
+  .chartsSearch {
+    height: 60px;
+    align-items: center;
+    display: flex;
+    width: 70%;
+    flex-wrap: wrap;
+    .divs {
+      margin-left: 35px;
+    }
+    .searchBtn {
+      width: 80px;
+      height: 30px;
+      margin-left: 15px;
+      text-align: center;
+      line-height: 30px;
+      border: 1px solid #032e55;
+      border-radius: 3px;
+      color: #f1f1fb;
+      cursor: pointer;
+    }
+    .searchActive {
+      background-color: #00a9c0;
+      border-color: #00a9c0;
+    }
+  }
+  .AreaConfigWrapperTop_right {
+    width: 30%;
+    .butons{
+      margin-right: 0;
+    }
+    div {
+      float: right;
+      margin-right: 15px;
+      margin-top: 16px;
+    }
+  }
+}
+.AreaConfigWrapperBom {
+  height: 400px;
+  display: flex;
+  .AreaConfigWrapperBomLeft {
+    flex: 1;
+  }
+  .AreaConfigWrapperBomRight {
+    width: 460px;
+    > div {
+      height: 35px;
+      display: flex;
+      .spans {
+        width: 120px;
+        line-height: 35px;
+      }
+      .inps {
+        flex: 1;
+        :global(.ant-input) {
+          width: 265px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .listName {
+      width: 100%;
+      height: 100px;
+    }
+    .chartsSearchs {
+      height: 45px;
+      line-height: 45px;
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      .divs {
+        margin-left: 35px;
+        line-height: 32px;
+      }
+      .chartsSearchsBox{
+        width: 90px;
+        height: 32px;
+        margin-top: -8px;
+        display:inline-block;
+      }
+      .searchBtn {
+        width: 80px;
+        height: 30px;
+        margin-left: 15px;
+        text-align: center;
+        line-height: 30px;
+        border: 1px solid #032e55;
+        border-radius: 3px;
+        color: #f1f1fb;
+        cursor: pointer;
+      }
+      .searchActive {
+        background-color: #00a9c0;
+        border-color: #00a9c0;
+      }
+    }
+    .mountingTable {
+      height: 60px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .mountingThead {
+        font-size: 12px;
+        height: 30px;
+        color: #95edf4;
+        display: flex;
+      }
+      .mountingTr {
+        height: 30px;
+        display: flex;
+        :global(.ant-input) {
+          width: 100%;
+          height: 30px;
+        }
+      }
+      .mountingThead {
+        background-color: rgba(14, 28, 63, 0.7);
+      }
+      .mountingTh,
+      .mountingTd {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .mountingTds{
+        color: #03E056;
+      }
+      .deviceMsg {
+        margin-right: 20px;
+        color: #07a8ff;
+      }
+      .mountingTr:nth-child(odd) {
+        background-color: rgba(14, 50, 98, 0.7);
+      }
+      .mountingTr:nth-child(even) {
+        background-color: rgba(14, 28, 63, 0.7);
+      }
+    }
+    .divbom {
+      height: 30px;
+      .divbomSpan {
+        float: left;
+        width: 120px;
+        height: 25px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 25px;
+        margin: 5px 25px;
+        border-radius: 3px;
+        background-color: #01aabd;
+      }
+    }
+  }
+}
+.chartsSearch,
+.AreaConfigWrapperBomRight,
+.chartsSearchs {
+  :global(.ant-calendar-picker) {
+    width: 110px;
+    height: 32px;
+  }
+  :global(.ant-calendar-picker-icon) {
+    display: none;
+  }
+  :global(.ant-calendar-picker-clear) {
+    display: none;
+  }
+  :global(.ant-input) {
+    border: none;
+    background-color: #03406c;
+    color: #f1f1fb;
+  }
+  :global(.ant-select-selection__rendered) {
+    line-height: 28px;
+  }
+  :global(.ant-select-selection) {
+    background-color: #03406c;
+    color: #f1f1fb;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+  }
+  :global(.ant-select-arrow) {
+    color: #f1f1fb;
+  }
+  :global(.ant-select-selection--multiple .ant-select-selection__choice) {
+    color: #f1f1fb;
+    background-color: transparent;
+    border: none;
+    margin-top: 2px;
+  }
+  :global(.ant-select-selection__choice__remove) {
+    color: #46a7c6;
+  }
+}
