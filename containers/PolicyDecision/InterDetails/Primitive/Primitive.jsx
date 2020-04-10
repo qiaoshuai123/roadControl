@@ -788,12 +788,13 @@ class Primitive extends PureComponent {
                 )
               }) : null
           }
-          {
+          <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
+          {/* {
             PrimitivBacImg.length > 16 ?
               <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
               :
               <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
-          }
+          } */}
 
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
             <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>

@@ -118,6 +118,11 @@ class AreaOptimize extends React.Component {
       num: id,
     })
   }
+  closepage = () => { // 关闭当前页面
+    this.setState({
+      showConfig: false,
+    })
+  }
   handleShowConfig = () => {
     this.setState({ showConfig: true })
   }
@@ -143,7 +148,7 @@ class AreaOptimize extends React.Component {
         <Header {...this.props} />
         {
           showConfig &&
-          <AreaConfig />
+          <AreaConfig closepage={this.closepage} />
         }
         <div className={styles.areaOptContainer}>
           <div className={styles.interTreeBox}>
