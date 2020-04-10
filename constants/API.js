@@ -46,4 +46,8 @@ export const API_BASE_ACTION = '/atms/timing/loadCfgActionInfo'
 export const API_SAVE_TIMINGPLAN = '/atms/hisenseSignal/savePlanTime'
 export const API_ADD_TIMINGPLAN = '/atms/hisenseSignal/loadPlanInfo_add'
 export const API_DELETE_TIMINGPLAN = '/atms/hisenseSignal/deletePlanInfo_hx'
+export const API_DELETE_BASEACTION = '/atms/hisenseSignal/deleteAction'
+export const API_PLAN_NOLIST = '/atms/hisenseSignal/loadPlanNoList'
+export const API_ACTION_NO = '/atms/hisenseSignal/loadActionNoList'
+export const API_ADD_ACTION = '/atms/hisenseSignal/saveActionInfo'
 

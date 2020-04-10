@@ -16,7 +16,7 @@
         background-color: rgba(0,0,0,.4);
         .editDetails {
           width: 60%;
-          height: 260px;
+          height: 160px;
           background-color: rgba(25,59,91, .8);
           .editTitle {
             position: relative;
@@ -244,4 +244,10 @@
       overflow-y: auto;
     }
   }
+.confirmBox {
+  background-color: rgba(25,59,91, .8);
+  :global(.ant-modal-confirm-title) {
+    color: #f1f1fb;
+  }
+}
   
