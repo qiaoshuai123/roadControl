@@ -13,6 +13,7 @@ class BaseAction extends React.PureComponent {
       baseActions: null,
       showEditBox: false,
     }
+    this.actionsNums = []
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -26,8 +27,18 @@ class BaseAction extends React.PureComponent {
   }
   getBaseActions = (baseActions) => {
     this.setState({ baseActions })
+    baseActions.forEach((item) => {
+      this.actionsNums.push(item.PLANNO)
+    })
+    console.log(this.actionsNums)
   }
-  handleEditAction = () => {
+  handleEditAction = (e) => {
+    const planNO = Number(e.target.getAttribute('planno'))
+    const indexs = this.actionsNums.indexOf(planNO)
+    console.log(indexs)
+    this.actions = this.actionsNums
+    this.actions.splice(indexs, 1)
+    console.log(this.actionsNums)
     this.setState({ showEditBox: true })
   }
   closeConfigPop = () => {
@@ -52,7 +63,7 @@ class BaseAction extends React.PureComponent {
                   <Select defaultValue={1} onChange={this.handleChangeTimeNo}>
                     {
                       new Array(16).fill(true).map((item, index) => (
-                        <Option key={item + index} value={index + 1}>{index + 1}</Option>
+                        <Option key={'编号' + index} value={index + 1}>{index + 1}</Option>
                       ))
                     }
                   </Select>
@@ -62,7 +73,7 @@ class BaseAction extends React.PureComponent {
                   <Select defaultValue={1} onChange={this.handleChangeTimeNo}>
                     {
                       new Array(16).fill(true).map((item, index) => (
-                        <Option key={item + index} value={index + 1}>{index + 1}</Option>
+                        <Option key={'方案' + index} value={index + 1}>{index + 1}</Option>
                       ))
                     }
                   </Select>
@@ -99,7 +110,7 @@ class BaseAction extends React.PureComponent {
                     <div className={styles.mountingTd}>{item.PLANNO}</div>
                     <div className={styles.mountingTd}>{item.ACTIONNO}</div>
                     <div className={styles.mountingTd}>
-                      <div className={styles.deviceMsg}><span onClick={this.handleEditAction}>修改</span></div>
+                      <div className={styles.deviceMsg}><span planno={item.PLANNO} onClick={this.handleEditAction}>修改</span></div>
                       <div className={styles.deviceMsg}><span>删除</span></div>
                     </div>
                   </div>
