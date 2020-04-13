@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './RoadConfig.scss'
 
-import { getRoadLists, getDirectionList, getDirectionForLane, getRoadTypeList, getDeleteRoad } from '../../../../actions/interCofig'
+import { getRoadLists, getDirectionList, getDirectionForLane, getRoadTypeList, getDeleteRoad, getSaveLaneInfo } from '../../../../actions/interCofig'
 
 class RoadConfig extends React.PureComponent {
   constructor(props) {
@@ -17,9 +17,23 @@ class RoadConfig extends React.PureComponent {
       roadTypeLists: null,
       roadMsg: null,
     }
+    this.saveParams = {
+      channelNo: 0,
+      direction: 0,
+      flowDirection: 0,
+      inOrOut: 0,
+      laneOrder: 0,
+      laneType: 0,
+      leftRatio: 0,
+      rightRatio: 0,
+      straightRatio: 0,
+      unitId: 0,
+    }
+    this.saveType = 2
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
+    this.saveParams.unitId = this.InterId
     this.props.getRoadLists(this.InterId)
     this.props.getDirectionList()
     this.props.getDirectionForLane()
@@ -57,13 +71,27 @@ class RoadConfig extends React.PureComponent {
   }
   // 编辑
   handleEditRoad = (roadMsg) => {
-    console.log(roadMsg)
+    this.saveType = 2
+    this.saveParams = {
+      channelNo: roadMsg.CHANNEL_NO,
+      direction: roadMsg.DIRECTION,
+      flowDirection: roadMsg.FLOW_DIRECTION,
+      inOrOut: roadMsg.IN_OR_OUT,
+      laneOrder: roadMsg.LANE_ORDER,
+      laneType: roadMsg.LANE_TYPE,
+      leftRatio: roadMsg.LEFT_RATIO,
+      rightRatio: roadMsg.RIGHT_RATIO,
+      straightRatio: roadMsg.STRAIGHT_RATIO,
+      unitId: this.InterId,
+    }
     this.setState({ showEditRoadMsg: true, roadMsg })
   }
   handleCloseEdit = () => {
     this.setState({ showEditRoadMsg: false })
   }
+  // 添加
   handleAddRoad = () => {
+    this.saveType = 1
     const roadMsg = {
       CHANNEL_NO: 1,
       DIRECTION: 1,
@@ -74,6 +102,18 @@ class RoadConfig extends React.PureComponent {
       LEFT_RATIO: 0,
       RIGHT_RATIO: 0,
       STRAIGHT_RATIO: 0,
+    }
+    this.saveParams = {
+      channelNo: 1,
+      direction: 1,
+      flowDirection: 1,
+      inOrOut: 1,
+      laneOrder: 1,
+      laneType: 1,
+      leftRatio: 0,
+      rightRatio: 0,
+      straightRatio: 0,
+      unitId: this.InterId,
     }
     this.setState({ showEditRoadMsg: true, roadMsg })
   }
@@ -92,6 +132,23 @@ class RoadConfig extends React.PureComponent {
           message.info(res.data.message)
         })
       },
+    })
+  }
+  handleSaveParamsChange = (val, options) => {
+    const pName = options.props.paramsname
+    this.saveParams[pName] = val
+  }
+  handleChannelNoChange = (e) => {
+    const pName = e.target.getAttribute('paramsname')
+    this.saveParams[pName] = e.target.value
+  }
+  handleSaveRoadInfo = () => {
+    this.props.getSaveLaneInfo(this.saveType, this.saveParams).then((res) => {
+      if (res.data.code === 200) {
+        this.props.getRoadLists(this.InterId)
+        this.setState({ showEditRoadMsg: false })
+      }
+      message.info(res.data.message)
     })
   }
   closeConfigPop = () => {
@@ -116,16 +173,16 @@ class RoadConfig extends React.PureComponent {
                   <Select defaultValue={roadMsg && roadMsg.DIRECTION} onChange={this.handleSaveParamsChange}>
                     {
                       directions &&
-                      directions.map(item => (<Option key={'方向' + item.C_CODE} value={item.C_CODE} paramsname="lampType">{item.CODE_NAME}</Option>))
+                      directions.map(item => (<Option key={'方向' + item.C_CODE} value={item.C_CODE} paramsname="direction">{item.CODE_NAME}</Option>))
                     }
                   </Select>
                 </div>
                 <div className={styles.editItemsName}>进出口</div>
                 <div className={styles.editItems}>
                   <Select defaultValue={roadMsg && roadMsg.IN_OR_OUT} onChange={this.handleSaveParamsChange}>
-                    <Option key="1" value={1} paramsname="lampType">进口</Option>
-                    <Option key="2" value={2} paramsname="lampType">出口</Option>
-                    <Option key="99" value={99} paramsname="lampType">其他</Option>
+                    <Option key="1" value={1} paramsname="inOrOut">进口</Option>
+                    <Option key="2" value={2} paramsname="inOrOut">出口</Option>
+                    <Option key="99" value={99} paramsname="inOrOut">其他</Option>
                   </Select>
                 </div>
               </div>
@@ -136,7 +193,7 @@ class RoadConfig extends React.PureComponent {
                 </div>
                 <div className={styles.editItemsName}>关联通道号</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={roadMsg && roadMsg.FLOW_DIRECTION} paramsname="channelNo" onChange={this.handleChannelNoChange} />
+                  <Input defaultValue={roadMsg && roadMsg.FLOW_DIRECTION} paramsname="laneOrder" onChange={this.handleChannelNoChange} />
                 </div>
               </div>
               <div className={styles.editContent}>
@@ -146,7 +203,7 @@ class RoadConfig extends React.PureComponent {
                   <Select defaultValue={roadMsg && roadMsg.LANE_TYPE} onChange={this.handleSaveParamsChange}>
                     {
                       roadTypeLists &&
-                      roadTypeLists.map(item => (<Option key={'类型' + item.C_CODE} value={item.C_CODE} paramsname="lampType">{item.CODE_NAME}</Option>))
+                      roadTypeLists.map(item => (<Option key={'类型' + item.C_CODE} value={item.C_CODE} paramsname="laneType">{item.CODE_NAME}</Option>))
                     }
                   </Select>
                 </div>
@@ -155,7 +212,7 @@ class RoadConfig extends React.PureComponent {
                   <Select defaultValue={roadMsg && roadMsg.LANE_TYPE} onChange={this.handleSaveParamsChange}>
                     {
                       dirForLane &&
-                      dirForLane.map(item => (<Option key={'车流' + item.C_CODE} value={item.C_CODE} paramsname="lampType">{item.CODE_NAME}</Option>))
+                      dirForLane.map(item => (<Option key={'车流' + item.C_CODE} value={item.C_CODE} paramsname="flowDirection">{item.CODE_NAME}</Option>))
                     }
                   </Select>
                 </div>
@@ -163,17 +220,17 @@ class RoadConfig extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>左转比例</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={roadMsg && roadMsg.LEFT_RATIO} paramsname="channelNo" onChange={this.handleChannelNoChange} />
+                  <Input defaultValue={roadMsg && roadMsg.LEFT_RATIO} paramsname="leftRatio" onChange={this.handleChannelNoChange} />
                 </div>
                 <div className={styles.editItemsName}>直行比例</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={roadMsg && roadMsg.STRAIGHT_RATIO} paramsname="channelNo" onChange={this.handleChannelNoChange} />
+                  <Input defaultValue={roadMsg && roadMsg.STRAIGHT_RATIO} paramsname="straightRatio" onChange={this.handleChannelNoChange} />
                 </div>
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>右转比例</div>
                 <div className={styles.editItems}>
-                  <Input defaultValue={roadMsg && roadMsg.RIGHT_RATIO} paramsname="channelNo" onChange={this.handleChannelNoChange} />
+                  <Input defaultValue={roadMsg && roadMsg.RIGHT_RATIO} paramsname="rightRatio" onChange={this.handleChannelNoChange} />
                 </div>
               </div>
               <div className={styles.editBtnBox}>
@@ -247,6 +304,7 @@ const mapDisPatchToProps = (dispatch) => {
     getDirectionForLane: bindActionCreators(getDirectionForLane, dispatch),
     getRoadTypeList: bindActionCreators(getRoadTypeList, dispatch),
     getDeleteRoad: bindActionCreators(getDeleteRoad, dispatch),
+    getSaveLaneInfo: bindActionCreators(getSaveLaneInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(RoadConfig)

@@ -46,6 +46,7 @@ import {
   API_DIRECTION_FORLANE,
   API_ROAD_TYPE,
   API_DELETE_ROAD,
+  API_SAVE_LANEINFO,
 
 } from '../constants/API'
 
@@ -439,6 +440,13 @@ export const getAddActions = (params) => {
 export const getDeleteRoad = (params) => {
   return async () => {
     const result = await RestUtil.post(`${API_DELETE_ROAD}${params}`)
+    return result
+  }
+}
+
+export const getSaveLaneInfo = (type, params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_SAVE_LANEINFO}?type=${type}`, params)
     return result
   }
 }

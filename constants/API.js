@@ -54,4 +54,5 @@ export const API_DIRECTION_LIST = '/atms/hisenseSignal/loadDirectionList'
 export const API_DIRECTION_FORLANE = '/atms/hisenseSignal/loadFlowDirectionListForLane'
 export const API_ROAD_TYPE = '/atms/hisenseSignal/loadLaneTypeList'
 export const API_DELETE_ROAD = '/atms/hisenseSignal/deleteLane'
+export const API_SAVE_LANEINFO = '/atms/hisenseSignal/saveLaneInfo'
 
