@@ -47,6 +47,7 @@ class RoadConfig extends React.PureComponent {
     this.setState({ directions })
     const result = directions.forEach(item => ({ id: item.C_CODE, name: item.CODE_NAME }))
     console.log(result, 'new array')
+    console.log(directions, 'default array')
   }
   getDirForLane = (dirForLane) => {
     this.setState({ dirForLane })
