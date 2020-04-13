@@ -47,6 +47,8 @@ import {
   API_ROAD_TYPE,
   API_DELETE_ROAD,
   API_SAVE_LANEINFO,
+  API_FLOW_PHASE,
+  API_DELETE_FLOWPHASE,
 
 } from '../constants/API'
 
@@ -451,6 +453,13 @@ export const getSaveLaneInfo = (type, params) => {
   }
 }
 
+export const getDeleteFlowPhase = (folowNo, interId) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_FLOWPHASE}?followNo=${folowNo}&unitId=${interId}`)
+    return result
+  }
+}
+
 export const getFlowDirections = (direction) => {
   return async (dispatch) => {
     try {
@@ -562,6 +571,21 @@ export const getRoadTypeList = () => {
       const result = await RestUtil.post(API_ROAD_TYPE)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_ROAD_TYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getFlowPhaseList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_FLOW_PHASE}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_FLOW_PHASE, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

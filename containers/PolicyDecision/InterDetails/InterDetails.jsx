@@ -10,6 +10,7 @@ import RoadConfig from './RoadConfig/RoadConfig'
 import ChannelConfig from './ChannelConfig/ChannelConfig'
 import BaseAction from './BaseAction/BaseAction'
 import StageConfig from './StageConfig/StageConfig'
+import FlowPhase from './FlowPhase/FlowPhase'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -42,7 +43,7 @@ class InterDetails extends React.PureComponent {
       { id: 2, name: '车道配置', configname: 'roadConfig' },
       { id: 3, name: '通道配置', configname: 'channelConfig' },
       { id: 4, name: '相位配置', configname: 'phaseConfig' },
-      { id: 5, name: '跟随相位配置' },
+      { id: 5, name: '跟随相位配置', configname: 'flowPhase' },
       { id: 6, name: '阶段配置', configname: 'stageConfig' },
       { id: 7, name: '配时方案配置', configname: 'timePlan' },
       { id: 8, name: '时基动作配置', configname: 'baseAction' },
@@ -422,6 +423,10 @@ class InterDetails extends React.PureComponent {
           {
             configPop === 'stageConfig' &&
             <StageConfig {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'flowPhase' &&
+            <FlowPhase {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >
