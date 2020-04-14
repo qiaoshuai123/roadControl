@@ -64,6 +64,16 @@ const InterDetails = Loadable({
   loading: Loading,
   delay: 0,
 })
+const InterManagement = Loadable({
+  loader: () => import('./containers/PolicyDecision/InterManagement/InterManagement'),
+  loading: Loading,
+  delay: 0,
+})
+const RegiolManagement = Loadable({
+  loader: () => import('./containers/PolicyDecision/RegiolManagement/RegiolManagement'),
+  loading: Loading,
+  delay: 0,
+})
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -77,6 +87,8 @@ const Parent = () => (
     <Route path="/secretTask" component={SecretTask} />
     <Route path="/areaOptimize" component={AreaOptimize} />
     <Route path="/interdetails/:id" component={InterDetails} />
+    <Route path="/InterManagement" component={InterManagement} />
+    <Route path="/RegiolManagement" component={RegiolManagement} />
   </React.Fragment>
 )
 reactDom.render(
