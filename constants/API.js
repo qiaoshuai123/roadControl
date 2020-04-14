@@ -57,4 +57,7 @@ export const API_DELETE_ROAD = '/atms/hisenseSignal/deleteLane'
 export const API_SAVE_LANEINFO = '/atms/hisenseSignal/saveLaneInfo'
 export const API_FLOW_PHASE = '/atms/hisenseSignal/loadFollowPhaseList'
 export const API_DELETE_FLOWPHASE = '/atms/hisenseSignal/deleteFollowPhase'
+export const API_PHASENO_LIST = '/atms/hisenseSignal/loadPhaseNoList'
+export const API_SAVE_FOLLOWPHASE = '/atms/hisenseSignal/saveFollowPhaseInfo'
+export const API_SCHEDULE_LIST = '/atms/hisenseSignal/loadScheduleList'
 

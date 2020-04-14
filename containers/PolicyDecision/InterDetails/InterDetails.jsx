@@ -11,6 +11,7 @@ import ChannelConfig from './ChannelConfig/ChannelConfig'
 import BaseAction from './BaseAction/BaseAction'
 import StageConfig from './StageConfig/StageConfig'
 import FlowPhase from './FlowPhase/FlowPhase'
+import Schedule from './Schedule/Schedule'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -48,7 +49,7 @@ class InterDetails extends React.PureComponent {
       { id: 7, name: '配时方案配置', configname: 'timePlan' },
       { id: 8, name: '时基动作配置', configname: 'baseAction' },
       { id: 9, name: '时段表配置', configname: 'timetable' },
-      { id: 10, name: '调度表配置' },
+      { id: 10, name: '调度表配置', configname: 'schedule' },
       { id: 11, name: '信号机控制', configname: 'singalConfig' },
       { id: 12, name: '故障日志' },
     ]
@@ -427,6 +428,10 @@ class InterDetails extends React.PureComponent {
           {
             configPop === 'flowPhase' &&
             <FlowPhase {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'schedule' &&
+            <Schedule {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >
