@@ -70,7 +70,6 @@ class InterManagement extends Component {
       this.infowindow += 1
       const el = document.createElement('div')
       el.id = 'marker'
-      // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
       el.style['background-color'] = '#ff0000'
       el.style['background-size'] = 'cover'
       el.style.width = '20px'

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Icon, Select, Checkbox } from 'antd'
 import styles from './Schedule.scss'
 
-import { getScheduleList } from '../../../../actions/interCofig'
+import { getScheduleList, getRimgIntervalList } from '../../../../actions/interCofig'
 
 class Schedule extends React.Component {
   constructor(props) {
@@ -12,6 +12,8 @@ class Schedule extends React.Component {
     this.state = {
       scheduleList: null,
       showEditBox: false,
+      timeIntervalList: null,
+      scheduleNoList: null,
     }
     this.monthPlan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     this.weekPlan = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
@@ -21,15 +23,28 @@ class Schedule extends React.Component {
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
     this.props.getScheduleList(this.InterId)
+    this.props.getRimgIntervalList(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { scheduleList } = this.props.data
+    const { scheduleList, timeIntervalList, scheduleNoList } = this.props.data
     if (prevState.data.scheduleList !== scheduleList) {
       this.getScheduleDetails(scheduleList)
+    }
+    if (prevState.data.timeIntervalList !== timeIntervalList) {
+      this.getTimeIntervalLists(timeIntervalList)
+    }
+    if (prevState.data.scheduleNoList !== scheduleNoList) {
+      this.getScheduleNoLists(scheduleNoList)
     }
   }
   getScheduleDetails = (scheduleList) => {
     this.setState({ scheduleList })
+  }
+  getTimeIntervalLists = (timeIntervalList) => {
+    this.setState({ timeIntervalList })
+  }
+  getScheduleNoLists = (scheduleNoList) => {
+    this.setState({ scheduleNoList })
   }
   // 编辑
   handleEditSchedule = () => {
@@ -40,7 +55,7 @@ class Schedule extends React.Component {
   }
   render() {
     const { Option } = Select
-    const { scheduleList, showEditBox } = this.state
+    const { scheduleList, showEditBox, timeIntervalList, scheduleNoList } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -55,19 +70,29 @@ class Schedule extends React.Component {
                 <div className={styles.editItemsName}>调度计划号</div>
                 <div className={styles.editItems}>
                   <Select defaultValue={251} onChange={this.handleChangeAction}>
-                    <Option key={251} value={251} pname="planNo">关灯控制</Option>
-                    <Option key={252} value={252} pname="planNo">全红控制</Option>
-                    <Option key={254} value={254} pname="planNo">感应控制</Option>
-                    <Option key={255} value={255} pname="planNo">闪光控制</Option>
+                    {
+                      scheduleNoList &&
+                      new Array(40).fill(true).map((item, index) => {
+                        if (scheduleNoList.indexOf(String(index + 1)) === -1) {
+                          return (
+                            <Option key={'调度' + index} value={index + 1} pname="planNo">{item + 1}</Option>
+                          )
+                        }
+                      })
+                    }
                   </Select>
                 </div>
                 <div className={styles.editItemsName}>时段表号</div>
                 <div className={styles.editItems}>
                   <Select defaultValue={251} onChange={this.handleChangeAction}>
-                    <Option key={251} value={251} pname="planNo">关灯控制</Option>
-                    <Option key={252} value={252} pname="planNo">全红控制</Option>
-                    <Option key={254} value={254} pname="planNo">感应控制</Option>
-                    <Option key={255} value={255} pname="planNo">闪光控制</Option>
+                    {
+                      timeIntervalList &&
+                      timeIntervalList.map((item) => {
+                        return (
+                          <Option key={'时段表' + item} value={item} pname="planNo">{item}</Option>
+                        )
+                      })
+                    }
                   </Select>
                 </div>
               </div>
@@ -177,6 +202,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getScheduleList: bindActionCreators(getScheduleList, dispatch),
+    getRimgIntervalList: bindActionCreators(getRimgIntervalList, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Schedule)

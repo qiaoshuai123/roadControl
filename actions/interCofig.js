@@ -53,6 +53,7 @@ import {
   API_SAVE_FOLLOWPHASE,
   API_SCHEDULE_LIST,
   API_TIMGINTERVAL_LIST,
+  API_SCHEDULENO_LIST,
 
 } from '../constants/API'
 
@@ -642,6 +643,21 @@ export const getRimgIntervalList = (interId) => {
       const result = await RestUtil.post(`${API_TIMGINTERVAL_LIST}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_TIMGINTERVAL_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getScheduleNoList = (id, interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_SCHEDULENO_LIST}?id=${id}&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_SCHEDULENO_LIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
