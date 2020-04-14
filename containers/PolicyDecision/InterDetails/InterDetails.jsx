@@ -9,6 +9,8 @@ import TimeTable from './TimeTable/TimeTable'
 import RoadConfig from './RoadConfig/RoadConfig'
 import ChannelConfig from './ChannelConfig/ChannelConfig'
 import BaseAction from './BaseAction/BaseAction'
+import StageConfig from './StageConfig/StageConfig'
+import FlowPhase from './FlowPhase/FlowPhase'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -41,8 +43,8 @@ class InterDetails extends React.PureComponent {
       { id: 2, name: '车道配置', configname: 'roadConfig' },
       { id: 3, name: '通道配置', configname: 'channelConfig' },
       { id: 4, name: '相位配置', configname: 'phaseConfig' },
-      { id: 5, name: '跟随相位配置' },
-      { id: 6, name: '阶段配置' },
+      { id: 5, name: '跟随相位配置', configname: 'flowPhase' },
+      { id: 6, name: '阶段配置', configname: 'stageConfig' },
       { id: 7, name: '配时方案配置', configname: 'timePlan' },
       { id: 8, name: '时基动作配置', configname: 'baseAction' },
       { id: 9, name: '时段表配置', configname: 'timetable' },
@@ -92,17 +94,19 @@ class InterDetails extends React.PureComponent {
   getPlanRunStage = (planStage) => {
     this.setState({ planRunStage: planStage }, () => {
       if (planStage.length > 0) {
+        const stageAll = planStage.map(item => item.STAGE_TIME)
+        this.cycleTime = stageAll.reduce(this.getSum)
         const presentStage = (planStage.filter(item => item.STAGE_ID === item.STAGE_CODE))[0]
         if (presentStage) {
-          const { GREEN, ALLRED, YELLOW, stageAllIn, STAGE_TIME, CYCLELEN, COORDSYNCSTATUS } = presentStage
-          this.cycleTime = CYCLELEN
-          this.unitPx = 960 / CYCLELEN
+          const { ALLRED, YELLOW, stageAllIn, COORDSYNCSTATUS } = presentStage
           const residue = stageAllIn - COORDSYNCSTATUS // 当前阶段剩余的时间
           const presentResidue = residue > ALLRED + YELLOW ? residue - (ALLRED + YELLOW) :
             residue > YELLOW && residue <= YELLOW + ALLRED ? residue - YELLOW : residue
           const presentColor = residue > ALLRED + YELLOW ? '#008001' :
             residue > YELLOW && residue <= YELLOW + ALLRED ? '#ff0000' : 'yellow'
-          this.setState({ presentResidue, presentColor, presentTime: COORDSYNCSTATUS })
+          this.setState({ presentResidue, presentColor, presentTime: COORDSYNCSTATUS }, () => {
+            this.unitPx = 960 / this.cycleTime
+          })
         }
       }
     })
@@ -116,11 +120,13 @@ class InterDetails extends React.PureComponent {
       systemTime: monitorInfo.SINGE_SYSTEM_TIME,
       stageCode: monitorInfo.STAGE_CODE,
     })
-    this.cycleTime = monitorInfo.PATTERNCYCLETIME
   }
   // 信号机控制
   getSingalControler = (singalControler) => {
     this.setState({ singalControler })
+  }
+  getSum = (total, num) => {
+    return total + num
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -413,6 +419,14 @@ class InterDetails extends React.PureComponent {
           {
             configPop === 'baseAction' &&
             <BaseAction {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'stageConfig' &&
+            <StageConfig {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'flowPhase' &&
+            <FlowPhase {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >

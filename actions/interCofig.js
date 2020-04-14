@@ -38,6 +38,17 @@ import {
   API_SAVE_TIMINGPLAN,
   API_ADD_TIMINGPLAN,
   API_DELETE_TIMINGPLAN,
+  API_DELETE_BASEACTION,
+  API_ACTION_NO,
+  API_PLAN_NOLIST,
+  API_ADD_ACTION,
+  API_DIRECTION_LIST,
+  API_DIRECTION_FORLANE,
+  API_ROAD_TYPE,
+  API_DELETE_ROAD,
+  API_SAVE_LANEINFO,
+  API_FLOW_PHASE,
+  API_DELETE_FLOWPHASE,
 
 } from '../constants/API'
 
@@ -414,6 +425,41 @@ export const getDeleteTimingPlan = (planNo, interId) => {
   }
 }
 
+export const getDeleteBaseAction = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_BASEACTION}?id=${id}`)
+    return result
+  }
+}
+
+export const getAddActions = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_ADD_ACTION, params)
+    return result
+  }
+}
+
+export const getDeleteRoad = (params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_ROAD}${params}`)
+    return result
+  }
+}
+
+export const getSaveLaneInfo = (type, params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_SAVE_LANEINFO}?type=${type}`, params)
+    return result
+  }
+}
+
+export const getDeleteFlowPhase = (folowNo, interId) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_FLOWPHASE}?followNo=${folowNo}&unitId=${interId}`)
+    return result
+  }
+}
+
 export const getFlowDirections = (direction) => {
   return async (dispatch) => {
     try {
@@ -450,6 +496,96 @@ export const getAddTimingPlan = (interId) => {
       const result = await RestUtil.get(`${API_ADD_TIMINGPLAN}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_ADD_TIMINGPLAN, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getActionNoList = (id, interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_ACTION_NO}?id=${id}&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_ACTION_NO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getPlanNoList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PLAN_NOLIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PLAN_NOLIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDirectionList = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_DIRECTION_LIST)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_DIRECTION_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getDirectionForLane = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_DIRECTION_FORLANE)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_DIRECTION_FORLANE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getRoadTypeList = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(API_ROAD_TYPE)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_ROAD_TYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getFlowPhaseList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_FLOW_PHASE}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_FLOW_PHASE, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

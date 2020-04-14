@@ -2,11 +2,11 @@ import React from 'react'
 import { Icon, Select, Input, Modal, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import styles from './RoadConfig.scss'
+import styles from './StageConfig.scss'
 
 import { getRoadLists, getDirectionList, getDirectionForLane, getRoadTypeList, getDeleteRoad, getSaveLaneInfo } from '../../../../actions/interCofig'
 
-class RoadConfig extends React.PureComponent {
+class StageConfig extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -199,7 +199,7 @@ class RoadConfig extends React.PureComponent {
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>车道类型</div>
                 <div className={styles.editItems}>
-                  
+
                   <Select defaultValue={roadMsg && roadMsg.LANE_TYPE} onChange={this.handleSaveParamsChange}>
                     {
                       roadTypeLists &&
@@ -251,15 +251,11 @@ class RoadConfig extends React.PureComponent {
         </div>
         <div className={styles.phaseConfigBox_box}>
           <div className={styles.mountingThead}>
-            <div className={styles.mountingTh}>车道方向</div>
-            <div className={styles.mountingTh}>进出口</div>
-            <div className={styles.mountingTh}>车道序号</div>
-            <div className={styles.mountingTh}>车道类型</div>
-            <div className={styles.mountingTh}>车道车流</div>
-            <div className={styles.mountingTh}>左转比例</div>
-            <div className={styles.mountingTh}>直行比例</div>
-            <div className={styles.mountingTh}>右转比例</div>
-            <div className={styles.mountingTh}>关联通道号</div>
+            <div className={styles.mountingTh}>阶段编号</div>
+            <div className={styles.mountingTh}>阶段名称</div>
+            <div className={styles.mountingTh}>关联相位</div>
+            <div className={styles.mountingTh}>阶段图示</div>
+            <div className={styles.mountingTh}>关联信号系统阶段号</div>
             <div className={styles.mountingTh}>操作</div>
           </div>
           <div className={styles.mountingTbody}>
@@ -273,10 +269,6 @@ class RoadConfig extends React.PureComponent {
                     <div className={styles.mountingTd}>{item.LANE_ORDER}</div>
                     <div className={styles.mountingTd}>{item.LANE_TYPE_NAME}</div>
                     <div className={styles.mountingTd}>{item.CHANNEL_NO}</div>
-                    <div className={styles.mountingTd}>{item.LEFT_RATIO}</div>
-                    <div className={styles.mountingTd}>{item.STRAIGHT_RATIO}</div>
-                    <div className={styles.mountingTd}>{item.RIGHT_RATIO}</div>
-                    <div className={styles.mountingTd}>{item.FLOW_DIRECTION_NAME}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditRoad(item) }}>修改</span></div>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleDeleteRoad(item) }}>删除</span></div>
@@ -307,4 +299,4 @@ const mapDisPatchToProps = (dispatch) => {
     getSaveLaneInfo: bindActionCreators(getSaveLaneInfo, dispatch),
   }
 }
-export default connect(mapStateToProps, mapDisPatchToProps)(RoadConfig)
+export default connect(mapStateToProps, mapDisPatchToProps)(StageConfig)
