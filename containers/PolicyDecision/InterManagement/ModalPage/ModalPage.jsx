@@ -293,9 +293,9 @@ class ModalPage extends React.Component {
                       <div>
                         <Select
                           showSearch
+                          optionFilterProp="children"
                           style={{ width: '100%' }}
                           onSearch={this.SearchList}
-                          optionFilterProp="children"
                           // optionFilterProp="children"
                           onChange={e => this.FlowIntersections(e, index)}
                         >

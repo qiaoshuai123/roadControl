@@ -1,5 +1,8 @@
 import React from 'react'
 import { Input, Select } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { } from '../../../../actions/management'
 import styles from './ModalPage.scss'
 
 class ModalPage extends React.Component {
@@ -60,26 +63,36 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTd}><div><span>*</span>管理单位</div><div><Input name="EquipmentModel" onChange={this.changValue} value={EquipmentModel} /></div></div>
               <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="CorrelationNumber" onChange={this.changValue} value={CorrelationNumber} /></div></div>
             </div>
-            <div className={styles.mountingTr}>
+            <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
               <div className={styles.mountingTd}>
-                <div>指北针偏转角度</div>
-                <div className={styles.angle}>
+                <div><span>*</span>选择路口</div>
+                <div>
                   <Select
                     mode="multiple"
+                    showSearch
+                    optionFilterProp="children"
                     style={{ width: '100%' }}
                     value={dateListValues}
-                    placeholder="Please select"
+                    placeholder="请选择路口"
                     // defaultValue={['a10', 'c12']}
                     onChange={this.handleChange}
                   >
                     <Option key="选择1">选择1</Option>
                     <Option key="选择2">选择2</Option>
                     <Option key="选择3">选择3</Option>
+                    <Option key="选择7">选择7</Option>
+                    <Option key="选择6">选择6</Option>
+                    <Option key="选择5">选择5</Option>
+                    <Option key="选择4">选择4</Option>
+                    <Option key="选择8">选择8</Option>
+                    <Option key="选择9">选择9</Option>
                   </Select>
                 </div>
               </div>
-              <div className={styles.fontstyle}>
-                <span onClick={this.addList}>添加方向</span>
+              <div className={styles.mountingTd}>
+                <div className={styles.fontstyle}>
+                  <li> <b onClick={this.addList}>添加方向</b></li>
+                </div>
               </div>
             </div>
             <div className={styles.mountingTr}>
@@ -109,4 +122,14 @@ class ModalPage extends React.Component {
   }
 }
 
-export default ModalPage
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    // getInterList: bindActionCreators(getInterList, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(ModalPage)
