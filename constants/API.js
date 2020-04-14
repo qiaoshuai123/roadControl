@@ -60,4 +60,5 @@ export const API_DELETE_FLOWPHASE = '/atms/hisenseSignal/deleteFollowPhase'
 export const API_PHASENO_LIST = '/atms/hisenseSignal/loadPhaseNoList'
 export const API_SAVE_FOLLOWPHASE = '/atms/hisenseSignal/saveFollowPhaseInfo'
 export const API_SCHEDULE_LIST = '/atms/hisenseSignal/loadScheduleList'
+export const API_TIMGINTERVAL_LIST = '/atms/hisenseSignal/loadTimeintervalNoList'
 
