@@ -49,6 +49,9 @@ import {
   API_SAVE_LANEINFO,
   API_FLOW_PHASE,
   API_DELETE_FLOWPHASE,
+  API_PHASENO_LIST,
+  API_SAVE_FOLLOWPHASE,
+  API_SCHEDULE_LIST,
 
 } from '../constants/API'
 
@@ -460,6 +463,13 @@ export const getDeleteFlowPhase = (folowNo, interId) => {
   }
 }
 
+export const getSaveFollowPhase = (type, params) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_SAVE_FOLLOWPHASE}?type=${type}`, params)
+    return result
+  }
+}
+
 export const getFlowDirections = (direction) => {
   return async (dispatch) => {
     try {
@@ -586,6 +596,36 @@ export const getFlowPhaseList = (interId) => {
       const result = await RestUtil.post(`${API_FLOW_PHASE}?unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_FLOW_PHASE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getPhaseNoList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_PHASENO_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PHASENO_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getScheduleList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_SCHEDULE_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_SCHEDULE_LIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

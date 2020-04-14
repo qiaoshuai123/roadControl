@@ -74,6 +74,10 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { roadTypeList: payload })
     case types.GET_FLOW_PHASE:
       return Object.assign({}, state, { flowPhase: payload })
+    case types.GET_PHASENO_LIST:
+      return Object.assign({}, state, { phaseNoList: payload })
+    case types.GET_SCHEDULE_LIST:
+      return Object.assign({}, state, { scheduleList: payload })
     default:
       return state
   }

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Icon, Input, Select, Modal, message } from 'antd'
+import { Icon, Input, Select, Modal, message, Checkbox } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './FlowPhase.scss'
 
-import { getFlowPhaseList, getDeleteFlowPhase } from '../../../../actions/interCofig'
+import { getFlowPhaseList, getDeleteFlowPhase, getPhaseNoList, getSaveFollowPhase } from '../../../../actions/interCofig'
 
 class FlowPhase extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class FlowPhase extends React.Component {
       flowPhaseList: null,
       showEditTiming: false,
       followPhaseMsg: null,
+      phaseLists: null,
     }
     this.saveParams = {
       clearMode: 0,
@@ -25,23 +26,43 @@ class FlowPhase extends React.Component {
       unitId: 0,
       yellowTime: 0,
     }
+    this.coordPhases = []
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
     this.props.getFlowPhaseList(this.InterId)
+    this.props.getPhaseNoList(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { flowPhase } = this.props.data
+    const { flowPhase, phaseNoList } = this.props.data
     if (prevState.data.flowPhase !== flowPhase) {
       this.getFlowPhase(flowPhase)
+    }
+    if (prevState.data.phaseNoList !== phaseNoList) {
+      this.getPhaseList(phaseNoList)
     }
   }
   getFlowPhase = (flowPhase) => {
     this.setState({ flowPhaseList: flowPhase })
   }
+  getPhaseList = (phaseLists) => {
+    this.setState({ phaseLists })
+  }
   handleEditFlowPhase = (flowPhaseMsg) => {
     console.log(flowPhaseMsg)
-
+    this.saveParams = {
+      clearMode: flowPhaseMsg.CLEAR_MODE,
+      clearTime: flowPhaseMsg.CLEAR_TIME,
+      correctPhaseNos: flowPhaseMsg.CORRECT_PHASE_NO_LIST,
+      followNo: flowPhaseMsg.FOLLOW_NO,
+      id: flowPhaseMsg.FOLLOW_NO,
+      parentPhaseNos: flowPhaseMsg.PARENT_PHASE_NO_LIST,
+      redTime: flowPhaseMsg.RED_TIME,
+      unitId: flowPhaseMsg.UNIT_ID,
+      yellowTime: flowPhaseMsg.YELLOW_TIME,
+    }
+    this.saveType = 2
+    this.coordPhases = flowPhaseMsg.PARENT_PHASE_NO_LIST ? flowPhaseMsg.PARENT_PHASE_NO_LIST.split(',') : []
     this.setState({ showEditTiming: true, followPhaseMsg: flowPhaseMsg })
   }
   handleDeleteFollowPhase = (e) => {
@@ -61,12 +82,50 @@ class FlowPhase extends React.Component {
       },
     })
   }
+  handleCloseEdit = () => {
+    this.setState({ showEditTiming: false })
+  }
+  handleEditChange = (e) => {
+    const pName = e.target.getAttribute('pname')
+    this.saveParams[pName] = e.target.value
+  }
+  handlePhaseChange = (e) => {
+    const { id } = e.target
+    const isChecked = e.target.checked
+    if (isChecked) {
+      this.coordPhases.push(id)
+    } else {
+      const index = this.coordPhases.indexOf(id)
+      this.coordPhases.splice(index, 1)
+    }
+  }
+  handleSaveFollowPhase = () => {
+    this.saveParams.parentPhaseNos = this.coordPhases.join(',')
+    this.props.getSaveFollowPhase(this.saveType, this.saveParams).then((res) => {
+      console.log(res)
+    })
+  }
+  handleAddFollowPhase = () => {
+    this.saveType = 1
+    this.saveParams.id = 0
+    this.coordPhases = []
+    const flowPhaseMsg = {
+      CLEAR_MODE: 0,
+      CLEAR_TIME: null,
+      CORRECT_PHASE_NO_LIST: null,
+      FOLLOW_NO: 1,
+      PARENT_PHASE_NO_LIST: null,
+      RED_TIME: 0,
+      YELLOW_TIME: 0,
+    }
+    this.setState({ followPhaseMsg: flowPhaseMsg, showEditTiming: true })
+  }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
     const { Option } = Select
-    const { flowPhaseList, showEditTiming, followPhaseMsg } = this.state
+    const { flowPhaseList, showEditTiming, followPhaseMsg, phaseLists } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -113,22 +172,22 @@ class FlowPhase extends React.Component {
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>协调相位</div>
-                <div className={styles.editItems}>
-                  {/* {
-                    phaseNoList &&
-                    phaseNoList.map((item, index) => {
+                <div className={styles.editItems} style={{ height: '85px', overflowY: 'auto' }}>
+                  {
+                    phaseLists &&
+                    phaseLists.map((item, index) => {
                       return (
                         <span className={styles.phaseSelBox} key={item + index}>
                           <Checkbox id={item} onChange={this.handlePhaseChange} defaultChecked={this.coordPhases.indexOf(item) >= 0}>相位{item}</Checkbox>
                         </span>
                       )
                     })
-                  } */}
+                  }
                 </div>
               </div>
               <div className={styles.editBtnBox}>
                 <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
-                <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
+                <div className={styles.editBtn} onClick={this.handleSaveFollowPhase}>确定</div>
               </div>
             </div>
           </div>
@@ -138,7 +197,7 @@ class FlowPhase extends React.Component {
           <div className={styles.phaseConfigBoxTop_right} onClick={this.closeConfigPop}><Icon type="close" /></div>
         </div>
         <div className={styles.phaseConfigBox_center}>
-          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddRoad}>添加</div>
+          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddFollowPhase}>添加</div>
           <div className={styles.phaseConfigBoxCenter_left}>上载</div>
           <div className={styles.phaseConfigBoxCenter_left}>下发</div>
         </div>
@@ -157,7 +216,7 @@ class FlowPhase extends React.Component {
             {
               flowPhaseList &&
               flowPhaseList.map((item) => {
-                const correctPhase = item.PARENT_PHASE_NO_LIST ? (item.PARENT_PHASE_NO_LIST.split(',')).map(phase => `相位${phase}`) : ''
+                const correctPhase = item.PARENT_PHASE_NO_LIST ? (item.PARENT_PHASE_NO_LIST.split(',')).map(phase => `相位${phase}`) : null
                 const clearMode = item.CLEAR_MODE === 0 ? '绿闪' : item.CLEAR_MODE === 1 ? '红闪' : '黄闪'
                 return (
                   <div className={styles.mountingTr} key={item.FOLLOW_NO + item.UNIT_ID}>
@@ -167,7 +226,7 @@ class FlowPhase extends React.Component {
                     <div className={styles.mountingTd}>{item.RED_TIME}</div>
                     <div className={styles.mountingTd}>{item.CLEAR_TIME}</div>
                     <div className={styles.mountingTd}>{`相位${item.FOLLOW_NO}`}</div>
-                    <div className={styles.mountingTd} style={{ flex: 1.3 }}>{correctPhase.join(',')}</div>
+                    <div className={styles.mountingTd} style={{ flex: 1.3 }}>{correctPhase && correctPhase.join(',')}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditFlowPhase(item) }}>修改</span></div>
                       <div className={styles.deviceMsg}><span followno={item.FOLLOW_NO} onClick={this.handleDeleteFollowPhase}>删除</span></div>
@@ -192,6 +251,8 @@ const mapDisPatchToProps = (dispatch) => {
   return {
     getFlowPhaseList: bindActionCreators(getFlowPhaseList, dispatch),
     getDeleteFlowPhase: bindActionCreators(getDeleteFlowPhase, dispatch),
+    getPhaseNoList: bindActionCreators(getPhaseNoList, dispatch),
+    getSaveFollowPhase: bindActionCreators(getSaveFollowPhase, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(FlowPhase)
