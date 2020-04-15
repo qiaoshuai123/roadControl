@@ -52,6 +52,10 @@ import {
   API_PHASENO_LIST,
   API_SAVE_FOLLOWPHASE,
   API_SCHEDULE_LIST,
+  API_TIMGINTERVAL_LIST,
+  API_SCHEDULENO_LIST,
+  API_SAVE_SCHEDULEINFO,
+  API_DELETE_SCHEDULE,
 
 } from '../constants/API'
 
@@ -632,6 +636,50 @@ export const getScheduleList = (interId) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const getRimgIntervalList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_TIMGINTERVAL_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_TIMGINTERVAL_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getScheduleNoList = (id, interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_SCHEDULENO_LIST}?id=${id}&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_SCHEDULENO_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getSaveScheduleInfo = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_SAVE_SCHEDULEINFO, params)
+    return result
+  }
+}
+
+export const getDeleteScheduleInfo = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_SCHEDULE}?id=${id}`)
+    return result
   }
 }
 

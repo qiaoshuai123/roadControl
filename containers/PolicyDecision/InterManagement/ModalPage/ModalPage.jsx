@@ -52,34 +52,16 @@ class ModalPage extends React.Component {
     return {
       id: num,
       InterDirection: [
-        {
-          id: 1,
-          name: '北',
-        },
-        {
-          id: 2,
-          name: '东北',
-        },
+        { id: 1, name: '北' },
+        { id: 2, name: '东北' },
       ],
       FlowInter: [
-        {
-          id: 1,
-          name: '北大华西',
-        },
-        {
-          id: 2,
-          name: '人民解放',
-        },
+        { id: 1, name: '北大华西' },
+        { id: 2, name: '人民解放' },
       ],
       DirDirection: [
-        {
-          id: 1,
-          name: '北大华西',
-        },
-        {
-          id: 2,
-          name: '人民解放',
-        },
+        { id: 1, name: '北大华西' },
+        { id: 2, name: '人民解放' },
       ],
     }
   }
