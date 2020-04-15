@@ -13,7 +13,7 @@ class RegiolManagement extends Component {
       interMonitorLeft: 15,
       isIntersection: true,
       visible: false,
-      isModalPage: true,
+      isModalPage: false,
       visibleTop: 0,
       visibleLeft: 0,
     }

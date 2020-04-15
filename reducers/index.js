@@ -6,12 +6,12 @@ import { combineReducers } from 'redux'
 
 import data from './data'
 import interConfig from './interConfig'
-import management from './management'
+import managements from './managements'
 
 const rootReducer = combineReducers({
+  managements,
   data,
   interConfig,
-  management,
 })
 
 export default rootReducer

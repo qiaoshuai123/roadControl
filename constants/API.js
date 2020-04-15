@@ -60,4 +60,8 @@ export const API_DELETE_FLOWPHASE = '/atms/hisenseSignal/deleteFollowPhase'
 export const API_PHASENO_LIST = '/atms/hisenseSignal/loadPhaseNoList'
 export const API_SAVE_FOLLOWPHASE = '/atms/hisenseSignal/saveFollowPhaseInfo'
 export const API_SCHEDULE_LIST = '/atms/hisenseSignal/loadScheduleList'
+export const API_LOADMANAGEMENT = '/atms/unitManagement/loadManageMent' // 区域管理选择路口
+export const API_VALIDATE = '/atms/districtManagement/validate' // 区域管理验证区域是否存在
+export const API_LOADUNITNAME = '/atms/districtManagement/loadUnitName' // 区域管理管理单位
+export const API_SAVEORUPDATEFORM = '/atms/districtManagement/saveOrUpdateForm' // 区域管理区域信息提交
 
