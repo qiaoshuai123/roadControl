@@ -138,6 +138,32 @@ class Schedule extends React.Component {
       },
     })
   }
+  calculateArrange = (source) => {
+    let t
+    let ta = []
+    const r = []
+    const orderArr = []
+    const sortSource = source.split(',').map(item => Number(item)).sort((a, b) => a - b)
+    sortSource.forEach((v) => {
+      if (t === Number(v)) {
+        ta.push(t)
+        t += 1
+        return
+      }
+
+      ta = [v]
+      t = Number(v) + 1
+      r.push(ta)
+    })
+    r.forEach((item) => {
+      if (item.length >= 3) {
+        orderArr.push(`${item[0]}-${item[item.length - 1]}`)
+      } else {
+        orderArr.push(item.join(','))
+      }
+    })
+    return orderArr.join(',')
+  }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
@@ -258,16 +284,16 @@ class Schedule extends React.Component {
             {
               scheduleList &&
               scheduleList.map((item) => {
-                const day = item.SCHEDULEDAY.length > 0 && item.SCHEDULEDAY.split(',').length > 3 ? `${item.SCHEDULEDAY.split(',')[0]} - ${item.SCHEDULEDAY.split(',')[item.SCHEDULEDAY.split(',').length - 1]}` : item.SCHEDULEDAY
-                const month = item.SCHEDULEMONTH.length > 0 && item.SCHEDULEMONTH.split(',').length > 3 ? `${item.SCHEDULEMONTH.split(',')[0]} - ${item.SCHEDULEMONTH.split(',')[item.SCHEDULEMONTH.split(',').length - 1]}` : item.SCHEDULEMONTH
-                const week = item.SCHEDULEWEEK.length > 0 ? ((item.SCHEDULEWEEK.split(',')).map(item => item === '1' ? '日' : item - 1)).join(',') : item.SCHEDULEWEEK
+                const day = item.SCHEDULEDAY.length > 0 ? this.calculateArrange(item.SCHEDULEDAY) : ''
+                const month = item.SCHEDULEMONTH.length > 0 ? this.calculateArrange(item.SCHEDULEMONTH) : ''
+                const week = item.SCHEDULEWEEK.length > 0 ? this.calculateArrange(item.SCHEDULEWEEK) : ''
                 const weekDays = week.length > 0 && week.split(',').length > 3 ? `${week.substr(0, 1)} - ${week.substr(-1)}` : week
                 return (
                   <div className={styles.mountingTr} key={item.ID}>
                     <div className={styles.mountingTd}>{item.SCHEDULENO}</div>
                     <div className={styles.mountingTd}>{`月份：${month}`}</div>
                     <div className={styles.mountingTd}>{`日期：${day}`}</div>
-                    <div className={styles.mountingTd}>{`星期：${weekDays}`}</div>
+                    <div className={styles.mountingTd}>{`星期：${weekDays.replace('7', '日')}`}</div>
                     <div className={styles.mountingTd}>{item.TIME_INTERVAL_NO}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditSchedule(item) }}>修改</span></div>
