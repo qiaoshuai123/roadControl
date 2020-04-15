@@ -54,6 +54,8 @@ import {
   API_SCHEDULE_LIST,
   API_TIMGINTERVAL_LIST,
   API_SCHEDULENO_LIST,
+  API_SAVE_SCHEDULEINFO,
+  API_DELETE_SCHEDULE,
 
 } from '../constants/API'
 
@@ -664,6 +666,20 @@ export const getScheduleNoList = (id, interId) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const getSaveScheduleInfo = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_SAVE_SCHEDULEINFO, params)
+    return result
+  }
+}
+
+export const getDeleteScheduleInfo = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_DELETE_SCHEDULE}?id=${id}`)
+    return result
   }
 }
 

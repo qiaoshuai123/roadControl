@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Select, Checkbox } from 'antd'
+import { Icon, Select, Checkbox, message, Modal } from 'antd'
 import styles from './Schedule.scss'
 
-import { getScheduleList, getRimgIntervalList } from '../../../../actions/interCofig'
+import { getScheduleList, getRimgIntervalList, getScheduleNoList, getSaveScheduleInfo, getDeleteScheduleInfo } from '../../../../actions/interCofig'
 
 class Schedule extends React.Component {
   constructor(props) {
@@ -14,11 +14,29 @@ class Schedule extends React.Component {
       showEditBox: false,
       timeIntervalList: null,
       scheduleNoList: null,
+      scheduleMsg: null,
     }
     this.monthPlan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    this.weekPlan = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
     this.dayPlan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
     this.coordPhases = []
+    this.weekPlan = [
+      { week: '星期日', weekId: 1 },
+      { week: '星期一', weekId: 2 },
+      { week: '星期二', weekId: 3 },
+      { week: '星期三', weekId: 4 },
+      { week: '星期四', weekId: 5 },
+      { week: '星期五', weekId: 6 },
+      { week: '星期六', weekId: 7 },
+    ]
+    this.saveParams = {
+      id: 0,
+      scheduleDay: 1,
+      scheduleMonth: 1,
+      scheduleNo: 0,
+      scheduleWeek: 1,
+      timeintervalNo: 0,
+      unitId: 0,
+    }
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -47,15 +65,85 @@ class Schedule extends React.Component {
     this.setState({ scheduleNoList })
   }
   // 编辑
-  handleEditSchedule = () => {
-    this.setState({ showEditBox: true })
+  handleEditSchedule = (scheduleItem) => {
+    console.log(scheduleItem)
+    this.saveParams = {
+      id: scheduleItem.ID,
+      scheduleDay: scheduleItem.SCHEDULEDAY,
+      scheduleMonth: scheduleItem.SCHEDULEMONTH,
+      scheduleNo: scheduleItem.SCHEDULENO,
+      scheduleWeek: scheduleItem.SCHEDULEWEEK,
+      timeintervalNo: scheduleItem.TIME_INTERVAL_NO,
+      unitId: this.InterId,
+    }
+    this.setState({ showEditBox: true, scheduleMsg: scheduleItem })
+    this.props.getScheduleNoList(scheduleItem.ID, this.InterId)
+  }
+  handleCloseEdit = () => {
+    this.setState({ showEditBox: false })
+  }
+  handleChangeSchedulePlan = (e) => {
+    console.log(e)
+    const { id, pname, checked } = e.target
+    const planArr = this.saveParams[pname].length > 0 ? this.saveParams[pname].split(',') : []
+    const indexs = planArr.indexOf(String(id))
+    if (checked) {
+      planArr.push(id)
+    } else {
+      planArr.splice(indexs, 1)
+    }
+    this.saveParams[pname] = planArr.join(',')
+  }
+  handleAddSchedule = () => {
+    this.saveParams = {
+      id: 0,
+      scheduleDay: '',
+      scheduleMonth: '',
+      scheduleNo: 1,
+      scheduleWeek: '',
+      timeintervalNo: 1,
+      unitId: this.InterId,
+    }
+    const scheduleMsg = {
+      SCHEDULEDAY: '',
+      SCHEDULEMONTH: '',
+      SCHEDULEWEEK: '',
+      SCHEDULENO: 1,
+      TIME_INTERVAL_NO: 1,
+    }
+    this.setState({ scheduleMsg, showEditBox: true })
+  }
+  handleSaveSchedule = () => {
+    this.props.getSaveScheduleInfo(this.saveParams).then((res) => {
+      if (res.data.code === 200) {
+        this.props.getScheduleList(this.InterId)
+        this.setState({ showEditBox: false })
+      }
+      message.info(res.data.message)
+    })
+  }
+  handleDeleteSchedule = (id) => {
+    const { confirm } = Modal
+    const selfThis = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        selfThis.props.getDeleteScheduleInfo(id).then((res) => {
+          if (res.data.code === 200) {
+            selfThis.props.getScheduleList(selfThis.InterId)
+          }
+          message.info(res.data.message)
+        })
+      },
+    })
   }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
     const { Option } = Select
-    const { scheduleList, showEditBox, timeIntervalList, scheduleNoList } = this.state
+    const { scheduleList, showEditBox, timeIntervalList, scheduleNoList, scheduleMsg } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -69,13 +157,13 @@ class Schedule extends React.Component {
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>调度计划号</div>
                 <div className={styles.editItems}>
-                  <Select defaultValue={251} onChange={this.handleChangeAction}>
+                  <Select defaultValue={scheduleMsg && scheduleMsg.SCHEDULENO} onChange={this.handleChangeScheduleNo}>
                     {
                       scheduleNoList &&
                       new Array(40).fill(true).map((item, index) => {
                         if (scheduleNoList.indexOf(String(index + 1)) === -1) {
                           return (
-                            <Option key={'调度' + index} value={index + 1} pname="planNo">{item + 1}</Option>
+                            <Option key={`${index + 1}`} value={index + 1} pname="scheduleNo">{index + 1}</Option>
                           )
                         }
                       })
@@ -84,12 +172,12 @@ class Schedule extends React.Component {
                 </div>
                 <div className={styles.editItemsName}>时段表号</div>
                 <div className={styles.editItems}>
-                  <Select defaultValue={251} onChange={this.handleChangeAction}>
+                  <Select defaultValue={scheduleMsg && scheduleMsg.TIME_INTERVAL_NO} onChange={this.handleChangeScheduleNo}>
                     {
                       timeIntervalList &&
                       timeIntervalList.map((item) => {
                         return (
-                          <Option key={'时段表' + item} value={item} pname="planNo">{item}</Option>
+                          <Option key={'时段表' + item} value={`${item}`} pname="timeintervalNo">{item}</Option>
                         )
                       })
                     }
@@ -101,9 +189,10 @@ class Schedule extends React.Component {
                 <div className={styles.editItems} style={{ maxHeight: '85px', overflowY: 'auto', overflowX: 'hidden' }}>
                   {
                     this.monthPlan.map((item) => {
+                      const defaultMonth = scheduleMsg && scheduleMsg.SCHEDULEMONTH.split(',')
                       return (
                         <span className={styles.phaseSelBox} key={item + '月'} style={{ width: '60px' }}>
-                          <Checkbox id={item} onChange={this.handlePhaseChange} defaultChecked={this.coordPhases.indexOf(item) >= 0}>{item}</Checkbox>
+                          <Checkbox id={`${item}`} pname="scheduleMonth" onChange={this.handleChangeSchedulePlan} defaultChecked={defaultMonth.indexOf(String(item)) >= 0}>{item}</Checkbox>
                         </span>
                       )
                     })
@@ -115,9 +204,10 @@ class Schedule extends React.Component {
                 <div className={styles.editItems} style={{ maxHeight: '85px', overflowY: 'auto', overflowX: 'hidden' }}>
                   {
                     this.dayPlan.map((item) => {
+                      const defaultDay = scheduleMsg && scheduleMsg.SCHEDULEDAY.split(',')
                       return (
                         <span className={styles.phaseSelBox} key={'日' + item} style={{ width: '60px' }}>
-                          <Checkbox id={item} onChange={this.handlePhaseChange} defaultChecked={this.coordPhases.indexOf(item) >= 0}>{item}</Checkbox>
+                          <Checkbox id={`${item}`} pname="scheduleDay" onChange={this.handleChangeSchedulePlan} defaultChecked={defaultDay.indexOf(String(item)) >= 0}>{item}</Checkbox>
                         </span>
                       )
                     })
@@ -129,9 +219,10 @@ class Schedule extends React.Component {
                 <div className={styles.editItems}>
                   {
                     this.weekPlan.map((item) => {
+                      const defaultWeek = scheduleMsg && scheduleMsg.SCHEDULEWEEK.split(',')
                       return (
-                        <span className={styles.phaseSelBox} key={item} style={{ width: '100px' }}>
-                          <Checkbox id={item} onChange={this.handlePhaseChange} defaultChecked={this.coordPhases.indexOf(item) >= 0}>{item}</Checkbox>
+                        <span className={styles.phaseSelBox} key={item.week} style={{ width: '100px' }}>
+                          <Checkbox id={`${item.weekId}`} pname="scheduleWeek" onChange={this.handleChangeSchedulePlan} defaultChecked={defaultWeek.indexOf(String(item.weekId)) >= 0}>{item.week}</Checkbox>
                         </span>
                       )
                     })
@@ -140,7 +231,7 @@ class Schedule extends React.Component {
               </div>
               <div className={styles.editBtnBox}>
                 <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
-                <div className={styles.editBtn} onClick={this.handleSaveActions}>确定</div>
+                <div className={styles.editBtn} onClick={this.handleSaveSchedule}>确定</div>
               </div>
             </div>
           </div>
@@ -150,7 +241,7 @@ class Schedule extends React.Component {
           <div className={styles.phaseConfigBoxTop_right} onClick={this.closeConfigPop}><Icon type="close" /></div>
         </div>
         <div className={styles.phaseConfigBox_center}>
-          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddFollowPhase}>添加</div>
+          <div onChange={this.PhaseAdd} className={styles.phaseConfigBoxCenter_left} onClick={this.handleAddSchedule}>添加</div>
           <div className={styles.phaseConfigBoxCenter_left}>上载</div>
           <div className={styles.phaseConfigBoxCenter_left}>下发</div>
         </div>
@@ -167,7 +258,6 @@ class Schedule extends React.Component {
             {
               scheduleList &&
               scheduleList.map((item) => {
-                console.log(item.SCHEDULEDAY, item.SCHEDULEDAY.substr(-1))
                 const day = item.SCHEDULEDAY.length > 0 && item.SCHEDULEDAY.split(',').length > 3 ? `${item.SCHEDULEDAY.split(',')[0]} - ${item.SCHEDULEDAY.split(',')[item.SCHEDULEDAY.split(',').length - 1]}` : item.SCHEDULEDAY
                 const month = item.SCHEDULEMONTH.length > 0 && item.SCHEDULEMONTH.split(',').length > 3 ? `${item.SCHEDULEMONTH.split(',')[0]} - ${item.SCHEDULEMONTH.split(',')[item.SCHEDULEMONTH.split(',').length - 1]}` : item.SCHEDULEMONTH
                 const week = item.SCHEDULEWEEK.length > 0 ? ((item.SCHEDULEWEEK.split(',')).map(item => item === '1' ? '日' : item - 1)).join(',') : item.SCHEDULEWEEK
@@ -180,8 +270,8 @@ class Schedule extends React.Component {
                     <div className={styles.mountingTd}>{`星期：${weekDays}`}</div>
                     <div className={styles.mountingTd}>{item.TIME_INTERVAL_NO}</div>
                     <div className={styles.mountingTd}>
-                      <div className={styles.deviceMsg}><span onClick={this.handleEditSchedule}>修改</span></div>
-                      <div className={styles.deviceMsg}><span onClick={this.handleDeleteSchedule}>删除</span></div>
+                      <div className={styles.deviceMsg}><span onClick={() => { this.handleEditSchedule(item) }}>修改</span></div>
+                      <div className={styles.deviceMsg}><span onClick={() => { this.handleDeleteSchedule(item.ID) }}>删除</span></div>
                     </div>
                   </div>
                 )
@@ -203,6 +293,9 @@ const mapDisPatchToProps = (dispatch) => {
   return {
     getScheduleList: bindActionCreators(getScheduleList, dispatch),
     getRimgIntervalList: bindActionCreators(getRimgIntervalList, dispatch),
+    getScheduleNoList: bindActionCreators(getScheduleNoList, dispatch),
+    getSaveScheduleInfo: bindActionCreators(getSaveScheduleInfo, dispatch),
+    getDeleteScheduleInfo: bindActionCreators(getDeleteScheduleInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Schedule)
