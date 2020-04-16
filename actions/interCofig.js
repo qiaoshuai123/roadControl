@@ -56,6 +56,7 @@ import {
   API_SCHEDULENO_LIST,
   API_SAVE_SCHEDULEINFO,
   API_DELETE_SCHEDULE,
+  API_FAULTLOG_LIST,
 
 } from '../constants/API'
 
@@ -680,6 +681,21 @@ export const getDeleteScheduleInfo = (id) => {
   return async () => {
     const result = await RestUtil.post(`${API_DELETE_SCHEDULE}?id=${id}`)
     return result
+  }
+}
+
+export const getFaultLogList = (type, interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_FAULTLOG_LIST}?faultType=${type}&unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_FAULTLOG_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 

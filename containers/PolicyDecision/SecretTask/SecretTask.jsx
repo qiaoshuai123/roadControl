@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Icon, Input } from 'antd'
 import styles from './SecretTask.scss'
 import Header from '../Header/Header'
 import CustomTree from './CustomTree/CustomTree'
 import InfoBg from './img/Infobg.png'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-class SecretTask extends Component {
+import { getVipRoute } from '../../../actions/SecretTask'
+
+class SecretTask extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -13,11 +17,26 @@ class SecretTask extends Component {
       visible: false,
       visibleTop: 0,
       visibleLeft: 0,
+      vipRouteList: null,
     }
   }
   componentDidMount() {
     this.renderMineMap()
+    this.props.getVipRoute(-1, -1)
   }
+  componentDidUpdate = (prevState) => {
+    debugger
+    if (prevState.data !== this.props.data) {
+      console.log(this.props)
+    }
+    const { vipRouteList } = this.props.data
+    if (prevState.data.vipRouteList !== vipRouteList) {
+      this.getVipRoute(-1, -1)
+    }
+  }
+  // getVipRoute = (id, searchWord) => {
+    
+  // }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
       this.setState({
@@ -177,5 +196,14 @@ class SecretTask extends Component {
     )
   }
 }
-
-export default SecretTask
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getVipRoute: bindActionCreators(getVipRoute, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(SecretTask)
