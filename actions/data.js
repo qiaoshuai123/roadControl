@@ -14,13 +14,10 @@ import {
   API_REAL_STATUS,
   API_FAULT_STATISTICS,
   API_INTER_INFO,
-<<<<<<< HEAD
   API_LOAD_PLANTREE,
-=======
   API_VIP_ROUTE,
   API_VIP_ROUTE_CHILD,
 
->>>>>>> e82cd5c183f66bac6905c25469f3700dfab1cb3d
 } from '../constants/API'
 
 export const getPlanInfo = () => {

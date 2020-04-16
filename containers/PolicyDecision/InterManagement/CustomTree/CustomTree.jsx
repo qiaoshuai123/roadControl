@@ -99,9 +99,9 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+          <li className={styles.childLi} key={item.ID} id={item.ID}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-            <span title={item.name} className={styles.childNode}>{item.name}</span>
+            <span title={item.NAME} className={styles.childNode}>{item.NAME}</span>
           </li>
         )
       })
