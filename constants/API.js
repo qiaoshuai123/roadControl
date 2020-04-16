@@ -62,4 +62,5 @@ export const API_SAVE_FOLLOWPHASE = '/atms/hisenseSignal/saveFollowPhaseInfo'
 export const API_SCHEDULE_LIST = '/atms/hisenseSignal/loadScheduleList'
 export const API_TIMGINTERVAL_LIST = '/atms/hisenseSignal/loadTimeintervalNoList'
 export const API_SCHEDULENO_LIST = '/atms/hisenseSignal/loadScheduleNoList'
-
+// 特勤任务
+export const API_VIP_ROUTE = '/atms/vip/vipRoute'
