@@ -92,7 +92,6 @@ class CustomTree extends React.Component {
     const { expendsKey, loopDate } = this.state
     const loop = data => (
       data.map((item) => {
-        debugger
         const isOpen = expendsKey.indexOf(item.name) >= 0
         if (item.children && item.children.length) {
           return (

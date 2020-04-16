@@ -51,10 +51,8 @@ class InterManagement extends Component {
     }
   }
   getPlanTree = (loadPlanTree) => {
-    this.setState({ loadPlanTree }, () => {
-      this.defaultChildren = loadPlanTree.map(() => [])
-      this.setState({ defaultChildren: this.defaultChildren })
-    })
+    this.defaultChildren = loadPlanTree.map(() => [])
+    this.setState({ loadPlanTree, defaultChildren: this.defaultChildren })
   }
   // 路口列表
   getInterLists = (interList) => {
