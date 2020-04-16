@@ -12,6 +12,7 @@ import BaseAction from './BaseAction/BaseAction'
 import StageConfig from './StageConfig/StageConfig'
 import FlowPhase from './FlowPhase/FlowPhase'
 import Schedule from './Schedule/Schedule'
+import FaultLog from './FaultLog/FaultLog'
 import styles from './InterDetails.scss'
 
 import { getSingalInfo, getPlanStage, getMonitorInfo, getSingalController } from '../../../actions/interCofig'
@@ -51,7 +52,7 @@ class InterDetails extends React.PureComponent {
       { id: 9, name: '时段表配置', configname: 'timetable' },
       { id: 10, name: '调度表配置', configname: 'schedule' },
       { id: 11, name: '信号机控制', configname: 'singalConfig' },
-      { id: 12, name: '故障日志' },
+      { id: 12, name: '故障日志', configname: 'faultLog' },
     ]
   }
   componentDidMount = () => {
@@ -432,6 +433,10 @@ class InterDetails extends React.PureComponent {
           {
             configPop === 'schedule' &&
             <Schedule {...this.props} closeConfigPop={this.handleCancel} />
+          }
+          {
+            configPop === 'faultLog' &&
+            <FaultLog {...this.props} closeConfigPop={this.handleCancel} />
           }
         </Modal>
       </div >
