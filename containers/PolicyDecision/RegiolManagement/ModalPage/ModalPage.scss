@@ -22,7 +22,7 @@
         display: flex;
     }
     .boxers {
-        max-height: 383px;
+        max-height: 365px;
         overflow: auto;
         span {
             color: white;
@@ -199,6 +199,6 @@
     }
 }
 :global(.ant-select-dropdown){
-    top: 313px!important;
-    left: 765px!important;
+    // top: 313px!important;
+    // left: 765px!important;
 }
