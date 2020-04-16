@@ -142,7 +142,7 @@ class PhaseConfig extends React.PureComponent {
       console.log(res)
       const { code } = res.data
       if (code === 200) {
-        this.getPhaseList(this.InterId)
+        this.props.getPhaseList(this.InterId)
         this.setState({ showPhaseEditBox: false })
       }
       message.info(res.data.message)
