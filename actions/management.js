@@ -39,17 +39,9 @@ export const getloadUnitName = id => async (dispatch) => {
     console.log(e)
   }
 }
-export const getsaveOrUpdateForm = obj => async (dispatch) => {
-  try {
-    const result = await RestUtil.post(`${API_SAVEORUPDATEFORM}`, {
-      districtInfoBody: obj,
-    })
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_SAVEORUPDATEFORM, payload: result.data.data })
-    } else {
-      console.error(result.data.message)
-    }
-  } catch (e) {
-    console.log(e)
+export const getsaveOrUpdateForm = (params) => {
+  return async () => {
+    const result = await RestUtil.post(API_SAVEORUPDATEFORM, params)
+    return result
   }
 }

@@ -102,7 +102,11 @@ class FlowPhase extends React.Component {
   handleSaveFollowPhase = () => {
     this.saveParams.parentPhaseNos = this.coordPhases.join(',')
     this.props.getSaveFollowPhase(this.saveType, this.saveParams).then((res) => {
-      console.log(res)
+      if (res.data.code === 200) {
+        this.props.getFlowPhaseList(this.InterId)
+        this.setState({ showEditTiming: false })
+      }
+      message.info(res.data.message)
     })
   }
   handleAddFollowPhase = () => {
@@ -225,7 +229,7 @@ class FlowPhase extends React.Component {
                     <div className={styles.mountingTd}>{item.YELLOW_TIME}</div>
                     <div className={styles.mountingTd}>{item.RED_TIME}</div>
                     <div className={styles.mountingTd}>{item.CLEAR_TIME}</div>
-                    <div className={styles.mountingTd}>{`相位${item.FOLLOW_NO}`}</div>
+                    <div className={styles.mountingTd}>{`相位${item.CORRECT_PHASE_NO_LIST}`}</div>
                     <div className={styles.mountingTd} style={{ flex: 1.3 }}>{correctPhase && correctPhase.join(',')}</div>
                     <div className={styles.mountingTd}>
                       <div className={styles.deviceMsg}><span onClick={() => { this.handleEditFlowPhase(item) }}>修改</span></div>
