@@ -24,6 +24,10 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { faultStatistics: payload })
     case types.GET_INTER_INFO:
       return Object.assign({}, state, { basicInterInfo: payload })
+    case types.GET_VIP_ROUTE: // 树形结构 父级
+      return Object.assign({}, state, { vipRouteList: payload })
+    case types.GET_VIP_ROUTE_CHILD: // 树形结构 二级子
+      return Object.assign({}, state, { chlidList: payload })
     default:
       return state
   }

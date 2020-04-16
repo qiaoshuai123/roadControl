@@ -7,7 +7,8 @@ import InfoBg from './img/Infobg.png'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { getVipRoute } from '../../../actions/SecretTask'
+import { getVipRoute, getVipRouteChild } from '../../../actions/data'
+// import {  } from '../../../actions/SecretTask'
 
 class SecretTask extends PureComponent {
   constructor(props) {
@@ -22,21 +23,43 @@ class SecretTask extends PureComponent {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getVipRoute(-1, -1)
+    this.props.getVipRoute('', '')
   }
   componentDidUpdate = (prevState) => {
-    debugger
     if (prevState.data !== this.props.data) {
       console.log(this.props)
     }
-    const { vipRouteList } = this.props.data
+    const { vipRouteList, childList } = this.props.data
     if (prevState.data.vipRouteList !== vipRouteList) {
-      this.getVipRoute(-1, -1)
+      const childArr = []
+      vipRouteList.map((item, i) => {
+        childArr.push({
+          id: item.ID,
+          name: item.START_UNIT,
+          children: [],
+        })
+      })
+      childArr.map((items, i) => {
+        this.props.getVipRouteChild(items.id, '').then(()=>{
+          childArr[i].children = this.props.data.chlidList
+          this.getVipRoute(childArr)
+          console.log(this.props, '更新子数据')
+        })
+      })
+      // this.getVipRoute(vipRouteList)
+    }
+    if (prevState.data.childList !== childList) {
     }
   }
-  // getVipRoute = (id, searchWord) => {
-    
-  // }
+  getChildList = (id) => {
+    this.props.getVipRouteChild(id, '').then(()=>{
+    })
+  }
+  getVipRoute = (data) => {
+    this.setState({
+      vipRouteList: data,
+    })
+  }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
       this.setState({
@@ -160,6 +183,7 @@ class SecretTask extends PureComponent {
       interMonitorLeft,
       visible,
       visibleTop,
+      vipRouteList,
     } = this.state
     const { Search } = Input
     return (
@@ -182,7 +206,7 @@ class SecretTask extends PureComponent {
             <span>快速特勤任务</span>
           </div>
           <div className={styles.treeBox}>
-            <CustomTree visibleShowLeft={this.visibleShowLeft} />
+            <CustomTree visibleShowLeft={this.visibleShowLeft} vipRouteList={vipRouteList} />
           </div>
           {
             visible ?
@@ -204,6 +228,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getVipRoute: bindActionCreators(getVipRoute, dispatch),
+    getVipRouteChild: bindActionCreators(getVipRouteChild, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(SecretTask)

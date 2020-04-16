@@ -14,6 +14,9 @@ import {
   API_REAL_STATUS,
   API_FAULT_STATISTICS,
   API_INTER_INFO,
+  API_VIP_ROUTE,
+  API_VIP_ROUTE_CHILD,
+
 } from '../constants/API'
 
 export const getPlanInfo = () => {
@@ -148,5 +151,31 @@ export const getBasicInterInfo = (interId) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+// 树形结构父级
+export const getVipRoute = (id, searchWord) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_ROUTE}?id=${id}&searchWord=${searchWord}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_ROUTE, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+// 树形结构二级子级
+export const getVipRouteChild = (id, searchWord) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_ROUTE_CHILD}?id=${id}&searchWord=${searchWord}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_ROUTE_CHILD, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
   }
 }

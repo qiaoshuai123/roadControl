@@ -68,6 +68,7 @@ export const API_TIMGINTERVAL_LIST = '/atms/hisenseSignal/loadTimeintervalNoList
 export const API_SCHEDULENO_LIST = '/atms/hisenseSignal/loadScheduleNoList'
 // 特勤任务
 export const API_VIP_ROUTE = '/atms/vip/vipRoute'
+export const API_VIP_ROUTE_CHILD = '/atms/vip/vipRoute'
 export const API_SAVE_SCHEDULEINFO = '/atms/hisenseSignal/saveScheduleInfo'
 export const API_DELETE_SCHEDULE = '/atms/hisenseSignal/deleteSchedule'
 export const API_FAULTLOG_LIST = '/atms/singleUnitMonitor/showRealAlarms_hx'
