@@ -14,6 +14,7 @@ import {
   API_REAL_STATUS,
   API_FAULT_STATISTICS,
   API_INTER_INFO,
+  API_LOAD_PLANTREE,
 } from '../constants/API'
 
 export const getPlanInfo = () => {
@@ -142,6 +143,36 @@ export const getBasicInterInfo = (interId) => {
       const result = await RestUtil.get(`${API_INTER_INFO}/${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_INTER_INFO, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getLoadPlanTree = (id = '', keyword = '', type = 'district') => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_LOAD_PLANTREE}?id=${id}&searchWord=${keyword}&type=${type}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_LOAD_PLANTREE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getLoadChildTree = (id = '', keyword = '', type = 'district') => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_LOAD_PLANTREE}?id=${id}&searchWord=${keyword}&type=${type}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_LOAD_CHILDTREE, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

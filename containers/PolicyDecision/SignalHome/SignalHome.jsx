@@ -10,7 +10,7 @@ import HollowPie from '../../../components/HollowPie/HollewPie'
 import GraphCharts from '../../../components/GraphCharts/GraphCharts'
 import styles from './Signahome.scss'
 
-import InfoBg from './img/Infobg.png'
+import InfoBg from './img/infobg.png'
 import OnlineH from './img/online_h.png'
 import OutlineH from './img/outline_h.png'
 import OnlineS from './img/online_s.png'

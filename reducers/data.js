@@ -24,6 +24,10 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { faultStatistics: payload })
     case types.GET_INTER_INFO:
       return Object.assign({}, state, { basicInterInfo: payload })
+    case types.GET_LOAD_PLANTREE:
+      return Object.assign({}, state, { loadPlanTree: payload })
+    case types.GET_LOAD_CHILDTREE:
+      return Object.assign({}, state, { loadChildTree: payload })
     default:
       return state
   }

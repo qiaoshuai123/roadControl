@@ -1,35 +1,87 @@
 import React, { Component } from 'react'
 import { Icon, Input } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import styles from './InterManagement.scss'
+
 import Header from '../Header/Header'
 import CustomTree from './CustomTree/CustomTree'
 import ModalPage from './ModalPage/ModalPage'
-import InfoBg from './img/Infobg.png'
+
+import InfoBg from './img/info_bg.png'
+import OnlineH from './img/online_h.png'
+import OutlineH from './img/outline_h.png'
+import OnlineS from './img/online_s.png'
+import OutlineS from './img/ouline_s.png'
+
+import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree } from '../../../actions/data'
 
 class InterManagement extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      interList: null,
+      searchInterList: null,
       interMonitorLeft: 15,
       isIntersection: true,
       isModalPage: true,
       visible: false,
       visibleTop: 0,
-      visibleLeft: 0,
+      loadPlanTree: null,
+      defaultChildren: null,
     }
+    this.markers = []
   }
   componentDidMount() {
     this.renderMineMap()
+    console.log(this.props)
+    this.props.getInterList()
+    this.props.getLoadPlanTree()
+  }
+  componentDidUpdate = (prevState) => {
+    const { interList, loadPlanTree, loadChildTree } = this.props.data
+    if (prevState.data.interList !== interList) {
+      this.getInterLists(interList)
+    }
+    if (prevState.data.loadPlanTree !== loadPlanTree) {
+      this.getPlanTree(loadPlanTree)
+    }
+    if (prevState.data.loadChildTree !== loadChildTree) {
+      this.getPlanChildTree(loadChildTree)
+    }
+  }
+  getPlanTree = (loadPlanTree) => {
+    this.setState({ loadPlanTree }, () => {
+      this.defaultChildren = loadPlanTree.map(() => [])
+      this.setState({ defaultChildren: this.defaultChildren })
+    })
+  }
+  // 路口列表
+  getInterLists = (interList) => {
+    this.searchInterList = interList
+    this.setState({
+      interList,
+      searchInterList: interList,
+    }, () => {
+      this.addMarker(interList)
+    })
+  }
+  // 从子集获取区域id和index 请求路口
+  getSelectTreeId = (id, index) => {
+    this.treeIndex = index
+    this.props.getLoadChildTree(id)
+  }
+  // 二级目录 路口
+  getPlanChildTree = (loadChildTree) => {
+    console.log(loadChildTree)
+    this.defaultChildren.splice(this.treeIndex, 1, loadChildTree)
+    this.setState({ defaultChildren: this.defaultChildren })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
-      this.setState({
-        interMonitorLeft: -355,
-      })
+      this.setState({ interMonitorLeft: -355 })
     } else {
-      this.setState({
-        interMonitorLeft: 15,
-      })
+      this.setState({ interMonitorLeft: 15 })
     }
   }
   visibleShowLeft = (top, id, show) => { // 框的跳转与位置
@@ -39,9 +91,7 @@ class InterManagement extends Component {
         visibleTop: top,
       })
     } else {
-      this.setState({
-        visible: show,
-      })
+      this.setState({ visible: show })
     }
   }
   noShow = (e) => { // 禁止默认右键菜单
@@ -50,37 +100,40 @@ class InterManagement extends Component {
   }
 
   addIntersection = () => { // 添加路口
-    this.setState({
-      isIntersection: false,
-    })
+    this.setState({ isIntersection: false })
   }
   removeIntersection = () => { // 取消添加路口
-    this.setState({
-      isIntersection: true,
-    })
+    this.setState({ isIntersection: true })
   }
   isShowModalPage = () => { // 取消弹窗页面
-    this.setState({
-      isModalPage: false,
-    })
+    this.setState({ isModalPage: false })
   }
   // 添加坐标点
-  addMarker = () => {
+  addMarker = (interList) => {
     if (this.map) {
       this.infowindow += 1
-      const el = document.createElement('div')
-      el.id = 'marker'
-      el.style['background-color'] = '#ff0000'
-      el.style['background-size'] = 'cover'
-      el.style.width = '20px'
-      el.style.height = '20px'
-      el.style['border-radius'] = '50%'
-      this.lnglat = this.map.getCenter()
-      this.marker = new window.minemap.Marker(el, { offset: [-25, -25] })
-        .setLngLat(this.lnglat)
-        .setPopup(this.showInterInfo())
-        .addTo(this.map)
-      // el.addEventListener('click', this.showInterInfo)
+      interList.forEach((item) => {
+        const el = document.createElement('div')
+        el.id = `marker${item.ID}`
+        if (item.SIGNAL_SYSTEM_CODE === 4 || item.SIGNAL_SYSTEM_CODE === 3) {
+          const sysIcon = item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OutlineH :
+            item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 4 ? OnlineH :
+              item.CONTROL_STATE === 10 && item.SIGNAL_SYSTEM_CODE === 3 ? OutlineS :
+                item.CONTROL_STATE !== 10 && item.SIGNAL_SYSTEM_CODE === 3 ? OnlineS : null
+          el.style.background = `url(${sysIcon}) center center no-repeat`
+          el.style['background-size'] = '100% 100%'
+          el.style.width = '22px'
+          el.style.height = '22px'
+          new Promise((resolve) => {
+            resolve(this.props.getBasicInterInfo(item.ID))
+          }).then(() => {
+            const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
+              .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '西门子', item.ID))
+              .addTo(this.map)
+            this.markers.push(marker)
+          })
+        }
+      })
     }
   }
   // 删除坐标点
@@ -143,24 +196,17 @@ class InterManagement extends Component {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [106.709075, 26.586574],
+      center: [108.322286, 22.810375],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
       minZoom: 3,
     })
     this.map = map
-    this.addMarker()
   }
 
   render() {
-    const {
-      interMonitorLeft,
-      visible,
-      visibleTop,
-      isModalPage,
-      isIntersection,
-    } = this.state
+    const { interMonitorLeft, visible, visibleTop, isModalPage, isIntersection, loadPlanTree, defaultChildren } = this.state
     const { Search } = Input
     return (
       <div id="mapContainer" className={styles.InterManagementWrapper}>
@@ -184,7 +230,15 @@ class InterManagement extends Component {
             }
           </div>
           <div className={styles.treeBox}>
-            <CustomTree visibleShowLeft={this.visibleShowLeft} />
+            {
+              defaultChildren &&
+              <CustomTree
+                visibleShowLeft={this.visibleShowLeft}
+                loopDate={loadPlanTree}
+                childrenData={defaultChildren}
+                getSelectTreeId={this.getSelectTreeId}
+              />
+            }
           </div>
           {
             visible ?
@@ -202,4 +256,17 @@ class InterManagement extends Component {
   }
 }
 
-export default InterManagement
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterList: bindActionCreators(getInterList, dispatch),
+    getBasicInterInfo: bindActionCreators(getBasicInterInfo, dispatch),
+    getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
+    getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(InterManagement)
