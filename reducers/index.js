@@ -6,13 +6,13 @@ import { combineReducers } from 'redux'
 
 import data from './data'
 import interConfig from './interConfig'
-import management from './management'
 import secretTask from './secretTask'
+import managements from './managements'
 
 const rootReducer = combineReducers({
+  managements,
   data,
   interConfig,
-  management,
   secretTask,
 })
 
