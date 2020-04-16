@@ -28,6 +28,10 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { loadPlanTree: payload })
     case types.GET_LOAD_CHILDTREE:
       return Object.assign({}, state, { loadChildTree: payload })
+    case types.GET_VIP_ROUTE: // 树形结构 父级
+      return Object.assign({}, state, { vipRouteList: payload })
+    case types.GET_VIP_ROUTE_CHILD: // 树形结构 二级子
+      return Object.assign({}, state, { chlidList: payload })
     default:
       return state
   }

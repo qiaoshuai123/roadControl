@@ -14,7 +14,13 @@ import {
   API_REAL_STATUS,
   API_FAULT_STATISTICS,
   API_INTER_INFO,
+<<<<<<< HEAD
   API_LOAD_PLANTREE,
+=======
+  API_VIP_ROUTE,
+  API_VIP_ROUTE_CHILD,
+
+>>>>>>> e82cd5c183f66bac6905c25469f3700dfab1cb3d
 } from '../constants/API'
 
 export const getPlanInfo = () => {
@@ -173,6 +179,38 @@ export const getLoadChildTree = (id = '', keyword = '', type = 'district') => {
       const result = await RestUtil.post(`${API_LOAD_PLANTREE}?id=${id}&searchWord=${keyword}&type=${type}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_LOAD_CHILDTREE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+// 树形结构父级
+export const getVipRoute = (id, searchWord) => async (dispatch) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_VIP_ROUTE}?id=${id}&searchWord=${searchWord}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_VIP_ROUTE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+// 树形结构二级子级
+export const getVipRouteChild = (id, searchWord) => async (dispatch) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_VIP_ROUTE_CHILD}?id=${id}&searchWord=${searchWord}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_VIP_ROUTE_CHILD, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }
