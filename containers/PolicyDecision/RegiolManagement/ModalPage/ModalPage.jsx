@@ -46,6 +46,7 @@ class ModalPage extends React.Component {
       SubordinateUnitLsit: loadManageMent,
       ManagementUnit: loadManageMent[0].USER_GROUP_NAME,
     })
+    this.ManagementUnitName = loadManageMent[0].ID
   }
   getvalidate = (validate) => {
     if (validate) {
@@ -77,24 +78,73 @@ class ModalPage extends React.Component {
   handleCancel = () => {
     this.props.isShowModalPage()
   }
-  handleChange = (value) => {
-    console.log(value)
+  sInstallationLocations = (name) => { // 切换管理单位
+    const { SubordinateUnitLsit } = this.state
+    this.ManagementUnitName = SubordinateUnitLsit.find(item => item.USER_GROUP_NAME === name).ID
+    console.log(this.ManagementUnitName)
+    this.setState({
+      ManagementUnit: name,
+    })
+  }
+  handleChange = (value) => { // 切换选择路口
+    this.arr = []
+    const { OptionList } = this.state
+    value.forEach((item) => {
+      const obj = OptionList.find(items => items.ID.toString() === item)
+      this.arr.push(obj)
+    })
     this.setState({
       dateListValues: value,
     })
   }
   addList = () => { // 渲染添加路口名称
-    const { dateListValues } = this.state
+    const { OptionList, IntersectionList } = this.state
+    let arrs = OptionList
+    this.arr.forEach((item) => {
+      arrs = arrs.filter(items => items.ID !== item.ID)
+    })
+    const ar = [...IntersectionList, ...this.arr]
+    console.log(ar, 'sss')
     this.setState({
-      IntersectionList: dateListValues,
+      IntersectionList: ar,
       dateListValues: [],
+      OptionList: arrs,
     })
   }
-  delectIntersectionList = (id) => {
-    const { IntersectionList } = this.state
-    const arr = IntersectionList.filter(item => item.ID !== id)
+  delectIntersectionList = (items) => {
+    const { IntersectionList, OptionList } = this.state
+    const arr = IntersectionList.filter(item => item.ID !== items.ID)
+    OptionList.push(items)
     this.setState({
       IntersectionList: arr,
+      OptionList,
+    })
+  }
+  handleOk = () => { // 区域编号提交
+    const {
+      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
+    } = this.state
+    let str = ''
+    IntersectionList.forEach((item) => {
+      str = `${str + item.ID},`
+    })
+    const strLength = str.slice(0, str.length - 1)
+    const obj = {
+      detail: Correlationdetail,
+      districtId: EquipmentModel,
+      districtName: CorrelationNumber,
+      id: '',
+      management: `${this.ManagementUnitName}`,
+      sureId: 'addPage',
+      trueId: EquipmentModel,
+      unitArr: strLength,
+    }
+    this.props.getsaveOrUpdateForm(obj).then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        this.handleCancel()
+        message.success('添加成功')
+      }
     })
   }
   render() {
@@ -108,8 +158,8 @@ class ModalPage extends React.Component {
         <div className={styles.mountingTable}>
           <div className={styles.mountingTbody}>
             <div className={styles.mountingTr}>
-              <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} onChange={this.changValue} value={EquipmentModel} /></div></div>
-              <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} value={CorrelationNumber} /></div></div>
+              <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
+              <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
             </div>
             <div className={styles.mountingTr}>
               <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
@@ -125,7 +175,7 @@ class ModalPage extends React.Component {
                   </Select>
                 </div>
               </div>
-              <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" onChange={this.changValue} value={Correlationdetail} /></div></div>
+              <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
             </div>
             <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
               <div className={styles.mountingTd}>
@@ -161,7 +211,7 @@ class ModalPage extends React.Component {
                 IntersectionList && IntersectionList.map(item => (
                   <div key={item.ID} className={styles.mountingTr}>
                     <div className={styles.mountingTdx}>{item.UNIT_NAME}</div>
-                    <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item.ID)}>移除</span></div>
+                    <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item)}>移除</span></div>
                   </div>
                 ))
               }
@@ -169,8 +219,8 @@ class ModalPage extends React.Component {
           </div>
           <div className={styles.mountingTableBottom}>
             <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
-            <span className={styles.mountingTableBottom_left}>
-              <b onClick={this.handleOk}>确定</b>
+            <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>
+              确定
             </span>
           </div>
         </div>
