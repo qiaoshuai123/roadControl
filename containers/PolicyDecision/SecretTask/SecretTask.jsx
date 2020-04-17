@@ -207,10 +207,11 @@ class SecretTask extends PureComponent {
     return this.popup
   }
   hanleSelectInter = (e) => {
-    const interId = e.target.parentNode.getAttribute('interid')
+    const interId = e.currentTarget.getAttribute('interid')
     const marker = document.getElementById('marker' + interId)
-    const lng = e.target.parentNode.getAttribute('lng')
-    const lat = e.target.parentNode.getAttribute('lat')
+    const lng = e.currentTarget.getAttribute('lng')
+    const lat = e.currentTarget.getAttribute('lat')
+    debugger
     const interName = e.target.innerText
     if (marker && this.map) {
       this.map.setCenter([lng, lat])
