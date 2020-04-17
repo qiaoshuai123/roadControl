@@ -64,6 +64,8 @@ export const API_LOADMANAGEMENT = '/atms/unitManagement/loadManageMent' // 区�
 export const API_VALIDATE = '/atms/districtManagement/validate' // 区域管理验证区域是否存在
 export const API_LOADUNITNAME = '/atms/districtManagement/loadUnitName' // 区域管理管理单位 // 路口管理
 export const API_SAVEORUPDATEFORM = '/atms/districtManagement/saveOrUpdateForm' // 区域管理区域信息提交
+export const API_LOADPLANTREE = '/atms/districtManagement/loadPlanTree' // 区域管理左侧树形图
+// export const API_SAVEORUPDATEFORM = '/atms/districtManagement/saveOrUpdateForm' // 区域管理区域信息提交
 export const API_TIMGINTERVAL_LIST = '/atms/hisenseSignal/loadTimeintervalNoList'
 export const API_SCHEDULENO_LIST = '/atms/hisenseSignal/loadScheduleNoList'
 // 特勤任务

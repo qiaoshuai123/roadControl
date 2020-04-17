@@ -11,6 +11,8 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { loadUnitName: payload })
     case types.GET_SAVEORUPDATEFORM:
       return Object.assign({}, state, { saveOrUpdateForm: payload })
+    case types.GET_LOADPLANTREE:
+      return Object.assign({}, state, { loadPlanTree: payload })
     default:
       return state
   }

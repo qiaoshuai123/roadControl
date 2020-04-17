@@ -1,14 +1,17 @@
 import React from 'react'
 import { Icon, Tooltip } from 'antd'
-
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getloadPlanTree } from '../../../../actions/management'
 import styles from './CustomTree.scss'
 
 class CustomTree extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      expendsKey: [1, 11, 2, 22, 12],
+      expendsKey: [],
       visible: 0, // 右键菜单
+      loopDate: [],
     }
     this.loopDate = [{
       name: '海淀五西路11',
@@ -55,18 +58,35 @@ class CustomTree extends React.Component {
     // },
   }
   componentDidMount = () => {
+    this.props.getloadPlanTree('', '', 'district')
+  }
+  componentDidUpdate = (prevState) => {
+    const { loadPlanTree } = this.props.data
+    if (prevState.data.loadPlanTree !== loadPlanTree) {
+      this.getloadPlanTree(loadPlanTree)
+    }
   }
   componentWillUnmount() {
 
   }
+  getloadPlanTree = (loadPlanTree) => {
+    loadPlanTree.forEach((item) => {
+      item.children = []
+    })
+    console.log(loadPlanTree, 'sx')
+    this.setState({
+      loopDate: loadPlanTree,
+    })
+  }
   btns = (id) => {
     // console.log(id)
   }
-  handleTreeSelect = (e) => {
+  handleTreeSelect = (e, ids) => {
     e.stopPropagation()
     e.preventDefault()
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
+    console.log(123456)
     if (index >= 0) {
       this.state.expendsKey.splice(index, 1)
     } else {
@@ -93,13 +113,13 @@ class CustomTree extends React.Component {
     e.preventDefault()
   }
   render() {
-    const { expendsKey } = this.state
+    const { expendsKey, loopDate } = this.state
     const loop = data => (
       data.map((item) => {
-        const isOpen = expendsKey.indexOf(item.id) >= 0
+        const isOpen = expendsKey.indexOf(item.ID) >= 0
         if (item.children && item.children.length) {
           return (
-            <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+            <li className={styles.childLi} key={item.ID} id={item.ID} onClick={e => this.handleTreeSelect(e, item.ID)}>
               <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
               <span className={styles.childNode}>{item.name}</span>
               {
@@ -112,9 +132,9 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.ID} id={item.ID} onClick={e => this.handleTreeSelect(e, item.ID)}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-            <span title={item.name} className={styles.childNode}>{item.name}</span>
+            <span title={item.DISTRICT_NAME} className={styles.childNode}>{item.DISTRICT_NAME}</span>
           </li>
         )
       })
@@ -123,17 +143,17 @@ class CustomTree extends React.Component {
       <div className={styles.treeWrapper}>
         <ul className={styles.treeList}>
           {
-            this.loopDate.map((item) => {
-              const isOpen = expendsKey.indexOf(item.id) >= 0
+            loopDate && loopDate.map((item) => {
+              const isOpen = expendsKey.indexOf(item.ID) >= 0
               return (
-                <li className={styles.treeLi} key={item.id} id={item.id} onContextMenu={this.noShow} onClick={this.handleTreeSelect}>
+                <li className={styles.treeLi} key={item.ID} id={item.ID} onContextMenu={this.noShow} onClick={e => this.handleTreeSelect(e, item.ID)}>
                   <span className={styles.treeIcon}>
                     <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                   </span>
-                  <span title={item.name} onClick={() => this.btns(item.id)} onMouseDown={e => this.rightDown(e, item.id, true)} className={styles.childNode}>{item.name}</span>
+                  <span title={item.DISTRICT_NAME} onClick={() => this.btns(item.ID)} onMouseDown={e => this.rightDown(e, item.ID, true)} className={styles.childNode}>{item.DISTRICT_NAME}</span>
                   {
                     isOpen &&
-                    <ul className={styles.childTree} key={item.id}>
+                    <ul className={styles.childTree} key={item.ID}>
                       {loop(item.children)}
                     </ul>
                   }
@@ -147,4 +167,14 @@ class CustomTree extends React.Component {
   }
 }
 
-export default CustomTree
+const mapStateToProps = (state) => {
+  return {
+    data: state.managements,
+  }
+}
+const mapDisPatchToProps = dispatch => ({
+  getloadPlanTree: bindActionCreators(getloadPlanTree, dispatch),
+
+})
+export default connect(mapStateToProps, mapDisPatchToProps)(CustomTree)
+

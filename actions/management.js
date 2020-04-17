@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes'
 import RestUtil from '../utils/RestUtil'
 
-import { API_LOADMANAGEMENT, API_VALIDATE, API_LOADUNITNAME, API_SAVEORUPDATEFORM } from '../constants/API'
+import { API_LOADMANAGEMENT, API_VALIDATE, API_LOADUNITNAME, API_SAVEORUPDATEFORM, API_LOADPLANTREE } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
   try {
@@ -45,3 +45,16 @@ export const getsaveOrUpdateForm = (params) => {
     return result
   }
 }
+export const getloadPlanTree = (id, searchWord, type) => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_LOADPLANTREE}?id=${id}&searchWord=${searchWord}&type=${type}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_LOADPLANTREE, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+

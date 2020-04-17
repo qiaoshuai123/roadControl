@@ -38,6 +38,7 @@ class RegiolManagement extends Component {
     })
   }
   visibleShowLeft = (top, id, show) => { // 框的跳转与位置
+    this.roadId = id
     if (top || id) {
       this.setState({
         visible: show,
@@ -53,11 +54,16 @@ class RegiolManagement extends Component {
     e.stopPropagation()
     e.preventDefault()
   }
-
   addIntersection = () => { // 添加路口
     this.setState({
       isModalPage: true,
     })
+  }
+  delectRoad = () => { // 删除路段
+    console.log('删除')
+  }
+  seeGo = () => {
+    console.log('查看')
   }
   // 添加坐标点
   addMarker = () => {
@@ -183,8 +189,8 @@ class RegiolManagement extends Component {
           {
             visible ?
               <ul style={{ top: `${visibleTop - 100}px` }} onContextMenu={this.noShow} className={styles.contextMenu}>
-                <li>查看</li>
-                <li>删除</li>
+                <li onClick={this.seeGo}>查看</li>
+                <li onClick={this.delectRoad}>删除</li>
               </ul> : null
           }
         </div>
