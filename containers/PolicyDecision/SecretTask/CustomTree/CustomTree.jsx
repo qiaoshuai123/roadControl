@@ -9,34 +9,11 @@ class CustomTree extends React.Component {
     this.state = {
       expendsKey: [1, 11, 2, 22, 12],
       visible: 0, // 右键菜单
+      vipRouteList: this.props.vipRouteList,
+      indeX: this.props.indeX,
+      loopDate: [],
     }
-    this.loopDate = [{
-      name: '海淀五西路11',
-      id: 11,
-      children: [
-        {
-          name: '海淀五西路世纪大道11-1',
-          id: 111,
-        },
-        {
-          name: '海淀五西路世纪大道11-2',
-          id: 1,
-        }],
-    },
-    {
-      name: '海淀五东路22',
-      id: 12,
-      children: [
-        {
-          name: '海淀五东路世纪大道22-1',
-          id: 112,
-        },
-        {
-          name: '海淀五东路世纪大道22-2',
-          id: 1112,
-        },
-      ],
-    }]
+    this.loopDate = []
     // {
     //   name: '龙华区',
     //   id: 2,
@@ -56,8 +33,26 @@ class CustomTree extends React.Component {
   }
   componentDidMount = () => {
   }
-  componentWillUnmount() {
+  componentDidUpdate = (prevState) => {
+    console.log(this.props.vipRouteList, '数据更新')
 
+    if (prevState.vipRouteList !== this.props.vipRouteList) {
+      // this.props.vipRouteList.map((item)=>{
+      //   // this.loopDate.push({
+      //   //   id: item.ID,
+      //   //   name: item.START_UNIT,
+      //   //   children: this.props.childList,
+      //   // })
+      //   // this.loopDate.children.push({
+      //   //   id: item.ID,
+      //   //   name: item.START_UNIT,
+      //   // })
+      // })
+      this.setState({
+        loopDate: this.props.vipRouteList,
+      })
+    }
+  
   }
   btns = (id) => {
     // console.log(id)
@@ -74,6 +69,7 @@ class CustomTree extends React.Component {
     }
     this.setState({ expendsKey: this.state.expendsKey })
     this.props.visibleShowLeft('', '', false)
+    console.log(this.props,'是个啥？')
   }
   rightDown = (e, id, boolean) => { // 鼠标右击
     // e.stopPropagation()
@@ -93,10 +89,10 @@ class CustomTree extends React.Component {
     e.preventDefault()
   }
   render() {
-    const { expendsKey } = this.state
+    const { expendsKey, loopDate } = this.state
     const loop = data => (
       data.map((item) => {
-        const isOpen = expendsKey.indexOf(item.id) >= 0
+        const isOpen = expendsKey.indexOf(item.name) >= 0
         if (item.children && item.children.length) {
           return (
             <li className={styles.childLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
@@ -112,9 +108,9 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
+          <li className={styles.childLi} onMouseDown={() => this.rightDown('', '', false)} key={item.ID} id={item.ID} onClick={this.handleTreeSelect}>
             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
-            <span title={item.name} className={styles.childNode}>{item.name}</span>
+            <span title={item.UNIT_NAME} className={styles.childNode}>{item.UNIT_NAME}</span>
           </li>
         )
       })
@@ -123,7 +119,7 @@ class CustomTree extends React.Component {
       <div className={styles.treeWrapper}>
         <ul className={styles.treeList}>
           {
-            this.loopDate.map((item) => {
+            loopDate && loopDate.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
               return (
                 <li className={styles.treeLi} key={item.id} id={item.id} onContextMenu={this.noShow} onClick={this.handleTreeSelect}>
