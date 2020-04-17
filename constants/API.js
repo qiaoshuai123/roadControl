@@ -78,5 +78,14 @@ export const API_LOAD_PLANTREE = '/atms/districtManagement/loadPlanTree'
 // 特勤任务
 export const API_VIP_ROUTE = '/atms/vip/vipRoute'
 export const API_VIP_ROUTE_CHILD = '/atms/vip/vipRoute'
+export const API_VIP_ADD_UNITSIFRAM = '/atms/vip/addUnitsIfram' // {vipId}/{unitId} 特勤路线---添加勤务路线下的单个路口
+export const API_VIP_DELETE_UNITIFRAM = '/atms/vip/deleteUnitIfram' // {vipId}/{unitId} 特勤路线---删除勤务路线下的单个路口
+export const API_VIP_DELETE_VIPROAD = '/atms/vip/deleteVipRoad' // {vipId} 特勤路线---删除勤务路线
+export const API_VIP_FIND_ROADBYVIPID = '/atms/vip/findVipRoadByVipId' //{vipId} 特勤路线---勤务路口数据加载
+export const API_VIP_FIND_LIST = '/atms/vip/findVipRoadUnitsByVipId' //{vipId}特勤路线---勤务路线路口列表
+export const API_VIP_INITROAD = '/atms/vip/initVipRoad' //特勤路线---路口信息、图片、ip
+export const API_VIP_LOADUNIT_STAGES = '/atms/vip/loadunit_stages' //特勤路线---信号机控制状态
+export const API_VIP_SAVEVIPROAD = '/atms/vip/saveVipRoad' //{vipId}/{vipName}/{detail} 特勤路线---添加或者修改勤务路线详细信息
+
 
 

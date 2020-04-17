@@ -1,13 +1,98 @@
 import * as types from '../constants/ActionTypes'
 import RestUtil from '../utils/RestUtil'
 
-import { API_VIP_ROUTE } from '../constants/API'
+import { API_VIP_ADD_UNITSIFRAM, API_VIP_DELETE_UNITIFRAM, API_VIP_DELETE_VIPROAD,
+  API_VIP_FIND_ROADBYVIPID, API_VIP_FIND_LIST, API_VIP_INITROAD, API_VIP_LOADUNIT_STAGES, API_VIP_SAVEVIPROAD   } from '../constants/API'
 
-export const getVipRoute = (id, searchWord) => async (dispatch) => {
+export const getAddUnitsIfram = (vipId, unitId) => async (dispatch) => {
   try {
-    const result = await RestUtil.get(`${API_VIP_ROUTE}/${id}/${searchWord}`)
+    const result = await RestUtil.get(`${API_VIP_ADD_UNITSIFRAM}/${vipId}/${unitId}`)
     if (result.data.code === 200) {
-      dispatch({ type: types.GET_VIP_ROUTE, payload: result.data.data })
+      dispatch({ type: types.GET_VIP_ADD_UNITSIFRAM, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getDeleteUnitFram = (vipId, unitId) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_DELETE_UNITIFRAM}/${vipId}/${unitId}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_DELETE_UNITIFRAM, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getDeleteVipRoad = ( vipId ) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_DELETE_VIPROAD}/${vipId}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_DELETE_VIPROAD, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getFindRoadByVipId = ( vipId ) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_FIND_ROADBYVIPID}/${vipId}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_FIND_ROADBYVIPID, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getFindList = (vipId) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_FIND_LIST}/${vipId}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_FIND_LIST, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getInitRoad = () => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_VIP_INITROAD}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.POST_VIP_INITROAD, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getLoadUnitStage = () => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_LOADUNIT_STAGES}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_LOADUNIT_STAGES, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getSaveVipRoad = (vipId, vipName, detail ) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_SAVEVIPROAD}/${vipId}/${vipName}/${detail}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_SAVEVIPROAD, payload: result.data.data })
     } else {
       console.error(result.data.message)
     }

@@ -186,7 +186,7 @@ export const getLoadChildTree = (id = '', keyword = '', type = 'district') => {
 }
 
 // 树形结构父级
-export const getVipRoute = (id, searchWord) => async (dispatch) => {
+export const getVipRoute = (id = '', searchWord = '') => async (dispatch) => {
   try {
     const result = await RestUtil.get(`${API_VIP_ROUTE}?id=${id}&searchWord=${searchWord}`)
     if (result.data.code === 200) {
@@ -200,7 +200,7 @@ export const getVipRoute = (id, searchWord) => async (dispatch) => {
 }
 
 // 树形结构二级子级
-export const getVipRouteChild = (id, searchWord) => async (dispatch) => {
+export const getVipRouteChild = (id = '', searchWord = '') => async (dispatch) => {
   try {
     const result = await RestUtil.get(`${API_VIP_ROUTE_CHILD}?id=${id}&searchWord=${searchWord}`)
     if (result.data.code === 200) {
