@@ -95,6 +95,9 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx'], // 省略后缀
+    alias: {
+      _C: path.resolve('./components'),
+    },
   },
   plugins: [
     new webpack.ProvidePlugin({
