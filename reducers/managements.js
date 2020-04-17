@@ -9,10 +9,16 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { validate: payload })
     case types.GET_LOADUNITNAME:
       return Object.assign({}, state, { loadUnitName: payload })
+    case types.GET_LOADUNITNAMES:
+      return Object.assign({}, state, { loadUnitNames: payload })
     case types.GET_SAVEORUPDATEFORM:
       return Object.assign({}, state, { saveOrUpdateForm: payload })
     case types.GET_LOADPLANTREE:
       return Object.assign({}, state, { loadPlanTree: payload })
+    case types.GET_EDITDISTRICTINFOTHING:
+      return Object.assign({}, state, { editDistrictInfoThing: payload })
+    case types.GET_DELETEDISTRICT:
+      return Object.assign({}, state, { deleteDistrict: payload })
     default:
       return state
   }
