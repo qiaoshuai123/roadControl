@@ -39,9 +39,12 @@ class InterManagement extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList } = this.props.data
+    const { interList, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
+    }
+    if (prevState.data.basicInterInfo !== basicInterInfo) {
+      this.getInterBasicInfo(basicInterInfo)
     }
   }
   // 路口列表
@@ -61,6 +64,15 @@ class InterManagement extends Component {
   getSelectChildId = (chidlId) => {
     const marker = document.getElementById('marker' + chidlId)
     marker.click()
+  }
+  // 获取路口基本信息
+  getInterBasicInfo = (basicInterInfo) => {
+    this.belongArea = basicInterInfo.DISTRICT_NAME
+    this.controlState = basicInterInfo.CONTROLSTATE
+    this.alarmState = basicInterInfo.ALARMSTATE
+    this.singalIp = basicInterInfo.SIGNAL_IP
+    this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
+    this.runText = basicInterInfo.STAGE_CODE
   }
   handleSearchInterFocus = () => {
     this.setState({ interListHeight: 300 })
@@ -161,37 +173,41 @@ class InterManagement extends Component {
     }
   }
   // 自定义信息窗体
-  showInterInfo = () => {
+  showInterInfo = (lng, lat, interName, singalSys, interId) => {
     this.removeInterInfo()
-    const lnglat = this.map.getCenter()
-    // const id = `removeInterInfo${this.infowindow}`
+    const id = `monitor${interId}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
         <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
-          路口名称 ：123456
+          路口名称 ：${interName}
         </div>
-        <div style="height:200px;display:flex;padding-top:20px;font-size:14px;">
+        <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：兴宁区</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：海信</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：东西左转</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px; cursor: pointer;">路口监控</div>
+            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
           </div>
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：本地多时段</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：192.168.1.204</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：正常</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px; cursor: pointer;">路口优化</div>
+            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：${this.controlState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：${this.singalIp}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：${this.alarmState}</p>
           </div>
+        </div>
+        <div style="height:40px;display:flex;justify-content:center;align-items:center;">
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
         </div>
       </div>
     `
     this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-15, -25] })
-      .setLngLat([lnglat.lng, lnglat.lat])
+      .setLngLat([lng, lat])
       .setHTML(infoHtml)
       .addTo(this.map)
-    // document.getElementById(id).addEventListener('click', this.removeInterInfo)
+    if (document.getElementById(id)) {
+      document.getElementById(id).addEventListener('click', () => {
+        window.open(`#/interdetails/${interId}`)
+      })
+    }
     return this.popup
   }
   // 初始化地图
