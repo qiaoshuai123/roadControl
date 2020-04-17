@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Icon, Input, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { geteditDistrictInfoThing, getloadUnitNames,getdeleteDistrict } from '../../../actions/management'
-import styles from './RegiolManagement.scss'
+import { geteditDistrictInfoThing, getloadUnitNames, getdeleteDistrict } from '../../../actions/management'
+import styles from './RegiolManagementChild.scss'
 import Header from '../Header/Header'
 import CustomTree from './CustomTree/CustomTree'
 import ModalPage from './ModalPage/ModalPage'
@@ -239,7 +239,6 @@ class RegiolManagement extends Component {
     this.map = map
     this.addMarker()
   }
-
   render() {
     const {
       interMonitorLeft,
@@ -250,7 +249,7 @@ class RegiolManagement extends Component {
       interListHeight,
     } = this.state
     const { Search } = Input
-    const {loadPlanTree} =this.props.data
+    const { loadPlanTree } = this.props.data
     return (
       <div id="mapContainer" className={styles.RegiolManagementWrapper}>
         <Header {...this.props} />

@@ -74,6 +74,11 @@ const RegiolManagement = Loadable({
   loading: Loading,
   delay: 0,
 })
+const RegiolManagementChild = Loadable({
+  loader: () => import('./containers/PolicyDecision/RegiolManagementChild/RegiolManagementChild'),
+  loading: Loading,
+  delay: 0,
+})
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -89,6 +94,7 @@ const Parent = () => (
     <Route path="/interdetails/:id" component={InterDetails} />
     <Route path="/InterManagement" component={InterManagement} />
     <Route path="/RegiolManagement" component={RegiolManagement} />
+    <Route path="/RegiolManagementChild" component={RegiolManagementChild} />
   </React.Fragment>
 )
 reactDom.render(
