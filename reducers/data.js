@@ -31,11 +31,7 @@ const data = (state = {}, action) => {
     case types.GET_VIP_ROUTE: // 树形结构 父级
       return Object.assign({}, state, { loadPlanTree: payload })
     case types.GET_VIP_ROUTE_CHILD: // 树形结构 二级子
-<<<<<<< HEAD
-      return Object.assign({}, state, { chlidList: payload })
-=======
       return Object.assign({}, state, { loadChildTree: payload })
->>>>>>> 0fe28faf96447774d7dd3292eb7a6f42bc85d69d
     case types.GET_EDITDISTRICTINFOTHING:
       return Object.assign({}, state, { editDistrictInfoThings: payload })
     case types.GET_LOADUNITNAMES:
