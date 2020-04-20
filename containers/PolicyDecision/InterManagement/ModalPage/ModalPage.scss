@@ -1,7 +1,7 @@
 .ModalPageWrapper {
     width: 720px;
-    height: 633px;
-    background-color: rgba(6, 35, 79, 0.8);
+    max-height: 633px;
+    background-color: rgba(6, 35, 79, 0.9);
     position: absolute;
     font-size: 14px;
     left: 0;
@@ -10,6 +10,7 @@
     bottom: 0;
     z-index: 99;
     margin: auto;
+    border-radius: 6px;
 }
 .mountingTable {
     width: 640px;
@@ -93,30 +94,18 @@
     .mountingTd {
         flex: 1;
         display: flex;
-        .angle {
-            flex: 0.8 !important;
+        .requiredFields {
+            margin-right: 5px;
+            font-size: 15px;
+            color: #ff8800;
         }
         div {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             &:first-child {
-                width: 135px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                > span {
-                    color: white;
-                    padding-right: 4px;
-                }
-            }
-            &:last-child {
-                flex: 1;
-                // padding: 0 25px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                > span {
-                    color: white;
-                    padding-right: 4px;
-                }
+                width: 0 135px;
             }
         }
     }
