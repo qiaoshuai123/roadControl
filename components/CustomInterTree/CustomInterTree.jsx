@@ -61,7 +61,6 @@ class CustomTree extends React.Component {
     }
   }
   rightDown = (e, id, boolean) => { // 鼠标右击
-    console.log('右键进来没？')
     e.stopPropagation()
     e.preventDefault()
     const { visibleShowLeft } = this.props
