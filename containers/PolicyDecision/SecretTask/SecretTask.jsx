@@ -43,10 +43,14 @@ class SecretTask extends PureComponent {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
       }
+      this.visibleShowLeft('', '', false)
     })
   }
   componentDidUpdate = (prevState) => {
     const { interList, basicInterInfo } = this.props.data
+    if (prevState.data !== this.props.data) {
+      console.log(this.props.data)
+    }
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
     }
@@ -63,6 +67,18 @@ class SecretTask extends PureComponent {
     } else {
       this.setState({
         interMonitorLeft: 15,
+      })
+    }
+  }
+  visibleShowLeft = (top, id, show) => { // 框的跳转与位置
+    if (top || id) {
+      this.setState({
+        visible: show,
+        visibleTop: top,
+      })
+    } else {
+      this.setState({
+        visible: show,
       })
     }
   }
@@ -313,12 +329,21 @@ class SecretTask extends PureComponent {
               {...this.props}
               getSelectTreeId={this.getSelectTreeId}
               getSelectChildId={this.getSelectChildId}
+              visibleShowLeft={this.visibleShowLeft}
             />
           </div>
           {
             visible ?
               <ul style={{ top: `${visibleTop - 100}px` }} onContextMenu={this.noShow} className={styles.contextMenu}>
-                <li>查看</li>
+                <li onClick={() => {
+                  this.props.getFindRoadByVipId(100)
+                  this.props.getInitRoad({
+                    "afterStr": "",
+                    "beforStr": "",
+                    "id": "30",
+                    "orders": "123",
+                    "vipId": "100"})
+                }}>查看</li>
                 <li>删除</li>
               </ul> : null
           }
