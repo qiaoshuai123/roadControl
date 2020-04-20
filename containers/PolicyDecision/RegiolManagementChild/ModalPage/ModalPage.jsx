@@ -20,13 +20,12 @@ class ModalPage extends React.Component {
     }
     this.isShow = []
     this.details = this.props.roadDetail
-    console.log(this.props.roadDetail, 'qiaoshuaiss')
-    this.num = 1
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef
+    console.log(this.props, 'qiaoshuai ')
     this.props.getloadManageMent()
-    this.props.getloadUnitName(-1)
+    this.props.getloadUnitName(this.props.roadDetail.ID || -1)
   }
   componentDidUpdate = (prevState) => {
     const { loadManageMent, validate, loadUnitName, saveOrUpdateForm } = this.props.data
@@ -59,29 +58,42 @@ class ModalPage extends React.Component {
     }
   }
   getloadUnitName = (loadUnitName) => {
-    this.setState({
-      OptionList: loadUnitName,
-    }, () => {
-      this.detailsFun()
-    })
+    if (this.props.roadDetail.ID) {
+      this.setState({
+        OptionList: loadUnitName.districtHasnot,
+      }, () => {
+        this.detailsFun()
+      })
+    } else {
+      this.setState({
+        OptionList: loadUnitName,
+      }, () => {
+        this.detailsFun()
+      })
+    }
   }
   detailsFun = () => {
-    if (this.details) {
-      const { SubordinateUnitLsit, OptionList } = this.state
-      const name = SubordinateUnitLsit.find(item => item.ID === this.details.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
-      this.arru = []
-      this.ids = this.details.ID
-      this.details.districtHas.forEach((item) => {
-        this.arru = OptionList.filter(items => items.ID !== item.ID)
-      })
-      this.setState({
-        ManagementUnit: name,
-        CorrelationNumber: this.details.DISTRICT_NAME,
-        EquipmentModel: this.details.DISTRICT_CODE,
-        Correlationdetail: this.details.DETAIL,
-        IntersectionList: this.details.districtHas,
-        OptionList: this.arru,
-      })
+    try {
+      if (this.details) {
+        const { SubordinateUnitLsit, OptionList } = this.state
+        const name = SubordinateUnitLsit.find(item => item.ID === this.details.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
+        this.arru = OptionList
+        this.ids = this.details.ID
+        this.details.districtHas.forEach((item) => {
+          this.arru = this.arru.filter(items => items.ID !== item.ID)
+        })
+        console.log(this.arru, OptionList, this.arru || OptionList, 'qiasss')
+        this.setState({
+          ManagementUnit: name,
+          CorrelationNumber: this.details.DISTRICT_NAME,
+          EquipmentModel: this.details.DISTRICT_CODE,
+          Correlationdetail: this.details.DETAIL,
+          IntersectionList: this.details.districtHas,
+          OptionList: this.arru,
+        })
+      }
+    } catch (error) {
+      // window.location.reload()
     }
   }
   changValue = (e) => { // 页面所有input框改变触发
@@ -152,7 +164,29 @@ class ModalPage extends React.Component {
       OptionList,
     })
   }
-  modifyOk = () => { // 区域编号修改
+  isFormParameters = (obj) => {
+    const arr = Object.keys(obj)
+    console.log(arr[0])
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === 'districtId') {
+        if (obj.districtId === '' || obj.districtId === null) {
+          console.log(obj.districtId)
+          return message.error('请输入区域编号')
+        }
+      }
+      if (arr[i] === 'districtName') {
+        if (obj.districtName === '' || obj.districtName === null) {
+          return message.error('请输入区域名称')
+        }
+      }
+      if (arr[i] === 'detail') {
+        if (obj.detail === '' || obj.detail === null) {
+          return message.error('请输入描述')
+        }
+      }
+    }
+  }
+  modifyOk = async () => { // 区域编号修改
     const {
       EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
     } = this.state
@@ -162,24 +196,27 @@ class ModalPage extends React.Component {
     })
     const strLength = str.slice(0, str.length - 1)
     const obj = {
-      detail: Correlationdetail,
       districtId: EquipmentModel,
       districtName: CorrelationNumber,
+      detail: Correlationdetail,
       id: this.ids,
       management: `${this.ManagementUnitName}`,
-      sureId: '',
+      sureId: 'inserdPage',
       trueId: EquipmentModel,
       unitArr: strLength,
     }
-    this.props.getsaveOrUpdateForm(obj).then((res) => {
-      const { code } = res.data
-      if (code === 200) {
-        this.handleCancel()
-        message.success('修改成功')
-      }
-    })
+    const modifyImg = await this.isFormParameters(obj)
+    if (!modifyImg) {
+      this.props.getsaveOrUpdateForm(obj).then((res) => {
+        const { code } = res.data
+        if (code === 200) {
+          this.handleCancel()
+          message.success('修改成功')
+        }
+      })
+    }
   }
-  handleOk = () => { // 区域编号提交
+  handleOk = async () => { // 区域编号提交
     const {
       EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
     } = this.state
@@ -189,22 +226,25 @@ class ModalPage extends React.Component {
     })
     const strLength = str.slice(0, str.length - 1)
     const obj = {
-      detail: Correlationdetail,
       districtId: EquipmentModel,
       districtName: CorrelationNumber,
+      detail: Correlationdetail,
       id: '',
       management: `${this.ManagementUnitName}`,
       sureId: 'addPage',
       trueId: EquipmentModel,
       unitArr: strLength,
     }
-    this.props.getsaveOrUpdateForm(obj).then((res) => {
-      const { code } = res.data
-      if (code === 200) {
-        this.handleCancel()
-        message.success('添加成功')
-      }
-    })
+    const addImg = await this.isFormParameters(obj)
+    if (!addImg) {
+      this.props.getsaveOrUpdateForm(obj).then((res) => {
+        const { code } = res.data
+        if (code === 200) {
+          this.handleCancel()
+          message.success('添加成功')
+        }
+      })
+    }
   }
   render() {
     const {

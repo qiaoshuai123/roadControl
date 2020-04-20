@@ -32,6 +32,12 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { vipRouteList: payload })
     case types.GET_VIP_ROUTE_CHILD: // 树形结构 二级子
       return Object.assign({}, state, { chlidList: payload })
+    case types.GET_EDITDISTRICTINFOTHING:
+      return Object.assign({}, state, { editDistrictInfoThings: payload })
+    case types.GET_LOADUNITNAMES:
+      return Object.assign({}, state, { loadUnitNames: payload })
+    case types.GET_DELETEDISTRICT:
+      return Object.assign({}, state, { deleteDistrict: payload })
     default:
       return state
   }
