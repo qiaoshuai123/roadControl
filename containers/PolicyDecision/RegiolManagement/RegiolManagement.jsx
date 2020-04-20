@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { Icon, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import CustomInterTree from './CustomTree/CustomTree'
+import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import styles from './RegiolManagement.scss'
 
 import Header from '../Header/Header'
-import ModalPage from './ModalPage/ModalPage'
+import ModalPage from '../InterManagement/ModalPage/ModalPage'
+import ModalPages from './ModalPage/ModalPage'
 
 import InfoBg from './img/info_bg.png'
 
-import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings, getloadUnitNames,getdeleteDistrict } from '../../../actions/data'
+import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings, getloadUnitNames, getdeleteDistrict } from '../../../actions/data'
 import { getUnitInterInfo } from '../../../actions/InterManage'
 
 class RegiolManagement extends Component {
@@ -23,6 +24,7 @@ class RegiolManagement extends Component {
       visibleTop: 0,
       isModalPage: false,
       visible: false,
+      showAreaMsg: false,
     }
     this.markers = []
     this.searchInterList = []
@@ -31,7 +33,6 @@ class RegiolManagement extends Component {
     this.renderMineMap()
     this.props.getInterList()
     this.props.getLoadPlanTree()
-    this.props.getUnitInterInfo(5)
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -39,7 +40,7 @@ class RegiolManagement extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, editDistrictInfoThings,loadUnitNames } = this.props.data
+    const { interList, basicInterInfo, editDistrictInfoThings, loadUnitNames } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
@@ -57,6 +58,7 @@ class RegiolManagement extends Component {
     this.roadDetail.districtHas = loadUnitNames.districtHas
     this.setState({
       isModalPage: true,
+      showAreaMsg: true,
     })
   }
   geteditDistrictInfoThings = (editDistrictInfoThing) => {
@@ -241,7 +243,7 @@ class RegiolManagement extends Component {
           </div>
         </div>
         <div style="height:40px;display:flex;justify-content:center;align-items:center;">
-          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口信息</div>
         </div>
       </div>
     `
@@ -251,7 +253,8 @@ class RegiolManagement extends Component {
       .addTo(this.map)
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
-        window.open(`#/interdetails/${interId}`)
+        this.setState({ isModalPage: true })
+        this.props.getUnitInterInfo(interId) // 获取路口信息
       })
     }
     return this.popup
@@ -272,7 +275,7 @@ class RegiolManagement extends Component {
 
   render() {
     const {
-      interMonitorLeft, isModalPage, searchInterList, interListHeight, visible, visibleTop,
+      interMonitorLeft, isModalPage, searchInterList, interListHeight, visible, visibleTop, showAreaMsg
     } = this.state
     return (
       <div id="mapContainer" className={styles.InterManagementWrapper}>
@@ -338,7 +341,11 @@ class RegiolManagement extends Component {
           }
         </div>
         {
-          isModalPage && <ModalPage roadDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
+          // isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
+        }
+        {
+          isModalPage &&
+          // <ModalPages roaddDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
         }
       </div >
     )

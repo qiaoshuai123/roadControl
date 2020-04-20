@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Icon, Input, message } from 'antd'
+import { Icon, Input, message, DatePicker, Select } from 'antd'
+import moment from 'moment'
 import styles from './SecretTask.scss'
 import Header from '../Header/Header'
 // import CustomTree from './CustomTree/CustomTree'
@@ -14,7 +15,7 @@ import OnlineH from '../SignalHome/img/online_h.png'
 import OutlineH from '../SignalHome/img/outline_h.png'
 import OnlineS from '../SignalHome/img/online_s.png'
 import OutlineS from '../SignalHome/img/ouline_s.png'
-
+const { Option } = Select
 class SecretTask extends PureComponent {
   constructor(props) {
     super(props)
@@ -30,6 +31,10 @@ class SecretTask extends PureComponent {
       visibleLeft: 0,
       vipRouteList: null,
       searchVal: '',
+      popSecreTask: true,
+      startValue: null,
+      endValue: null,
+      endOpen: false,
     }
     this.searchInterList = []
     this.markers = []
@@ -251,6 +256,40 @@ class SecretTask extends PureComponent {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
+  onStartChange = (value) => {
+    this.onPickerChange('startValue', value)
+  }
+  onEndChange = (value) => {
+    this.onPickerChange('endValue', value)
+  }
+  onPickerChange = (field, value) => {
+    this.setState({
+      [field]: value ? this.getDate(value._d) : '',
+    })
+  }
+  disabledStartDate = (startValue) => {
+    const { endValue } = this.state
+    if (!startValue || !endValue) {
+      return false
+    }
+    return startValue.valueOf() > endValue.valueOf()
+  }
+  disabledEndDate = (endValue) => {
+    const { startValue } = this.state
+    if (!endValue || !startValue) {
+      return false
+    }
+    return endValue.valueOf() <= startValue.valueOf()
+  }
+  handleStartOpenChange = (open) => {
+    if (!open) {
+      this.setState({ endOpen: true })
+    }
+  }
+  handleEndOpenChange = (open) => {
+    this.setState({ endOpen: open })
+  }
+
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -270,7 +309,7 @@ class SecretTask extends PureComponent {
       visible,
       visibleTop,
       vipRouteList,
-      interListHeight, searchInterList, searchVal
+      interListHeight, searchInterList, searchVal, popSecreTask, startValue, endValue,
     } = this.state
     const { Search } = Input
     return (
@@ -348,6 +387,119 @@ class SecretTask extends PureComponent {
               </ul> : null
           }
         </div>
+        {
+          popSecreTask ?
+            <div className={styles.MaskBox}>
+              <div className={styles.secretTaskBox}>
+                <div className={styles.title}>特勤任务 <Icon className={styles.Close} type='close' /></div>
+                <div className={styles.secretTaskCon}>
+                  <div className={styles.conTop}>
+                    <div className={styles.formBox}><span>勤务名称：</span><Input style={{width: '100px'}} onChange={this.changeFont} placeholder="请输入勤务名称" /></div>
+                    <div className={styles.formBox}><span>备注描述：</span><Input onChange={this.changeRegion} placeholder="请输入备注描述" /></div>
+                    <div className={styles.formBox}><span>计划时间：</span>
+                      <DatePicker
+                        disabledDate={this.disabledStartDate}
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value={startValue ? moment(startValue, 'YYYY-MM-DD HH:mm:ss') : startValue}
+                        placeholder="开始时间"
+                        onChange={this.onStartChange}
+                        onOpenChange={this.handleStartOpenChange}
+                      />
+                      <span style={{margin:'0 5px'}}>-</span>
+                      <DatePicker
+                        disabledDate={this.disabledEndDate}
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value={endValue ? moment(endValue, 'YYYY-MM-DD HH:mm:ss') : endValue}
+                        placeholder="结束时间"
+                        onChange={this.onEndChange}
+                        onOpenChange={this.handleEndOpenChange}
+                      />
+                        </div>
+                  </div>
+                  <div className={styles.conLeft}>
+                    <div className={styles.titleSmall}>勤务路口<em>添加路口</em></div>
+                    <div className={styles.leftItem}>
+                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                      <div className={styles.itemCon}>
+                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
+                        <div className={styles.imgBox}>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                        </div>
+                      </div>
+                      <div className={styles.formBox}><span>预设勤务阶段：</span>
+                        <Select defaultValue="0">
+                          <Option value='0'>请选择</Option>
+                        </Select>
+                        <em>保&nbsp;&nbsp;存</em>
+                      </div>
+                    </div>
+                    <div className={styles.leftItem}>
+                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                      <div className={styles.itemCon}>
+                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
+                        <div className={styles.imgBox}>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                        </div>
+                      </div>
+                      <div className={styles.formBox}><span>预设勤务阶段：</span>
+                        <Select defaultValue="0">
+                          <Option value='0'>请选择</Option>
+                        </Select>
+                        <em>保&nbsp;&nbsp;存</em>
+                      </div>
+                    </div>
+                    <div className={styles.leftItem}>
+                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                      <div className={styles.itemCon}>
+                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
+                        <div className={styles.imgBox}>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                        </div>
+                      </div>
+                      <div className={styles.formBox}><span>预设勤务阶段：</span>
+                        <Select defaultValue="0">
+                          <Option value='0'>请选择</Option>
+                        </Select>
+                        <em>保&nbsp;&nbsp;存</em>
+                      </div>
+                    </div>
+                    <div className={styles.leftItem}>
+                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                      <div className={styles.itemCon}>
+                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
+                        <div className={styles.imgBox}>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                          <div className={styles.dirItem}>方向</div>
+                        </div>
+                      </div>
+                      <div className={styles.formBox}><span>预设勤务阶段：</span>
+                        <Select defaultValue="0">
+                          <Option value='0'>请选择</Option>
+                        </Select>
+                        <em>保&nbsp;&nbsp;存</em>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.conRight}>
+                    <div className={styles.titleSmall}>勤务路线<em>保存路线</em></div>
+                  </div>
+                </div>
+              </div>
+            </div> : null
+        }
       </div>
     )
   }

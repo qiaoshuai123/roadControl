@@ -54,8 +54,10 @@ class CustomTree extends React.Component {
   handleTreeChildSelect = (e) => {
     e.stopPropagation()
     const id = Number(e.currentTarget.getAttribute('id'))
+    const lng = Number(e.currentTarget.getAttribute('lng'))
+    const lat = Number(e.currentTarget.getAttribute('lat'))
     if (id) {
-      this.props.getSelectChildId(id)
+      this.props.getSelectChildId(id, lng, lat)
     }
   }
   rightDown = (e, id, boolean) => { // 鼠标右击
@@ -96,7 +98,7 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} onMouseDown={(e) => this.rightDown(e, '', false)} key={item.ID} id={item.ID} onClick={this.handleTreeChildSelect}>
+          <li className={styles.childLi} onMouseDown={(e) => { this.rightDown(e, '', false) }} key={item.ID} id={item.ID} onClick={this.handleTreeChildSelect}>
             <span className={styles.childIcon}><Icon type="environment" theme="filled" /></span>
             <span title={item.NAME} className={styles.childNode}>{item.NAME}</span>
           </li>
@@ -122,7 +124,7 @@ class CustomTree extends React.Component {
                       {
                         this.state.defaultChildren[index].length > 0 ?
                           loop(this.state.defaultChildren[index]) :
-                          <li className={styles.childLi} onClick={this.handleTreeChildSelect}>
+                          <li className={styles.childLi}>
                             <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                             <span className={styles.childNode}>暂无数据</span>
                           </li>

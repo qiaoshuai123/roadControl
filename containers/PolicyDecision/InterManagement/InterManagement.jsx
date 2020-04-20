@@ -28,10 +28,8 @@ class InterManagement extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    console.log(this.props)
     this.props.getInterList()
     this.props.getLoadPlanTree()
-    this.props.getUnitInterInfo(5)
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -39,7 +37,7 @@ class InterManagement extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo } = this.props.data
+    const { interList, basicInterInfo, unitInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
@@ -61,9 +59,12 @@ class InterManagement extends Component {
     this.props.getLoadChildTree(id)
   }
   // 获取子id, 路口id
-  getSelectChildId = (chidlId) => {
+  getSelectChildId = (chidlId, lng, lat) => {
     const marker = document.getElementById('marker' + chidlId)
-    marker.click()
+    if (marker) {
+      this.map.setCenter([lng, lat])
+      marker.click()
+    }
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
@@ -195,7 +196,7 @@ class InterManagement extends Component {
           </div>
         </div>
         <div style="height:40px;display:flex;justify-content:center;align-items:center;">
-          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口信息</div>
         </div>
       </div>
     `
@@ -205,7 +206,8 @@ class InterManagement extends Component {
       .addTo(this.map)
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
-        window.open(`#/interdetails/${interId}`)
+        this.setState({ isModalPage: true })
+        this.props.getUnitInterInfo(interId) // 获取路口信息
       })
     }
     return this.popup
@@ -286,7 +288,7 @@ class InterManagement extends Component {
           </div>
         </div>
         {
-          isModalPage && <ModalPage isShowModalPage={this.isShowModalPage} />
+          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
         }
       </div >
     )
