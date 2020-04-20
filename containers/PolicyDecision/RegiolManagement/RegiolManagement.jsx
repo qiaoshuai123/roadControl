@@ -57,7 +57,6 @@ class RegiolManagement extends Component {
   getloadUnitNames = (loadUnitNames) => {
     this.roadDetail.districtHas = loadUnitNames.districtHas
     this.setState({
-      isModalPage: true,
       showAreaMsg: true,
     })
   }
@@ -96,7 +95,7 @@ class RegiolManagement extends Component {
   addIntersection = () => { // 添加路口
     this.roadDetail = ''
     this.setState({
-      isModalPage: true,
+      showAreaMsg: true,
     })
   }
   delectRoad = () => { // 删除路段
@@ -175,7 +174,7 @@ class RegiolManagement extends Component {
     e.preventDefault()
   }
   isShowModalPage = () => { // 取消弹窗页面
-    this.setState({ isModalPage: false })
+    this.setState({ showAreaMsg: false })
   }
   // 添加坐标点
   addMarker = (interList) => {
@@ -275,7 +274,7 @@ class RegiolManagement extends Component {
 
   render() {
     const {
-      interMonitorLeft, isModalPage, searchInterList, interListHeight, visible, visibleTop, showAreaMsg
+      interMonitorLeft, isModalPage, searchInterList, interListHeight, visible, visibleTop, showAreaMsg,
     } = this.state
     return (
       <div id="mapContainer" className={styles.InterManagementWrapper}>
@@ -341,11 +340,10 @@ class RegiolManagement extends Component {
           }
         </div>
         {
-          // isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
+          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
         }
         {
-          isModalPage &&
-          <ModalPages roaddDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
+          showAreaMsg && <ModalPages roadDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
         }
       </div >
     )
