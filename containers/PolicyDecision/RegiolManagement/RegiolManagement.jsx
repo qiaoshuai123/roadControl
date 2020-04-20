@@ -174,7 +174,7 @@ class RegiolManagement extends Component {
     e.preventDefault()
   }
   isShowModalPage = () => { // 取消弹窗页面
-    this.setState({ showAreaMsg: false })
+    this.setState({ showAreaMsg: false, isModalPage: false })
   }
   // 添加坐标点
   addMarker = (interList) => {
