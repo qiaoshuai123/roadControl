@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Icon, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import CustomInterTree from './CustomTree/CustomTree'
+import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import styles from './RegiolManagement.scss'
 
 import Header from '../Header/Header'
@@ -251,7 +251,7 @@ class RegiolManagement extends Component {
       .addTo(this.map)
     if (document.getElementById(id)) {
       document.getElementById(id).addEventListener('click', () => {
-        window.open(`#/interdetails/${interId}`)
+        // window.open(`#/interdetails/${interId}`)
       })
     }
     return this.popup
