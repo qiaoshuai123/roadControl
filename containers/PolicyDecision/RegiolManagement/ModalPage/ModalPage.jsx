@@ -19,7 +19,7 @@ class ModalPage extends React.Component {
       OptionList: [], // 选择路口列表
     }
     this.isShow = []
-    this.details = this.props.roadDetail
+    this.details = this.props.roaddDetail
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef

@@ -345,7 +345,7 @@ class RegiolManagement extends Component {
         }
         {
           isModalPage &&
-          // <ModalPages roaddDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
+          <ModalPages roaddDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
         }
       </div >
     )
