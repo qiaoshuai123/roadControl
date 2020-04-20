@@ -44,6 +44,7 @@ export const getFindRoadByVipId = ( vipId ) => async (dispatch) => {
   try {
     const result = await RestUtil.get(`${API_VIP_FIND_ROADBYVIPID}/${vipId}`)
     if (result.data.code === 200) {
+      debugger
       dispatch({ type: types.GET_VIP_FIND_ROADBYVIPID, payload: result.data.data })
     } else {
       console.error(result.data.message)
@@ -64,9 +65,9 @@ export const getFindList = (vipId) => async (dispatch) => {
     console.log(e)
   }
 }
-export const getInitRoad = () => async (dispatch) => {
+export const getInitRoad = ( vipInfo ) => async (dispatch) => {
   try {
-    const result = await RestUtil.post(`${API_VIP_INITROAD}`)
+    const result = await RestUtil.post(`${API_VIP_INITROAD}`, vipInfo)
     if (result.data.code === 200) {
       dispatch({ type: types.POST_VIP_INITROAD, payload: result.data.data })
     } else {

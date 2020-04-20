@@ -8,6 +8,7 @@ class CustomTree extends React.Component {
     super(props)
     this.state = {
       expendsKey: [],
+      visible: 0, // 右键菜单
       loadPlanTree: null,
       defaultChildren: null,
     }
@@ -46,6 +47,7 @@ class CustomTree extends React.Component {
     } else {
       this.state.expendsKey.push(id)
     }
+    this.props.visibleShowLeft('', '', false)
     this.setState({ expendsKey: this.state.expendsKey })
     this.props.getSelectTreeId(id)
   }
@@ -57,6 +59,24 @@ class CustomTree extends React.Component {
     if (id) {
       this.props.getSelectChildId(id, lng, lat)
     }
+  }
+  rightDown = (e, id, boolean) => { // 鼠标右击
+    console.log('右键进来没？')
+    e.stopPropagation()
+    e.preventDefault()
+    const { visibleShowLeft } = this.props
+    if (boolean) {
+      const top = e.pageY
+      if (e.button === 2) {
+        visibleShowLeft(top, id, true)
+      }
+    } else {
+      visibleShowLeft('', '', false)
+    }
+  }
+  noShow = (e) => { // 禁止默认右键菜单
+    e.stopPropagation()
+    e.preventDefault()
   }
   render() {
     const { expendsKey, loadPlanTree } = this.state
@@ -78,7 +98,7 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} key={item.ID} id={item.ID} lng={item.LONGITUDE} lat={item.LATITUDE} onClick={this.handleTreeChildSelect}>
+          <li className={styles.childLi} onMouseDown={(e) => { this.rightDown(e, '', false) }} key={item.ID} id={item.ID} onClick={this.handleTreeChildSelect}>
             <span className={styles.childIcon}><Icon type="environment" theme="filled" /></span>
             <span title={item.NAME} className={styles.childNode}>{item.NAME}</span>
           </li>
@@ -93,11 +113,11 @@ class CustomTree extends React.Component {
             loadPlanTree.map((item, index) => {
               const isOpen = expendsKey.indexOf(item.ID) >= 0
               return (
-                <li className={styles.treeLi} key={item.ID} id={item.ID} itemindex={index} onClick={this.handleTreeSelect}>
+                <li className={styles.treeLi} key={item.ID} id={item.ID} itemindex={index} onContextMenu={this.noShow} onClick={this.handleTreeSelect}>
                   <span className={styles.treeIcon}>
                     <span className={styles.childIcon}><Icon type={isOpen ? 'minus-circle' : 'plus-circle'} /></span>
                   </span>
-                  <span title={item.NAME} className={styles.childNode}>{item.NAME}</span>
+                  <span title={item.NAME} className={styles.childNode} onMouseDown={e => this.rightDown(e, item.ID, true)}>{item.NAME}</span>
                   {
                     isOpen &&
                     <ul className={styles.childTree} key={item.ID}>

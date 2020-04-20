@@ -15,8 +15,6 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { saveOrUpdateForm: payload })
     case types.GET_LOADPLANTREE:
       return Object.assign({}, state, { loadPlanTree: payload })
-    case types.GET_EDITDISTRICTINFOTHING:
-      return Object.assign({}, state, { editDistrictInfoThing: payload })
     case types.GET_DELETEDISTRICT:
       return Object.assign({}, state, { deleteDistrict: payload })
     default:
