@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react'
 import { Icon, Input, message } from 'antd'
 import styles from './SecretTask.scss'
 import Header from '../Header/Header'
-// import CustomTree from './CustomTree/CustomTree'
-import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
+import CustomTree from './CustomTree/CustomTree'
 import InfoBg from './img/Infobg.png'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -46,14 +45,30 @@ class SecretTask extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo } = this.props.data
+    if (prevState.data !== this.props.data) {
+      console.log(this.props)
+    }
+    const { vipRouteList, interList, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
+    }
+    if (prevState.data.vipRouteList !== vipRouteList) {
+      vipRouteList.map((item, i) => {
+        item.children = []
+        this.props.getVipRouteChild(item.ID).then(()=>{
+          vipRouteList[i].children = this.props.data.chlidList
+          this.getVipRoute(vipRouteList)
+        })
+      })
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
     }
-
+  }
+  getVipRoute = (data) => {
+    this.setState({
+      vipRouteList: data,
+    })
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -66,9 +81,24 @@ class SecretTask extends PureComponent {
       })
     }
   }
+  visibleShowLeft = (top, id, show) => { // 框的跳转与位置
+    if (top || id) {
+      this.setState({
+        visible: show,
+        visibleTop: top,
+      })
+    } else {
+      this.setState({
+        visible: show,
+      })
+    }
+  }
   noShow = (e) => { // 禁止默认右键菜单
     e.stopPropagation()
     e.preventDefault()
+  }
+  getChildInfo = (vipId) => {
+    this.props.secretTask.getChildInfo(vipId)
   }
   // 路口列表
   getInterList = (interList) => {
@@ -79,28 +109,6 @@ class SecretTask extends PureComponent {
     }, () => {
       this.addMarker(interList)
     })
-  }
-  // 从子集获取区域id和index 请求路口
-  getSelectTreeId = (id) => {
-    this.props.getVipRouteChild(id)
-  }
-  // 获取子id, 路口id
-  getSelectChildId = (childId) => {
-    const childrenArr = this.props.data.loadChildTree
-    const marker = document.getElementById('marker' + childId)
-    let lng, lat;
-    childrenArr.map((item) => {
-      if (childId === item.ID) {
-        lng = item.LONGITUDE
-        lat = item.LATITUDE
-      }
-    })
-    if (marker && this.map) {
-      this.map.setCenter([lng, lat])
-      marker.click()
-    } else {
-      message.info('该路口尚未接入')
-    }
   }
   // 添加坐标点
   addMarker = (interList) => {
@@ -203,6 +211,7 @@ class SecretTask extends PureComponent {
     const marker = document.getElementById('marker' + interId)
     const lng = e.currentTarget.getAttribute('lng')
     const lat = e.currentTarget.getAttribute('lat')
+    debugger
     const interName = e.target.innerText
     if (marker && this.map) {
       this.map.setCenter([lng, lat])
@@ -308,12 +317,7 @@ class SecretTask extends PureComponent {
             <span>快速特勤任务</span>
           </div>
           <div className={styles.treeBox}>
-            {/* <CustomTree visibleShowLeft={this.visibleShowLeft} vipRouteList={vipRouteList} getChildInfo={this.getChildInfo} hanleSelectInter={this.hanleSelectInter} /> */}
-            <CustomInterTree
-              {...this.props}
-              getSelectTreeId={this.getSelectTreeId}
-              getSelectChildId={this.getSelectChildId}
-            />
+            <CustomTree visibleShowLeft={this.visibleShowLeft} vipRouteList={vipRouteList} getChildInfo={this.getChildInfo} hanleSelectInter={this.hanleSelectInter} />
           </div>
           {
             visible ?
@@ -329,7 +333,8 @@ class SecretTask extends PureComponent {
 }
 const mapStateToProps = (state) => {
   return {
-    data: { ...state.data, ...state.secretTask },
+    data: state.data,
+    secretTask: state.secretTask,
   }
 }
 const mapDisPatchToProps = (dispatch) => {
