@@ -19,7 +19,7 @@ class ModalPage extends React.Component {
       OptionList: [], // 选择路口列表
     }
     this.isShow = []
-    this.details = this.props.roadDetail
+    this.details = this.props.roaddDetail
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef
@@ -253,84 +253,86 @@ class ModalPage extends React.Component {
     } = this.state
     const { Option } = Select
     return (
-      <div className={styles.ModalPageWrapper}>
-        <div className={styles.mountingTable}>
-          <div className={styles.mountingTbody}>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
-              <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
-            </div>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
-                <div>
-                  <Select
-                    style={{ width: '100%' }}
-                    // optionFilterProp="children"
-                    value={ManagementUnit}
-                    onChange={this.sInstallationLocations}
-                  >
-                    {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
-                      <Option value={item.USER_GROUP_NAME} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
-                  </Select>
-                </div>
+      <div className={styles.ModalPageWrapperBox}>
+        <div className={styles.ModalPageWrapper}>
+          <div className={styles.mountingTable}>
+            <div className={styles.mountingTbody}>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
+                <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
               </div>
-              <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
-            </div>
-            <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
-              <div className={styles.mountingTd}>
-                <div><span>*</span>选择路口</div>
-                <div className={styles.boxtd}>
-                  <Select
-                    mode="multiple"
-                    showSearch
-                    optionFilterProp="children"
-                    style={{ width: '100%' }}
-                    value={dateListValues}
-                    placeholder="请选择路口"
-                    // defaultValue={['a10', 'c12']}
-                    onChange={this.handleChange}
-                  >{
-                      OptionList && OptionList.map(item => <Option key={item.ID}>{item.UNIT_NAME}</Option>)
-                    }
-                  </Select>
-                </div>
-              </div>
-              <div className={styles.mountingTd}>
-                <div className={styles.fontstyle}>
-                  <li> <b onClick={this.addList}>添加方向</b></li>
-                </div>
-              </div>
-            </div>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTdx}>路口名称</div>
-              <div className={styles.mountingTdx}>操作</div>
-            </div>
-            <div className={styles.boxers} >
-              {
-                IntersectionList && IntersectionList.map(item => (
-                  <div key={item.ID} className={styles.mountingTr}>
-                    <div className={styles.mountingTdx}>{item.UNIT_NAME}</div>
-                    <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item)}>移除</span></div>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
+                  <div>
+                    <Select
+                      style={{ width: '100%' }}
+                      // optionFilterProp="children"
+                      value={ManagementUnit}
+                      onChange={this.sInstallationLocations}
+                    >
+                      {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
+                        <Option value={item.USER_GROUP_NAME} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
+                    </Select>
                   </div>
-                ))
+                </div>
+                <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
+              </div>
+              <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
+                <div className={styles.mountingTd}>
+                  <div><span>*</span>选择路口</div>
+                  <div className={styles.boxtd}>
+                    <Select
+                      mode="multiple"
+                      showSearch
+                      optionFilterProp="children"
+                      style={{ width: '100%' }}
+                      value={dateListValues}
+                      placeholder="请选择路口"
+                      // defaultValue={['a10', 'c12']}
+                      onChange={this.handleChange}
+                    >{
+                        OptionList && OptionList.map(item => <Option key={item.ID}>{item.UNIT_NAME}</Option>)
+                      }
+                    </Select>
+                  </div>
+                </div>
+                <div className={styles.mountingTd}>
+                  <div className={styles.fontstyle}>
+                    <li> <b onClick={this.addList}>添加方向</b></li>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTdx}>路口名称</div>
+                <div className={styles.mountingTdx}>操作</div>
+              </div>
+              <div className={styles.boxers} >
+                {
+                  IntersectionList && IntersectionList.map(item => (
+                    <div key={item.ID} className={styles.mountingTr}>
+                      <div className={styles.mountingTdx}>{item.UNIT_NAME}</div>
+                      <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item)}>移除</span></div>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+            <div className={styles.mountingTableBottom}>
+              <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
+              {
+                this.details ?
+                  <span onClick={this.modifyOk}>
+                    修改
+                  </span> :
+                  <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>
+                    确定
+                  </span>
               }
             </div>
           </div>
-          <div className={styles.mountingTableBottom}>
-            <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
-            {
-              this.details ?
-                <span onClick={this.modifyOk}>
-                  修改
-                </span> :
-                <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>
-                  确定
-                </span>
-            }
-
-          </div>
         </div>
       </div>
+
     )
   }
 }

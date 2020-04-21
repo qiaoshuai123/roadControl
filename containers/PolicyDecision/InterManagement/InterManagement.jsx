@@ -28,7 +28,6 @@ class InterManagement extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getInterList()
     this.props.getLoadPlanTree()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
@@ -37,7 +36,7 @@ class InterManagement extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, unitInterInfo } = this.props.data
+    const { interList, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
@@ -224,6 +223,9 @@ class InterManagement extends Component {
       minZoom: 3,
     })
     this.map = map
+    this.map.on('load', () => {
+      this.props.getInterList()
+    })
   }
 
   render() {
