@@ -2,7 +2,7 @@ import React from 'react'
 import { Input, Select, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getloadManageMent, getvalidate, getloadUnitName, getsaveOrUpdateForm } from '../../../../actions/management'
+import { getloadManageMent, getsubvalidate, getsubloadUnitName, getsubsaveOrUpdateForm } from '../../../../actions/management'
 import styles from './ModalPage.scss'
 
 class ModalPage extends React.Component {
@@ -25,7 +25,7 @@ class ModalPage extends React.Component {
     // eslint-disable-next-line no-undef
     console.log(this.props, 'qiaoshuai ')
     this.props.getloadManageMent()
-    this.props.getloadUnitName(this.props.roadDetail.ID || -1)
+    this.props.getsubloadUnitName(this.props.roadDetail.ID || -1)
   }
   componentDidUpdate = (prevState) => {
     const { loadManageMent, validate, loadUnitName, saveOrUpdateForm } = this.props.data
@@ -33,13 +33,13 @@ class ModalPage extends React.Component {
       this.getloadManageMent(loadManageMent)
     }
     if (prevState.data.validate !== validate) {
-      this.getvalidate(validate)
+      this.getsubvalidate(validate)
     }
     if (prevState.data.loadUnitName !== loadUnitName) {
-      this.getloadUnitName(loadUnitName)
+      this.getsubloadUnitName(loadUnitName)
     }
     if (prevState.data.saveOrUpdateForm !== saveOrUpdateForm) {
-      this.getsaveOrUpdateForm(saveOrUpdateForm)
+      this.getsubsaveOrUpdateForm(saveOrUpdateForm)
     }
   }
   getloadManageMent = (loadManageMent) => {
@@ -49,7 +49,7 @@ class ModalPage extends React.Component {
     })
     this.ManagementUnitName = loadManageMent[0].ID
   }
-  getvalidate = (validate) => {
+  getsubvalidate = (validate) => {
     if (validate) {
       message.error('该区域编号已经存在')
       this.isvalidate = false
@@ -57,7 +57,7 @@ class ModalPage extends React.Component {
       this.isvalidate = true
     }
   }
-  getloadUnitName = (loadUnitName) => {
+  getsubloadUnitName = (loadUnitName) => {
     if (this.props.roadDetail.ID) {
       this.setState({
         OptionList: loadUnitName.districtHasnot,
@@ -73,6 +73,7 @@ class ModalPage extends React.Component {
     }
   }
   detailsFun = () => {
+    console.log(123456,this.details)
     try {
       if (this.details) {
         const { SubordinateUnitLsit, OptionList } = this.state
@@ -82,7 +83,7 @@ class ModalPage extends React.Component {
         this.details.districtHas.forEach((item) => {
           this.arru = this.arru.filter(items => items.ID !== item.ID)
         })
-        console.log(this.arru, OptionList, this.arru || OptionList, 'qiasss')
+        console.log(this.details, this.arru, OptionList, this.arru || OptionList, 'qiasss')
         this.setState({
           ManagementUnit: name,
           CorrelationNumber: this.details.DISTRICT_NAME,
@@ -104,7 +105,7 @@ class ModalPage extends React.Component {
   }
   blurchange = () => { // 首个input框失去焦点事件
     const { EquipmentModel } = this.state
-    this.props.getvalidate(EquipmentModel)
+    this.props.getsubvalidate(EquipmentModel)
   }
   inpvalue = (e) => {
     console.log(e, 'sss')
@@ -207,7 +208,7 @@ class ModalPage extends React.Component {
     }
     const modifyImg = await this.isFormParameters(obj)
     if (!modifyImg) {
-      this.props.getsaveOrUpdateForm(obj).then((res) => {
+      this.props.getsubsaveOrUpdateForm(obj).then((res) => {
         const { code } = res.data
         if (code === 200) {
           this.handleCancel()
@@ -237,7 +238,7 @@ class ModalPage extends React.Component {
     }
     const addImg = await this.isFormParameters(obj)
     if (!addImg) {
-      this.props.getsaveOrUpdateForm(obj).then((res) => {
+      this.props.getsubsaveOrUpdateForm(obj).then((res) => {
         const { code } = res.data
         if (code === 200) {
           this.handleCancel()
@@ -253,84 +254,86 @@ class ModalPage extends React.Component {
     } = this.state
     const { Option } = Select
     return (
-      <div className={styles.ModalPageWrapper}>
-        <div className={styles.mountingTable}>
-          <div className={styles.mountingTbody}>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
-              <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
-            </div>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
-                <div>
-                  <Select
-                    style={{ width: '100%' }}
-                    // optionFilterProp="children"
-                    value={ManagementUnit}
-                    onChange={this.sInstallationLocations}
-                  >
-                    {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
-                      <Option value={item.USER_GROUP_NAME} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
-                  </Select>
-                </div>
+      <div className={styles.ModalPageWrapperBox}>
+        <div className={styles.ModalPageWrapper}>
+          <div className={styles.mountingTable}>
+            <div className={styles.mountingTbody}>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
+                <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
               </div>
-              <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
-            </div>
-            <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
-              <div className={styles.mountingTd}>
-                <div><span>*</span>选择路口</div>
-                <div className={styles.boxtd}>
-                  <Select
-                    mode="multiple"
-                    showSearch
-                    optionFilterProp="children"
-                    style={{ width: '100%' }}
-                    value={dateListValues}
-                    placeholder="请选择路口"
-                    // defaultValue={['a10', 'c12']}
-                    onChange={this.handleChange}
-                  >{
-                      OptionList && OptionList.map(item => <Option key={item.ID}>{item.UNIT_NAME}</Option>)
-                    }
-                  </Select>
-                </div>
-              </div>
-              <div className={styles.mountingTd}>
-                <div className={styles.fontstyle}>
-                  <li> <b onClick={this.addList}>添加方向</b></li>
-                </div>
-              </div>
-            </div>
-            <div className={styles.mountingTr}>
-              <div className={styles.mountingTdx}>路口名称</div>
-              <div className={styles.mountingTdx}>操作</div>
-            </div>
-            <div className={styles.boxers} >
-              {
-                IntersectionList && IntersectionList.map(item => (
-                  <div key={item.ID} className={styles.mountingTr}>
-                    <div className={styles.mountingTdx}>{item.UNIT_NAME}</div>
-                    <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item)}>移除</span></div>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
+                  <div>
+                    <Select
+                      style={{ width: '100%' }}
+                      // optionFilterProp="children"
+                      value={ManagementUnit}
+                      onChange={this.sInstallationLocations}
+                    >
+                      {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
+                        <Option value={item.USER_GROUP_NAME} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
+                    </Select>
                   </div>
-                ))
+                </div>
+                <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
+              </div>
+              <div className={`${styles.mountingTr} ${styles.mountingTrx}`}>
+                <div className={styles.mountingTd}>
+                  <div><span>*</span>选择路口</div>
+                  <div className={styles.boxtd}>
+                    <Select
+                      mode="multiple"
+                      showSearch
+                      optionFilterProp="children"
+                      style={{ width: '100%' }}
+                      value={dateListValues}
+                      placeholder="请选择路口"
+                      // defaultValue={['a10', 'c12']}
+                      onChange={this.handleChange}
+                    >{
+                        OptionList && OptionList.map(item => <Option key={item.ID}>{item.UNIT_NAME}</Option>)
+                      }
+                    </Select>
+                  </div>
+                </div>
+                <div className={styles.mountingTd}>
+                  <div className={styles.fontstyle}>
+                    <li> <b onClick={this.addList}>添加方向</b></li>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.mountingTr}>
+                <div className={styles.mountingTdx}>路口名称</div>
+                <div className={styles.mountingTdx}>操作</div>
+              </div>
+              <div className={styles.boxers} >
+                {
+                  IntersectionList && IntersectionList.map(item => (
+                    <div key={item.ID} className={styles.mountingTr}>
+                      <div className={styles.mountingTdx}>{item.UNIT_NAME}</div>
+                      <div className={styles.mountingTdx}><span onClick={() => this.delectIntersectionList(item)}>移除</span></div>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+            <div className={styles.mountingTableBottom}>
+              <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
+              {
+                this.details ?
+                  <span onClick={this.modifyOk}>
+                    修改
+                  </span> :
+                  <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>
+                    确定
+                  </span>
               }
             </div>
           </div>
-          <div className={styles.mountingTableBottom}>
-            <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
-            {
-              this.details ?
-                <span onClick={this.modifyOk}>
-                  修改
-                </span> :
-                <span onClick={this.handleOk} className={styles.mountingTableBottom_left}>
-                  确定
-                </span>
-            }
-
-          </div>
         </div>
       </div>
+
     )
   }
 }
@@ -342,8 +345,8 @@ const mapStateToProps = (state) => {
 }
 const mapDisPatchToProps = dispatch => ({
   getloadManageMent: bindActionCreators(getloadManageMent, dispatch),
-  getvalidate: bindActionCreators(getvalidate, dispatch),
-  getloadUnitName: bindActionCreators(getloadUnitName, dispatch),
-  getsaveOrUpdateForm: bindActionCreators(getsaveOrUpdateForm, dispatch),
+  getsubvalidate: bindActionCreators(getsubvalidate, dispatch),
+  getsubloadUnitName: bindActionCreators(getsubloadUnitName, dispatch),
+  getsubsaveOrUpdateForm: bindActionCreators(getsubsaveOrUpdateForm, dispatch),
 })
 export default connect(mapStateToProps, mapDisPatchToProps)(ModalPage)

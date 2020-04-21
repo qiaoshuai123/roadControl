@@ -1,4 +1,4 @@
-.RegiolManagementWrapper {
+.InterManagementWrapper {
     width: 100%;
     height: 100%;
     background-color: #021035;
@@ -9,7 +9,7 @@
     width: 150px;
     height: 50px;
     position: absolute;
-    z-index: 9;
+    z-index: 9999;
     margin: 0;
     background-color: #0d1133;
     border:1px solid #55f9ff;
@@ -35,6 +35,56 @@
     padding: 0 20px;
     background-color: rgba(6, 35, 79, 0.8);
     transition: all 0.3s;
+    .interListBox {
+      position: relative;
+      padding: 10px 0;
+      z-index: 9;
+      .interList {
+        position: absolute;
+        top: 45px;
+        left: 0;
+        width: 100%;
+        border-radius: 4px;
+        background-color: rgba(0,0,0, .8);
+        transition: all .2s;
+        overflow-y: hidden;
+        .interItem {
+          height: 30px;
+          padding-left: 10px;
+          font-size: 14px;
+          line-height: 30px;
+          transition: all .2s;
+          cursor: pointer;
+          &:hover {
+            background-color: #06234F;
+          }
+        }
+      }
+      .interSearch {
+        display: flex;
+        .searchBox {
+            position: relative;
+            .searchInput {
+                width: 310px;
+                height: 32px;
+                padding-left: 5px;
+                background-color: rgba(6,56,90, .8);
+                border: 1px solid #063657;
+                border-radius: 4px;
+                outline: none;
+                color: #F1F1FB;
+            }
+            .searchIcon {
+                position: absolute;
+                right: 10px;
+                top: 8px;
+                font-size: 18px;
+                color: #07BDFB;
+                cursor: pointer;
+            }
+        }
+      }
+    }
     .hideIcon {
       position: absolute;
       right: -20px;
@@ -56,82 +106,17 @@
       font-size: 16px;
       background-color: #02183d;
     }
-    .interListBox {
-      margin: 15px 0;
-      .interList {
-        position: absolute;
-        z-index: 99;
-        top: 90px;
-        left: 0;
-        width: 100%;
-        border-radius: 4px;
-        background-color: rgba(0,0,0, .4);
-        transition: all .2s;
-        overflow-y: hidden;
-        .interItem {
-          height: 30px;
-          padding-left: 10px;
-          font-size: 14px;
-          line-height: 30px;
-          transition: all .2s;
-          cursor: pointer;
-          &:hover {
-            background-color: #06234F;
-          }
-        }
-      }
-      .interSearch {
-        display: flex;
-        .searchBox {
-            position: relative;
-            width: 100%;
-            .searchInput {
-                width: 100%;
-                height: 32px;
-                padding-left: 5px;
-                background-color: rgba(6,56,90, .8);
-                border: 1px solid #063657;
-                border-radius: 4px;
-                outline: none;
-                color: #F1F1FB;
-            }
-            .searchIcon {
-                position: absolute;
-                right: 10px;
-                top: 8px;
-                font-size: 18px;
-                color: #07BDFB;
-                cursor: pointer;
-            }
-        }
-      }
-    }
     .OptimizingBtns {
-      height: 38px;
-      line-height: 38px;
+      height: 32px;
+      line-height: 32px;
       text-align: center;
-      font-size: 16px;
+      font-size: 15px;
       margin-bottom: 10px;
       border-radius: 3px;
       cursor: pointer;
       color: white;
       font-weight: bold;
       background-color: #018da8;
-    }
-    .addtask{
-        width: 100%;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        position: absolute;
-        bottom:7%;
-        left: 0;
-        span{
-          padding: 5px 65px;
-          cursor: pointer;
-          border: 1px solid #00A8C2;
-          border-radius: 15px;
-        }
     }
     .treeBox{
         height: calc(100% - 260px);

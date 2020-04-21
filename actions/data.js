@@ -18,8 +18,6 @@ import {
   API_VIP_ROUTE,
   API_VIP_ROUTE_CHILD,
   API_EDITDISTRICTINFOTHING,
-  API_LOADUNITNAMES,
-  API_DELETEDISTRICT,
 } from '../constants/API'
 
 export const getPlanInfo = () => {
@@ -224,23 +222,5 @@ export const geteditDistrictInfoThings = id => async (dispatch) => {
     }
   } catch (e) {
     console.log(e)
-  }
-}
-export const getloadUnitNames = id => async (dispatch) => {
-  try {
-    const result = await RestUtil.get(`${API_LOADUNITNAMES}/${id}`)
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_LOADUNITNAMES, payload: result.data.data })
-    } else {
-      console.error(result.data.message)
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
-export const getdeleteDistrict = (id) => {
-  return async () => {
-    const result = await RestUtil.post(`${API_DELETEDISTRICT}/${id}`)
-    return result
   }
 }
