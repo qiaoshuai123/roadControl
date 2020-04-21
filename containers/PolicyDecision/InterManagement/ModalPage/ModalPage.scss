@@ -109,6 +109,30 @@
                         width: 0 135px;
                     }
                 }
+                :global(.anticon-close-circle) {
+                    display: none;
+                }
+                :global(.ant-radio-wrapper) {
+                    color: white;
+                }
+                :global(.ant-select-selection) {
+                    color: white;
+                    height: 31px;
+                    background: rgba(0,0,0,0);
+                    border: 1px solid #1d425f;
+                }
+                :global(.ant-input) {
+                    color: white;
+                    height: 30px;
+                    background: rgba(0,0,0,0);
+                    border: 1px solid #1d425f;
+                }
+                :global(.ant-radio-inner){
+                    background: rgba(0,0,0,0);
+                }
+                :global(.ant-select-arrow) {
+                    color: #f1f1fb;
+                }
             }
             .mountingTbody {
                 // height: calc(100% - 50px);
@@ -136,27 +160,6 @@
                         background-color: #31a9f5;
                     }
                 }
-            }
-            :global(.anticon-close-circle) {
-                display: none;
-            }
-            :global(.ant-radio-wrapper) {
-                color: white;
-            }
-            :global(.ant-select-selection) {
-                color: white;
-                height: 31px;
-                background: rgba(0,0,0,0);
-                border: 1px solid #1d425f;
-            }
-            :global(.ant-input) {
-                color: white;
-                height: 30px;
-                background: rgba(0,0,0,0);
-                border: 1px solid #1d425f;
-            }
-            :global(.ant-radio-inner){
-                background: rgba(0,0,0,0);
             }
         }
     }

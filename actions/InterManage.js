@@ -4,7 +4,11 @@
 
 import * as types from '../constants/InterManageTypes'
 import RestUtil from '../utils/RestUtil'
-import { API_UINTINTER_INFO, API_UNIT_MANAGEMENT } from '../constants/interManageAPI'
+import {
+  API_UINTINTER_INFO,
+  API_UNIT_MANAGEMENTCODE,
+  API_MANAGEMENT_UNIT,
+} from '../constants/interManageAPI'
 
 export const getUnitInterInfo = (id) => {
   return async (dispatch) => {
@@ -21,12 +25,57 @@ export const getUnitInterInfo = (id) => {
   }
 }
 
-export const getUnitManageMent = () => {
+export const getInterControlSys = (id) => {
   return async (dispatch) => {
     try {
-      const result = await RestUtil.get(API_UNIT_MANAGEMENT)
+      const result = await RestUtil.get(`${API_UNIT_MANAGEMENTCODE}${id}`)
       if (result.data.code === 200) {
-        dispatch({ type: types.GET_UNIT_MANAGEMENT, payload: result.data.data })
+        dispatch({ type: types.GET_UNIT_CONTROLSYS, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getUnitInterType = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_UNIT_MANAGEMENTCODE}${id}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_UNIT_INTERTYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getUnitDeviceType = (id) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_UNIT_MANAGEMENTCODE}${id}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_UNIT_DEVICETYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getManagementUnit = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_MANAGEMENT_UNIT)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_MANAGEMENT_UNIT, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

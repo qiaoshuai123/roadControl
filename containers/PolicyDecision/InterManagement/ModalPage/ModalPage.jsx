@@ -8,12 +8,6 @@ class ModalPage extends React.Component {
     this.state = {
       SubordinateUnitLsit: [], // 所属单位列表
       MaintenanceUnitList: [], // 维护单位列表
-      EquipmentModel: '', // 路口编号
-      CorrelationNumber: 1, // 路口名称
-      Manufacturer: '北京博研智通有限公司', // 控制路口数
-      sInstallationLocation: '', // 所属单位
-      MaintenanceUnit: '', // 信号控制系统对应路口编号
-      MaintenancePhine: 110, // 维护电话
       datelist: [], // 点击添加列表
       unitInterInfo: null,
     }
@@ -31,11 +25,7 @@ class ModalPage extends React.Component {
   }
   // 编辑回显路口信息
   getEditInterInfo = (unitInterInfo) => {
-    console.log('编辑回显：：', unitInterInfo)
     this.setState({ unitInterInfo: unitInterInfo.unitInfo })
-  }
-  inpvalue = () => {
-    console.log(123456)
   }
   addList = () => { // 添加列表
     const { datelist } = this.state
@@ -45,9 +35,6 @@ class ModalPage extends React.Component {
       datelist,
     })
     this.num += 1
-  }
-  inpvalue = (e) => {
-    console.log(e, 'sss')
   }
   handleCancel = () => {
     this.props.isShowModalPage()
@@ -105,6 +92,7 @@ class ModalPage extends React.Component {
       unitInterInfo,
       SubordinateUnitLsit, MaintenanceUnitList, isshowSubmission, datelist,
     } = this.state
+    const { controlSys, unitInterType, unitDeviceType, managementUnit } = this.props.data
     const { Option } = Select
     return (
       <div className={styles.modalDiv}>
@@ -114,24 +102,21 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口编号</div>
-                  <div><Input name="EquipmentModel" disabled onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input disabled onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口名称</div>
-                  <div><Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_NAME} /></div>
+                  <div><Input onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_NAME} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>路口类型</div>
                   <div>
-                    <Select
-                      style={{ width: '100%' }}
-                      defaultValue={unitInterInfo && unitInterInfo.UNIT_TYPE_CODE}
-                      onChange={this.IssInstallationLocation}
-                    >
+                    <Select style={{ width: '100%' }} defaultValue={unitInterInfo && unitInterInfo.UNIT_TYPE_CODE} onChange={this.IssInstallationLocation}>
                       {
-                        MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                          <Option value={item.ID} key={item.ID}>{item.CODE_NAME}</Option>)}
+                        unitInterType &&
+                        unitInterType.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                      }
                     </Select>
                   </div>
                 </div>
@@ -163,23 +148,14 @@ class ModalPage extends React.Component {
                     <span className={styles.requiredFields}>*</span>控制路口数
                   </div>
                   <div>
-                    <Input name="Manufacturer" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.MINOR_UNIT_NUMBER} />
+                    <Input onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.MINOR_UNIT_NUMBER} />
                   </div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
-                <div className={styles.mountingTd}><div>信号控制系统<br />对应路口编号</div>
-                  <div>
-                    <Select
-                      style={{ width: '100%' }}
-                      defaultValue={unitInterInfo && unitInterInfo.UNIT_ID}
-                      onChange={this.IssInstallationLocation}
-                    >
-                      {
-                        MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                          <Option value={item.ID} key={item.ID}>{item.CODE_NAME}</Option>)}
-                    </Select>
-                  </div>
+                <div className={styles.mountingTd}>
+                  <div>信号控制系统<br />对应路口编号</div>
+                  <div><Input disabled onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}><div>管理单位</div>
                   <div>
@@ -189,8 +165,9 @@ class ModalPage extends React.Component {
                       onChange={this.IssInstallationLocation}
                     >
                       {
-                        MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                          <Option value={item.ID} key={item.ID}>{item.CODE_NAME}</Option>)}
+                        managementUnit &&
+                        managementUnit.map(item => (<Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>))
+                      }
                     </Select>
                   </div>
                 </div>
@@ -198,12 +175,12 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>经度</div>
                   <div>
-                    <Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LONGITUDE} />
+                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LONGITUDE} />
                   </div>
                 </div>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>维度</div>
                   <div>
-                    <Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LATITUDE} />
+                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LATITUDE} />
                   </div>
                 </div>
               </div>
@@ -215,28 +192,39 @@ class ModalPage extends React.Component {
                       defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SYSTEM_CODE}
                       onChange={this.sInstallationLocations}
                     >
-                      {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
-                        <Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
+                      {
+                        controlSys &&
+                        controlSys.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                      }
                     </Select>
                   </div>
                 </div>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>信号机IP</div>
                   <div>
-                    <Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_IP} />
+                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_IP} />
                   </div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div>信号机网关</div>
                   <div>
-                    <Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_GATEWAY} />
+                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_GATEWAY} />
                   </div>
                 </div>
-                <div className={styles.mountingTd}><div>信号机子网掩码</div><div><Input name="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MASK} /></div></div>
+                <div className={styles.mountingTd}>
+                  <div>信号机子网掩码</div>
+                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MASK} /></div>
+                </div>
               </div>
               <div className={styles.mountingTr}>
-                <div className={styles.mountingTd}><div>信号机端口</div><div><Input name="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_PORT} /></div></div>
-                <div className={styles.mountingTd}><div>信号机厂商</div><div><Input name="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SUPPLIER} /></div></div>
+                <div className={styles.mountingTd}>
+                  <div>信号机端口</div>
+                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_PORT} /></div>
+                </div>
+                <div className={styles.mountingTd}>
+                  <div>信号机厂商</div>
+                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SUPPLIER} /></div>
+                </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div>信号机型号</div>
@@ -246,21 +234,24 @@ class ModalPage extends React.Component {
                       defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SYSTEM_CODE}
                       onChange={this.sInstallationLocations}
                     >
+                      {
+                        unitDeviceType &&
+                        unitDeviceType.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                      }
                       {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
                         <Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
                     </Select>
                   </div>
                 </div>
-                <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>信号机编号</div>
+                <div className={styles.mountingTd}>
+                  <div><span className={styles.requiredFields}>*</span>信号机编号</div>
                   <div> <Input name="CorrelationNumber" onChange={this.changValue} disabled defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>指北针偏转角度</div>
-                  <div>
-                    <Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.ROTATE_ANGLE} />
-                  </div>
+                  <div><Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.ROTATE_ANGLE} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div style={{ justifyContent: 'flex-start', paddingLeft: '10px' }}>(顺时针为正,逆时针为负)</div>

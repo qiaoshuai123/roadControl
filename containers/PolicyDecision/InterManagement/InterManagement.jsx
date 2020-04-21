@@ -11,7 +11,7 @@ import ModalPage from './ModalPage/ModalPage'
 import InfoBg from './img/info_bg.png'
 
 import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree } from '../../../actions/data'
-import { getUnitInterInfo } from '../../../actions/InterManage'
+import { getUnitInterInfo, getInterControlSys, getUnitInterType, getUnitDeviceType, getManagementUnit } from '../../../actions/InterManage'
 
 class InterManagement extends Component {
   constructor(props) {
@@ -29,6 +29,10 @@ class InterManagement extends Component {
   componentDidMount() {
     this.renderMineMap()
     this.props.getLoadPlanTree()
+    this.props.getInterControlSys(13)
+    this.props.getUnitInterType(7)
+    this.props.getUnitDeviceType(22)
+    this.props.getManagementUnit()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -309,6 +313,10 @@ const mapDisPatchToProps = (dispatch) => {
     getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
     getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
     getUnitInterInfo: bindActionCreators(getUnitInterInfo, dispatch),
+    getInterControlSys: bindActionCreators(getInterControlSys, dispatch),
+    getUnitInterType: bindActionCreators(getUnitInterType, dispatch),
+    getUnitDeviceType: bindActionCreators(getUnitDeviceType, dispatch),
+    getManagementUnit: bindActionCreators(getManagementUnit, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterManagement)
