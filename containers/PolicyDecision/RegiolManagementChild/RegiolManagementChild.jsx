@@ -1,49 +1,87 @@
 import React, { Component } from 'react'
-import { Icon, Input, message } from 'antd'
+import { Icon, message } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { geteditDistrictInfoThing, getloadUnitNames, getdeleteDistrict } from '../../../actions/management'
+import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import styles from './RegiolManagementChild.scss'
+
 import Header from '../Header/Header'
-import CustomTree from './CustomTree/CustomTree'
-import ModalPage from './ModalPage/ModalPage'
-import InfoBg from './img/Infobg.png'
+import ModalPage from '../InterManagement/ModalPage/ModalPage'
+import ModalPages from './ModalPage/ModalPage'
 
+import InfoBg from './img/info_bg.png'
 
-class RegiolManagement extends Component {
+import { getInterList, getBasicInterInfo } from '../../../actions/data'
+import { getUnitInterInfo } from '../../../actions/InterManage'
+import { getLoadPlanTree, getLoadChildTree, getsubeditDistrictInfoThing, getsubloadUnitNames, getsubdeleteDistrict } from '../../../actions/management'
+
+class RegiolManagementChild extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      interMonitorLeft: 15,
-      visible: false,
-      isModalPage: false,
-      visibleTop: 0,
-      visibleLeft: 0,
+      searchInterList: null,
       interListHeight: 0,
-      searchInterList: [],
+      interMonitorLeft: 15,
+      visibleTop: 0,
+      isModalPage: false,
+      visible: false,
+      showAreaMsg: false,
     }
+    this.markers = []
+    this.searchInterList = []
   }
   componentDidMount() {
     this.renderMineMap()
+    this.props.getInterList()
+    this.props.getLoadPlanTree()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
       }
     })
   }
-  componentDidUpdate(prevState) {
-    const { editDistrictInfoThing, loadUnitNames } = this.props.data
-    if (prevState.data.editDistrictInfoThing !== editDistrictInfoThing) {
-      this.geteditDistrictInfoThing(editDistrictInfoThing)
+  componentDidUpdate = (prevState) => {
+    const { interList, basicInterInfo, editDistrictInfoThings, loadUnitNames } = this.props.data
+    if (prevState.data.interList !== interList) {
+      this.getInterLists(interList)
+    }
+    if (prevState.data.basicInterInfo !== basicInterInfo) {
+      this.getInterBasicInfo(basicInterInfo)
+    }
+    if (prevState.data.editDistrictInfoThings !== editDistrictInfoThings) {
+      this.getsubeditDistrictInfoThing(editDistrictInfoThings)
     }
     if (prevState.data.loadUnitNames !== loadUnitNames) {
-      console.log()
-      this.loadUnitName(loadUnitNames)
+      this.getsubloadUnitNames(loadUnitNames)
     }
   }
-  geteditDistrictInfoThing = (editDistrictInfoThing) => {
-    this.props.getloadUnitNames(editDistrictInfoThing.ID)
+  getsubloadUnitNames = (loadUnitNames) => {
+    this.roadDetail.districtHas = loadUnitNames.districtHas
+    this.setState({
+      showAreaMsg: true,
+    })
+  }
+  getsubeditDistrictInfoThing = (editDistrictInfoThing) => {
+    this.props.getsubloadUnitNames(editDistrictInfoThing.ID)
     this.roadDetail = editDistrictInfoThing
+  }
+  // 路口列表
+  getInterLists = (interList) => {
+    this.searchInterList = interList
+    this.setState({
+      searchInterList: interList,
+    }, () => {
+      this.addMarker(interList)
+    })
+  }
+  // 从子集获取区域id和index 请求路口
+  getSelectTreeId = (id) => {
+    this.props.getLoadChildTree(id)
+  }
+  // 获取子id, 路口id
+  getSelectChildId = (chidlId) => {
+    const marker = document.getElementById('marker' + chidlId)
+    marker.click()
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
@@ -54,26 +92,21 @@ class RegiolManagement extends Component {
     this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
     this.runText = basicInterInfo.STAGE_CODE
   }
-  loadUnitName = (loadUnitNames) => {
-    this.roadDetail.districtHas = loadUnitNames.districtHas
+  delectRoad = () => { // 删除路段
     this.setState({
-      isModalPage: true,
+      visible: false,
+    })
+    this.props.getsubdeleteDistrict(this.roadId).then((res) => {
+      const { code } = res.data
+      if (code === 200) {
+        message.success('删除成功')
+      }
     })
   }
-  handleShowInterMonitor = () => {
-    if (this.state.interMonitorLeft > 0) {
-      this.setState({
-        interMonitorLeft: -355,
-      })
-    } else {
-      this.setState({
-        interMonitorLeft: 15,
-      })
-    }
-  }
-  isShowModalPage = () => {
+  seeGo = () => {
+    this.props.getsubeditDistrictInfoThing(this.roadId)
     this.setState({
-      isModalPage: false,
+      visible: false,
     })
   }
   visibleShowLeft = (top, id, show) => { // 框的跳转与位置
@@ -123,51 +156,40 @@ class RegiolManagement extends Component {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
+  handleShowInterMonitor = () => {
+    if (this.state.interMonitorLeft > 0) {
+      this.setState({ interMonitorLeft: -345 })
+    } else {
+      this.setState({ interMonitorLeft: 15 })
+    }
+  }
   noShow = (e) => { // 禁止默认右键菜单
     e.stopPropagation()
     e.preventDefault()
   }
-  addIntersection = () => { // 添加路口
-    this.roadDetail = ''
-    this.setState({
-      isModalPage: true,
-    })
-  }
-  delectRoad = () => { // 删除路段
-    this.setState({
-      visible: false,
-    })
-    this.props.getdeleteDistrict(this.roadId).then((res) => {
-      const { code } = res.data
-      if (code === 200) {
-        message.success('删除成功')
-      }
-    })
-  }
-  seeGo = () => {
-    this.props.geteditDistrictInfoThing(this.roadId)
-    this.setState({
-      visible: false,
-    })
+  isShowModalPage = () => { // 取消弹窗页面
+    this.setState({ showAreaMsg: false, isModalPage: false })
   }
   // 添加坐标点
-  addMarker = () => {
+  addMarker = (interList) => {
     if (this.map) {
       this.infowindow += 1
-      const el = document.createElement('div')
-      el.id = 'marker'
-      // el.style['background-image'] = 'url(/api/static/demo/js-api/zh/images/park.png)'
-      el.style['background-color'] = '#ff0000'
-      el.style['background-size'] = 'cover'
-      el.style.width = '20px'
-      el.style.height = '20px'
-      el.style['border-radius'] = '50%'
-      this.lnglat = this.map.getCenter()
-      this.marker = new window.minemap.Marker(el, { offset: [-25, -25] })
-        .setLngLat(this.lnglat)
-        .setPopup(this.showInterInfo())
-        .addTo(this.map)
-      // el.addEventListener('click', this.showInterInfo)
+      interList.forEach((item) => {
+        const el = document.createElement('div')
+        el.id = `marker${item.ID}`
+        el.style.width = '22px'
+        el.style.height = '22px'
+        el.style.borderRadius = '50%'
+        el.style.backgroundImage = 'linear-gradient(to bottom, #DFFBB3, #37DF1A)'
+        new Promise((resolve) => {
+          resolve(this.props.getBasicInterInfo(item.ID))
+        }).then(() => {
+          const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
+            .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '西门子', item.ID))
+            .addTo(this.map)
+          this.markers.push(marker)
+        })
+      })
     }
   }
   // 删除坐标点
@@ -192,37 +214,42 @@ class RegiolManagement extends Component {
     }
   }
   // 自定义信息窗体
-  showInterInfo = () => {
+  showInterInfo = (lng, lat, interName, singalSys, interId) => {
     this.removeInterInfo()
-    const lnglat = this.map.getCenter()
-    const id = `removeInterInfo${this.infowindow}`
+    const id = `monitor${interId}`
+    // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
       <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
         <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
-          路口名称 ：123456
-          <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
+          路口名称 ：${interName}
         </div>
-        <div style="height:200px;display:flex;padding-top:20px;font-size:14px;">
+        <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：兴宁区</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：海信</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：东西左转</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px; cursor: pointer;">路口监控</div>
+            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
           </div>
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：本地多时段</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：192.168.1.204</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：正常</p>
-            <div style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px; cursor: pointer;">路口优化</div>
+            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：${this.controlState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：${this.singalIp}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：${this.alarmState}</p>
           </div>
+        </div>
+        <div style="height:40px;display:flex;justify-content:center;align-items:center;">
+          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口信息</div>
         </div>
       </div>
     `
     this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-15, -25] })
-      .setLngLat([lnglat.lng, lnglat.lat])
+      .setLngLat([lng, lat])
       .setHTML(infoHtml)
       .addTo(this.map)
-    document.getElementById(id).addEventListener('click', this.removeInterInfo)
+    if (document.getElementById(id)) {
+      document.getElementById(id).addEventListener('click', () => {
+        this.setState({ isModalPage: true })
+        this.props.getUnitInterInfo(interId) // 获取路口信息
+      })
+    }
     return this.popup
   }
   // 初始化地图
@@ -230,34 +257,27 @@ class RegiolManagement extends Component {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [106.709075, 26.586574],
+      center: [108.322286, 22.810375],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
       minZoom: 3,
     })
     this.map = map
-    this.addMarker()
   }
+
   render() {
     const {
-      interMonitorLeft,
-      visible,
-      visibleTop,
-      isModalPage,
-      searchInterList,
-      interListHeight,
+      interMonitorLeft, isModalPage, searchInterList, interListHeight, visible, visibleTop, showAreaMsg,
     } = this.state
-    const { Search } = Input
-    const { loadPlanTree } = this.props.data
     return (
-      <div id="mapContainer" className={styles.RegiolManagementWrapper}>
+      <div id="mapContainer" className={styles.InterManagementWrapper}>
         <Header {...this.props} />
         <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
             {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
-          <div className={styles.title}>勤务路线查询</div>
+          <div className={styles.title}>路口查询</div>
           <div className={styles.interListBox}>
             <div className={styles.interSearch}>
               <span className={styles.searchBox}>
@@ -275,8 +295,8 @@ class RegiolManagement extends Component {
             <div className={styles.interList} style={{ maxHeight: `${interListHeight}px`, overflowY: 'auto' }}>
               <div>
                 {
-                  loadPlanTree &&
-                  loadPlanTree.map(item => (
+                  searchInterList &&
+                  searchInterList.map(item => (
                     <div
                       className={styles.interItem}
                       key={item.ID}
@@ -284,7 +304,7 @@ class RegiolManagement extends Component {
                       lng={item.LONGITUDE}
                       lat={item.LATITUDE}
                       onClick={this.hanleSelectInter}
-                    >{item.NAME}
+                    >{item.UNIT_NAME}
                     </div>
                   ))
                 }
@@ -292,11 +312,13 @@ class RegiolManagement extends Component {
             </div>
           </div>
           <div className={styles.OptimizingBtns}><span>优化控制管理</span></div>
-          <div className={styles.addtask}>
-            <span onClick={this.addIntersection}>添加区域</span>
-          </div>
           <div className={styles.treeBox}>
-            <CustomTree visibleShowLeft={this.visibleShowLeft} />
+            <CustomInterTree
+              {...this.props}
+              visibleShowLeft={this.visibleShowLeft}
+              getSelectTreeId={this.getSelectTreeId}
+              getSelectChildId={this.getSelectChildId}
+            />
           </div>
           {
             visible ?
@@ -307,21 +329,31 @@ class RegiolManagement extends Component {
           }
         </div>
         {
-          isModalPage && <ModalPage roadDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
+          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
+        }
+        {
+          showAreaMsg && <ModalPages roadDetail={this.roadDetail} isShowModalPage={this.isShowModalPage} />
         }
       </div >
     )
   }
 }
+
 const mapStateToProps = (state) => {
   return {
-    data: state.managements,
+    data: { ...state.data, ...state.interManage, ...state.managements },
   }
 }
-const mapDisPatchToProps = dispatch => ({
-  geteditDistrictInfoThing: bindActionCreators(geteditDistrictInfoThing, dispatch),
-  getloadUnitNames: bindActionCreators(getloadUnitNames, dispatch),
-  getdeleteDistrict: bindActionCreators(getdeleteDistrict, dispatch),
-})
-export default connect(mapStateToProps, mapDisPatchToProps)(RegiolManagement)
-
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getsubeditDistrictInfoThing: bindActionCreators(getsubeditDistrictInfoThing, dispatch),
+    getInterList: bindActionCreators(getInterList, dispatch),
+    getBasicInterInfo: bindActionCreators(getBasicInterInfo, dispatch),
+    getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
+    getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
+    getUnitInterInfo: bindActionCreators(getUnitInterInfo, dispatch),
+    getsubloadUnitNames: bindActionCreators(getsubloadUnitNames, dispatch),
+    getsubdeleteDistrict: bindActionCreators(getsubdeleteDistrict, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(RegiolManagementChild)

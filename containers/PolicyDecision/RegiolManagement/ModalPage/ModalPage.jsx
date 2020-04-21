@@ -19,7 +19,7 @@ class ModalPage extends React.Component {
       OptionList: [], // 选择路口列表
     }
     this.isShow = []
-    this.details = this.props.roaddDetail
+    this.details = this.props.roadDetail
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef
@@ -73,6 +73,7 @@ class ModalPage extends React.Component {
     }
   }
   detailsFun = () => {
+    console.log(123456,this.details)
     try {
       if (this.details) {
         const { SubordinateUnitLsit, OptionList } = this.state
@@ -82,7 +83,7 @@ class ModalPage extends React.Component {
         this.details.districtHas.forEach((item) => {
           this.arru = this.arru.filter(items => items.ID !== item.ID)
         })
-        console.log(this.arru, OptionList, this.arru || OptionList, 'qiasss')
+        console.log(this.details, this.arru, OptionList, this.arru || OptionList, 'qiasss')
         this.setState({
           ManagementUnit: name,
           CorrelationNumber: this.details.DISTRICT_NAME,

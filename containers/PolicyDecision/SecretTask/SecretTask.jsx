@@ -3,6 +3,7 @@ import { Icon, Input, message, DatePicker, Select } from 'antd'
 import moment from 'moment'
 import styles from './SecretTask.scss'
 import Header from '../Header/Header'
+import classNames from 'classnames'
 // import CustomTree from './CustomTree/CustomTree'
 import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import InfoBg from './img/Infobg.png'
@@ -256,39 +257,45 @@ class SecretTask extends PureComponent {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
-  onStartChange = (value) => {
-    this.onPickerChange('startValue', value)
-  }
-  onEndChange = (value) => {
-    this.onPickerChange('endValue', value)
-  }
-  onPickerChange = (field, value) => {
-    this.setState({
-      [field]: value ? this.getDate(value._d) : '',
-    })
-  }
-  disabledStartDate = (startValue) => {
-    const { endValue } = this.state
+  disabledStartDate = startValue => {
+    const { endValue } = this.state;
     if (!startValue || !endValue) {
-      return false
+      return false;
     }
-    return startValue.valueOf() > endValue.valueOf()
-  }
-  disabledEndDate = (endValue) => {
-    const { startValue } = this.state
+    return startValue.valueOf() > endValue.valueOf();
+  };
+
+  disabledEndDate = endValue => {
+    const { startValue } = this.state;
     if (!endValue || !startValue) {
-      return false
+      return false;
     }
-    return endValue.valueOf() <= startValue.valueOf()
-  }
-  handleStartOpenChange = (open) => {
+    return endValue.valueOf() <= startValue.valueOf();
+  };
+
+  onChange = (field, value) => {
+    this.setState({
+      [field]: value,
+    });
+  };
+
+  onStartChange = value => {
+    this.onChange('startValue', value);
+  };
+
+  onEndChange = value => {
+    this.onChange('endValue', value);
+  };
+
+  handleStartOpenChange = open => {
     if (!open) {
-      this.setState({ endOpen: true })
+      this.setState({ endOpen: true });
     }
-  }
-  handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open })
-  }
+  };
+
+  handleEndOpenChange = open => {
+    this.setState({ endOpen: open });
+  };
 
   // 初始化地图
   renderMineMap = () => {
@@ -309,7 +316,7 @@ class SecretTask extends PureComponent {
       visible,
       visibleTop,
       vipRouteList,
-      interListHeight, searchInterList, searchVal, popSecreTask, startValue, endValue,
+      interListHeight, searchInterList, searchVal, popSecreTask, startValue, endValue, endOpen,
     } = this.state
     const { Search } = Input
     return (
@@ -401,7 +408,7 @@ class SecretTask extends PureComponent {
                         disabledDate={this.disabledStartDate}
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
-                        value={startValue ? moment(startValue, 'YYYY-MM-DD HH:mm:ss') : startValue}
+                        value={startValue}
                         placeholder="开始时间"
                         onChange={this.onStartChange}
                         onOpenChange={this.handleStartOpenChange}
@@ -411,90 +418,86 @@ class SecretTask extends PureComponent {
                         disabledDate={this.disabledEndDate}
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
-                        value={endValue ? moment(endValue, 'YYYY-MM-DD HH:mm:ss') : endValue}
+                        value={endValue}
                         placeholder="结束时间"
                         onChange={this.onEndChange}
+                        open={endOpen}
                         onOpenChange={this.handleEndOpenChange}
                       />
                         </div>
                   </div>
                   <div className={styles.conLeft}>
                     <div className={styles.titleSmall}>勤务路口<em>添加路口</em></div>
-                    <div className={styles.leftItem}>
-                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                      <div className={styles.itemCon}>
-                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
-                        <div className={styles.imgBox}>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
+                    <div className={styles.conLeftBox}>
+                      <div className={styles.leftItem}>
+                        <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                        <div className={styles.itemCon}>
+                          <div className={styles.imgBox}><img src='a.png' /></div>
+                          <div className={styles.imgBox}>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                          </div>
+                        </div>
+                        <div className={styles.formBox}><span>预设勤务阶段：</span>
+                          <Select defaultValue="0">
+                            <Option value='0'>请选择</Option>
+                          </Select>
+                          <em>保&nbsp;&nbsp;存</em>
                         </div>
                       </div>
-                      <div className={styles.formBox}><span>预设勤务阶段：</span>
-                        <Select defaultValue="0">
-                          <Option value='0'>请选择</Option>
-                        </Select>
-                        <em>保&nbsp;&nbsp;存</em>
-                      </div>
-                    </div>
-                    <div className={styles.leftItem}>
-                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                      <div className={styles.itemCon}>
-                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
-                        <div className={styles.imgBox}>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
+                      <div className={styles.leftItem}>
+                        <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                        <div className={styles.itemCon}>
+                          <div className={styles.imgBox}><img src='a.png' /></div>
+                          <div className={styles.imgBox}>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                          </div>
+                        </div>
+                        <div className={styles.formBox}><span>预设勤务阶段：</span>
+                          <Select defaultValue="0">
+                            <Option value='0'>请选择</Option>
+                          </Select>
+                          <em>保&nbsp;&nbsp;存</em>
                         </div>
                       </div>
-                      <div className={styles.formBox}><span>预设勤务阶段：</span>
-                        <Select defaultValue="0">
-                          <Option value='0'>请选择</Option>
-                        </Select>
-                        <em>保&nbsp;&nbsp;存</em>
-                      </div>
                     </div>
-                    <div className={styles.leftItem}>
-                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                      <div className={styles.itemCon}>
-                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
-                        <div className={styles.imgBox}>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                        </div>
-                      </div>
-                      <div className={styles.formBox}><span>预设勤务阶段：</span>
-                        <Select defaultValue="0">
-                          <Option value='0'>请选择</Option>
-                        </Select>
-                        <em>保&nbsp;&nbsp;存</em>
-                      </div>
+                      
                     </div>
-                    <div className={styles.leftItem}>
-                      <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                      <div className={styles.itemCon}>
-                        <div className={styles.imgBox}><img src='a.jpg' width='170' height='170' /></div>
-                        <div className={styles.imgBox}>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                          <div className={styles.dirItem}>方向</div>
-                        </div>
-                      </div>
-                      <div className={styles.formBox}><span>预设勤务阶段：</span>
-                        <Select defaultValue="0">
-                          <Option value='0'>请选择</Option>
-                        </Select>
-                        <em>保&nbsp;&nbsp;存</em>
-                      </div>
-                    </div>
-                  </div>
                   <div className={styles.conRight}>
                     <div className={styles.titleSmall}>勤务路线<em>保存路线</em></div>
+                    <div className={styles.itemTit}>勤务路线<em>一键勤务</em></div>
+                    <div className={styles.itemCon}>
+                      <div className={classNames(styles.listItem, styles.listTit)}>
+                        <s>序号</s>
+                        <s>路口名称</s>
+                        <s>勤务阶段</s>
+                        <s>勤务状态</s>
+                        <s>操作</s>
+                      </div>
+                      <div className={styles.conRightBox}>
+                        <div className={styles.listItem}>
+                          <s>1</s>
+                          <s><img src='a.png' />路口名称</s>
+                          <s>勤务阶段</s>
+                          <s>勤务状态</s>
+                          <s><span>锁定</span></s>
+                        </div>
+                        <div className={styles.listItem}>
+                          <s>1</s>
+                          <s><img src='a.png' />路口名称</s>
+                          <s>勤务阶段</s>
+                          <s>勤务状态</s>
+                          <s><span>锁定</span></s>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

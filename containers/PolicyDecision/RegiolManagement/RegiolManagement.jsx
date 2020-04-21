@@ -11,8 +11,9 @@ import ModalPages from './ModalPage/ModalPage'
 
 import InfoBg from './img/info_bg.png'
 
-import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings, getloadUnitNames, getdeleteDistrict } from '../../../actions/data'
+import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings } from '../../../actions/data'
 import { getUnitInterInfo } from '../../../actions/InterManage'
+import { getloadUnitNames, getdeleteDistrict } from '../../../actions/management'
 
 class RegiolManagement extends Component {
   constructor(props) {
@@ -61,7 +62,6 @@ class RegiolManagement extends Component {
     })
   }
   geteditDistrictInfoThings = (editDistrictInfoThing) => {
-    console.log(editDistrictInfoThing, 'qiapshaui')
     this.props.getloadUnitNames(editDistrictInfoThing.ID)
     this.roadDetail = editDistrictInfoThing
   }
@@ -319,9 +319,7 @@ class RegiolManagement extends Component {
           </div>
           <div className={styles.OptimizingBtns}><span>优化控制管理</span></div>
           <div className={styles.addtask}>
-            <div className={styles.addtask}>
-              <span onClick={this.addIntersection}>添加区域</span>
-            </div>
+            <span onClick={this.addIntersection}>添加区域</span>
           </div>
           <div className={styles.treeBox}>
             <CustomInterTree
@@ -352,7 +350,7 @@ class RegiolManagement extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: { ...state.data, ...state.interManage },
+    data: { ...state.data, ...state.interManage, ...state.managements },
   }
 }
 const mapDisPatchToProps = (dispatch) => {
