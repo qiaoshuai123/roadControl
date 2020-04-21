@@ -86,3 +86,10 @@ export const API_VIP_FIND_LIST = '/atms/vip/findVipRoadUnitsByVipId' // {vipId}�
 export const API_VIP_INITROAD = '/atms/vip/initVipRoad' // 特勤路线---路口信息、图片、ip
 export const API_VIP_LOADUNIT_STAGES = '/atms/vip/loadunit_stages' // 特勤路线---信号机控制状态
 export const API_VIP_SAVEVIPROAD = '/atms/vip/saveVipRoad' // {vipId}/{vipName}/{detail} 特勤路线---添加或者修改勤务路线详细信息
+
+// 子区域管理
+export const API_SUB_DELETEDISTRICT = '/atms/subDistrictManagement/deleteDistrict' // 删除子区域
+export const API_SUB_EDITDISTRICTINFOTHING = '/atms/subDistrictManagement/editDistrictInfoThing' // 加载当前区域信息
+export const API_SUB_LOADUNITNAME = '/atms/subDistrictManagement/loadUnitName' // 加载当前区域下的存在路口以及不存在路口
+export const API_SUB_SAVEORUPDATEFORM = '/atms/subDistrictManagement/saveOrUpdateForm' // 区域信息提交
+export const API_SUB_VALIDATE = '/atms/subDistrictManagement/validate' // 验证区域是否存在
