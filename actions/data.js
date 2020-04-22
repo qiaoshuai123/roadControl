@@ -18,6 +18,7 @@ import {
   API_VIP_ROUTE,
   API_VIP_ROUTE_CHILD,
   API_EDITDISTRICTINFOTHING,
+  API_AREA_LIST,
 } from '../constants/API'
 
 export const getPlanInfo = () => {
@@ -222,5 +223,21 @@ export const geteditDistrictInfoThings = id => async (dispatch) => {
     }
   } catch (e) {
     console.log(e)
+  }
+}
+
+// 区域列表
+export const getAreaList = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_AREA_LIST)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_AREA_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
