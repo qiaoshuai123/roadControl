@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Select, Radio } from 'antd'
+import { Input, Select, Radio, Modal, message } from 'antd'
 import styles from './ModalPage.scss'
 
 class ModalPage extends React.Component {
@@ -38,7 +38,10 @@ class ModalPage extends React.Component {
     }
   }
   componentDidMount = () => {
-    // eslint-disable-next-line no-undef
+    const { unitInterInfo } = this.props.data
+    if (unitInterInfo) {
+      this.getEditInterInfo(unitInterInfo)
+    }
   }
   componentDidUpdate = (prevState) => {
     const { unitInterInfo } = this.props.data
@@ -46,16 +49,10 @@ class ModalPage extends React.Component {
       this.getEditInterInfo(unitInterInfo)
     }
   }
-  // 编辑回显路口信息
-  getEditInterInfo = (unitInterInfo) => {
-    const { unitInfo } = unitInterInfo
-    this.setState({
-      unitInterInfo: unitInfo,
-      interListMsg: unitInterInfo.unitConnector,
-    })
+  getChangeSaveParams = (unitInfo) => {
     this.saveParams = {
       arr: '',
-      backgroundImg: unitInfo.BACKGROUND_IMG,
+      backgroundImg: unitInfo.BACKGROUND_IMG || '',
       districtInfo: unitInfo.DISTRICT_ID,
       id: unitInfo.ID,
       latitude: unitInfo.LATITUDE,
@@ -72,12 +69,22 @@ class ModalPage extends React.Component {
       signalSupplier: unitInfo.SIGNAL_SUPPLIER,
       signalSystemCode: unitInfo.SIGNAL_SYSTEM_CODE,
       signalUnitId: unitInfo.SIGNAL_UNIT_ID,
-      sureId: '',
-      unitConnectors: unitInterInfo.unitConnector,
+      sureId: unitInfo.SUREID || '',
+      unitConnectors: [],
       unitId: unitInfo.UNIT_ID,
       unitName: unitInfo.UNIT_NAME,
       unitTypeCode: unitInfo.UNIT_TYPE_CODE,
     }
+  }
+  // 编辑回显路口信息
+  getEditInterInfo = (unitInterInfo) => {
+    const { unitInfo } = unitInterInfo
+    this.setState({
+      unitInterInfo: unitInfo,
+      interListMsg: unitInterInfo.unitConnector,
+    })
+    this.getChangeSaveParams(unitInfo)
+    this.saveParams.unitConnectors = unitInterInfo.unitConnector
     this.dateList = unitInterInfo.unitConnector
   }
   // 添加列表
@@ -93,26 +100,46 @@ class ModalPage extends React.Component {
     this.saveParams.unitConnectors = JSON.stringify(this.dateList)
   }
   handleCancel = () => {
+    console.log(this.saveParams)
     this.props.isShowModalPage()
   }
   // 删除新建列表
   handleDeleteInterList = (index) => {
-    const filterList = this.dateList.splice(index, 1)
-    this.setState({ interListMsg: filterList })
-    this.saveParams.unitConnectors = JSON.stringify(filterList)
-    console.log(this.saveParams)
+    const { confirm } = Modal
+    const selfThis = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        const filterList = selfThis.dateList.splice(index, 1)
+        selfThis.setState({ interListMsg: filterList })
+        selfThis.saveParams.unitConnectors = JSON.stringify(filterList)
+        message.info('删除成功')
+      },
+    })
   }
+  // 修改参数
   handleChangeSaveMsg = (e) => {
     const { value } = e.target
     const pName = e.target.getAttribute('pname')
     this.saveParams[pName] = value
   }
+  // 修改下拉参数
   handleSelectSaveParams = (val, options) => {
     const { pname } = options.props
     this.saveParams[pname] = val
   }
   handleSaveInterMsg = () => {
     this.props.updateUnitInterInfo(this.saveParams)
+  }
+  handleInterMsgChange = (val, options) => {
+    const { editindex, pname } = options.props
+    this.dateList[editindex][pname] = val
+  }
+  handleInterName = (e) => {
+    const pName = e.target.getAttribute('pname')
+    const editIndex = e.target.getAttribute('editindex')
+    this.dateList[editIndex][pName] = e.target.value
   }
   render() {
     const {
@@ -126,7 +153,7 @@ class ModalPage extends React.Component {
       <div className={styles.modalDiv}>
         <div className={styles.ModalPageWrapper}>
           <div className={styles.mountingTable}>
-            <div className={styles.mountingTbody} key={unitInterInfo && unitInterInfo.ID}>
+            <div className={styles.mountingTbody} key={unitInterInfo && (unitInterInfo.ID + unitInterType.UNIT_NAME)}>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口编号</div>
@@ -299,10 +326,10 @@ class ModalPage extends React.Component {
                     return (
                       <div className={styles.boxerBox} key={index}>
                         <div>
-                          <Select style={{ width: '100%' }} defaultValue={item.UNIT_DIRECTION}>
+                          <Select style={{ width: '100%' }} defaultValue={item.UNIT_DIRECTION} onChange={this.handleInterMsgChange}>
                             {
                               unitDirection &&
-                              unitDirection.map(dir => (<Option value={dir.C_CODE} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
+                              unitDirection.map(dir => (<Option value={dir.C_CODE} pname="UNIT_DIRECTION" editindex={index} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
                             }
                           </Select>
                         </div>
@@ -313,23 +340,24 @@ class ModalPage extends React.Component {
                             style={{ width: '100%' }}
                             onSearch={this.SearchList}
                             defaultValue={item.CONNECTOR_UNIT_ID}
+                            onChange={this.handleInterMsgChange}
                           >
                             {
                               interList &&
-                              interList.map(inter => (<Option value={inter.ID} key={inter.ID}>{inter.UNIT_NAME}</Option>))
+                              interList.map(inter => (<Option value={inter.ID} pname="CONNECTOR_UNIT_ID" editindex={index} key={inter.ID}>{inter.UNIT_NAME}</Option>))
                             }
                           </Select>
                         </div>
                         <div>
-                          <Select style={{ width: '100%' }} defaultValue={item.CONNECTOR_UNIT_DIRECTION}>
+                          <Select style={{ width: '100%' }} defaultValue={item.CONNECTOR_UNIT_DIRECTION} onChange={this.handleInterMsgChange}>
                             {
                               unitDirection &&
-                              unitDirection.map(dir => (<Option value={dir.C_CODE} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
+                              unitDirection.map(dir => (<Option value={dir.C_CODE} pname="CONNECTOR_UNIT_DIRECTION" editindex={index} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
                             }
                           </Select>
                         </div>
                         <div>
-                          <Input name="CorrelationNumber" placeholder="道路名称" />
+                          <Input defaultValue={item.ROAD_DETAIL} placeholder="道路名称" pname="ROAD_DETAIL" editindex={index} onChange={this.handleInterName} />
                         </div>
                         <div>
                           <span onClick={() => this.handleDeleteInterList(index)}>删除</span>
@@ -345,9 +373,9 @@ class ModalPage extends React.Component {
             </div>
             <div className={styles.mountingTableBottom}>
               <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
-              <span className={styles.mountingTableBottom_left}>
+              <span className={styles.mountingTableBottom_left} onClick={this.handleSaveInterMsg}>
                 {
-                  isshowSubmission ? <b onClick={this.handleSaveInterMsg}>提交</b> : <b onClick={this.handleSaveInterMsg}>修改</b>
+                  isshowSubmission ? <b>提交</b> : <b>修改</b>
                 }
               </span>
             </div>

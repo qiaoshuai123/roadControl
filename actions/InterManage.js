@@ -107,3 +107,9 @@ export const getSaveInterManage = (params) => {
     return result
   }
 }
+
+export const getDefaultUnitInfo = (unitInfo) => {
+  return (dispatch) => {
+    dispatch({ type: types.GET_UNITINTER_INFO, payload: unitInfo })
+  }
+}

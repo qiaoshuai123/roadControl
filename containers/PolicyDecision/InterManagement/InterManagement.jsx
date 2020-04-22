@@ -11,7 +11,10 @@ import ModalPage from './ModalPage/ModalPage'
 import InfoBg from './img/info_bg.png'
 
 import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, getAreaList } from '../../../actions/data'
-import { getUnitInterInfo, getInterControlSys, getUnitInterType, getUnitDeviceType, getManagementUnit, getUnitDirection, getSaveInterManage } from '../../../actions/InterManage'
+import {
+  getUnitInterInfo, getInterControlSys, getUnitInterType, getUnitDeviceType,
+  getManagementUnit, getUnitDirection, getSaveInterManage, getDefaultUnitInfo,
+} from '../../../actions/InterManage'
 
 class InterManagement extends Component {
   constructor(props) {
@@ -132,9 +135,11 @@ class InterManagement extends Component {
   }
 
   addIntersection = () => { // 添加路口
+    this.map.on('click', this.mapEventOn)
     this.setState({ isIntersection: false })
   }
   removeIntersection = () => { // 取消添加路口
+    this.map.off('click', this.mapEventOn)
     this.setState({ isIntersection: true })
   }
   isShowModalPage = () => { // 取消弹窗页面
@@ -222,6 +227,41 @@ class InterManagement extends Component {
     }
     return this.popup
   }
+  mapEventOn = (e) => {
+    console.log(e)
+    const { lng, lat } = e.lngLat
+    const defaultMsg = {
+      unitConnector: [],
+      unitInfo: {
+        BACKGROUND_IMG: '',
+        DISTRICT_ID: 1,
+        ID: '',
+        LATITUDE: lat.toFixed(6),
+        LONGITUDE: lng.toFixed(6),
+        MANAGEMENT_UNIT_ID: 9592,
+        MINOR_UNIT_NUMBER: 1,
+        ROTATE_ANGLE: 0,
+        SIGNAL_CODE: 1,
+        SIGNAL_GATEWAY: '45.6.247.254',
+        SIGNAL_IP: '45.6.247.152',
+        SIGNAL_MASK: '255.255.255.0',
+        SIGNAL_MODEL: 2,
+        SIGNAL_PORT: 3000,
+        SIGNAL_SUPPLIER: '',
+        SIGNAL_SYSTEM_CODE: 1,
+        SIGNAL_UNIT_ID: 1,
+        UNIT_ID: 1,
+        UNIT_NAME: '新路口',
+        UNIT_TYPE_CODE: 1,
+        SUREID: 'addPage',
+      },
+    }
+    this.props.getDefaultUnitInfo(defaultMsg)
+    this.setState({ isModalPage: true })
+  }
+  mapEventOff = (e) => {
+    console.log(e)
+  }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -301,7 +341,12 @@ class InterManagement extends Component {
           </div>
         </div>
         {
-          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} updateUnitInterInfo={this.handleUpdateUnitInterInfo} />
+          isModalPage &&
+          <ModalPage
+            {...this.props}
+            isShowModalPage={this.isShowModalPage}
+            updateUnitInterInfo={this.handleUpdateUnitInterInfo}
+          />
         }
       </div >
     )
@@ -327,6 +372,7 @@ const mapDisPatchToProps = (dispatch) => {
     getAreaList: bindActionCreators(getAreaList, dispatch),
     getUnitDirection: bindActionCreators(getUnitDirection, dispatch),
     getSaveInterManage: bindActionCreators(getSaveInterManage, dispatch),
+    getDefaultUnitInfo: bindActionCreators(getDefaultUnitInfo, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterManagement)
