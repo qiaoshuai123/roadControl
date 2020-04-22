@@ -157,7 +157,7 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口编号</div>
-                  <div><Input disabled onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口名称</div>
@@ -211,7 +211,7 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>信号控制系统<br />对应路口编号</div>
-                  <div><Input disabled onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}><div>管理单位</div>
                   <div>
@@ -301,7 +301,7 @@ class ModalPage extends React.Component {
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>信号机编号</div>
-                  <div> <Input name="CorrelationNumber" disabled defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
+                  <div> <Input name="CorrelationNumber" defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
