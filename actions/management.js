@@ -148,6 +148,7 @@ export const getsubloadUnitName = id => async (dispatch) => {
   }
 }
 export const getsubloadUnitNames = id => async (dispatch) => {
+  console.log(types.GET_SUB_LOADUNITNAMES, 'sdsdsdsd')
   try {
     const result = await RestUtil.get(`${API_SUB_LOADUNITNAME}/${id}`)
     if (result.data.code === 200) {

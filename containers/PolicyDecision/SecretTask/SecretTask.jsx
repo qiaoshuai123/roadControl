@@ -24,15 +24,14 @@ class SecretTask extends PureComponent {
       interList: null,
       searchInterList: null,
       interListHeight: 0,
-      hisenseSingal: '000',
-      siemensSingal: '000',
       interMonitorLeft: 15,
       visible: false,
       visibleTop: 0,
-      visibleLeft: 0,
-      vipRouteList: null,
+      vipId: null,
       searchVal: '',
-      popSecreTask: true,
+      secretTaskTop: null,
+      secretTaskLeft: null,
+      secretTaskRight: null,
       startValue: null,
       endValue: null,
       endOpen: false,
@@ -53,7 +52,7 @@ class SecretTask extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo } = this.props.data
+    const { interList, basicInterInfo, vip_initRoad, vip_findRoadByVipId, vip_findList } = this.props.data
     if (prevState.data !== this.props.data) {
       console.log(this.props.data)
     }
@@ -62,6 +61,30 @@ class SecretTask extends PureComponent {
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
+    }
+    if (prevState.data.vip_findRoadByVipId !== vip_findRoadByVipId) {
+      const roadIdArr = vip_findRoadByVipId.vipRoadUnitsData // 路口id集合
+      this.setState({
+        secretTaskTop: vip_findRoadByVipId.vipRoadData[0], //浮层中上面勤务回显数据
+      }, () => {
+        roadIdArr.map((item, index) => {
+          this.props.getInitRoad({
+            "afterStr": "",
+            "beforStr": "",
+            "id": item.UNIT_ID,
+            "orders": index+1,
+            "vipId": this.state.vipId,
+          })
+        })
+      })
+    }
+    if (prevState.data.vip_initRoad !== vip_initRoad) {
+      const secretTaskLeft = this.state.secretTaskLeft ? JSON.parse(JSON.stringify(this.state.secretTaskLeft)) : [];
+      vip_initRoad ? secretTaskLeft.push(vip_initRoad) : null
+      this.setState({ secretTaskLeft })
+    }
+    if (prevState.data.vip_findList !== vip_findList) {
+      this.setState({ secretTaskRight: vip_findList.vipRoadList })
     }
 
   }
@@ -81,6 +104,9 @@ class SecretTask extends PureComponent {
       this.setState({
         visible: show,
         visibleTop: top,
+        vipId: id,
+      }, () => {
+        console.log(id, '显示右键信息')
       })
     } else {
       this.setState({
@@ -257,6 +283,7 @@ class SecretTask extends PureComponent {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
+  /* 
   disabledStartDate = startValue => {
     const { endValue } = this.state;
     if (!startValue || !endValue) {
@@ -295,8 +322,17 @@ class SecretTask extends PureComponent {
 
   handleEndOpenChange = open => {
     this.setState({ endOpen: open });
-  };
-
+  }; */
+  // 关闭
+  handleClose = ( flag, moudleName ) => {
+    if (!flag){
+      this.setState({
+        secretTaskTop: null,
+        secretTaskLeft: null,
+        secretTaskRight: null,
+      })
+    }
+  } 
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -310,13 +346,21 @@ class SecretTask extends PureComponent {
     })
     this.map = map
   }
+  // 查看路线
+  lookRoadLine = (vipId) => {
+    this.props.getFindRoadByVipId(vipId)
+    this.props.getFindList(vipId)
+  }
+  // 删除路线
+  delRoadLine = (vipId) => {
+
+  }
   render() {
     const {
       interMonitorLeft,
       visible,
       visibleTop,
-      vipRouteList,
-      interListHeight, searchInterList, searchVal, popSecreTask, startValue, endValue, endOpen,
+      interListHeight, searchInterList, searchVal, secretTaskTop, secretTaskLeft, secretTaskRight, startValue, endValue, endOpen, vipId,
     } = this.state
     const { Search } = Input
     return (
@@ -381,127 +425,107 @@ class SecretTask extends PureComponent {
           {
             visible ?
               <ul style={{ top: `${visibleTop - 100}px` }} onContextMenu={this.noShow} className={styles.contextMenu}>
-                <li onClick={() => {
-                  this.props.getFindRoadByVipId(100)
-                  this.props.getInitRoad({
-                    "afterStr": "",
-                    "beforStr": "",
-                    "id": "30",
-                    "orders": "123",
-                    "vipId": "100"})
-                }}>查看</li>
-                <li>删除</li>
+                <li onClick={() => { this.lookRoadLine(vipId) }}>查看</li>
+                <li onClick={() => { this.delRoadLine(vipId) }}>删除</li>
               </ul> : null
           }
         </div>
-        {
-          popSecreTask ?
-            <div className={styles.MaskBox}>
-              <div className={styles.secretTaskBox}>
-                <div className={styles.title}>特勤任务 <Icon className={styles.Close} type='close' /></div>
-                <div className={styles.secretTaskCon}>
-                  <div className={styles.conTop}>
-                    <div className={styles.formBox}><span>勤务名称：</span><Input style={{width: '100px'}} onChange={this.changeFont} placeholder="请输入勤务名称" /></div>
-                    <div className={styles.formBox}><span>备注描述：</span><Input onChange={this.changeRegion} placeholder="请输入备注描述" /></div>
-                    <div className={styles.formBox}><span>计划时间：</span>
-                      <DatePicker
-                        disabledDate={this.disabledStartDate}
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        value={startValue}
-                        placeholder="开始时间"
-                        onChange={this.onStartChange}
-                        onOpenChange={this.handleStartOpenChange}
-                      />
-                      <span style={{margin:'0 5px'}}>-</span>
-                      <DatePicker
-                        disabledDate={this.disabledEndDate}
-                        showTime
-                        format="YYYY-MM-DD HH:mm:ss"
-                        value={endValue}
-                        placeholder="结束时间"
-                        onChange={this.onEndChange}
-                        open={endOpen}
-                        onOpenChange={this.handleEndOpenChange}
-                      />
-                        </div>
+        {!!secretTaskTop ?
+          <div className={styles.MaskBox}>
+            <div className={styles.secretTaskBox}>
+              <div className={styles.title}>特勤任务 <Icon className={styles.Close} type='close' onClick={() => {this.handleClose(false)}} /></div>
+              <div className={styles.secretTaskCon}>
+                <div className={styles.conTop}>
+                  <div className={styles.formBox}><span>勤务名称：</span><Input style={{width: '100px'}} value={secretTaskTop.START_UNIT} onChange={this.changeFont} placeholder="请输入勤务名称" /></div>
+                  <div className={styles.formBox}><span>备注描述：</span><Input onChange={this.changeRegion} value={secretTaskTop.DETAIL} placeholder="请输入备注描述" /></div>
+                  <div className={styles.formBox} style={{flex:0.05}}></div>
+                  {/* <div className={styles.formBox}><span>计划时间：</span>
+                    <DatePicker
+                      disabledDate={this.disabledStartDate}
+                      showTime
+                      format="YYYY-MM-DD HH:mm:ss"
+                      value={startValue}
+                      placeholder="开始时间"
+                      onChange={this.onStartChange}
+                      onOpenChange={this.handleStartOpenChange}
+                    />
+                    <span style={{margin:'0 5px'}}>-</span>
+                    <DatePicker
+                      disabledDate={this.disabledEndDate}
+                      showTime
+                      format="YYYY-MM-DD HH:mm:ss"
+                      value={endValue}
+                      placeholder="结束时间"
+                      onChange={this.onEndChange}
+                      open={endOpen}
+                      onOpenChange={this.handleEndOpenChange}
+                    />
+                  </div> */}
+                </div>
+                <div className={styles.conLeft}>
+                  <div className={styles.titleSmall}>勤务路口<em>添加路口</em></div>
+                  <div className={styles.conLeftBox}>
+                    {
+                      secretTaskLeft && secretTaskLeft.map((item) =>{
+                        return (
+                          <div className={styles.leftItem}>
+                            <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
+                            <div className={styles.itemCon}>
+                              <div className={styles.imgBox}><img src={item.imgName} /></div>
+                              <div className={styles.imgBox}>
+                                <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                                <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                                <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                                <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                                <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
+                              </div>
+                            </div>
+                            <div className={styles.formBox}><span>预设勤务阶段：</span>
+                              <Select defaultValue="0">
+                                <Option value='0'>请选择</Option>
+                              </Select>
+                              <em>保&nbsp;&nbsp;存</em>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                    {!secretTaskLeft && <div className={styles.PanelItemNone} style={{height:'127px', lineHeight:'127px'}}>暂无数据</div>}
                   </div>
-                  <div className={styles.conLeft}>
-                    <div className={styles.titleSmall}>勤务路口<em>添加路口</em></div>
-                    <div className={styles.conLeftBox}>
-                      <div className={styles.leftItem}>
-                        <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                        <div className={styles.itemCon}>
-                          <div className={styles.imgBox}><img src='a.png' /></div>
-                          <div className={styles.imgBox}>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                          </div>
-                        </div>
-                        <div className={styles.formBox}><span>预设勤务阶段：</span>
-                          <Select defaultValue="0">
-                            <Option value='0'>请选择</Option>
-                          </Select>
-                          <em>保&nbsp;&nbsp;存</em>
-                        </div>
-                      </div>
-                      <div className={styles.leftItem}>
-                        <div className={styles.itemTit}>标题<Icon className={styles.Close} type='close' /></div>
-                        <div className={styles.itemCon}>
-                          <div className={styles.imgBox}><img src='a.png' /></div>
-                          <div className={styles.imgBox}>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                            <div className={styles.dirItem}><img src='a.png' /><b>紧急序号1</b></div>
-                          </div>
-                        </div>
-                        <div className={styles.formBox}><span>预设勤务阶段：</span>
-                          <Select defaultValue="0">
-                            <Option value='0'>请选择</Option>
-                          </Select>
-                          <em>保&nbsp;&nbsp;存</em>
-                        </div>
-                      </div>
+                    
+                  </div>
+                <div className={styles.conRight}>
+                  <div className={styles.titleSmall}>勤务路线<em>一键勤务</em><em className={styles.saveLine}>保存路线</em></div>
+                  <div className={styles.itemTit}>勤务路线路口列表</div>
+                  <div className={styles.itemCon}>
+                    <div className={classNames(styles.listItem, styles.listTit)}>
+                      <s>序号</s>
+                      <s>路口名称</s>
+                      <s>勤务阶段</s>
+                      <s>勤务状态</s>
+                      <s>操作</s>
                     </div>
-                      
-                    </div>
-                  <div className={styles.conRight}>
-                    <div className={styles.titleSmall}>勤务路线<em>保存路线</em></div>
-                    <div className={styles.itemTit}>勤务路线<em>一键勤务</em></div>
-                    <div className={styles.itemCon}>
-                      <div className={classNames(styles.listItem, styles.listTit)}>
-                        <s>序号</s>
-                        <s>路口名称</s>
-                        <s>勤务阶段</s>
-                        <s>勤务状态</s>
-                        <s>操作</s>
-                      </div>
-                      <div className={styles.conRightBox}>
-                        <div className={styles.listItem}>
-                          <s>1</s>
-                          <s><img src='a.png' />路口名称</s>
-                          <s>勤务阶段</s>
-                          <s>勤务状态</s>
-                          <s><span>锁定</span></s>
-                        </div>
-                        <div className={styles.listItem}>
-                          <s>1</s>
-                          <s><img src='a.png' />路口名称</s>
-                          <s>勤务阶段</s>
-                          <s>勤务状态</s>
-                          <s><span>锁定</span></s>
-                        </div>
-                      </div>
+                    <div className={styles.conRightBox}>
+                      {
+                        secretTaskRight && secretTaskRight.map((item) => {
+                          return (
+                            <div className={styles.listItem}>
+                              <s>1</s>
+                              <s><img src='a.png' />路口名称</s>
+                              <s>勤务阶段</s>
+                              <s>勤务状态</s>
+                              <s><span>锁定</span></s>
+                            </div>
+                          )
+                        })
+                      }
+                      {(!!secretTaskRight && secretTaskRight.length === 0) && <div className={styles.PanelItemNone}>暂无数据</div>}
                     </div>
                   </div>
                 </div>
               </div>
-            </div> : null
+            </div>
+          </div> : null
         }
       </div>
     )

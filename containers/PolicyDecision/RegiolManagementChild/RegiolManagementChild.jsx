@@ -41,22 +41,22 @@ class RegiolManagementChild extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, editDistrictInfoThings, loadUnitNames } = this.props.data
+    const { interList, basicInterInfo, subeditDistrictInfoThing, subloadUnitNames } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
     }
-    if (prevState.data.editDistrictInfoThings !== editDistrictInfoThings) {
-      this.getsubeditDistrictInfoThing(editDistrictInfoThings)
+    if (prevState.data.subeditDistrictInfoThing !== subeditDistrictInfoThing) {
+      this.getsubeditDistrictInfoThing(subeditDistrictInfoThing)
     }
-    if (prevState.data.loadUnitNames !== loadUnitNames) {
-      this.getsubloadUnitNames(loadUnitNames)
+    if (prevState.data.subloadUnitNames !== subloadUnitNames) {
+      this.getsubloadUnitNames(subloadUnitNames)
     }
   }
-  getsubloadUnitNames = (loadUnitNames) => {
-    this.roadDetail.districtHas = loadUnitNames.districtHas
+  getsubloadUnitNames = (subloadUnitNames) => {
+    this.roadDetail.districtHas = subloadUnitNames.districtHas
     this.setState({
       showAreaMsg: true,
     })

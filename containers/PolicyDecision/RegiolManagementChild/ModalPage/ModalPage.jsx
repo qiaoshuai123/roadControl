@@ -1,54 +1,55 @@
 import React from 'react'
-import { Input, Select, message } from 'antd'
+import { Input, Select, message, DatePicker } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getloadManageMent, getsubvalidate, getsubloadUnitName, getsubsaveOrUpdateForm } from '../../../../actions/management'
+import moment from 'moment'
+import { getsubvalidate, getsubloadUnitName, getsubsaveOrUpdateForm } from '../../../../actions/management'
 import styles from './ModalPage.scss'
 
 class ModalPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      EquipmentModel: '', // 路口编号
-      CorrelationNumber: '', // 区域名称
+      EquipmentModel: '', // 子路口编号
+      CorrelationNumber: '', // 子区域名称
       IntersectionList: [], // 添加路口列表
       dateListValues: [], // 路口列表
       Correlationdetail: '', // 描述
       ManagementUnit: '', // 管理单位f
-      SubordinateUnitLsit: [], // 管理单位列表
       OptionList: [], // 选择路口列表
     }
     this.isShow = []
+    console.log(this.props, this.props.roadDetail, '父级传递22')
     this.details = this.props.roadDetail
+    this.dateFormat = 'YYYY-MM-DD'
+    this.ManagementUnitNumber = null
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef
-    console.log(this.props, 'qiaoshuai ')
-    this.props.getloadManageMent()
     this.props.getsubloadUnitName(this.props.roadDetail.ID || -1)
   }
   componentDidUpdate = (prevState) => {
-    const { loadManageMent, validate, loadUnitName, saveOrUpdateForm } = this.props.data
+    const { loadManageMent, subvalidate, subloadUnitName, subsaveOrUpdateForm } = this.props.data
     if (prevState.data.loadManageMent !== loadManageMent) {
       this.getloadManageMent(loadManageMent)
     }
-    if (prevState.data.validate !== validate) {
-      this.getsubvalidate(validate)
+    if (prevState.data.subvalidate !== subvalidate) {
+      this.getsubvalidate(subvalidate)
     }
-    if (prevState.data.loadUnitName !== loadUnitName) {
-      this.getsubloadUnitName(loadUnitName)
+    if (prevState.data.subloadUnitName !== subloadUnitName) {
+      this.getsubloadUnitName(subloadUnitName)
     }
-    if (prevState.data.saveOrUpdateForm !== saveOrUpdateForm) {
-      this.getsubsaveOrUpdateForm(saveOrUpdateForm)
+    if (prevState.data.subsaveOrUpdateForm !== subsaveOrUpdateForm) {
+      this.getsubsaveOrUpdateForm(subsaveOrUpdateForm)
     }
   }
-  getloadManageMent = (loadManageMent) => {
-    this.setState({
-      SubordinateUnitLsit: loadManageMent,
-      ManagementUnit: loadManageMent[0].USER_GROUP_NAME,
-    })
-    this.ManagementUnitName = loadManageMent[0].ID
-  }
+  // getloadManageMent = (loadManageMent) => {
+  //   this.setState({
+  //      loadManageMent,
+  //     ManagementUnit: loadManageMent[0].USER_GROUP_NAME,
+  //   })
+  //   this.ManagementUnitName = loadManageMent[0].ID
+  // }
   getsubvalidate = (validate) => {
     if (validate) {
       message.error('该区域编号已经存在')
@@ -58,6 +59,7 @@ class ModalPage extends React.Component {
     }
   }
   getsubloadUnitName = (loadUnitName) => {
+    console.log(loadUnitName, this.props.roadDetail.ID, 'qiaoss61')
     if (this.props.roadDetail.ID) {
       this.setState({
         OptionList: loadUnitName.districtHasnot,
@@ -73,21 +75,21 @@ class ModalPage extends React.Component {
     }
   }
   detailsFun = () => {
-    console.log(123456,this.details)
     try {
       if (this.details) {
-        const { SubordinateUnitLsit, OptionList } = this.state
-        const name = SubordinateUnitLsit.find(item => item.ID === this.details.MANAGEMENT_UNIT_ID).USER_GROUP_NAME
+        console.log(this.details, '88ss')
+        const { OptionList } = this.state
         this.arru = OptionList
         this.ids = this.details.ID
+        this.ManagementUnitNumber = this.details.UPDATE_TIME
         this.details.districtHas.forEach((item) => {
           this.arru = this.arru.filter(items => items.ID !== item.ID)
         })
-        console.log(this.details, this.arru, OptionList, this.arru || OptionList, 'qiasss')
+        console.log(this.details, this.arru, 'qiasss')
         this.setState({
-          ManagementUnit: name,
-          CorrelationNumber: this.details.DISTRICT_NAME,
-          EquipmentModel: this.details.DISTRICT_CODE,
+          ManagementUnit: this.formatDate(this.details.UPDATE_TIME),
+          CorrelationNumber: this.details.SUB_DISTRICT_NAME,
+          EquipmentModel: this.details.SUB_DISTRICT_CODE,
           Correlationdetail: this.details.DETAIL,
           IntersectionList: this.details.districtHas,
           OptionList: this.arru,
@@ -96,6 +98,24 @@ class ModalPage extends React.Component {
     } catch (error) {
       // window.location.reload()
     }
+  }
+  formatDate = (value) => { // 时间戳转换日期格式方法
+    if (value == null) {
+      return ''
+    }
+    const date = new Date(value)
+    const y = date.getFullYear()// 年
+    let MM = date.getMonth() + 1// 月
+    MM = MM < 10 ? (`0${MM}`) : MM
+    let d = date.getDate()// 日
+    d = d < 10 ? (`0${d}`) : d
+    let h = date.getHours()// 时
+    h = h < 10 ? (`0${h}`) : h
+    let m = date.getMinutes()// 分
+    m = m < 10 ? (`0${m}`) : m
+    let s = date.getSeconds()// 秒
+    s = s < 10 ? (`0${s}`) : s
+    return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   changValue = (e) => { // 页面所有input框改变触发
     const { name, value } = e.target
@@ -118,17 +138,15 @@ class ModalPage extends React.Component {
       IntersectionList: [], // 添加路口列表
       dateListValues: [], // 路口列表
       Correlationdetail: '', // 描述
-      ManagementUnit: '', // 管理单位f
-      SubordinateUnitLsit: [], // 管理单位列表
+      ManagementUnit: '', // 更新时间
       OptionList: [], // 选择路口列表
     })
   }
-  sInstallationLocations = (name) => { // 切换管理单位
-    const { SubordinateUnitLsit } = this.state
-    this.ManagementUnitName = SubordinateUnitLsit.find(item => item.USER_GROUP_NAME === name).ID
-    // console.log(this.ManagementUnitName)
+  sInstallationLocations = (date) => { // 切换更新时间
+    console.log(this.formatDate(new Date(date._d) * 1), '')
+    this.ManagementUnitNumber = new Date(date._d) * 1
     this.setState({
-      ManagementUnit: name,
+      ManagementUnit: this.formatDate(new Date(date._d) * 1),
     })
   }
   handleChange = (value) => { // 切换选择路口
@@ -172,12 +190,12 @@ class ModalPage extends React.Component {
       if (arr[i] === 'districtId') {
         if (obj.districtId === '' || obj.districtId === null) {
           console.log(obj.districtId)
-          return message.error('请输入区域编号')
+          return message.error('请输入子区域编号')
         }
       }
       if (arr[i] === 'districtName') {
         if (obj.districtName === '' || obj.districtName === null) {
-          return message.error('请输入区域名称')
+          return message.error('请输入子区域名称')
         }
       }
       if (arr[i] === 'detail') {
@@ -189,7 +207,7 @@ class ModalPage extends React.Component {
   }
   modifyOk = async () => { // 区域编号修改
     const {
-      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
+      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,ManagementUnit
     } = this.state
     let str = ''
     IntersectionList.forEach((item) => {
@@ -197,11 +215,11 @@ class ModalPage extends React.Component {
     })
     const strLength = str.slice(0, str.length - 1)
     const obj = {
-      districtId: EquipmentModel,
-      districtName: CorrelationNumber,
+      subDistrictId: EquipmentModel,
+      subDistrictName: CorrelationNumber,
       detail: Correlationdetail,
       id: this.ids,
-      management: `${this.ManagementUnitName}`,
+      updateTime: ManagementUnit,
       sureId: 'inserdPage',
       trueId: EquipmentModel,
       unitArr: strLength,
@@ -217,40 +235,10 @@ class ModalPage extends React.Component {
       })
     }
   }
-  handleOk = async () => { // 区域编号提交
-    const {
-      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
-    } = this.state
-    let str = ''
-    IntersectionList.forEach((item) => {
-      str = `${str + item.ID},`
-    })
-    const strLength = str.slice(0, str.length - 1)
-    const obj = {
-      districtId: EquipmentModel,
-      districtName: CorrelationNumber,
-      detail: Correlationdetail,
-      id: '',
-      management: `${this.ManagementUnitName}`,
-      sureId: 'addPage',
-      trueId: EquipmentModel,
-      unitArr: strLength,
-    }
-    const addImg = await this.isFormParameters(obj)
-    if (!addImg) {
-      this.props.getsubsaveOrUpdateForm(obj).then((res) => {
-        const { code } = res.data
-        if (code === 200) {
-          this.handleCancel()
-          message.success('添加成功')
-        }
-      })
-    }
-  }
   render() {
     const {
       EquipmentModel, CorrelationNumber, IntersectionList, Correlationdetail,
-      dateListValues, ManagementUnit, SubordinateUnitLsit, OptionList,
+      dateListValues, ManagementUnit, OptionList,
     } = this.state
     const { Option } = Select
     return (
@@ -259,13 +247,14 @@ class ModalPage extends React.Component {
           <div className={styles.mountingTable}>
             <div className={styles.mountingTbody}>
               <div className={styles.mountingTr}>
-                <div className={styles.mountingTd}><div><span>*</span>区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
-                <div className={styles.mountingTd}><div><span>*</span>区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
+                <div className={styles.mountingTd}><div><span>*</span>子区域编号</div><div><Input name="EquipmentModel" onBlur={this.blurchange} autocomplete="off" onChange={this.changValue} value={EquipmentModel} /></div></div>
+                <div className={styles.mountingTd}><div><span>*</span>子区域名称</div><div><Input name="CorrelationNumber" onChange={this.changValue} autocomplete="off" value={CorrelationNumber} /></div></div>
               </div>
               <div className={styles.mountingTr}>
-                <div className={styles.mountingTd}><div><span>*</span>管理单位</div>
+                <div className={styles.mountingTd}><div><span>*</span>更新时间</div>
                   <div>
-                    <Select
+                    {/* this.formatDate(new Date() * 1) */}
+                    {/* <Select
                       style={{ width: '100%' }}
                       // optionFilterProp="children"
                       value={ManagementUnit}
@@ -273,7 +262,9 @@ class ModalPage extends React.Component {
                     >
                       {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
                         <Option value={item.USER_GROUP_NAME} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
-                    </Select>
+                    </Select> */}
+                    {/* <DatePicker onChange={this.sInstallationLocations} /> style={{ width: '177px' }}*/}
+                    <DatePicker value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
                   </div>
                 </div>
                 <div className={styles.mountingTd}><div><span>*</span>描述</div><div><Input name="Correlationdetail" autocomplete="off" onChange={this.changValue} value={Correlationdetail} /></div></div>
@@ -344,7 +335,7 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDisPatchToProps = dispatch => ({
-  getloadManageMent: bindActionCreators(getloadManageMent, dispatch),
+  // getloadManageMent: bindActionCreators(getloadManageMent, dispatch),
   getsubvalidate: bindActionCreators(getsubvalidate, dispatch),
   getsubloadUnitName: bindActionCreators(getsubloadUnitName, dispatch),
   getsubsaveOrUpdateForm: bindActionCreators(getsubsaveOrUpdateForm, dispatch),
