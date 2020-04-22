@@ -63,11 +63,11 @@ export const getsaveOrUpdateForm = (params) => {
     return result
   }
 }
-export const getloadPlanTree = (id, searchWord, type) => async (dispatch) => {
+export const getloadPlanLoad = (id = '', keyword = '', type = 'district') => async (dispatch) => {
   try {
-    const result = await RestUtil.post(`${API_LOADPLANTREE}?id=${id}&searchWord=${searchWord}&type=${type}`)
+    const result = await RestUtil.post(`${API_LOADPLANTREE}?id=${id}&searchWord=${keyword}&type=${type}`)
     if (result.data.code === 200) {
-      dispatch({ type: types.GET_LOADPLANTREE, payload: result.data.data })
+      dispatch({ type: types.GET_LOAD_PLANLOAD, payload: result.data.data })
     } else {
       console.error(result.data.message)
     }

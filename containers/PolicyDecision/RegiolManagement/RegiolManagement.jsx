@@ -11,9 +11,9 @@ import ModalPages from './ModalPage/ModalPage'
 
 import InfoBg from './img/info_bg.png'
 
-import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings } from '../../../actions/data'
+import { getBasicInterInfo, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings } from '../../../actions/data'
 import { getUnitInterInfo } from '../../../actions/InterManage'
-import { getloadUnitNames, getdeleteDistrict } from '../../../actions/management'
+import { getloadUnitNames, getdeleteDistrict, getloadPlanLoad } from '../../../actions/management'
 
 class RegiolManagement extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class RegiolManagement extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getInterList()
+    this.props.getloadPlanLoad()
     this.props.getLoadPlanTree()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
@@ -41,9 +41,9 @@ class RegiolManagement extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, editDistrictInfoThings, loadUnitNames } = this.props.data
-    if (prevState.data.interList !== interList) {
-      this.getInterLists(interList)
+    const { loadPlanLoad, basicInterInfo, editDistrictInfoThings, loadUnitNames } = this.props.data
+    if (prevState.data.loadPlanLoad !== loadPlanLoad) {
+      this.getloadPlanLoads(loadPlanLoad)
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
@@ -66,12 +66,13 @@ class RegiolManagement extends Component {
     this.roadDetail = editDistrictInfoThing
   }
   // 路口列表
-  getInterLists = (interList) => {
-    this.searchInterList = interList
+  getloadPlanLoads = (loadPlanLoad) => {
+    this.searchInterList = loadPlanLoad
     this.setState({
-      searchInterList: interList,
+      searchInterList: loadPlanLoad,
     }, () => {
-      this.addMarker(interList)
+      console.log(loadPlanLoad,'sdsdsds74')
+      // this.addMarker(loadPlanLoad)
     })
   }
   // 从子集获取区域id和index 请求路口
@@ -356,13 +357,14 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     geteditDistrictInfoThings: bindActionCreators(geteditDistrictInfoThings, dispatch),
-    getInterList: bindActionCreators(getInterList, dispatch),
+    // getInterList: bindActionCreators(getInterList, dispatch),
     getBasicInterInfo: bindActionCreators(getBasicInterInfo, dispatch),
     getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
     getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
     getUnitInterInfo: bindActionCreators(getUnitInterInfo, dispatch),
     getloadUnitNames: bindActionCreators(getloadUnitNames, dispatch),
     getdeleteDistrict: bindActionCreators(getdeleteDistrict, dispatch),
+    getloadPlanLoad: bindActionCreators(getloadPlanLoad, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(RegiolManagement)

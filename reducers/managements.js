@@ -15,6 +15,8 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { saveOrUpdateForm: payload })
     case types.GET_LOADPLANTREE:
       return Object.assign({}, state, { loadPlanTree: payload })
+    case types.GET_LOAD_PLANLOAD:
+      return Object.assign({}, state, { loadPlanLoad: payload })
     case types.GET_DELETEDISTRICT:
       return Object.assign({}, state, { deleteDistrict: payload })
     // 子区域管理
