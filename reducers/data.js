@@ -38,6 +38,8 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { loadUnitNames: payload })
     case types.GET_DELETEDISTRICT:
       return Object.assign({}, state, { deleteDistrict: payload })
+    case types.GET_AREA_LIST:
+      return Object.assign({}, state, { areaList: payload })
     default:
       return state
   }

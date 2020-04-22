@@ -10,8 +10,8 @@ import ModalPage from './ModalPage/ModalPage'
 
 import InfoBg from './img/info_bg.png'
 
-import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree } from '../../../actions/data'
-import { getUnitInterInfo, getInterControlSys, getUnitInterType, getUnitDeviceType, getManagementUnit } from '../../../actions/InterManage'
+import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, getAreaList } from '../../../actions/data'
+import { getUnitInterInfo, getInterControlSys, getUnitInterType, getUnitDeviceType, getManagementUnit, getUnitDirection, getSaveInterManage } from '../../../actions/InterManage'
 
 class InterManagement extends Component {
   constructor(props) {
@@ -29,10 +29,12 @@ class InterManagement extends Component {
   componentDidMount() {
     this.renderMineMap()
     this.props.getLoadPlanTree()
+    this.props.getUnitDirection(6)
     this.props.getInterControlSys(13)
     this.props.getUnitInterType(7)
     this.props.getUnitDeviceType(22)
     this.props.getManagementUnit()
+    this.props.getAreaList()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -118,6 +120,11 @@ class InterManagement extends Component {
     } else {
       this.setState({ interMonitorLeft: 15 })
     }
+  }
+  handleUpdateUnitInterInfo = (params) => {
+    this.props.getSaveInterManage(params).then((res) => {
+      console.log(res)
+    })
   }
   noShow = (e) => { // 禁止默认右键菜单
     e.stopPropagation()
@@ -294,7 +301,7 @@ class InterManagement extends Component {
           </div>
         </div>
         {
-          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} />
+          isModalPage && <ModalPage {...this.props} isShowModalPage={this.isShowModalPage} updateUnitInterInfo={this.handleUpdateUnitInterInfo} />
         }
       </div >
     )
@@ -317,6 +324,9 @@ const mapDisPatchToProps = (dispatch) => {
     getUnitInterType: bindActionCreators(getUnitInterType, dispatch),
     getUnitDeviceType: bindActionCreators(getUnitDeviceType, dispatch),
     getManagementUnit: bindActionCreators(getManagementUnit, dispatch),
+    getAreaList: bindActionCreators(getAreaList, dispatch),
+    getUnitDirection: bindActionCreators(getUnitDirection, dispatch),
+    getSaveInterManage: bindActionCreators(getSaveInterManage, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterManagement)
