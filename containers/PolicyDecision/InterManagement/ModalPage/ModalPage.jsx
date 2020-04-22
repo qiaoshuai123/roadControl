@@ -7,12 +7,35 @@ class ModalPage extends React.Component {
     super(props)
     this.state = {
       SubordinateUnitLsit: [], // 所属单位列表
-      MaintenanceUnitList: [], // 维护单位列表
-      datelist: [], // 点击添加列表
       unitInterInfo: null,
+      interListMsg: null,
     }
-    this.ShowName = []
-    this.num = 1
+    this.dateList = []
+    this.saveParams = {
+      arr: '',
+      backgroundImg: '',
+      districtInfo: '',
+      id: '',
+      latitude: '',
+      longitude: '',
+      management: '',
+      minorUnitNumber: '',
+      rotateAngle: '',
+      signalCode: '',
+      signalGateway: '',
+      signalIp: '',
+      signalMask: '',
+      signalModel: '',
+      signalPort: '',
+      signalSupplier: '',
+      signalSystemCode: '',
+      signalUnitId: '',
+      sureId: '',
+      unitConnectors: '',
+      unitId: '',
+      unitName: '',
+      unitTypeCode: '',
+    }
   }
   componentDidMount = () => {
     // eslint-disable-next-line no-undef
@@ -25,74 +48,79 @@ class ModalPage extends React.Component {
   }
   // 编辑回显路口信息
   getEditInterInfo = (unitInterInfo) => {
-    this.setState({ unitInterInfo: unitInterInfo.unitInfo })
-  }
-  addList = () => { // 添加列表
-    const { datelist } = this.state
-    datelist.push(this.addLi(this.num))
-    this.ShowName.push(this.addListName())
+    const { unitInfo } = unitInterInfo
     this.setState({
-      datelist,
+      unitInterInfo: unitInfo,
+      interListMsg: unitInterInfo.unitConnector,
     })
-    this.num += 1
+    this.saveParams = {
+      arr: '',
+      backgroundImg: unitInfo.BACKGROUND_IMG,
+      districtInfo: unitInfo.DISTRICT_ID,
+      id: unitInfo.ID,
+      latitude: unitInfo.LATITUDE,
+      longitude: unitInfo.LONGITUDE,
+      management: unitInfo.MANAGEMENT_UNIT_ID,
+      minorUnitNumber: unitInfo.MINOR_UNIT_NUMBER,
+      rotateAngle: unitInfo.ROTATE_ANGLE,
+      signalCode: unitInfo.SIGNAL_CODE,
+      signalGateway: unitInfo.SIGNAL_GATEWAY,
+      signalIp: unitInfo.SIGNAL_IP,
+      signalMask: unitInfo.SIGNAL_MASK,
+      signalModel: unitInfo.SIGNAL_MODEL,
+      signalPort: unitInfo.SIGNAL_PORT,
+      signalSupplier: unitInfo.SIGNAL_SUPPLIER,
+      signalSystemCode: unitInfo.SIGNAL_SYSTEM_CODE,
+      signalUnitId: unitInfo.SIGNAL_UNIT_ID,
+      sureId: '',
+      unitConnectors: unitInterInfo.unitConnector,
+      unitId: unitInfo.UNIT_ID,
+      unitName: unitInfo.UNIT_NAME,
+      unitTypeCode: unitInfo.UNIT_TYPE_CODE,
+    }
+    this.dateList = unitInterInfo.unitConnector
+  }
+  // 添加列表
+  handleAddInterList = () => {
+    const addMsg = {
+      CONNECTOR_UNIT_DIRECTION: 0,
+      CONNECTOR_UNIT_ID: 1,
+      ROAD_DETAIL: '',
+      UNIT_DIRECTION: 1,
+    }
+    this.dateList.push(addMsg)
+    this.setState({ interListMsg: this.dateList })
+    this.saveParams.unitConnectors = JSON.stringify(this.dateList)
   }
   handleCancel = () => {
     this.props.isShowModalPage()
   }
-  addListName = () => {
-    return {
-      IntersectionDirection: '', // 路口方向
-      FlowIntersection: '', // 流行路口
-      FlowIntersectionDirection: '', // 流向路口方向
-      RoadNameDescription: '', // 道路名称描述
-    }
+  // 删除新建列表
+  handleDeleteInterList = (index) => {
+    const filterList = this.dateList.splice(index, 1)
+    this.setState({ interListMsg: filterList })
+    this.saveParams.unitConnectors = JSON.stringify(filterList)
+    console.log(this.saveParams)
   }
-  addLi = (num) => {
-    return {
-      id: num,
-      InterDirection: [
-        { id: 1, name: '北' },
-        { id: 2, name: '东北' },
-      ],
-      FlowInter: [
-        { id: 1, name: '北大华西' },
-        { id: 2, name: '人民解放' },
-      ],
-      DirDirection: [
-        { id: 1, name: '北大华西' },
-        { id: 2, name: '人民解放' },
-      ],
-    }
+  handleChangeSaveMsg = (e) => {
+    const { value } = e.target
+    const pName = e.target.getAttribute('pname')
+    this.saveParams[pName] = value
   }
-  delectList = (id) => { // 删除新建列表
-    const { datelist } = this.state
-    const filterList = datelist.filter(item => item.id !== id)
-    this.setState({
-      datelist: filterList,
-    })
+  handleSelectSaveParams = (val, options) => {
+    const { pname } = options.props
+    this.saveParams[pname] = val
   }
-  IntersectionDirections = (e, index) => { // 路口方向
-    console.log(e, index, this.ShowName)
-    this.ShowName[index].IntersectionDirection = e
-  }
-  FlowIntersections = (e, index) => { // 流行路口
-    console.log(e, index, this.ShowName)
-    this.ShowName[index].FlowIntersection = e
-  }
-  FlowIntersectionDirections = (e, index) => { // 流向路口方向
-    console.log(e, index, this.ShowName)
-    this.ShowName[index].FlowIntersectionDirection = e
-  }
-  RoadNameDescriptions = (e, index) => { // 道路名称描述
-    console.log(e, index, this.ShowName)
-    this.ShowName[index].RoadNameDescription = e
+  handleSaveInterMsg = () => {
+    this.props.updateUnitInterInfo(this.saveParams)
   }
   render() {
     const {
-      unitInterInfo,
-      SubordinateUnitLsit, MaintenanceUnitList, isshowSubmission, datelist,
+      unitInterInfo, SubordinateUnitLsit, isshowSubmission, interListMsg,
     } = this.state
-    const { controlSys, unitInterType, unitDeviceType, managementUnit } = this.props.data
+    const {
+      controlSys, unitInterType, unitDeviceType, managementUnit, areaList, unitDirection, interList,
+    } = this.props.data
     const { Option } = Select
     return (
       <div className={styles.modalDiv}>
@@ -102,20 +130,20 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口编号</div>
-                  <div><Input disabled onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input disabled onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口名称</div>
-                  <div><Input onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_NAME} /></div>
+                  <div><Input pname="unitName" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_NAME} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>路口类型</div>
                   <div>
-                    <Select style={{ width: '100%' }} defaultValue={unitInterInfo && unitInterInfo.UNIT_TYPE_CODE} onChange={this.IssInstallationLocation}>
+                    <Select style={{ width: '100%' }} defaultValue={unitInterInfo && unitInterInfo.UNIT_TYPE_CODE} onChange={this.handleSelectSaveParams}>
                       {
                         unitInterType &&
-                        unitInterType.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                        unitInterType.map(item => (<Option pname="unitTypeCode" value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
                       }
                     </Select>
                   </div>
@@ -125,11 +153,12 @@ class ModalPage extends React.Component {
                     <Select
                       style={{ width: '100%' }}
                       defaultValue={unitInterInfo && unitInterInfo.DISTRICT_ID}
-                      onChange={this.IssInstallationLocation}
+                      onChange={this.handleSelectSaveParams}
                     >
                       {
-                        MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                          <Option value={item.ID} key={item.ID}>{item.CODE_NAME}</Option>)}
+                        areaList &&
+                        areaList.map(item => (<Option pname="districtInfo" value={item.ID} key={item.ID}>{item.DISTRICT_NAME}</Option>))
+                      }
                     </Select>
                   </div>
                 </div>
@@ -148,25 +177,25 @@ class ModalPage extends React.Component {
                     <span className={styles.requiredFields}>*</span>控制路口数
                   </div>
                   <div>
-                    <Input onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.MINOR_UNIT_NUMBER} />
+                    <Input pname="minorUnitNumber" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.MINOR_UNIT_NUMBER} />
                   </div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>信号控制系统<br />对应路口编号</div>
-                  <div><Input disabled onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input disabled onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}><div>管理单位</div>
                   <div>
                     <Select
                       style={{ width: '100%' }}
                       defaultValue={unitInterInfo && unitInterInfo.MANAGEMENT_UNIT_ID}
-                      onChange={this.IssInstallationLocation}
+                      onChange={this.handleSelectSaveParams}
                     >
                       {
                         managementUnit &&
-                        managementUnit.map(item => (<Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>))
+                        managementUnit.map(item => (<Option pname="management" value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>))
                       }
                     </Select>
                   </div>
@@ -175,12 +204,12 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>经度</div>
                   <div>
-                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LONGITUDE} />
+                    <Input pname="longitude" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.LONGITUDE} />
                   </div>
                 </div>
-                <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>维度</div>
+                <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>纬度</div>
                   <div>
-                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.LATITUDE} />
+                    <Input pname="latitude" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.LATITUDE} />
                   </div>
                 </div>
               </div>
@@ -190,40 +219,40 @@ class ModalPage extends React.Component {
                     <Select
                       style={{ width: '100%' }}
                       defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SYSTEM_CODE}
-                      onChange={this.sInstallationLocations}
+                      onChange={this.handleSelectSaveParams}
                     >
                       {
                         controlSys &&
-                        controlSys.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                        controlSys.map(item => (<Option pname="signalSystemCode" value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
                       }
                     </Select>
                   </div>
                 </div>
                 <div className={styles.mountingTd}><div><span className={styles.requiredFields}>*</span>信号机IP</div>
                   <div>
-                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_IP} />
+                    <Input pname="signalIp" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_IP} />
                   </div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}><div>信号机网关</div>
                   <div>
-                    <Input pname="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_GATEWAY} />
+                    <Input pname="signalGateway" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_GATEWAY} />
                   </div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div>信号机子网掩码</div>
-                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MASK} /></div>
+                  <div><Input pname="signalMask" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MASK} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>信号机端口</div>
-                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_PORT} /></div>
+                  <div><Input pname="signalPort" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_PORT} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div>信号机厂商</div>
-                  <div><Input pname="MaintenancePhine" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SUPPLIER} /></div>
+                  <div><Input pname="signalSupplier" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SUPPLIER} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
@@ -231,12 +260,12 @@ class ModalPage extends React.Component {
                   <div>
                     <Select
                       style={{ width: '100%' }}
-                      defaultValue={unitInterInfo && unitInterInfo.SIGNAL_SYSTEM_CODE}
-                      onChange={this.sInstallationLocations}
+                      defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MODEL}
+                      onChange={this.handleSelectSaveParams}
                     >
                       {
                         unitDeviceType &&
-                        unitDeviceType.map(item => (<Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
+                        unitDeviceType.map(item => (<Option pname="signalModel" value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>))
                       }
                       {SubordinateUnitLsit && SubordinateUnitLsit.map(item =>
                         <Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
@@ -245,13 +274,13 @@ class ModalPage extends React.Component {
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>信号机编号</div>
-                  <div> <Input name="CorrelationNumber" onChange={this.changValue} disabled defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
+                  <div> <Input name="CorrelationNumber" disabled defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>指北针偏转角度</div>
-                  <div><Input name="CorrelationNumber" onChange={this.changValue} defaultValue={unitInterInfo && unitInterInfo.ROTATE_ANGLE} /></div>
+                  <div><Input pname="rotateAngle" defaultValue={unitInterInfo && unitInterInfo.ROTATE_ANGLE} onChange={this.handleChangeSaveMsg} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div style={{ justifyContent: 'flex-start', paddingLeft: '10px' }}>(顺时针为正,逆时针为负)</div>
@@ -266,16 +295,15 @@ class ModalPage extends React.Component {
               </div>
               <div className={styles.boxers}>
                 {
-                  datelist && datelist.map((item, index) => {
+                  interListMsg && interListMsg.map((item, index) => {
                     return (
-                      <div className={styles.boxerBox}>
+                      <div className={styles.boxerBox} key={index}>
                         <div>
-                          <Select
-                            style={{ width: '100%' }}
-                            onChange={e => this.IntersectionDirections(e, index)}
-                          >
-                            {item.InterDirection.map(items =>
-                              <Option value={items.name} key={items.id}>{items.name}</Option>)}
+                          <Select style={{ width: '100%' }} defaultValue={item.UNIT_DIRECTION}>
+                            {
+                              unitDirection &&
+                              unitDirection.map(dir => (<Option value={dir.C_CODE} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
+                            }
                           </Select>
                         </div>
                         <div>
@@ -284,26 +312,27 @@ class ModalPage extends React.Component {
                             optionFilterProp="children"
                             style={{ width: '100%' }}
                             onSearch={this.SearchList}
-                            onChange={e => this.FlowIntersections(e, index)}
+                            defaultValue={item.CONNECTOR_UNIT_ID}
                           >
-                            {item.FlowInter.map(items =>
-                              <Option value={items.name} key={items.id}>{items.name}</Option>)}
+                            {
+                              interList &&
+                              interList.map(inter => (<Option value={inter.ID} key={inter.ID}>{inter.UNIT_NAME}</Option>))
+                            }
                           </Select>
                         </div>
                         <div>
-                          <Select
-                            style={{ width: '100%' }}
-                            onChange={e => this.FlowIntersectionDirections(e, index)}
-                          >
-                            {item.DirDirection.map(items =>
-                              <Option value={items.name} key={items.id}>{items.name}</Option>)}
+                          <Select style={{ width: '100%' }} defaultValue={item.CONNECTOR_UNIT_DIRECTION}>
+                            {
+                              unitDirection &&
+                              unitDirection.map(dir => (<Option value={dir.C_CODE} key={dir.C_CODE}>{dir.CODE_NAME}</Option>))
+                            }
                           </Select>
                         </div>
                         <div>
-                          <Input name="CorrelationNumber" placeholder="道路名称" onChange={e => this.RoadNameDescriptions(e, index)} />
+                          <Input name="CorrelationNumber" placeholder="道路名称" />
                         </div>
                         <div>
-                          <span onClick={() => this.delectList(item.id)}>删除</span>
+                          <span onClick={() => this.handleDeleteInterList(index)}>删除</span>
                         </div>
                       </div>
                     )
@@ -311,14 +340,14 @@ class ModalPage extends React.Component {
                 }
               </div>
               <div className={styles.mountingTr}>
-                <span onClick={this.addList}>添加方向</span>
+                <span onClick={this.handleAddInterList}>添加方向</span>
               </div>
             </div>
             <div className={styles.mountingTableBottom}>
               <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
               <span className={styles.mountingTableBottom_left}>
                 {
-                  isshowSubmission ? <b onClick={this.handleOk}>提交</b> : <b onClick={this.changeOk}>修改</b>
+                  isshowSubmission ? <b onClick={this.handleSaveInterMsg}>提交</b> : <b onClick={this.handleSaveInterMsg}>修改</b>
                 }
               </span>
             </div>

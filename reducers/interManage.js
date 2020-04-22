@@ -17,6 +17,8 @@ const interManage = (state = {}, action) => {
       return Object.assign({}, state, { unitDeviceType: payload })
     case types.GET_MANAGEMENT_UNIT:
       return Object.assign({}, state, { managementUnit: payload })
+    case types.GET_UNIT_DIRECTION:
+      return Object.assign({}, state, { unitDirection: payload })
     default:
       return state
   }
