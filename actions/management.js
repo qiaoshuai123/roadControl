@@ -3,10 +3,12 @@ import RestUtil from '../utils/RestUtil'
 
 import {
   API_LOADMANAGEMENT, API_VALIDATE, API_LOADUNITNAME,
-  API_SAVEORUPDATEFORM, API_LOADPLANTREE, API_EDITDISTRICTINFOTHING,
+  API_SAVEORUPDATEFORM, API_EDITDISTRICTINFOTHING,
   API_LOADUNITNAMES, API_DELETEDISTRICT, API_LOAD_PLANTREE,
   API_SUB_DELETEDISTRICT, API_SUB_EDITDISTRICTINFOTHING, API_SUB_LOADUNITNAME,
   API_SUB_SAVEORUPDATEFORM, API_SUB_VALIDATE,
+  API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
+  API_TIM_TEST, API_TIM_VALIDATE
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -194,6 +196,62 @@ export const getnewsubchildree = num => (dispatch) => {
 export const getsubdeleteDistrict = (id) => {
   return async () => {
     const result = await RestUtil.post(`${API_SUB_DELETEDISTRICT}/${id}`)
+    return result
+  }
+}
+
+// 配时管理
+export const gettimgetTimingInfo = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_GETTIMINGINFO}?${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_GETTIMINGINFO, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const gettimingInfoByExcel = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_GETTIMINGINFOBYEXCEL}/${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_GETTIMINGINFOBYEXCEL, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const gettimsaveOrUpdateForm = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_SAVEORUPDATEFORM}/${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_SAVEORUPDATEFORM, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const gettimtest = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_TEST}/${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_TEST, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const gettimvalidate = (id) => {
+  return async () => {
+    const result = await RestUtil.post(`${API_TIM_VALIDATE}/${id}`)
     return result
   }
 }
