@@ -164,5 +164,11 @@
         }
     }
 }
+.confirmBox {
+    background-color: rgba(25,59,91, .8);
+    :global(.ant-modal-confirm-title) {
+      color: #f1f1fb;
+    }
+}
 
 
