@@ -13,7 +13,7 @@ import InfoBg from './img/info_bg.png'
 
 import { getInterList, getBasicInterInfo } from '../../../actions/data'
 import { getUnitInterInfo } from '../../../actions/InterManage'
-import { getLoadPlanTree, getLoadChildTree, getsubeditDistrictInfoThing, getsubloadUnitNames, getsubdeleteDistrict } from '../../../actions/management'
+import { getLoadPlanTree, getLoadChildTree, getsubeditDistrictInfoThing, getsubloadUnitNames, getsubdeleteDistrict, getloadPlanLoadChild, getnewchildree } from '../../../actions/management'
 
 class RegiolManagementChild extends Component {
   constructor(props) {
@@ -32,8 +32,8 @@ class RegiolManagementChild extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getInterList()
     this.props.getLoadPlanTree()
+    this.props.getloadPlanLoadChild()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -41,12 +41,15 @@ class RegiolManagementChild extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, subeditDistrictInfoThing, subloadUnitNames } = this.props.data
+    const { interList, basicInterInfo, subeditDistrictInfoThing, subloadUnitNames, loadPlanLoadChild, loadPlanloadchildsr, } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
+    if (prevState.data.loadPlanloadchildsr !== loadPlanloadchildsr) {
+      this.getloadPlanLoads(loadPlanloadchildsr)
+    }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
-      this.getInterBasicInfo(basicInterInfo)
+      this.getInterBasicInfo(basicInterInfo) //需要修改
     }
     if (prevState.data.subeditDistrictInfoThing !== subeditDistrictInfoThing) {
       this.getsubeditDistrictInfoThing(subeditDistrictInfoThing)
@@ -67,11 +70,12 @@ class RegiolManagementChild extends Component {
   }
   // 路口列表
   getInterLists = (interList) => {
-    this.searchInterList = interList
+    this.addMarker(interList)
+  }
+  getloadPlanLoads = (loadPlanLoadChild) => {
+    this.searchInterList = loadPlanLoadChild
     this.setState({
-      searchInterList: interList,
-    }, () => {
-      this.addMarker(interList)
+      searchInterList: loadPlanLoadChild,
     })
   }
   // 从子集获取区域id和index 请求路口
@@ -79,9 +83,14 @@ class RegiolManagementChild extends Component {
     this.props.getLoadChildTree(id)
   }
   // 获取子id, 路口id
-  getSelectChildId = (chidlId) => {
+  getSelectChildId = (chidlId, lng, lat) => {
     const marker = document.getElementById('marker' + chidlId)
-    marker.click()
+    if (marker && this.map) {
+      this.map.setCenter([lng, lat])
+      marker.click()
+    } else {
+      message.info('该路口尚未接入')
+    }
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
@@ -126,16 +135,16 @@ class RegiolManagementChild extends Component {
     this.setState({ interListHeight: 300 })
   }
   hanleSelectInter = (e) => {
-    const interId = e.target.getAttribute('interid')
+    const interId = e.currentTarget.getAttribute('interid')
     const marker = document.getElementById('marker' + interId)
-    const lng = e.target.getAttribute('lng')
-    const lat = e.target.getAttribute('lat')
-    const interName = e.target.innerText
+    const lng = Number(e.currentTarget.getAttribute('lng'))
+    const lat = Number(e.currentTarget.getAttribute('lat'))
+    console.log(interId, marker, lng, lat, 'sdssdccccc')
     if (marker && this.map) {
       this.map.setCenter([lng, lat])
-      marker.click()
-      this.searchInputBox.value = interName
-      this.setState({ interListHeight: 0 })
+      // marker.click()
+      // this.searchInputBox.value = interName
+      // this.setState({ interListHeight: 0 })
     } else {
       message.info('该路口尚未接入')
     }
@@ -149,12 +158,15 @@ class RegiolManagementChild extends Component {
     }
     this.searchTimer = setTimeout(() => {
       this.searchInterList.forEach((item) => {
-        if (item.UNIT_NAME.indexOf(value) >= 0) {
+        if (item.NAME.includes(value)) {
           searchInters.push(item)
         }
       })
       this.setState({ searchInterList: searchInters })
     }, 200)
+    if (value === '') {
+      this.props.getnewchildree(this.searchInterList)
+    }
   }
   handleShowInterMonitor = () => {
     if (this.state.interMonitorLeft > 0) {
@@ -252,6 +264,12 @@ class RegiolManagementChild extends Component {
     }
     return this.popup
   }
+  hanleSelectInterSelect = (e) => { // 下拉框选择切换
+    const values = e.currentTarget.innerText
+    this.searchInputBox.value = values
+    const arrs = this.searchInterList.filter(item => item.NAME === values)
+    this.props.getnewchildree(arrs)
+  }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -264,6 +282,9 @@ class RegiolManagementChild extends Component {
       minZoom: 3,
     })
     this.map = map
+    this.map.on('load', () => {
+      this.props.getInterList()
+    })
   }
 
   render() {
@@ -277,7 +298,7 @@ class RegiolManagementChild extends Component {
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
             {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
-          <div className={styles.title}>路口查询</div>
+          <div className={styles.title}>子区域查询</div>
           <div className={styles.interListBox}>
             <div className={styles.interSearch}>
               <span className={styles.searchBox}>
@@ -303,8 +324,8 @@ class RegiolManagementChild extends Component {
                       interid={item.ID}
                       lng={item.LONGITUDE}
                       lat={item.LATITUDE}
-                      onClick={this.hanleSelectInter}
-                    >{item.UNIT_NAME}
+                      onClick={this.hanleSelectInterSelect}
+                    >{item.NAME}
                     </div>
                   ))
                 }
@@ -354,6 +375,8 @@ const mapDisPatchToProps = (dispatch) => {
     getUnitInterInfo: bindActionCreators(getUnitInterInfo, dispatch),
     getsubloadUnitNames: bindActionCreators(getsubloadUnitNames, dispatch),
     getsubdeleteDistrict: bindActionCreators(getsubdeleteDistrict, dispatch),
+    getloadPlanLoadChild: bindActionCreators(getloadPlanLoadChild, dispatch),
+    getnewchildree: bindActionCreators(getnewchildree, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(RegiolManagementChild)

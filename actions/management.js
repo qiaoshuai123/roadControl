@@ -63,18 +63,6 @@ export const getsaveOrUpdateForm = (params) => {
     return result
   }
 }
-export const getloadPlanTree = (id, searchWord, type) => async (dispatch) => {
-  try {
-    const result = await RestUtil.post(`${API_LOADPLANTREE}?id=${id}&searchWord=${searchWord}&type=${type}`)
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_LOADPLANTREE, payload: result.data.data })
-    } else {
-      console.error(result.data.message)
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
 export const geteditDistrictInfoThing = id => async (dispatch) => {
   try {
     const result = await RestUtil.get(`${API_EDITDISTRICTINFOTHING}/${id}`)
@@ -123,6 +111,18 @@ export const getLoadChildTree = (id = '', keyword = '', type = 'subDistrict') =>
     }
   }
 }
+export const getloadPlanLoadChild = (id = '', keyword = '', type = 'subDistrict') => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_LOAD_PLANTREE}?id=${id}&searchWord=${keyword}&type=${type}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_LOAD_PLANLOADCHILD, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
 export const getsubeditDistrictInfoThing = id => async (dispatch) => {
   try {
     const result = await RestUtil.get(`${API_SUB_EDITDISTRICTINFOTHING}/${id}`)
@@ -148,7 +148,6 @@ export const getsubloadUnitName = id => async (dispatch) => {
   }
 }
 export const getsubloadUnitNames = id => async (dispatch) => {
-  console.log(types.GET_SUB_LOADUNITNAMES, 'sdsdsdsd')
   try {
     const result = await RestUtil.get(`${API_SUB_LOADUNITNAME}/${id}`)
     if (result.data.code === 200) {
@@ -174,6 +173,20 @@ export const getsubvalidate = num => async (dispatch) => {
     } else {
       console.error(result.data.message)
     }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getnewchildree = num => (dispatch) => {
+  try {
+    dispatch({ type: types.GET_FLOW_NEWCHILDREE, payload: num })
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getnewsubchildree = num => (dispatch) => {
+  try {
+    dispatch({ type: types.GET_SUB_NEWCHILDREE, payload: num })
   } catch (e) {
     console.log(e)
   }

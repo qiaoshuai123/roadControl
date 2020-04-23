@@ -15,6 +15,8 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { saveOrUpdateForm: payload })
     case types.GET_LOADPLANTREE:
       return Object.assign({}, state, { loadPlanTree: payload })
+    case types.GET_LOAD_PLANLOAD:
+      return Object.assign({}, state, { loadPlanLoad: payload })
     case types.GET_DELETEDISTRICT:
       return Object.assign({}, state, { deleteDistrict: payload })
     // 子区域管理
@@ -30,6 +32,14 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { subsaveOrUpdateForm: payload })
     case types.GET_SUB_EDITDISTRICTINFOTHING:
       return Object.assign({}, state, { subeditDistrictInfoThing: payload })
+    case types.GET_FLOW_NEWCHILDREE:
+      return Object.assign({}, state, { loadPlanTree: payload })
+    case types.GET_LOAD_PLANLOADCHILD:
+      return Object.assign({}, state, { loadPlanloadchildsr: payload })
+    case types.GET_SUB_NEWCHILDREE:
+      return Object.assign({}, state, { loadPlanLoadChild: payload })
+    case types.GET_LOAD_PLANTREE:
+      return Object.assign({}, state, { loadPlanTree: payload })
     default:
       return state
   }
