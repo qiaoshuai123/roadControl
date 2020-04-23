@@ -84,6 +84,8 @@ const interConfig = (state = {}, action) => {
       return Object.assign({}, state, { scheduleNoList: payload })
     case types.GET_FAULTLOG_LIST:
       return Object.assign({}, state, { faultLogList: payload })
+    case types.GET_PLANSTAGE_LIST:
+      return Object.assign({}, state, { planStageList: payload })
     default:
       return state
   }

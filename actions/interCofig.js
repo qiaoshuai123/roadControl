@@ -57,6 +57,7 @@ import {
   API_SAVE_SCHEDULEINFO,
   API_DELETE_SCHEDULE,
   API_FAULTLOG_LIST,
+  API_PLANSTAGE_LIST,
 
 } from '../constants/API'
 
@@ -690,6 +691,21 @@ export const getFaultLogList = (type, interId) => {
       const result = await RestUtil.post(`${API_FAULTLOG_LIST}?faultType=${type}&unitId=${interId}`)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_FAULTLOG_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getPlanStageList = (interId) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_PLANSTAGE_LIST}?unitId=${interId}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_PLANSTAGE_LIST, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

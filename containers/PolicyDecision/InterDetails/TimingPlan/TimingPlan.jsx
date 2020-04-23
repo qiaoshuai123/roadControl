@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './TimingPlan.scss'
 
-import { getTimingPlan, getTimePlanInfo, getSaveTimingPlan, getAddTimingPlan, getDeleteTimingPlan } from '../../../../actions/interCofig'
+import { getTimingPlan, getTimePlanInfo, getSaveTimingPlan, getAddTimingPlan, getDeleteTimingPlan, getPlanStageList } from '../../../../actions/interCofig'
 
 class TimingPlan extends React.PureComponent {
   constructor(props) {
@@ -15,6 +15,8 @@ class TimingPlan extends React.PureComponent {
       planDetails: null,
       planStageList: null,
       phaseNoList: null,
+      editPlanStageList: null,
+      editStageSelect: false,
     }
     this.saveParams = {
       coordPhase: 'string',
@@ -37,7 +39,7 @@ class TimingPlan extends React.PureComponent {
     this.props.getTimingPlan(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { timingPlan, timePlanInfo, addTimingPlan } = this.props.data
+    const { timingPlan, timePlanInfo, addTimingPlan, planStageList } = this.props.data
     if (prevState.data.timingPlan !== timingPlan) {
       this.getTimingPlanList(timingPlan)
     }
@@ -47,6 +49,12 @@ class TimingPlan extends React.PureComponent {
     if (prevState.data.addTimingPlan !== addTimingPlan) {
       this.getAdd(addTimingPlan)
     }
+    if (prevState.data.planStageList !== planStageList) {
+      this.getEditStageList(planStageList)
+    }
+  }
+  getEditStageList = (planStageList) => {
+    this.setState({ editPlanStageList: planStageList.planStageList })
   }
   getAdd = (addTimingPlan) => {
     const planInfo = {
@@ -62,8 +70,6 @@ class TimingPlan extends React.PureComponent {
       planDetails: planInfo,
       planStageList: addTimingPlan.planStageList,
       phaseNoList: addTimingPlan.phaseNoList,
-    }, () => {
-      console.log(this.state.planDetails, '???????????????')
     })
     addTimingPlan.planStageList.forEach((item) => {
       this.stageTimes.push(item.GREEN)
@@ -99,6 +105,7 @@ class TimingPlan extends React.PureComponent {
     }
     this.coordPhases = timingMsg.COORD_PHASE ? timingMsg.COORD_PHASE.split(',') : []
     this.props.getTimePlanInfo(timingMsg.ID, timingMsg.PLANNO, this.InterId)
+    this.props.getPlanStageList(this.InterId)
     this.setState({ showEditTiming: true })
   }
   handleCloseEdit = () => {
@@ -156,11 +163,20 @@ class TimingPlan extends React.PureComponent {
       },
     })
   }
+  handleAddStage = () => {
+    this.setState({ editStageSelect: true })
+  }
+  handleDeleteStage = () => {
+
+  }
+  handleCancelStage = () => {
+    this.setState({ editStageSelect: false })
+  }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
-    const { timingPlans, showEditTiming, planDetails, phaseNoList, planStageList } = this.state
+    const { timingPlans, showEditTiming, planDetails, phaseNoList, planStageList, editPlanStageList, editStageSelect } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -221,12 +237,42 @@ class TimingPlan extends React.PureComponent {
                       )
                     })
                   }
+                  <div className={styles.stageBox}>
+                    <span className={styles.editStageBtn} onClick={this.handleAddStage}><Icon type="plus" /></span>
+                    <span className={styles.editStageBtn} onClick={this.handleDeleteStage}><Icon type="minus" /></span>
+                  </div>
                 </div>
               </div>
               <div className={styles.editBtnBox}>
                 <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
                 <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
               </div>
+              {
+                editStageSelect &&
+                <div className={styles.stageSelectMark}>
+                  <div className={styles.stageSelectBox}>
+                    <div className={styles.stageTilte}>选择阶段</div>
+                    <div className={styles.stageContent}>
+                      {
+                        editPlanStageList &&
+                        editPlanStageList.map((stages) => {
+                          return (
+                            <div className={styles.stageBox} key={stages.STAGE_ID + stages.GREEN}>
+                              <p className={styles.phaseNo}>{stages.STAGE_ID}</p>
+                              <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
+                              <input type="text" defaultValue={stages.GREEN} />
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                    <div className={styles.stageAction}>
+                      <div className={styles.stageActionBtn}>确定</div>
+                      <div className={styles.stageActionBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCancelStage}>取消</div>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         }
@@ -296,6 +342,7 @@ const mapDisPatchToProps = (dispatch) => {
     getSaveTimingPlan: bindActionCreators(getSaveTimingPlan, dispatch),
     getAddTimingPlan: bindActionCreators(getAddTimingPlan, dispatch),
     getDeleteTimingPlan: bindActionCreators(getDeleteTimingPlan, dispatch),
+    getPlanStageList: bindActionCreators(getPlanStageList, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimingPlan)
