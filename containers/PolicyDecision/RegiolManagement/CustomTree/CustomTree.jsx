@@ -26,12 +26,12 @@ class CustomTree extends React.Component {
     }
   }
   getPlanTree = (loadPlanTree) => {
+    console.log('ssdsdsdsdsd')
     this.defaultChildren = loadPlanTree.map(() => [])
     this.setState({ loadPlanTree, defaultChildren: this.defaultChildren })
   }
   // 二级目录 路口
   getPlanChildTree = (loadChildTree) => {
-    console.log(loadChildTree)
     this.defaultChildren.splice(this.treeIndex, 1, loadChildTree)
     this.setState({ defaultChildren: this.defaultChildren })
   }
@@ -68,8 +68,8 @@ class CustomTree extends React.Component {
     e.preventDefault()
   }
   handleTreeChildSelect = (e) => {
+    console.log(98745)
     e.stopPropagation()
-    console.log(123456)
     const id = Number(e.currentTarget.getAttribute('id'))
     if (id) {
       this.props.getSelectChildId(id)
