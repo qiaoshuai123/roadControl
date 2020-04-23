@@ -32,7 +32,6 @@ class RegiolManagement extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getInterList()
     this.props.getAreaList()
     this.props.getLoadPlanTree()
     document.addEventListener('click', (e) => {
@@ -87,7 +86,12 @@ class RegiolManagement extends Component {
   // 获取子id, 路口id
   getSelectChildId = (chidlId, lng, lat) => {
     const marker = document.getElementById('marker' + chidlId)
-    marker.click()
+    if (marker && this.map) {
+      this.map.setCenter([lng, lat])
+      marker.click()
+    } else {
+      message.info('该路口尚未接入')
+    }
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
@@ -234,9 +238,9 @@ class RegiolManagement extends Component {
       this.popup = null
     }
   }
-  gohanleSelectInter = (e) => {
-    this.hanleSelectInter(e)
-  }
+  // gohanleSelectInter = (e) => {
+  //   this.hanleSelectInter(e)
+  // }
   // 自定义信息窗体
   showInterInfo = (lng, lat, interName, singalSys, interId) => {
     this.removeInterInfo()
@@ -288,6 +292,9 @@ class RegiolManagement extends Component {
       minZoom: 3,
     })
     this.map = map
+    this.map.on('load', () => {
+      this.props.getInterList()
+    })
   }
 
   render() {

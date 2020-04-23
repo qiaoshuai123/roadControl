@@ -32,7 +32,6 @@ class RegiolManagementChild extends Component {
   }
   componentDidMount() {
     this.renderMineMap()
-    this.props.getInterList()
     this.props.getLoadPlanTree()
     this.props.getloadPlanLoadChild()
     document.addEventListener('click', (e) => {
@@ -50,7 +49,7 @@ class RegiolManagementChild extends Component {
       this.getloadPlanLoads(loadPlanloadchildsr)
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
-      this.getInterBasicInfo(basicInterInfo)
+      this.getInterBasicInfo(basicInterInfo) //需要修改
     }
     if (prevState.data.subeditDistrictInfoThing !== subeditDistrictInfoThing) {
       this.getsubeditDistrictInfoThing(subeditDistrictInfoThing)
@@ -84,9 +83,14 @@ class RegiolManagementChild extends Component {
     this.props.getLoadChildTree(id)
   }
   // 获取子id, 路口id
-  getSelectChildId = (chidlId) => {
+  getSelectChildId = (chidlId, lng, lat) => {
     const marker = document.getElementById('marker' + chidlId)
-    marker.click()
+    if (marker && this.map) {
+      this.map.setCenter([lng, lat])
+      marker.click()
+    } else {
+      message.info('该路口尚未接入')
+    }
   }
   // 获取路口基本信息
   getInterBasicInfo = (basicInterInfo) => {
@@ -221,9 +225,6 @@ class RegiolManagementChild extends Component {
       this.popup = null
     }
   }
-  gohanleSelectInter = (e) => {
-    this.hanleSelectInter(e)
-  }
   // 自定义信息窗体
   showInterInfo = (lng, lat, interName, singalSys, interId) => {
     this.removeInterInfo()
@@ -263,12 +264,12 @@ class RegiolManagementChild extends Component {
     }
     return this.popup
   }
-  // hanleSelectInterSelect = (e) => { // 下拉框选择切换
-  //   const values = e.currentTarget.innerText
-  //   this.searchInputBox.value = values
-  //   const arrs = this.searchInterList.filter(item => item.NAME === values)
-  //   this.props.getnewchildree(arrs)
-  // }
+  hanleSelectInterSelect = (e) => { // 下拉框选择切换
+    const values = e.currentTarget.innerText
+    this.searchInputBox.value = values
+    const arrs = this.searchInterList.filter(item => item.NAME === values)
+    this.props.getnewchildree(arrs)
+  }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -281,6 +282,9 @@ class RegiolManagementChild extends Component {
       minZoom: 3,
     })
     this.map = map
+    this.map.on('load', () => {
+      this.props.getInterList()
+    })
   }
 
   render() {
@@ -294,7 +298,7 @@ class RegiolManagementChild extends Component {
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
             {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
-          <div className={styles.title}>路口查询</div>
+          <div className={styles.title}>子区域查询</div>
           <div className={styles.interListBox}>
             <div className={styles.interSearch}>
               <span className={styles.searchBox}>
@@ -335,7 +339,6 @@ class RegiolManagementChild extends Component {
               visibleShowLeft={this.visibleShowLeft}
               getSelectTreeId={this.getSelectTreeId}
               getSelectChildId={this.getSelectChildId}
-              gohanleSelectInter={this.gohanleSelectInter}
             />
           </div>
           {

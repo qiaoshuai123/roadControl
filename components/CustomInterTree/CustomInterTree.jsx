@@ -97,7 +97,15 @@ class CustomTree extends React.Component {
           )
         }
         return (
-          <li className={styles.childLi} onMouseDown={(e) => { this.rightDown(e, '', false) }} key={item.ID} id={item.ID} onClick={this.handleTreeChildSelect}>
+          <li
+            className={styles.childLi}
+            onMouseDown={(e) => { this.rightDown(e, '', false) }}
+            key={item.ID}
+            id={item.ID}
+            lng={item.LONGITUDE}
+            lat={item.LATITUDE}
+            onClick={this.handleTreeChildSelect}
+          >
             <span className={styles.childIcon}><Icon type="environment" theme="filled" /></span>
             <span title={item.NAME} className={styles.childNode}>{item.NAME}</span>
           </li>
