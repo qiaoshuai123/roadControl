@@ -47,7 +47,9 @@ class CustomTree extends React.Component {
     } else {
       this.state.expendsKey.push(id)
     }
-    this.props.visibleShowLeft('', '', false)
+    if (!this.props.rightDownNone) {
+      this.props.visibleShowLeft('', '', false)
+    }
     this.setState({ expendsKey: this.state.expendsKey })
     this.props.getSelectTreeId(id)
   }
@@ -61,6 +63,7 @@ class CustomTree extends React.Component {
     }
   }
   rightDown = (e, id, boolean) => { // 鼠标右击
+    if (this.props.rightDownNone) return false
     e.stopPropagation()
     e.preventDefault()
     const { visibleShowLeft } = this.props

@@ -75,6 +75,7 @@ export const API_DELETE_SCHEDULE = '/atms/hisenseSignal/deleteSchedule'
 export const API_FAULTLOG_LIST = '/atms/singleUnitMonitor/showRealAlarms_hx'
 export const API_LOAD_PLANTREE = '/atms/districtManagement/loadPlanTree'
 export const API_AREA_LIST = '/atms/unitManagement/loadDistrict'
+export const API_PLANSTAGE_LIST = '/atms/hisenseSignal/loadPlanInfo_add'
 
 // 特勤任务
 export const API_VIP_ROUTE = '/atms/vip/vipRoute'
