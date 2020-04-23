@@ -126,7 +126,10 @@ class InterManagement extends Component {
   }
   handleUpdateUnitInterInfo = (params) => {
     this.props.getSaveInterManage(params).then((res) => {
-      console.log(res)
+      if (res.data.code === 200) {
+        this.isShowModalPage()
+      }
+      message.info(res.data.message)
     })
   }
   noShow = (e) => { // 禁止默认右键菜单
@@ -335,6 +338,7 @@ class InterManagement extends Component {
           <div className={styles.treeBox}>
             <CustomInterTree
               {...this.props}
+              rightDownNone="true"
               getSelectTreeId={this.getSelectTreeId}
               getSelectChildId={this.getSelectChildId}
             />

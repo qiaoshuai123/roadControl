@@ -84,7 +84,7 @@ class ModalPage extends React.Component {
       interListMsg: unitInterInfo.unitConnector,
     })
     this.getChangeSaveParams(unitInfo)
-    this.saveParams.unitConnectors = unitInterInfo.unitConnector
+    this.saveParams.unitConnectors = JSON.stringify(unitInterInfo.unitConnector)
     this.dateList = unitInterInfo.unitConnector
   }
   // 添加列表
@@ -100,7 +100,6 @@ class ModalPage extends React.Component {
     this.saveParams.unitConnectors = JSON.stringify(this.dateList)
   }
   handleCancel = () => {
-    console.log(this.saveParams)
     this.props.isShowModalPage()
   }
   // 删除新建列表
@@ -142,9 +141,7 @@ class ModalPage extends React.Component {
     this.dateList[editIndex][pName] = e.target.value
   }
   render() {
-    const {
-      unitInterInfo, SubordinateUnitLsit, isshowSubmission, interListMsg,
-    } = this.state
+    const { unitInterInfo, SubordinateUnitLsit, interListMsg } = this.state
     const {
       controlSys, unitInterType, unitDeviceType, managementUnit, areaList, unitDirection, interList,
     } = this.props.data
@@ -157,7 +154,7 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口编号</div>
-                  <div><Input onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input pname="UNIT_ID" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>路口名称</div>
@@ -211,7 +208,7 @@ class ModalPage extends React.Component {
               <div className={styles.mountingTr}>
                 <div className={styles.mountingTd}>
                   <div>信号控制系统<br />对应路口编号</div>
-                  <div><Input onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
+                  <div><Input pname="UNIT_ID" onChange={this.handleChangeSaveMsg} defaultValue={unitInterInfo && unitInterInfo.UNIT_ID} /></div>
                 </div>
                 <div className={styles.mountingTd}><div>管理单位</div>
                   <div>
@@ -289,6 +286,7 @@ class ModalPage extends React.Component {
                       style={{ width: '100%' }}
                       defaultValue={unitInterInfo && unitInterInfo.SIGNAL_MODEL}
                       onChange={this.handleSelectSaveParams}
+                      
                     >
                       {
                         unitDeviceType &&
@@ -301,7 +299,7 @@ class ModalPage extends React.Component {
                 </div>
                 <div className={styles.mountingTd}>
                   <div><span className={styles.requiredFields}>*</span>信号机编号</div>
-                  <div> <Input name="CorrelationNumber" defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} /></div>
+                  <div> <Input pname="UNIT_ID" defaultValue={unitInterInfo && unitInterInfo.SIGNAL_CODE} onChange={this.handleChangeSaveMsg} /></div>
                 </div>
               </div>
               <div className={styles.mountingTr}>
@@ -373,11 +371,7 @@ class ModalPage extends React.Component {
             </div>
             <div className={styles.mountingTableBottom}>
               <span onClick={this.handleCancel} className={styles.mountingTableBottom_right}>取消</span>
-              <span className={styles.mountingTableBottom_left} onClick={this.handleSaveInterMsg}>
-                {
-                  isshowSubmission ? <b>提交</b> : <b>修改</b>
-                }
-              </span>
+              <span className={styles.mountingTableBottom_left} onClick={this.handleSaveInterMsg}>确定</span>
             </div>
           </div>
         </div >
