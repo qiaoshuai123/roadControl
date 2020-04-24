@@ -66,6 +66,25 @@
                   background-color: #12A4F1;
                   cursor: pointer;
                 }
+                .radioBtn {
+                  display: inline-block;
+                  width: 16px;
+                  height: 16px;
+                  margin-right: 5px;
+                  border: 1px solid #12A4F1;
+                  border-radius: 50%;
+                  text-align: center;
+                  line-height: 12px;
+                  cursor: pointer;
+                  .radioCheck {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background-color: #12A4F1;
+                    border-radius: 50%;
+                    transition: all .2s;
+                  }
+                }
               }
             }
             .stageAction {
