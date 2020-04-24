@@ -49,6 +49,11 @@ const Timing = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Timanagement = Loadable({
+  loader: () => import('./containers/PolicyDecision/Timanagement/Timing'),
+  loading: Loading,
+  delay: 0,
+})
 const SecretTask = Loadable({
   loader: () => import('./containers/PolicyDecision/SecretTask/SecretTask'),
   loading: Loading,
@@ -79,6 +84,7 @@ const RegiolManagementChild = Loadable({
   loading: Loading,
   delay: 0,
 })
+
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -88,7 +94,7 @@ const Parent = () => (
     <Route path="/signalhome" component={SignalHome} />
     <Route path="/optimize" component={Optimize} />
     <Route path="/monitoring" component={Monitoring} />
-    <Route path="/timing" component={Timing} />
+    <Route path="/timanagement" component={Timanagement} />
     <Route path="/secretTask" component={SecretTask} />
     <Route path="/areaOptimize" component={AreaOptimize} />
     <Route path="/interdetails/:id" component={InterDetails} />
