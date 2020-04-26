@@ -41,9 +41,13 @@ class ModalPage extends React.Component {
   }
   componentDidUpdate = (prevState) => {
     const { unitInterInfo } = this.props.data
+    console.log(unitInterInfo)
     if (prevState.data.unitInterInfo !== unitInterInfo) {
       this.getEditInterInfo(unitInterInfo)
     }
+  }
+  static getDerivedStateFromProps = (props, state) => {
+    console.log(props, state)
   }
   getChangeSaveParams = (unitInfo) => {
     this.saveParams = {

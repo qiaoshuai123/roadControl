@@ -34,22 +34,22 @@ class Entrance extends React.Component {
           <div
             className={styles.F}
             style={clickCount === 1 ? this.L : clickCount === 2 ? this.B : clickCount === 3 ? this.R : this.F}
-          />
-          <div
-            className={styles.L}
-            style={clickCount === 1 ? this.B : clickCount === 2 ? this.R : clickCount === 3 ? this.F : this.L}
-            sysname="/inter"
-            onClick={this.handleGoSystem}
-          />
-          <div
-            className={styles.B}
-            style={clickCount === 1 ? this.R : clickCount === 2 ? this.F : clickCount === 3 ? this.L : this.B}
             sysname="/signalhome"
             onClick={this.handleGoSystem}
           />
           <div
+            className={styles.L}
+            style={clickCount === 1 ? this.B : clickCount === 2 ? this.R : clickCount === 3 ? this.F : this.L}
+          />
+          <div
+            className={styles.B}
+            style={clickCount === 1 ? this.R : clickCount === 2 ? this.F : clickCount === 3 ? this.L : this.B}
+          />
+          <div
             className={styles.R}
             style={clickCount === 1 ? this.F : clickCount === 2 ? this.L : clickCount === 3 ? this.B : this.R}
+            sysname="/inter"
+            onClick={this.handleGoSystem}
           />
           <span className={styles.moveLeft} onClick={this.handleMoveLeft} />
           <span className={styles.moveRight} onClick={this.handleMoveRight} />

@@ -124,7 +124,7 @@ if (!httpENV) { // 如果是开发环境
     proxy: {
       '/atms': {
         target: 'http://192.168.1.123:26001',
-        // target: 'http://192.168.1.124:20213',
+        // target: 'http://39.100.128.220:7002',
         // pathRewrite: { '^/api': '' },
         // changeOrigion: true, // 这个参数可以让target参数是域名。
         secure: false, // 设置后，可以接受运行在 HTTPS 上，可以使用无效证书的后端服务器

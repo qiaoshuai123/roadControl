@@ -35,6 +35,8 @@ class TimingPlan extends React.PureComponent {
     this.coordPhases = []
     this.planStageList = []
     this.stageNos = []
+    // this.processUrl = 'http://192.168.1.123:26001' // dev
+    this.processUrl = 'http://39.100.128.220:7002' // porduction
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -267,7 +269,7 @@ class TimingPlan extends React.PureComponent {
                       return (
                         <div className={styles.stageBox} key={'关联' + stage.STAGE_ID + stage.STAGE_IMAGE + stage.GREEN}>
                           <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
-                          <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
+                          <img width="35px" height="35px" src={`${this.processUrl}/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
                           <input type="text" defaultValue={stage.GREEN} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
                         </div>
                       )
@@ -298,7 +300,7 @@ class TimingPlan extends React.PureComponent {
                                 <span className={styles.radioBtn}><i className={styles.radioCheck} style={{ opacity: stageRadioIndex === index ? 1 : 0 }} /></span>
                                 {stages.STAGE_ID}
                               </p>
-                              <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
+                              <img width="35px" height="35px" src={`${this.processUrl}/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
                               <input disabled type="text" defaultValue={stages.GREEN} />
                             </div>
                           )
@@ -349,7 +351,7 @@ class TimingPlan extends React.PureComponent {
                         item.STAGEIMAGES &&
                         item.STAGEIMAGES.split(',').map((stage, indexs) =>{
                           return (
-                            <img key={item.ID + indexs} width="35px" height="35px" style={{ marginRight: '3px' }} src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage}`} alt="" />
+                            <img key={item.ID + indexs} width="35px" height="35px" style={{ marginRight: '3px' }} src={`${this.processUrl}/atms/comm/images/anniu/${stage}`} alt="" />
                           )
                         })
                       }

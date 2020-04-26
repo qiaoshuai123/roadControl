@@ -46,9 +46,11 @@ class SecretTask extends PureComponent {
     this.searchInterList = []
     this.markers = []
     this.infowindow = 0
-    this.imgBgUrl = 'http://192.168.1.123:26001/atms/comm/dzimg/10/'
-    this.imgDirUrl = 'http://192.168.1.123:26001/atms/comm/dzimg/2/'
-    this.imgInfoUrl = 'http://192.168.1.123:26001/atms/comm/images/anniu/'
+    // this.processUrl = 'http://192.168.1.123:26001' // dev
+    this.processUrl = 'http://39.100.128.220:7002' // porduction
+    this.imgBgUrl = `${this.processUrl}/atms/comm/dzimg/10/`
+    this.imgDirUrl = `${this.processUrl}/atms/comm/dzimg/2/`
+    this.imgInfoUrl = `${this.processUrl}/atms/comm/images/anniu/`
   }
   componentDidMount() {
     this.renderMineMap()

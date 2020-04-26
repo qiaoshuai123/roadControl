@@ -1,12 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Select, Icon } from 'antd'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
-import { getPlanInfo } from '../../../actions/data'
 
 import styles from './Inter.scss'
 
@@ -16,12 +13,8 @@ class Inter extends React.Component {
     this.state = {}
   }
   componentDidMount = () => {
-    this.props.getPlanInfo()
   }
   componentDidUpdate = (prevProps) => {
-    console.log('componentDidUpdate::::', prevProps)
-    // 获取store中的异步数据
-    console.log(this.props)
   }
   render() {
     const { Option } = Select
@@ -55,14 +48,4 @@ class Inter extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.data,
-  }
-}
-const mapDisPatchToProps = (dispatch) => {
-  return {
-    getPlanInfo: bindActionCreators(getPlanInfo, dispatch),
-  }
-}
-export default connect(mapStateToProps, mapDisPatchToProps)(Inter)
+export default Inter

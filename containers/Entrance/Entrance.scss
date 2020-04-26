@@ -24,19 +24,19 @@
             transition: all .2s;
         }
         .F {
-            background: url(./consim.png) center center no-repeat;
-            background-size: 100% 100%;
-        }
-        .L {
-            background: url(./coneva.png) center center no-repeat;
-            background-size: 100% 100%;
-        }
-        .B {
             background: url(./consure.png) center center no-repeat;
             background-size: 100% 100%;
         }
-        .R {
+        .L {
             background: url(./consys.png) center center no-repeat;
+            background-size: 100% 100%;
+        }
+        .B {
+            background: url(./consim.png) center center no-repeat;
+            background-size: 100% 100%;
+        }
+        .R {
+            background: url(./coneva.png) center center no-repeat;
             background-size: 100% 100%;
         }
         .moveLeft {

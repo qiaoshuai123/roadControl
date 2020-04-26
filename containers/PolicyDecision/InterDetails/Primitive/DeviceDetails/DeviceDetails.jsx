@@ -105,7 +105,7 @@ class DeviceDetails extends React.Component {
               width="100%"
               height="100%"
               draggable="false"
-              src={`http://192.168.1.123:26001/atms/imgs/${UI_TYPE_ID}/${deviceSrc}${UI_IMAGE_NAME}`}
+              src={`http://39.100.128.220:7002/atms/imgs/${UI_TYPE_ID}/${deviceSrc}${UI_IMAGE_NAME}`}
               alt=""
             />
             :

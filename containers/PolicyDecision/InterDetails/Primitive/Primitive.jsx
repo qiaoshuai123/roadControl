@@ -68,6 +68,8 @@ class Primitive extends PureComponent {
     this.typeShowPic = false // 判断选择地图或选择图标
     this.isShow = [{ id: 1, us: 1, name: '是' }, { id: 2, us: 0, name: '否' }]
     this.dateFormat = 'YYYY-MM-DD'
+    // this.processUrl = 'http://192.168.1.123:26001' // dev
+    this.processUrl = 'http://39.100.128.220:7002' // porduction
   }
   componentDidMount = () => {
     this.props.getprimitiveInutuitype()
@@ -788,12 +790,12 @@ class Primitive extends PureComponent {
                 )
               }) : null
           }
-          <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
+          <img src={`${this.processUrl}/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
           {/* {
             PrimitivBacImg.length > 16 ?
-              <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
+              <img src={`${this.processUrl}/atms/imgs/backupsImg/${PrimitivBacImg}`} draggable="false" alt="" />
               :
-              <img src={`http://192.168.1.123:26001/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
+              <img src={`${this.processUrl}/atms/imgs/baseImg/${PrimitivBacImg}`} draggable="false" alt="" />
           } */}
 
           <div className={styles.interMonitorBox} style={{ right: `${interMonitorLeft}px` }}>
@@ -828,7 +830,7 @@ class Primitive extends PureComponent {
                         <li key={item}>
                           <img
                             onClick={e => this.ischeckListItem(e, item)}
-                            src={`http://192.168.1.123:26001/atms/imgs/baseImg/${item}`}
+                            src={`${this.processUrl}/atms/imgs/baseImg/${item}`}
                             alt=""
                           />
                         </li>
@@ -844,7 +846,7 @@ class Primitive extends PureComponent {
                         <img
                           key={item.ID}
                           onClick={e => this.ischeckbacitem(e, item.UI_IMAGE_NAME, item.UI_TYPE_ID, item.ID)}
-                          src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
+                          src={`${this.processUrl}/atms/imgs/${item.UI_TYPE_ID}/${item.UI_IMAGE_NAME}`}
                           alt=""
                         />
                       ))
@@ -865,7 +867,7 @@ class Primitive extends PureComponent {
                 </div>
                 <div style={{ display: isupload }} className={styles.interPage_centerCenter}>
                   <span>
-                    <img src={`http://192.168.1.123:26001/atms/imgs/backupsImg/${checkInterImgs}`} draggable="false" alt="" />
+                    <img src={`${this.processUrl}/atms/imgs/backupsImg/${checkInterImgs}`} draggable="false" alt="" />
                   </span>
                 </div>
                 <div className={styles.interPage_centerRight}>
@@ -1014,7 +1016,7 @@ class Primitive extends PureComponent {
                 <div className={`${styles.mountingTr} ${styles.mountingTds}`}>
                   <div className={styles.mountingTd}><div>描述</div><div><TextArea rows={2} name="EquipmentDetail" onChange={this.changValue} value={EquipmentDetail} /></div></div>
                   <div className={styles.mountingTd}><div><span>*</span>请选择正常图标<br />(点击图片选择)</div>
-                    <div className={styles.PrimitiveBacimg}><img onClick={this.FormpavementPic} src={`http://192.168.1.123:26001/atms/imgs/${EquipmentIcon}`} alt="" /></div>
+                    <div className={styles.PrimitiveBacimg}><img onClick={this.FormpavementPic} src={`${this.processUrl}/atms/imgs/${EquipmentIcon}`} alt="" /></div>
                   </div>
                 </div>
                 {/* {`${styles.operationTop_box} ${styles.operationTopRightFor}`} */}

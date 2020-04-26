@@ -54,6 +54,8 @@ class InterDetails extends React.PureComponent {
       { id: 11, name: '信号机控制', configname: 'singalConfig' },
       { id: 12, name: '故障日志', configname: 'faultLog' },
     ]
+    // this.processUrl = 'http://192.168.1.123:26001' // dev
+    this.processUrl = 'http://39.100.128.220:7002' // porduction
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -173,7 +175,7 @@ class InterDetails extends React.PureComponent {
           </div>
           {
             sinaglInfo &&
-            <img width="100%" height="100%" src={`http://192.168.1.123:26001/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
+            <img width="100%" height="100%" src={`${this.processUrl}/atms/imgs/baseImg/${sinaglInfo.UNIT_BACKGROUND_IMG}`} alt="" />
           }
           {
             devicePics && sinaglInfo ?
@@ -190,7 +192,7 @@ class InterDetails extends React.PureComponent {
                   <img
                     key={item.DEVICE_CODE}
                     style={imgStyle}
-                    src={`http://192.168.1.123:26001/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
+                    src={`${this.processUrl}/atms/imgs/${item.UI_TYPE_ID}/${srcs}${item.UI_IMAGE_NAME}`}
                     alt=""
                     onClick={() => { this.handleShowDeviceInfo(item) }}
                   />
@@ -263,7 +265,7 @@ class InterDetails extends React.PureComponent {
               {
                 sinaglInfo &&
                 <span className={styles.stageImgBox}>
-                  <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${sinaglInfo.STAGE_IMAGE}`} alt="" />
+                  <img width="30px" height="30px" src={`${this.processUrl}/atms/comm/images/anniu/${sinaglInfo.STAGE_IMAGE}`} alt="" />
                 </span>
               }&nbsp;
               {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
@@ -291,7 +293,7 @@ class InterDetails extends React.PureComponent {
                           item.STAGENO === stageCode &&
                           <span className={styles.runningStage}><Icon type="check" /></span>
                         }
-                        <img width="30px" height="30px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${item.STAGE_IMAGE}`} alt="" />
+                        <img width="30px" height="30px" src={`${this.processUrl}/atms/comm/images/anniu/${item.STAGE_IMAGE}`} alt="" />
                       </span>
                     </dt>
                     <dd>{item.STAGENAME}</dd>
@@ -330,7 +332,7 @@ class InterDetails extends React.PureComponent {
                       const picname = singalControler.STAGE_CODE === item.STAGENO ? item.STAGE_IMAGE : item.STAGE_IMAGE.replace('_ch.gif', '.gif')
                       return (
                         <div key={picname} className={styles.stagePic} style={{ cursor: 'pointer' }}>
-                          <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${picname}`} alt="" />
+                          <img width="35px" height="35px" src={`http://39.100.128.220:7002/atms/comm/images/anniu/${picname}`} alt="" />
                         </div>
                       )
                     }) : null
