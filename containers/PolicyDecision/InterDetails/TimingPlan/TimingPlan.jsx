@@ -193,6 +193,7 @@ class TimingPlan extends React.PureComponent {
   handleRadioStageCheck = (index, stage) => {
     this.radioStageCheck = []
     this.radioStageCheck.push(stage)
+    console.log(index)
     this.setState({ stageRadioIndex: index })
   }
   handleAddStageCheck = () => {
@@ -264,7 +265,7 @@ class TimingPlan extends React.PureComponent {
                     planStageList &&
                     planStageList.map((stage, index) => {
                       return (
-                        <div className={styles.stageBox} key={stage.STAGE_ID + stage.STAGE_IMAGE + stage.GREEN}>
+                        <div className={styles.stageBox} key={'关联' + stage.STAGE_ID + stage.STAGE_IMAGE + stage.GREEN}>
                           <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
                           <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
                           <input type="text" defaultValue={stage.GREEN} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
@@ -292,13 +293,13 @@ class TimingPlan extends React.PureComponent {
                         editPlanStageList &&
                         editPlanStageList.map((stages, index) => {
                           return (
-                            <div className={styles.stageBox} key={stages.STAGE_ID + stages.GREEN}>
-                              <p className={styles.phaseNo}>
-                                <span className={styles.radioBtn} onClick={() => { this.handleRadioStageCheck(index, stages) }}><i className={styles.radioCheck} style={{ opacity: stageRadioIndex === index ? 1 : 0 }} /></span>
+                            <div className={styles.stageBox} key={'选择' + stages.STAGE_ID + index}>
+                              <p className={styles.phaseNo} onClick={() => { this.handleRadioStageCheck(index, stages) }}>
+                                <span className={styles.radioBtn}><i className={styles.radioCheck} style={{ opacity: stageRadioIndex === index ? 1 : 0 }} /></span>
                                 {stages.STAGE_ID}
                               </p>
                               <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
-                              <input type="text" defaultValue={stages.GREEN} />
+                              <input disabled type="text" defaultValue={stages.GREEN} />
                             </div>
                           )
                         })

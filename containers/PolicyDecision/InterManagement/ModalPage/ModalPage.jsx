@@ -38,10 +38,6 @@ class ModalPage extends React.Component {
     }
   }
   componentDidMount = () => {
-    const { unitInterInfo } = this.props.data
-    if (unitInterInfo) {
-      this.getEditInterInfo(unitInterInfo)
-    }
   }
   componentDidUpdate = (prevState) => {
     const { unitInterInfo } = this.props.data
