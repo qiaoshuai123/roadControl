@@ -117,6 +117,14 @@
   }
 }
 .timingWrapper {
+  :global(.ant-modal-body) {
+    background-color: white;
+  }
+  :global(.ant-modal-footer) {
+    background-color: white;
+  }
+}
+.searchBox {
   :global(.ant-select) {
     flex: 1;
   }
@@ -128,12 +136,6 @@
   }
   :global(path) {
     color: white;
-  }
-  :global(.ant-modal-body){
-    background-color: white;
-  }
-  :global(.ant-modal-footer){
-    background-color: white;
   }
 }
 .paginationBox {
@@ -149,4 +151,12 @@
   :global(path) {
     color: white;
   }
+  // :global(.ant-pagination.mini) {
+  //   height: 32px;
+  //   line-height: 32px;
+  // }
+  // :global(.ant-select-selection-selected-value) {
+  //   height: 32px;
+  //   line-height: 32px;
+  // }
 }

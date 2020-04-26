@@ -8,7 +8,7 @@ import {
   API_SUB_DELETEDISTRICT, API_SUB_EDITDISTRICTINFOTHING, API_SUB_LOADUNITNAME,
   API_SUB_SAVEORUPDATEFORM, API_SUB_VALIDATE,
   API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
-  API_TIM_TEST, API_TIM_VALIDATE
+  API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE,
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -242,6 +242,18 @@ export const gettimtest = id => async (dispatch) => {
     const result = await RestUtil.get(`${API_TIM_TEST}/${id}`)
     if (result.data.code === 200) {
       dispatch({ type: types.GET_TIM_TEST, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const gettimcode = () => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_CODE}/13`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_CODE, payload: result.data.data })
     } else {
       console.error(result.data.message)
     }

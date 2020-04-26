@@ -29,7 +29,7 @@ class EvaNav extends React.PureComponent {
           { name: '路口管理', path: '/InterManagement' },
           { name: '子区管理', path: '/RegiolManagementChild' },
           { name: '区域管理', path: '/RegiolManagement' },
-          { name: '配时管理', path: '/timing' },
+          { name: '配时管理', path: '/timanagement' },
         ],
       },
     ]
@@ -37,7 +37,7 @@ class EvaNav extends React.PureComponent {
       { name: '首页', path: '/signalhome' },
       { name: '全局监控', path: '/globalmonitor' },
       { name: '路口优化', path: '/optimize' },
-      { name: '配时管理', path: '/timing' },
+      { name: '配时管理', path: '/timanagement' },
     ]
   }
   componentDidMount = () => { }

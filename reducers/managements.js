@@ -49,6 +49,8 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { saveOrUpdateForm: payload })
     case types.GET_TIM_TEST:
       return Object.assign({}, state, { test: payload })
+    case types.GET_TIM_CODE:
+      return Object.assign({}, state, { code: payload })
     default:
       return state
   }
