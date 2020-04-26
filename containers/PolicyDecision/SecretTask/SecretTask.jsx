@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Icon, Input, message, DatePicker, Select } from 'antd'
+import { Icon, Input, message, DatePicker, Select, Modal } from 'antd'
 import moment from 'moment'
 import styles from './SecretTask.scss'
 import Header from '../Header/Header'
@@ -28,8 +28,8 @@ class SecretTask extends PureComponent {
       interMonitorLeft: 15,
       visible: false,
       visibleTop: 0,
-      vipId: null,
-      unitId: null,
+      vipId: '',
+      unitId: '',
       secretTaskName:'',
       secretTaskDetail:'',
       selectStateArr: [],
@@ -62,13 +62,16 @@ class SecretTask extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, vip_initRoad, vip_findRoadByVipId, vip_findList, vip_saveSucess, vip_addSucess } = this.props.data
+    const { interList, basicInterInfo, loadPlanTree, vip_initRoad, vip_findRoadByVipId, vip_findList, vip_saveSucess, vip_addSucess, vip_delSucess } = this.props.data
     if (prevState.data !== this.props.data) {
       console.log(this.props.data)
     }
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
     }
+    // if (prevState.data.loadPlanTree !== loadPlanTree) {
+    //   this.getVipRoute()
+    // }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
     }
@@ -93,9 +96,19 @@ class SecretTask extends PureComponent {
     }
     if (prevState.data.vip_initRoad !== vip_initRoad) {
       const secretTaskLeft = this.state.secretTaskLeft ? JSON.parse(JSON.stringify(this.state.secretTaskLeft)) : [];
-      const selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
+      let selectStateArr = [];
       vip_initRoad ? secretTaskLeft.push(vip_initRoad) : null
-      vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
+      if (this.state.roadCrossingFlag) {
+        this.setState({
+          selectStateArr: [],
+        }, () => {
+          vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
+          selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
+        })
+      } else {
+        selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
+        vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
+      }
       this.setState({ secretTaskLeft, selectStateArr })
     }
     if (prevState.data.vip_findList !== vip_findList) {
@@ -104,12 +117,28 @@ class SecretTask extends PureComponent {
     if (prevState.data.vip_saveSucess !== vip_saveSucess) {
       if ( vip_saveSucess === 1 ){
         message.info('操作成功！')
+        // this.props.vip_saveSucess = ''
+        this.props.getVipRoute().then(()=>{
+          debugger
+          const { loadPlanTree } = this.props.data
+          this.state.vipId == '' ? this.setState({vipId: loadPlanTree[loadPlanTree.length-1].ID}, () => {
+            console.log(this.state.vipId,'看下当前的vipId')
+          }) : null
+        })
       }
     }
     if (prevState.data.vip_addSucess !== vip_addSucess) {
-      if ( vip_addSucess === 0 ){
+      if ( vip_addSucess === 1 ){
         message.info('操作成功！')
         this.props.getFindRoadByVipId(this.state.vipId)
+        // this.props.vip_addSucess = ''
+      }
+    }
+    if (prevState.data.vip_delSucess !== vip_delSucess) {
+      if ( vip_delSucess === 1 ){
+        message.info('操作成功！')
+        this.props.getFindRoadByVipId(this.state.vipId)
+        // this.props.vip_delSucess = ''
       }
     }
 
@@ -402,12 +431,14 @@ class SecretTask extends PureComponent {
     } else {
       this.state[name][index] = e
     }
-    console.log(this.state[name], '下拉后')
   }
   // 快速特勤任务
   quicklySecretTask = () => {
     this.setState({
       secretTaskTop: true,
+      vipId: '',
+      secretTaskDetail: '',
+      secretTaskName: '',
     })
   }
   // 添加路口
@@ -415,6 +446,10 @@ class SecretTask extends PureComponent {
     this.setState({
       roadCrossingFlag: true,
     })
+  }
+  AddUnitsIframBtn = (vipId, unitId) => {
+    document.getElementById('conLeftBox').innerHTML = ''
+    this.props.getAddUnitsIfram(vipId, unitId)
   }
   // 关闭
   handleClose = ( flag, moudleName ) => {
@@ -449,6 +484,21 @@ class SecretTask extends PureComponent {
   lookRoadLine = (vipId) => {
     this.props.getFindRoadByVipId(vipId)
     this.props.getFindList(vipId)
+  }
+  // 删除路口
+  getDeleteUnitFram = (vipId, unitId) => {
+    debugger
+    const _this = this
+    Modal.confirm({
+      title: '确认要删除当前路口？',
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        document.getElementById('conLeftBox').innerHTML = ''
+        _this.props.getDeleteUnitFram(vipId, unitId)
+      },
+      onCancel() { },
+    })
   }
   // 删除路线
   delRoadLine = (vipId) => {
@@ -564,12 +614,12 @@ class SecretTask extends PureComponent {
                 </div>
                 <div className={styles.conLeft}>
                   <div className={styles.titleSmall}>勤务路口<em onClick={this.getAddUnitsIfram}>添加路口</em></div>
-                  <div className={styles.conLeftBox}>
+                  <div id="conLeftBox" className={styles.conLeftBox}>
                     {
                       secretTaskLeft && secretTaskLeft.map((item, ind) =>{
                         return (
-                          <div className={styles.leftItem}>
-                            <div className={styles.itemTit}>{item.name + " " + " ( IP: " + item.IPString + " )"}<Icon className={styles.Close} type='close' /></div>
+                          <div key={'sLeft'+ind} className={styles.leftItem}>
+                            <div className={styles.itemTit}>{item.name + " " + " ( IP: " + item.IPString + " )"}<Icon title="删除" onClick={()=>{this.getDeleteUnitFram(vipId, item.id)}} className={styles.Close} type='close' /></div>
                             <div className={styles.itemCon}>
                               <div className={styles.imgBox} style={{width:'200px',height:'200px'}}>
                                 <img className={styles.imgBgPic} src={this.imgBgUrl+item.imgName} title={!item.imgName ? '暂无图片' : ''} />
@@ -627,7 +677,7 @@ class SecretTask extends PureComponent {
                       {
                         secretTaskRight && secretTaskRight.map((item, index) => {
                           return (
-                            <div className={styles.listItem}>
+                            <div key={'sRight'+index} className={styles.listItem}>
                               <s>{index+1}</s>
                               <s><img src={this.imgInfoUrl + item.STAGE_IMAGE} />{item.UNIT_NAME}</s>
                               <s>{item.STAGENAME}</s>
@@ -680,7 +730,7 @@ class SecretTask extends PureComponent {
                       }
                     </div>
                   </div>
-                  <div className={styles.btnRoadCrossing} onClick={() => {this.props.getAddUnitsIfram(vipId, unitId)}}>确认添加</div>
+                  <div className={styles.btnRoadCrossing} onClick={() => {this.AddUnitsIframBtn(vipId, unitId)}}>确认添加</div>
                 </div>
             </div>
           </div> : null

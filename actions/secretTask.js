@@ -89,9 +89,9 @@ export const getLoadUnitStage = () => async (dispatch) => {
     console.log(e)
   }
 }
-export const getSaveVipRoad = (vipId, vipName, detail ) => async (dispatch) => {
+export const getSaveVipRoad = (vipId = '', vipName = '', detail = '' ) => async (dispatch) => {
   try {
-    const result = await RestUtil.get(`${API_VIP_SAVEVIPROAD}/${vipId}/${vipName}/${detail}`)
+    const result = await RestUtil.get(`${API_VIP_SAVEVIPROAD}?vipId=${vipId}&vipName=${vipName}&detail=${detail}`)
     if (result.data.code === 200) {
       dispatch({ type: types.GET_VIP_SAVEVIPROAD, payload: result.data.data })
     } else {
