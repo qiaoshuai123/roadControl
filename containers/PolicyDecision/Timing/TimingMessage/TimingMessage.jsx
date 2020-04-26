@@ -13,9 +13,14 @@ class TimingMessage extends Component {
   }
   // 显示提示框
   deleteList() {
-    console.log(123)
-    this.setState({
-      deleteConfirm: true,
+    const { confirm } = Modal
+    const that = this
+    confirm({
+      title: '确定要删除吗？',
+      className: styles.confirmBox,
+      onOk() {
+        that.props.getremovedeviceinfoById(that.roadId)
+      },
     })
   }
   // 确定删除
@@ -74,80 +79,16 @@ class TimingMessage extends Component {
             </div>
             <div className={styles.mountingTd}>
               <span className={styles.deviceMsg}>修改</span>
-              <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>
-            </div>
-          </div>
-          <div className={styles.mountingTr}>
-            <div className={styles.mountingTd}>01</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-            </div>
-            <div className={styles.mountingTd}>
-              <span className={styles.deviceMsg}>修改</span>
-              <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>
-            </div>
-          </div>
-          <div className={styles.mountingTr}>
-            <div className={styles.mountingTd}>01</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={styles.mountingTd}>****</div>
-            <div className={`${styles.mountingTd} ${styles.mountingThs}`}>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-              <dl>
-                <dt>2</dt>
-                <dd>30</dd>
-              </dl>
-            </div>
-            <div className={styles.mountingTd}>
-              <span className={styles.deviceMsg}>修改</span>
-              <span onClick={() => this.deleteList()} className={styles.deviceMsg}>删除</span>
+              <span onClick={this.deleteList} className={styles.deviceMsg}>删除</span>
             </div>
           </div>
         </div>
-        <Modal
+        {/* <Modal
           title="确定删除?"
           visible={deleteConfirm}
           onOk={this.deleteOks}
           onCancel={this.deleteCancel}
-        />
+        /> */}
       </div>
     )
   }

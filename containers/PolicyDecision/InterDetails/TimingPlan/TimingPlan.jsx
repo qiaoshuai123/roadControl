@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './TimingPlan.scss'
 
-import { getTimingPlan, getTimePlanInfo, getSaveTimingPlan, getAddTimingPlan, getDeleteTimingPlan } from '../../../../actions/interCofig'
+import { getTimingPlan, getTimePlanInfo, getSaveTimingPlan, getAddTimingPlan, getDeleteTimingPlan, getPlanStageList } from '../../../../actions/interCofig'
 
 class TimingPlan extends React.PureComponent {
   constructor(props) {
@@ -15,6 +15,9 @@ class TimingPlan extends React.PureComponent {
       planDetails: null,
       planStageList: null,
       phaseNoList: null,
+      editPlanStageList: null,
+      editStageSelect: false,
+      stageRadioIndex: 0,
     }
     this.saveParams = {
       coordPhase: 'string',
@@ -30,6 +33,8 @@ class TimingPlan extends React.PureComponent {
     }
     this.stageTimes = []
     this.coordPhases = []
+    this.planStageList = []
+    this.stageNos = []
   }
   componentDidMount = () => {
     this.InterId = this.props.match.params.id
@@ -37,7 +42,7 @@ class TimingPlan extends React.PureComponent {
     this.props.getTimingPlan(this.InterId)
   }
   componentDidUpdate = (prevState) => {
-    const { timingPlan, timePlanInfo, addTimingPlan } = this.props.data
+    const { timingPlan, timePlanInfo, addTimingPlan, planStageList } = this.props.data
     if (prevState.data.timingPlan !== timingPlan) {
       this.getTimingPlanList(timingPlan)
     }
@@ -47,6 +52,12 @@ class TimingPlan extends React.PureComponent {
     if (prevState.data.addTimingPlan !== addTimingPlan) {
       this.getAdd(addTimingPlan)
     }
+    if (prevState.data.planStageList !== planStageList) {
+      this.getEditStageList(planStageList)
+    }
+  }
+  getEditStageList = (planStageList) => {
+    this.setState({ editPlanStageList: planStageList.planStageList })
   }
   getAdd = (addTimingPlan) => {
     const planInfo = {
@@ -62,8 +73,6 @@ class TimingPlan extends React.PureComponent {
       planDetails: planInfo,
       planStageList: addTimingPlan.planStageList,
       phaseNoList: addTimingPlan.phaseNoList,
-    }, () => {
-      console.log(this.state.planDetails, '???????????????')
     })
     addTimingPlan.planStageList.forEach((item) => {
       this.stageTimes.push(item.GREEN)
@@ -73,6 +82,7 @@ class TimingPlan extends React.PureComponent {
     this.setState({ timingPlans })
   }
   getTimePlanDetails = (timePlanInfo) => {
+    this.planStageList = timePlanInfo.planStageList
     this.setState({
       planDetails: timePlanInfo.planInfo,
       planStageList: timePlanInfo.planStageList,
@@ -80,11 +90,14 @@ class TimingPlan extends React.PureComponent {
     })
     timePlanInfo.planStageList.forEach((item) => {
       this.stageTimes.push(item.GREEN)
+      this.stageNos.push(item.STAGE_ID)
     })
   }
   handleEditTimingMsg = (timingMsg) => {
+    console.log(timingMsg)
     this.stageTimes = []
     this.coordPhases = []
+    this.stageNos = []
     this.saveParams = {
       coordPhase: timingMsg.COORD_PHASE,
       id: timingMsg.ID,
@@ -99,6 +112,7 @@ class TimingPlan extends React.PureComponent {
     }
     this.coordPhases = timingMsg.COORD_PHASE ? timingMsg.COORD_PHASE.split(',') : []
     this.props.getTimePlanInfo(timingMsg.ID, timingMsg.PLANNO, this.InterId)
+    this.props.getPlanStageList(this.InterId)
     this.setState({ showEditTiming: true })
   }
   handleCloseEdit = () => {
@@ -124,6 +138,7 @@ class TimingPlan extends React.PureComponent {
   handleAddTimingPlan = () => {
     this.stageTimes = []
     this.coordPhases = []
+    this.stageNos = []
     this.saveParams.id = 0
     this.props.getAddTimingPlan(this.InterId)
     this.setState({ showEditTiming: true })
@@ -131,6 +146,8 @@ class TimingPlan extends React.PureComponent {
   handleSaveTimingPlan = () => {
     this.saveParams.stageTimes = this.stageTimes.join(',')
     this.saveParams.coordPhase = this.coordPhases.join(',')
+    this.saveParams.stageNos = this.stageNos.join(',')
+    console.log(this.saveParams)
     this.props.getSaveTimingPlan(this.saveParams).then((res) => {
       if (res.data.code === 200) {
         this.props.getTimingPlan(this.InterId)
@@ -156,11 +173,46 @@ class TimingPlan extends React.PureComponent {
       },
     })
   }
+  handleAddStage = () => {
+    this.setState({ editStageSelect: true })
+  }
+  handleDeleteStage = () => {
+    if (this.planStageList && this.planStageList.length > 0) {
+      this.planStageList.pop()
+      this.setState({ planStageList: this.planStageList }, () => {
+        this.stageNos = this.state.planStageList.map(item => item.STAGE_ID)
+        this.stageTimes = this.state.planStageList.map(item => item.GREEN)
+      })
+    } else {
+      message.info('请至少保留一个关联阶段')
+    }
+  }
+  handleCancelStage = () => {
+    this.setState({ editStageSelect: false })
+  }
+  handleRadioStageCheck = (index, stage) => {
+    this.radioStageCheck = []
+    this.radioStageCheck.push(stage)
+    console.log(index)
+    this.setState({ stageRadioIndex: index })
+  }
+  handleAddStageCheck = () => {
+    this.planStageList = [...this.planStageList, ...this.radioStageCheck]
+    this.setState({
+      planStageList: this.planStageList,
+      editStageSelect: false,
+    }, () => {
+      this.stageNos = this.state.planStageList.map(item => item.STAGE_ID)
+      this.stageTimes = this.state.planStageList.map(item => item.GREEN)
+    })
+  }
   closeConfigPop = () => {
     this.props.closeConfigPop()
   }
   render() {
-    const { timingPlans, showEditTiming, planDetails, phaseNoList, planStageList } = this.state
+    const {
+      timingPlans, showEditTiming, planDetails, phaseNoList, planStageList, editPlanStageList, editStageSelect, stageRadioIndex,
+    } = this.state
     return (
       <div className={styles.phaseConfigBox}>
         {
@@ -193,7 +245,7 @@ class TimingPlan extends React.PureComponent {
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>协调相位</div>
-                <div className={styles.editItems}>
+                <div className={styles.editItems} style={{ maxHeight: '65px', overflowY: 'auto' }}>
                   {
                     phaseNoList &&
                     phaseNoList.map((item, index) => {
@@ -208,12 +260,12 @@ class TimingPlan extends React.PureComponent {
               </div>
               <div className={styles.editContent}>
                 <div className={styles.editItemsName}>关联阶段 <br />(含过渡时间)</div>
-                <div className={styles.editItems}>
+                <div className={styles.editItems} style={{ maxHeight: '85px', overflowY: 'auto' }}>
                   {
                     planStageList &&
                     planStageList.map((stage, index) => {
                       return (
-                        <div className={styles.stageBox} key={stage.STAGE_ID + stage.GREEN}>
+                        <div className={styles.stageBox} key={'关联' + stage.STAGE_ID + stage.STAGE_IMAGE + stage.GREEN}>
                           <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
                           <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
                           <input type="text" defaultValue={stage.GREEN} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
@@ -221,12 +273,45 @@ class TimingPlan extends React.PureComponent {
                       )
                     })
                   }
+                  <div className={styles.stageBox}>
+                    <span className={styles.editStageBtn} onClick={this.handleAddStage}><Icon type="plus" /></span>
+                    <span className={styles.editStageBtn} onClick={this.handleDeleteStage}><Icon type="minus" /></span>
+                  </div>
                 </div>
               </div>
               <div className={styles.editBtnBox}>
                 <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
                 <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
               </div>
+              {
+                editStageSelect &&
+                <div className={styles.stageSelectMark}>
+                  <div className={styles.stageSelectBox}>
+                    <div className={styles.stageTilte}>选择阶段</div>
+                    <div className={styles.stageContent}>
+                      {
+                        editPlanStageList &&
+                        editPlanStageList.map((stages, index) => {
+                          return (
+                            <div className={styles.stageBox} key={'选择' + stages.STAGE_ID + index}>
+                              <p className={styles.phaseNo} onClick={() => { this.handleRadioStageCheck(index, stages) }}>
+                                <span className={styles.radioBtn}><i className={styles.radioCheck} style={{ opacity: stageRadioIndex === index ? 1 : 0 }} /></span>
+                                {stages.STAGE_ID}
+                              </p>
+                              <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
+                              <input disabled type="text" defaultValue={stages.GREEN} />
+                            </div>
+                          )
+                        })
+                      }
+                    </div>
+                    <div className={styles.stageAction}>
+                      <div className={styles.stageActionBtn} onClick={this.handleAddStageCheck}>确定</div>
+                      <div className={styles.stageActionBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCancelStage}>取消</div>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         }
@@ -296,6 +381,7 @@ const mapDisPatchToProps = (dispatch) => {
     getSaveTimingPlan: bindActionCreators(getSaveTimingPlan, dispatch),
     getAddTimingPlan: bindActionCreators(getAddTimingPlan, dispatch),
     getDeleteTimingPlan: bindActionCreators(getDeleteTimingPlan, dispatch),
+    getPlanStageList: bindActionCreators(getPlanStageList, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(TimingPlan)

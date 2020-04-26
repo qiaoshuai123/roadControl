@@ -2,13 +2,12 @@
 .mountingTable {
     width: 100%;
     color: white;
-    height: 175px;
     background-color: #03385A;
     display: flex;
     flex-direction: column;
   .mountingThead {
     font-size: 12px;
-    height: 30px;
+    height: 35px;
     display: flex;
   }
   .mountingTr {
@@ -57,11 +56,10 @@
   .mountingTr {
     background-color: #022A51;
   }
-  //   .mountingTr:nth-child(even) {
-  //     background-color: rgba(14, 28, 63, 0.7);
-  //   }
-  .mountingTbody {
-    height: 100%;
-    overflow-y: auto;
+}
+.confirmBox {
+  background-color: rgba(25, 59, 91, 0.8);
+  :global(.ant-modal-confirm-title) {
+    color: #f1f1fb;
   }
 }

@@ -75,6 +75,7 @@ export const API_DELETE_SCHEDULE = '/atms/hisenseSignal/deleteSchedule'
 export const API_FAULTLOG_LIST = '/atms/singleUnitMonitor/showRealAlarms_hx'
 export const API_LOAD_PLANTREE = '/atms/districtManagement/loadPlanTree'
 export const API_AREA_LIST = '/atms/unitManagement/loadDistrict'
+export const API_PLANSTAGE_LIST = '/atms/hisenseSignal/loadPlanInfo_add'
 
 // 特勤任务
 export const API_VIP_ROUTE = '/atms/vip/vipRoute'
@@ -94,3 +95,11 @@ export const API_SUB_EDITDISTRICTINFOTHING = '/atms/subDistrictManagement/editDi
 export const API_SUB_LOADUNITNAME = '/atms/subDistrictManagement/loadUnitName' // 加载当前区域下的存在路口以及不存在路口
 export const API_SUB_SAVEORUPDATEFORM = '/atms/subDistrictManagement/saveOrUpdateForm' // 区域信息提交
 export const API_SUB_VALIDATE = '/atms/subDistrictManagement/validate' // 验证区域是否存在
+
+// 配时管理
+export const API_TIM_GETTIMINGINFO = '/atms/timingManagement/getTimingInfo' // 加载配时列表信息
+export const API_TIM_GETTIMINGINFOBYEXCEL = '/atms/timingManagement/getTimingInfoByExcel' // 验证区域是否存在
+export const API_TIM_SAVEORUPDATEFORM = '/atms/timingManagement/saveOrUpdateForm' // 表单提交
+export const API_TIM_TEST = '/atms/timingManagement/test' // 测试
+export const API_TIM_VALIDATE = '/atms/timingManagement/validate' // 验证路口和相位当前是否存在
+export const API_TIM_CODE = '/atms/unitManagement/code/' // 信号机品牌

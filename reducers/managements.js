@@ -40,6 +40,17 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { loadPlanLoadChild: payload })
     case types.GET_LOAD_PLANTREE:
       return Object.assign({}, state, { loadPlanTree: payload })
+    // 配时管理
+    case types.GET_TIM_GETTIMINGINFO:
+      return Object.assign({}, state, { getTimingInfo: payload })
+    case types.GET_TIM_GETTIMINGINFOBYEXCEL:
+      return Object.assign({}, state, { getTimingInfoByExcel: payload })
+    case types.GET_TIM_SAVEORUPDATEFORM:
+      return Object.assign({}, state, { saveOrUpdateForm: payload })
+    case types.GET_TIM_TEST:
+      return Object.assign({}, state, { test: payload })
+    case types.GET_TIM_CODE:
+      return Object.assign({}, state, { code: payload })
     default:
       return state
   }

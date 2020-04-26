@@ -15,9 +15,96 @@
       align-items: center;
       background-color: rgba(0,0,0,.4);
       .editDetails {
+        position: relative;
         width: 60%;
         height: 100%;
         background-color: rgba(25,59,91, .8);
+        .stageSelectMark {
+          position: absolute;
+          width: 100%;
+          height: calc(100% - 40px);
+          top: 40px;
+          left: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: rgba(0,0,0,.5);
+          .stageSelectBox {
+            width: 70%;
+            height: 200px;
+            border-radius: 4px;
+            background-color: rgba(25,59,91, .8);
+            .stageTilte {
+              height: 32px;
+              line-height: 32px;
+              padding-left: 10px;
+              border-bottom: 1px solid #3B5268;
+            }
+            .stageContent {
+              padding: 10px;
+              height: 128px;
+              overflow-y: auto;
+              display: flex;
+              .stageBox {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 5px;
+                input {
+                  width: 60px;
+                  margin-top: 3px;
+                  text-align: center;
+                  outline: none;
+                  background-color: transparent;
+                  border: 1px solid #3B5268;
+                  color: #f1f1fb;
+                }
+                .editStageBtn {
+                  padding: 0 10px;
+                  margin-top: 5px;
+                  border-radius: 3px;
+                  background-color: #12A4F1;
+                  cursor: pointer;
+                }
+                .radioBtn {
+                  display: inline-block;
+                  width: 16px;
+                  height: 16px;
+                  margin-right: 5px;
+                  border: 1px solid #12A4F1;
+                  border-radius: 50%;
+                  text-align: center;
+                  line-height: 12px;
+                  cursor: pointer;
+                  .radioCheck {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background-color: #12A4F1;
+                    border-radius: 50%;
+                    transition: all .2s;
+                  }
+                }
+              }
+            }
+            .stageAction {
+              height: 40px;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+              .stageActionBtn {
+                width: 70px;
+                height: 26px;
+                margin-right: 10px;
+                text-align: center;
+                line-height: 26px;
+                border-radius: 3px;
+                background-color: #12A4F1;
+                cursor: pointer;
+              }
+            }
+          }
+        }
         .editTitle {
           position: relative;
           height: 40px;
@@ -86,6 +173,13 @@
                 margin-top: 3px;
                 text-align: center;
                 outline: none;
+              }
+              .editStageBtn {
+                padding: 0 10px;
+                margin-top: 5px;
+                border-radius: 3px;
+                background-color: #12A4F1;
+                cursor: pointer;
               }
             }
           }

@@ -110,18 +110,18 @@ class GreenWaveCharts extends React.Component {
           const nextLen = parseFloat(chartsData[index + 1].lenAll)
           const disTime = (nextLen - interLen) / (nextForwarSpeed / 3.6) // 行程时间
           // 开始计算位置点
-          const leftBottom = 345 - (index === 0 ? this.forwardOffset * this.Hs : this.offsetTime * this.Hs) // 当前路口的绿波起点
-          const rightBottom = 345 - ((disTime + this.offsetTime) * this.Hs) // 下一个路口的绿波起点
+          const leftBottom = 350 - (index === 0 ? this.forwardOffset * this.Hs : this.offsetTime * this.Hs) // 当前路口的绿波起点
+          const rightBottom = 350 - ((disTime + this.offsetTime) * this.Hs) // 下一个路口的绿波起点
           const phaseTime = (chartsData[index].phaseList.filter(phaseItem => chartsData[index].forward_phase_plan_name === phaseItem.phase_name))[0].split_time // 当前路口的协调相位时间
           // (disTime + this.offsetTime) 下个路口的起始时间
-          const rightTop = 345 - ((disTime + this.offsetTime + parseFloat(phaseTime)) * this.Hs)
+          const rightTop = 349 - ((disTime + this.offsetTime + parseFloat(phaseTime)) * this.Hs)
           const leftTop = (leftBottom + (rightTop - rightBottom))
           const interLeft = item.lenAll * this.Ws
           const nextInterLeft = chartsData[index + 1].lenAll * this.Ws
           // 各路口协调相位的开始和结束位置，为了计算公共部分绿波带
-          const leftStart = item.forward_offset >= 0 ? 345 - (item.forward_offset * this.Hs) : 345 - ((item.cycle_time + item.forward_offset) * this.Hs)
+          const leftStart = item.forward_offset >= 0 ? 350 - (item.forward_offset * this.Hs) : 350 - ((item.cycle_time + item.forward_offset) * this.Hs)
           const leftEnd = leftStart - $('#phaseBox' + index).height()
-          const rightStart = chartsData[index + 1].forward_offset >= 0 ? 344 - (chartsData[index + 1].forward_offset * this.Hs) : 344 - ((chartsData[index + 1].cycle_time + chartsData[index + 1].forward_offset) * this.Hs)
+          const rightStart = chartsData[index + 1].forward_offset >= 0 ? 349 - (chartsData[index + 1].forward_offset * this.Hs) : 349 - ((chartsData[index + 1].cycle_time + chartsData[index + 1].forward_offset) * this.Hs)
           const rightEnd = rightStart - $('#phaseBox' + (index + 1)).height()
           const obj = {
             leftBottom,
