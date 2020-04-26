@@ -6,6 +6,7 @@ import styles from './Timing.scss'
 import Header from '../Header/Header'
 import { getLoadPlanTree, getInterList } from '../../../actions/data'
 import { gettimgetTimingInfo, gettimcode } from '../../../actions/management'
+import TimingPlan from './TimingPlan/TimingPlan'
 
 class Timing extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Timing extends Component {
       pageNumber: {}, // 展示应有的数据
       codeList: [], // 信号机品牌列表
       nums: '',
+      showsId: {}, //编辑方案弹窗显示id传递
     }
     this.changeFontValue = 0 // 改变关键字
     this.changeRegionValue = 0 // 改变所属区域
@@ -78,7 +80,6 @@ class Timing extends Component {
     } else {
       this.changeFontValue = values
     }
-
   }
   // 改变所属区域内容
   changeRegion = (ID) => {
@@ -105,7 +106,12 @@ class Timing extends Component {
     this.props.gettimgetTimingInfo(`curPage=${page}&districtId=0&keyword=0&pageSize=${pageSize}&signalType=0&unitId=0`)
   }
   selectListroad = (id) => { // 申请方案弹窗
-
+    const showsId = this.state
+    showsId.id = id
+    showsId.shows = true
+    this.setState({
+      showsId,
+    })
   }
   crossingSee = (id) => { // 页面跳转到页面监视页面
     window.open(`#/interdetails/${id}`)
@@ -113,8 +119,7 @@ class Timing extends Component {
 
   render() {
     const { Option } = Select
-    const { MaintenanceUnitList, roadList, TimingList, IsnumShow, pageNumber, codeList, nums } = this.state
-    console.log(pageNumber && pageNumber.fromPage, '显示内容')
+    const { MaintenanceUnitList, roadList, TimingList, IsnumShow, pageNumber, codeList, nums, showsId } = this.state
     return (
       <div className={styles.timingWrapper}>
         <Header {...this.props} />
@@ -212,7 +217,7 @@ class Timing extends Component {
             <span>共{pageNumber && pageNumber.totalSize}条</span>
           </div>
         </div>
-        {/* <ModalPage /> */}
+        <TimingPlan {...showsId} />
       </div>
     )
   }
