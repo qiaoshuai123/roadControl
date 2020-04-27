@@ -20,6 +20,7 @@
         height: 100%;
         background-color: rgba(25,59,91, .8);
         .stageSelectMark {
+          z-index: 1;
           position: absolute;
           width: 100%;
           height: calc(100% - 40px);
