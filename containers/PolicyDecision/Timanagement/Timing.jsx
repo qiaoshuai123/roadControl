@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import styles from './Timing.scss'
 import Header from '../Header/Header'
 import { getLoadPlanTree, getInterList } from '../../../actions/data'
-import { gettimgetTimingInfo, gettimcode } from '../../../actions/management'
+import { gettimgetTimingInfo, gettimcode, gettimingInfoByExcel } from '../../../actions/management'
 import TimingPlan from './TimingPlan/TimingPlan'
 
 class Timing extends Component {
@@ -21,19 +21,20 @@ class Timing extends Component {
       nums: '',
       showsId: {}, //编辑方案弹窗显示id传递
     }
-    this.changeFontValue = 0 // 改变关键字
+    this.changeFontValue = '' // 改变关键字
     this.changeRegionValue = 0 // 改变所属区域
     this.changeIntctionValue = 0 // 改变路口口内容
     this.changeSignalValue = 0 // 改变信号控制系统
   }
   componentDidMount() {
+    const str = ''
     this.props.getLoadPlanTree()
     this.props.getInterList()
     this.props.gettimcode()
-    this.props.gettimgetTimingInfo('curPage=1&districtId=0&keyword=0&pageSize=15&signalType=0&unitId=0')
+    this.props.gettimgetTimingInfo(`curPage=1&districtId=0&keyword=${str}&pageSize=15&signalType=0&unitId=0`)
   }
   componentDidUpdate(prevState) {
-    const { loadPlanTree, interList, getTimingInfo, code } = this.props.data
+    const { loadPlanTree, interList, getTimingInfo, code, getTimingInfoByExcel } = this.props.data
     if (prevState.data.loadPlanTree !== loadPlanTree) {
       this.getPlanTree(loadPlanTree)
     }
@@ -45,6 +46,9 @@ class Timing extends Component {
     }
     if (prevState.data.code !== code) {
       this.getcode(code)
+    }
+    if (prevState.data.getTimingInfoByExcel !== getTimingInfoByExcel) {
+      this.getTimingInfoByExcels(getTimingInfoByExcel)
     }
   }
   getPlanTree = (loadPlanTree) => {
@@ -72,14 +76,13 @@ class Timing extends Component {
       codeList: code,
     })
   }
+  getTimingInfoByExcels = (getTimingInfoByExcel) => {
+    console.log(getTimingInfoByExcel, 'qingqiuhuilaideneirong')
+  }
   // 改变关键字内容
   changeFont = (e) => {
     const values = e.target.value
-    if (values === '') {
-      this.changeFontValue = 0
-    } else {
-      this.changeFontValue = values
-    }
+    this.changeFontValue = values
   }
   // 改变所属区域内容
   changeRegion = (ID) => {
@@ -116,7 +119,10 @@ class Timing extends Component {
   crossingSee = (id) => { // 页面跳转到页面监视页面
     window.open(`#/interdetails/${id}`)
   }
-
+  exportTable = () => {
+    const str = `districtId=${this.changeRegionValue}&keyword=${this.changeFontValue}&signalType=${this.changeSignalValue}&unitId=${this.changeIntctionValue}`
+    this.props.gettimingInfoByExcel(str)
+  }
   render() {
     const { Option } = Select
     const { MaintenanceUnitList, roadList, TimingList, IsnumShow, pageNumber, codeList, nums, showsId } = this.state
@@ -163,7 +169,7 @@ class Timing extends Component {
             <div><Button onClick={this.btnSearth} type="primary">查询</Button></div>
           </div>
           <div className={styles.goExcal}>
-            <span>统计结果</span><Button type="primary">导出表格</Button>
+            <span>统计结果</span><Button onClick={this.exportTable} type="primary">导出表格</Button>
           </div>
           <div className={styles.mountingManage}>
             <div className={styles.mountingTable}>
@@ -231,5 +237,6 @@ const mapDisPatchToProps = dispatch => ({
   getInterList: bindActionCreators(getInterList, dispatch),
   gettimgetTimingInfo: bindActionCreators(gettimgetTimingInfo, dispatch),
   gettimcode: bindActionCreators(gettimcode, dispatch),
+  gettimingInfoByExcel: bindActionCreators(gettimingInfoByExcel, dispatch),
 })
 export default connect(mapStateToProps, mapDisPatchToProps)(Timing)
