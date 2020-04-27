@@ -215,9 +215,9 @@ export const gettimgetTimingInfo = id => async (dispatch) => {
 }
 export const gettimingInfoByExcel = id => async (dispatch) => {
   try {
-    const result = await RestUtil.get(`${API_TIM_GETTIMINGINFOBYEXCEL}/${id}`)
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_TIM_GETTIMINGINFOBYEXCEL, payload: result.data.data })
+    const result = await RestUtil.get(`${API_TIM_GETTIMINGINFOBYEXCEL}?${id}`)
+    if (typeof result.data !== 'object') {
+      dispatch({ type: types.GET_TIM_GETTIMINGINFOBYEXCEL, payload: result.data })
     } else {
       console.error(result.data.message)
     }
