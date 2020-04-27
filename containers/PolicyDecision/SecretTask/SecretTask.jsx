@@ -527,7 +527,6 @@ class SecretTask extends PureComponent {
   }
   // 删除路口
   getDeleteUnitFram = (vipId, unitId) => {
-    debugger
     const _this = this
     Modal.confirm({
       title: '确认要删除当前路口？',
@@ -547,9 +546,17 @@ class SecretTask extends PureComponent {
   }
   // 删除路线
   delRoadLine = (vipId) => {
-    console.log(vipId)
-    this.props.data.vip_delRoadSucess = ''
-    this.props.getDeleteVipRoad(vipId)
+    const _this = this
+    Modal.confirm({
+      title: '确认要删除当前勤务路线？',
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        _this.props.data.vip_delRoadSucess = ''
+        _this.props.getDeleteVipRoad(vipId)
+      },
+      onCancel() { },
+    })
   }
   render() {
     const {
