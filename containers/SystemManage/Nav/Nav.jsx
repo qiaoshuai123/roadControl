@@ -95,48 +95,8 @@ class Nav extends React.Component {
           <span>{this.state.navtoday}</span>
         </div>
         {
-          window.location.hash === '#/login' || window.location.hash === '#/entrance' ? '' :
+          (window.location.hash !== '#/login' && window.location.hash !== '#/entrance') &&
             <div className={styles.navWrapper_right}>
-              {/* <Search
-                placeholder="搜索资源"
-                onSearch={value => { this.handleSearch(value) }}
-              /> */}
-              <div className={styles.searchNav} style={{ width: this.props.styles }}>
-                <Select
-                  showSearch
-                  value={this.state.value}
-                  placeholder="搜索资源"
-                  defaultActiveFirstOption={false}
-                  showArrow={false}
-                  style={{ width: '100%', heght: '100%' }}
-                  filterOption={false}
-                  onSearch={this.handleSearch}
-                  onChange={this.handleChange}
-                  notFoundContent="无当前路口"
-                  onFocus={this.handleonFocus}
-                >
-                  {this.state.data.map((item) => {
-                    return <Option key={item.nodeId} onClick={(e) => { this.props.OpenInforWindow(e, item) }}>{item.nodeName}</Option>
-                  })}
-                </Select>
-              </div>
-              {/* <Dropdown overlay={this.state.menu} >
-                <Button>
-                  <i className={styles.coverage_nav} />图&nbsp;&nbsp;层 <Icon type="down" />
-                </Button>
-              </Dropdown> */}
-              {
-                this.state.modelValue &&
-                <Select mode="multiple" placeholder="图  层" style={{ width: '300px', height: '22px' }} defaultValue={this.state.modelValue || []} onChange={this.handlemodelState}>
-                  {
-                    this.props.interColor && this.props.interColor.map((item, index) => {
-                      return (
-                        <Option key={item.modelState} value={item.modelState}><span className={styles.optionY} style={{ background: item.color }} />{item.nodeName}</Option>
-                      )
-                    })
-                  }
-                </Select>
-              }
               <div className={styles.homepage} onClick={this.handleGoEntrance}>主&nbsp;&nbsp;页<i /></div>
             </div>
         }
