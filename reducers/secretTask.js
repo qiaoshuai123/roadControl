@@ -19,6 +19,8 @@ const secretTask = (state = {}, action) => {
       return Object.assign({}, state, { vip_loadStages: payload })
     case types.GET_VIP_SAVEVIPROAD:
       return Object.assign({}, state, { vip_saveSucess: payload })
+    case types.GET_VIP_SAVEUNITRUNSTAGE:
+      return Object.assign({}, state, { vip_unitRunStage: payload })
     default:
       return state
   }
