@@ -51,6 +51,10 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { test: payload })
     case types.GET_TIM_CODE:
       return Object.assign({}, state, { code: payload })
+    case types.GET_TIM_LOADMORE:
+      return Object.assign({}, state, { loadmore: payload })
+    case types.GET_TIM_CFGIMGS:
+      return Object.assign({}, state, { cfgImgs: payload })
     default:
       return state
   }

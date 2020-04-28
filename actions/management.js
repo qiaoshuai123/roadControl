@@ -8,7 +8,7 @@ import {
   API_SUB_DELETEDISTRICT, API_SUB_EDITDISTRICTINFOTHING, API_SUB_LOADUNITNAME,
   API_SUB_SAVEORUPDATEFORM, API_SUB_VALIDATE,
   API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
-  API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE,
+  API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE, API_TIM_LOADMORE, API_TIM_CFGIMGS,
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -215,19 +215,20 @@ export const gettimgetTimingInfo = id => async (dispatch) => {
 }
 export const gettimingInfoByExcel = id => async (dispatch) => {
   try {
-    const result = await RestUtil.get(`${API_TIM_GETTIMINGINFOBYEXCEL}?${id}`)
-    if (typeof result.data !== 'object') {
-      dispatch({ type: types.GET_TIM_GETTIMINGINFOBYEXCEL, payload: result.data })
-    } else {
-      console.error(result.data.message)
-    }
+    await RestUtil({
+      method: 'get',
+      url: `${API_TIM_GETTIMINGINFOBYEXCEL}?${id}`,
+      responseType: 'blob',
+    }).then((results) => {
+      dispatch({ type: types.GET_TIM_GETTIMINGINFOBYEXCEL, payload: results.data })
+    })
   } catch (e) {
     console.log(e)
   }
 }
-export const gettimsaveOrUpdateForm = id => async (dispatch) => {
+export const gettimsaveOrUpdateForm = obj => async (dispatch) => {
   try {
-    const result = await RestUtil.get(`${API_TIM_SAVEORUPDATEFORM}/${id}`)
+    const result = await RestUtil.post(API_TIM_SAVEORUPDATEFORM, obj)
     if (result.data.code === 200) {
       dispatch({ type: types.GET_TIM_SAVEORUPDATEFORM, payload: result.data.data })
     } else {
@@ -261,9 +262,33 @@ export const gettimcode = () => async (dispatch) => {
     console.log(e)
   }
 }
+export const getloadmore = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_LOADMORE}/${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_LOADMORE, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getlcflgss = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_TIM_CFGIMGS}/${id}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_TIM_CFGIMGS, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
 export const gettimvalidate = (id) => {
   return async () => {
-    const result = await RestUtil.post(`${API_TIM_VALIDATE}/${id}`)
+    const result = await RestUtil.get(`${API_TIM_VALIDATE}/${id}`)
     return result
   }
 }

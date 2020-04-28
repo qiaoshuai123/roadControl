@@ -98,7 +98,10 @@ export const API_SUB_VALIDATE = '/atms/subDistrictManagement/validate' // 验证
 // 配时管理
 export const API_TIM_GETTIMINGINFO = '/atms/timingManagement/getTimingInfo' // 加载配时列表信息
 export const API_TIM_GETTIMINGINFOBYEXCEL = '/atms/timingManagement/getTimingInfoByExcel' // 配时列表导出excel
+export const API_TIM_LOADMORE = '/atms/timingManagement/loadmore' // 点击加后所有配时方案信息
 export const API_TIM_SAVEORUPDATEFORM = '/atms/timingManagement/saveOrUpdateForm' // 表单提交
 export const API_TIM_TEST = '/atms/timingManagement/test' // 测试
 export const API_TIM_VALIDATE = '/atms/timingManagement/validate' // 验证路口和相位当前是否存在
-export const API_TIM_CODE = '/atms/unitManagement/code/' // 信号机品牌
+export const API_TIM_CODE = '/atms/unitManagement/code' // 信号机品牌
+export const API_TIM_CFGIMGS = '/atms/timingManagement/cfgImgs' // 加载当前路口下所有阶段图
+
