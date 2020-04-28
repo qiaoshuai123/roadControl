@@ -252,6 +252,57 @@
             }
         }
     }
+    .interListBox {
+        position: relative;
+        padding: 10px 0;
+        z-index: 9;
+        .interList {
+          position: absolute;
+          top: 45px;
+          left: 0;
+          width: 100%;
+          border-radius: 4px;
+          background-color: rgba(0,0,0, .8);
+          transition: all .2s;
+          overflow-y: hidden;
+          .interItem {
+            height: 30px;
+            padding-left: 10px;
+            font-size: 14px;
+            line-height: 30px;
+            transition: all .2s;
+            cursor: pointer;
+            &:hover {
+              background-color: #06234F;
+            }
+          }
+        }
+        .interSearch {
+          display: flex;
+          padding: 0 10px;
+          .searchBox {
+              position: relative;
+              .searchInput {
+                  width: 300px;
+                  height: 32px;
+                  padding-left: 5px;
+                  background-color: rgba(6,56,90, .8);
+                  border: 1px solid #063657;
+                  border-radius: 4px;
+                  outline: none;
+                  color: #F1F1FB;
+              }
+              .searchIcon {
+                  position: absolute;
+                  right: 10px;
+                  top: 8px;
+                  font-size: 18px;
+                  color: #07BDFB;
+                  cursor: pointer;
+              }
+          }
+        }
+      }
     .administration {
         padding: 5px 15px 5px 0;
         .btn {

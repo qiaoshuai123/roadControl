@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, Icon, Checkbox } from 'antd'
+import { Select, Icon, Checkbox, message } from 'antd'
 
 import styles from './InterMonitor.scss'
 import CustomTree from '../../../../components/CustomTree/CustomTree'
@@ -7,7 +7,6 @@ import PieCharts from './PieCharts/PieCharts'
 
 function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow } = props
-  console.log(statusName, isShow)
   return (
     <div className={styles.statusBox}>
       <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#00A9C0' : 'transparent' }}>
@@ -41,13 +40,33 @@ class InterMonitor extends React.Component {
       interListLeft: 360,
       distuibutionLeft: 360,
       pointTypeRight: 10,
+      interListHeight: 0,
+      searchInterList: null,
     }
     this.statusList = [
       { name: '单点离线' },
       { name: '关灯控制' },
     ]
   }
-  componentDidMount = () => {}
+  componentDidMount = () => {
+    document.addEventListener('click', (e) => {
+      if (e.target !== this.searchInputBox) {
+        this.setState({ interListHeight: 0 })
+      }
+    })
+  }
+  componentDidUpdate = (prevState) => {
+    const { interList } = this.props.data
+    if (prevState.data.interList !== interList) {
+      this.getInterLists(interList)
+    }
+    console.log(this.props)
+  }
+  // 路口列表
+  getInterLists = (interList) => {
+    this.searchInterList = interList
+    this.setState({ searchInterList: interList })
+  }
   handleStatusDropDown = (e) => {
     const statusName = e.currentTarget.getAttribute('statusname')
     if (this.state.statusName && this.state.statusName === statusName) {
@@ -85,8 +104,44 @@ class InterMonitor extends React.Component {
       this.setState({ pointTypeRight: 10 })
     }
   }
+  handleSearchInterFocus = () => {
+    this.setState({ interListHeight: 300 })
+  }
+  hanleSelectInter = (e) => {
+    const interId = e.target.getAttribute('interid')
+    const marker = document.getElementById('marker' + interId)
+    const lng = e.target.getAttribute('lng')
+    const lat = e.target.getAttribute('lat')
+    const interName = e.target.innerText
+    if (marker) {
+      this.props.resetMapCenter(lng, lat)
+      marker.click()
+      this.searchInputBox.value = interName
+      this.setState({ interListHeight: 0 })
+    } else {
+      message.info('该路口尚未接入')
+    }
+  }
+  handleSearchInputChange = (e) => {
+    const { value } = e.target
+    const searchInters = []
+    if (this.searchTimer) {
+      clearTimeout(this.searchTimer)
+      this.searchTimer = null
+    }
+    this.searchTimer = setTimeout(() => {
+      this.searchInterList.forEach((item) => {
+        if (item.UNIT_NAME.indexOf(value) >= 0) {
+          searchInters.push(item)
+        }
+      })
+      this.setState({ searchInterList: searchInters })
+    }, 200)
+  }
   render() {
-    const { statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft } = this.state
+    const {
+      statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft, interListHeight, searchInterList
+    } = this.state
     const { Option } = Select
     return (
       <React.Fragment>
@@ -158,7 +213,40 @@ class InterMonitor extends React.Component {
               路口列表
               <span className={styles.popCloseBox} onClick={this.handleClosePop}><Icon type="close" /></span>
             </div>
-            <div className={styles.interTreeBox}>
+            <div className={styles.interListBox}>
+              <div className={styles.interSearch}>
+                <span className={styles.searchBox}>
+                  <input
+                    className={styles.searchInput}
+                    onClick={this.handleSearchInterFocus}
+                    onChange={this.handleSearchInputChange}
+                    type="text"
+                    placeholder="请输入你要搜索的路口"
+                    ref={(input) => { this.searchInputBox = input }}
+                  />
+                  <Icon className={styles.searchIcon} type="search" />
+                </span>
+              </div>
+              <div className={styles.interList} style={{ maxHeight: `${interListHeight}px`, overflowY: 'auto' }}>
+                <div>
+                  {
+                    searchInterList &&
+                    searchInterList.map(item => (
+                      <div
+                        className={styles.interItem}
+                        key={item.ID}
+                        interid={item.ID}
+                        lng={item.LONGITUDE}
+                        lat={item.LATITUDE}
+                        onClick={this.hanleSelectInter}
+                      >{item.UNIT_NAME}
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+            {/* <div className={styles.interTreeBox}>
               <div className={styles.interSearch}>
                 <Select defaultValue="1">
                   <Option key="1">贵阳市</Option>
@@ -175,7 +263,7 @@ class InterMonitor extends React.Component {
               <div className={styles.interTree}>
                 <CustomTree />
               </div>
-            </div>
+            </div> */}
             <div className={styles.interAreaLineBox}>
               <div className={styles.areaLineBtn}>子区</div>
               <div className={styles.areaLineBtn}>线路</div>
