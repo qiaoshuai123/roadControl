@@ -37,13 +37,13 @@ class TimingPlan extends React.PureComponent {
     this.stageNos = []
   }
   componentDidMount = () => {
-    // this.InterId = this.props.match.params.id
-    // this.saveParams.unitId = this.InterId
-    // this.props.getTimingPlan(this.InterId)
+
   }
-  componentDidUpdate = (prevState, state) => {
-    // const { timingPlan, timePlanInfo, addTimingPlan, planStageList } = this.props.data
-    if (prevState.shows !== state.showEditTiming) {
+  componentDidUpdate = (prevState) => {
+    // const { timingPlan, timePlanInfo, addTimingPlan, planStageList } = this.props.da
+    console.log(prevState, 'qiaoshai')
+    if (prevState.shows !== this.state.showEditTiming) {
+      console.log(12346548789)
       this.getupdateShows(prevState)
     }
     // if (prevState.data.timingPlan !== timingPlan) {
@@ -129,6 +129,14 @@ class TimingPlan extends React.PureComponent {
   handleEditChange = (e) => {
     const paramsName = e.target.getAttribute('pname')
     this.saveParams[paramsName] = e.target.value
+  }
+  // 改变所属区域内容
+  changeRegion = (ID) => {
+    this.changeRegionValue = ID
+  }
+  // 改变路口内容
+  changeIntersection = (ID) => {
+    this.changeIntctionValue = ID
   }
   handlePhaseChange = (e) => {
     const { id } = e.target
@@ -223,106 +231,7 @@ class TimingPlan extends React.PureComponent {
       timingPlans, showEditTiming, planDetails, phaseNoList, planStageList, editPlanStageList, editStageSelect, stageRadioIndex,
     } = this.state
     return (
-      <div className={styles.phaseConfigBox}>
-        {
-          showEditTiming &&
-          <div className={styles.editBox}>
-            <div className={styles.editDetails}>
-              <div className={styles.editTitle}>
-                编辑方案
-                <span className={styles.cloeEditIcon} onClick={this.handleCloseEdit}><Icon type="close" /></span>
-              </div>
-              <div className={styles.editContent}>
-                <div className={styles.editItemsName}>方案编号</div>
-                <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.PLANNO} key={planDetails && planDetails.PLANNO} pname="planNO" onChange={this.handleEditChange} />
-                </div>
-                <div className={styles.editItemsName}>方案名称</div>
-                <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.PLANNAME} key={planDetails && planDetails.PLANNAME} pname="planName" onChange={this.handleEditChange} />
-                </div>
-              </div>
-              <div className={styles.editContent}>
-                <div className={styles.editItemsName}>协调相位号</div>
-                <div className={styles.editItems}>
-                  <Select
-                    onChange={this.changeRegion}
-                  >
-                    <Option value={0} key="124ssswwwa">全部</Option>
-                    {/* {
-                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)} */}
-                  </Select>
-                </div>
-                <div className={styles.editItemsName}>协调相位差</div>
-                <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.OFFSET} key={planDetails && planDetails.OFFSET} pname="offset" onChange={this.handleEditChange} />
-                </div>
-              </div>
-              <div className={styles.editContent}>
-                <div className={styles.editItemsName}>周期长</div>
-                <div className={styles.editItems}>
-                  <Input defaultValue={planDetails && planDetails.OFFSET} key={planDetails && planDetails.OFFSET} pname="offset" onChange={this.handleEditChange} />
-                </div>
-              </div>
-              <div className={styles.editContent}>
-                <div className={styles.editItemsName}>关联阶段 <br />(含过渡时间)</div>
-                <div className={styles.editItems} style={{ maxHeight: '85px', overflowY: 'auto' }}>
-                  {
-                    planStageList &&
-                    planStageList.map((stage, index) => {
-                      return (
-                        <div className={styles.stageBox} key={'关联' + stage.STAGE_ID + stage.STAGE_IMAGE + stage.GREEN}>
-                          <p className={styles.phaseNo}>{stage.STAGE_ID}</p>
-                          <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
-                          <input type="text" defaultValue={stage.GREEN} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
-                        </div>
-                      )
-                    })
-                  }
-                  <div className={styles.stageBox}>
-                    <span className={styles.editStageBtn} onClick={this.handleAddStage}><Icon type="plus" /></span>
-                    <span className={styles.editStageBtn} onClick={this.handleDeleteStage}><Icon type="minus" /></span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.editBtnBox}>
-                <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
-                <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
-              </div>
-              {
-                editStageSelect &&
-                <div className={styles.stageSelectMark}>
-                  <div className={styles.stageSelectBox}>
-                    <div className={styles.stageTilte}>选择阶段</div>
-                    <div className={styles.stageContent}>
-                      {
-                        editPlanStageList &&
-                        editPlanStageList.map((stages, index) => {
-                          return (
-                            <div className={styles.stageBox} key={'选择' + stages.STAGE_ID + index}>
-                              <p className={styles.phaseNo} onClick={() => { this.handleRadioStageCheck(index, stages) }}>
-                                <span className={styles.radioBtn}><i className={styles.radioCheck} style={{ opacity: stageRadioIndex === index ? 1 : 0 }} /></span>
-                                {stages.STAGE_ID}
-                              </p>
-                              <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stages.STAGE_IMAGE}`} alt="" />
-                              <input disabled type="text" defaultValue={stages.GREEN} />
-                            </div>
-                          )
-                        })
-                      }
-                    </div>
-                    <div className={styles.stageAction}>
-                      <div className={styles.stageActionBtn} onClick={this.handleAddStageCheck}>确定</div>
-                      <div className={styles.stageActionBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCancelStage}>取消</div>
-                    </div>
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-        }
-      </div>
+     
     )
   }
 }
