@@ -84,6 +84,31 @@ const RegiolManagementChild = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Trafficsystem = Loadable({
+  loader: () => import('./containers/SystemManage/TrafficSystem'),
+  loading: Loading,
+  delay: 0,
+})
+const Usergroup = Loadable({
+  loader: () => import('./containers/SystemManage/Usergroup'),
+  loading: Loading,
+  delay: 0,
+})
+const Journal = Loadable({
+  loader: () => import('./containers/SystemManage/Journal'),
+  loading: Loading,
+  delay: 0,
+})
+const TrafficMenu = Loadable({
+  loader: () => import('./containers/SystemManage/TrafficMenu'),
+  loading: Loading,
+  delay: 0,
+})
+const Jurisdiction = Loadable({
+  loader: () => import('./containers/SystemManage/Jurisdiction'),
+  loading: Loading,
+  delay: 0,
+})
 
 const Parent = () => (
   <React.Fragment>
@@ -101,6 +126,11 @@ const Parent = () => (
     <Route path="/InterManagement" component={InterManagement} />
     <Route path="/RegiolManagement" component={RegiolManagement} />
     <Route path="/RegiolManagementChild" component={RegiolManagementChild} />
+    <Route exact path="/usergroup" component={Usergroup} />
+    <Route exact path="/journal" component={Journal} />
+    <Route exact path="/trafficsystem" component={Trafficsystem} />
+    <Route exact path="/trafficMenu" component={TrafficMenu} />
+    <Route exact path="/jurisdiction" component={Jurisdiction} />
   </React.Fragment>
 )
 reactDom.render(

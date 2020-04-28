@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { getInterList, getBasicInterInfo, getVipRoute, getVipRouteChild } from '../../../actions/data'
-import { getAddUnitsIfram, getDeleteUnitFram, getDeleteVipRoad, getFindRoadByVipId, getFindList, getInitRoad, getLoadUnitStage, getSaveVipRoad   } from '../../../actions/SecretTask'
+import { getAddUnitsIfram, getDeleteUnitFram, getDeleteVipRoad, getFindRoadByVipId, getFindList, getInitRoad, getLoadUnitStage, getSaveVipRoad, getSaveUnitRunStage  } from '../../../actions/SecretTask'
 import OnlineH from '../SignalHome/img/online_h.png'
 import OutlineH from '../SignalHome/img/outline_h.png'
 import OnlineS from '../SignalHome/img/online_s.png'
@@ -37,6 +37,7 @@ class SecretTask extends PureComponent {
       roadCrossingFlag: null,
       searchVals: '',
       secretTaskTop: null,
+      secretTaskLeftOld: null,
       secretTaskLeft: null,
       secretTaskRight: null,
       startValue: null,
@@ -64,7 +65,7 @@ class SecretTask extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, loadPlanTree, vip_initRoad, vip_findRoadByVipId, vip_findList, vip_saveSucess, vip_addSucess, vip_delSucess } = this.props.data
+    const { interList, basicInterInfo, loadPlanTree, vip_delRoadSucess, vip_initRoad, vip_findRoadByVipId, vip_findList, vip_saveSucess, vip_addSucess, vip_delSucess, vip_unitRunStage } = this.props.data
     if (prevState.data !== this.props.data) {
       console.log(this.props.data)
     }
@@ -78,7 +79,7 @@ class SecretTask extends PureComponent {
       this.getInterBasicInfo(basicInterInfo)
     }
     if (prevState.data.vip_findRoadByVipId !== vip_findRoadByVipId) {
-      console.log(vip_findRoadByVipId.vipRoadData,'当前有啥？')
+      console.log(vip_findRoadByVipId, this.state.vipId, '当前有啥？')
       const roadIdArr = vip_findRoadByVipId.vipRoadUnitsData // 路口id集合
       this.setState({
         secretTaskTop: vip_findRoadByVipId.vipRoadData[0], //浮层中上面勤务回显数据
@@ -94,6 +95,11 @@ class SecretTask extends PureComponent {
             "vipId": this.state.vipId,
           })
         })
+        if (roadIdArr.length == 0) {
+          this.setState({
+            secretTaskLeft: null,
+          })
+        }
       })
     }
     if (prevState.data.vip_initRoad !== vip_initRoad) {
@@ -110,6 +116,9 @@ class SecretTask extends PureComponent {
       } else {
         selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
         vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
+        // secretTaskLeft.map((item, i) =>{
+        //   item.id === unitId ? secretTaskLeft.splice(i, 1) : null
+        // })
       }
       this.setState({ secretTaskLeft, selectStateArr })
     }
@@ -119,9 +128,7 @@ class SecretTask extends PureComponent {
     if (prevState.data.vip_saveSucess !== vip_saveSucess) {
       if ( vip_saveSucess === 1 ){
         message.info('操作成功！')
-        // this.props.vip_saveSucess = ''
         this.props.getVipRoute().then(()=>{
-          debugger
           const { loadPlanTree } = this.props.data
           this.state.vipId == '' ? this.setState({vipId: loadPlanTree[loadPlanTree.length-1].ID}, () => {
             console.log(this.state.vipId,'看下当前的vipId')
@@ -133,14 +140,29 @@ class SecretTask extends PureComponent {
       if ( vip_addSucess === 1 ){
         message.info('操作成功！')
         this.props.getFindRoadByVipId(this.state.vipId)
-        // this.props.vip_addSucess = ''
+      } else if ( vip_addSucess === 0 ) {
+        message.info('数据已存在！')
+        this.setState({
+          secretTaskLeft: this.state.secretTaskLeftOld,
+        })
       }
     }
     if (prevState.data.vip_delSucess !== vip_delSucess) {
       if ( vip_delSucess === 1 ){
         message.info('操作成功！')
         this.props.getFindRoadByVipId(this.state.vipId)
-        // this.props.vip_delSucess = ''
+      }
+    }
+    if (prevState.data.vip_unitRunStage !== vip_unitRunStage) {
+      if ( vip_unitRunStage === 1 ){
+        message.info('操作成功！')
+        this.props.getFindRoadByVipId(this.state.vipId)
+      }
+    }
+    if (prevState.data.vip_delRoadSucess !== vip_delRoadSucess) {
+      if ( vip_delRoadSucess === 1 ){
+        message.info('操作成功！')
+        this.props.getVipRoute()
       }
     }
 
@@ -421,6 +443,7 @@ class SecretTask extends PureComponent {
   }; */
   // 保存路线
   getSaveVipRoad = (vipId, name, detail) => {
+    this.props.data.vip_saveSucess = ''
     this.props.getSaveVipRoad(vipId, name, detail)
   }
   // 改变文本及下拉
@@ -431,6 +454,7 @@ class SecretTask extends PureComponent {
         [name]: e.target.value,
       })
     } else {
+      debugger
       this.state[name][index] = e
     }
   }
@@ -450,8 +474,22 @@ class SecretTask extends PureComponent {
     })
   }
   AddUnitsIframBtn = (vipId, unitId) => {
-    document.getElementById('conLeftBox').innerHTML = ''
-    this.props.getAddUnitsIfram(vipId, unitId)
+    this.props.data.vip_addSucess = ''
+    this.setState({
+      secretTaskLeftOld: this.state.secretTaskLeft,
+      secretTaskLeft: null,
+    }, () => {
+      this.props.getAddUnitsIfram(vipId, unitId)
+    })
+  }
+  getSaveUnitRunStage = (vipId, unitId, stageNo) => {
+    console.log(vipId, unitId, stageNo, 'adfasdf')
+    this.props.data.vip_unitRunStage = ''
+    this.setState({
+      secretTaskLeft: null,
+    }, () => {
+      this.props.getSaveUnitRunStage(vipId, unitId, stageNo)
+    })
   }
   // 关闭
   handleClose = ( flag, moudleName ) => {
@@ -489,22 +527,42 @@ class SecretTask extends PureComponent {
   }
   // 删除路口
   getDeleteUnitFram = (vipId, unitId) => {
-    debugger
     const _this = this
     Modal.confirm({
       title: '确认要删除当前路口？',
       cancelText: '取消',
       okText: '确认',
       onOk() {
-        document.getElementById('conLeftBox').innerHTML = ''
-        _this.props.getDeleteUnitFram(vipId, unitId)
+        _this.props.data.vip_delSucess = ''
+        _this.setState({
+          secretTaskLeft: null,
+        }, () => {
+          _this.props.getDeleteUnitFram(vipId, unitId)
+        })
+        
       },
       onCancel() { },
     })
   }
   // 删除路线
   delRoadLine = (vipId) => {
-
+    let roadLineName = ''
+    this.props.data.loadPlanTree.map((item) => {
+      if (item.ID === vipId) {
+        roadLineName = item.NAME
+      }
+    })
+    const _this = this
+    Modal.confirm({
+      title: '确认要删除勤务路线：( '+ roadLineName +' ) ?',
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        _this.props.data.vip_delRoadSucess = ''
+        _this.props.getDeleteVipRoad(vipId)
+      },
+      onCancel() { },
+    })
   }
   render() {
     const {
@@ -633,7 +691,6 @@ class SecretTask extends PureComponent {
                                     top: imgsItem.P_TOP/2 + 'px', left: imgsItem.P_LEFT/2 + 'px'}} src={this.imgDirUrl + imgsItem.IMAGE_NAME} />
                                   })
                                 }
-                                
                               </div>
                               <div className={styles.imgBox} style={{maxHeight:'200px',overflowY:'auto' }}>
                               {
@@ -646,7 +703,7 @@ class SecretTask extends PureComponent {
                               </div>
                             </div>
                             <div className={styles.formBox}><span>预设勤务阶段：</span>
-                              <Select defaultValue={item.unitRunStageNo ? item.unitRunStageNo : '0'} onChange={(e) => {this.handleChange(e, 'selectStateArr', ind)}}>
+                              <Select defaultValue={item.unitRunStageNo || item.unitRunStageNo === 0 ? item.unitRunStageNo : '0'} onChange={(e) => {this.handleChange(e, 'selectStateArr', ind)}}>
                                 <Option value='0'>请选择</Option>
                                 {
                                   item.unitStageList.length > 0 && item.unitStageList.map((infoItem) => {
@@ -654,7 +711,9 @@ class SecretTask extends PureComponent {
                                   })
                                 }
                               </Select>
-                              <em>保&nbsp;&nbsp;存</em>
+                              <em onClick={()=>{
+                                this.getSaveUnitRunStage(vipId, item.id, this.state['selectStateArr'][ind])
+                                }}>保&nbsp;&nbsp;存</em>
                             </div>
                           </div>
                         )
@@ -684,7 +743,7 @@ class SecretTask extends PureComponent {
                               <s><img src={this.imgInfoUrl + item.STAGE_IMAGE} />{item.UNIT_NAME}</s>
                               <s>{item.STAGENAME}</s>
                               <s>{item.CODE_NAME}</s>
-                              <s><span>锁定</span></s>
+                              <s>{item.STAGENO === 1 ? <span>锁定</span> : <span>取消</span>}</s>
                             </div>
                           )
                         })
@@ -760,6 +819,7 @@ const mapDisPatchToProps = (dispatch) => {
     getInitRoad: bindActionCreators(getInitRoad, dispatch),
     getLoadUnitStage: bindActionCreators(getLoadUnitStage, dispatch),
     getSaveVipRoad: bindActionCreators(getSaveVipRoad, dispatch),
+    getSaveUnitRunStage: bindActionCreators(getSaveUnitRunStage, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(SecretTask)

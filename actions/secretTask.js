@@ -2,7 +2,7 @@ import * as types from '../constants/ActionTypes'
 import RestUtil from '../utils/RestUtil'
 
 import { API_VIP_ADD_UNITSIFRAM, API_VIP_DELETE_UNITIFRAM, API_VIP_DELETE_VIPROAD,
-  API_VIP_FIND_ROADBYVIPID, API_VIP_FIND_LIST, API_VIP_INITROAD, API_VIP_LOADUNIT_STAGES, API_VIP_SAVEVIPROAD   } from '../constants/API'
+  API_VIP_FIND_ROADBYVIPID, API_VIP_FIND_LIST, API_VIP_INITROAD, API_VIP_LOADUNIT_STAGES, API_VIP_SAVEVIPROAD, API_VIP_SAVEUNITRUNSTAGE   } from '../constants/API'
 
 export const getAddUnitsIfram = (vipId, unitId) => async (dispatch) => {
   try {
@@ -94,6 +94,18 @@ export const getSaveVipRoad = (vipId = '', vipName = '', detail = '' ) => async 
     const result = await RestUtil.get(`${API_VIP_SAVEVIPROAD}?vipId=${vipId}&vipName=${vipName}&detail=${detail}`)
     if (result.data.code === 200) {
       dispatch({ type: types.GET_VIP_SAVEVIPROAD, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getSaveUnitRunStage = (vipId = '', unitId = '', stageNo = '' ) => async (dispatch) => {
+  try {
+    const result = await RestUtil.get(`${API_VIP_SAVEUNITRUNSTAGE}/${vipId}/${unitId}/${stageNo}`)
+    if (result.data.code === 200) {
+      dispatch({ type: types.GET_VIP_SAVEUNITRUNSTAGE, payload: result.data.data })
     } else {
       console.error(result.data.message)
     }
