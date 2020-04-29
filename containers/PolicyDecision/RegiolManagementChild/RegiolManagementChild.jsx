@@ -41,7 +41,7 @@ class RegiolManagementChild extends Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, subeditDistrictInfoThing, subloadUnitNames, loadPlanLoadChild, loadPlanloadchildsr, } = this.props.data
+    const { interList, basicInterInfo, subeditDistrictInfoThing, subloadUnitNames, loadPlanLoadChild, loadPlanloadchildsr } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterLists(interList)
     }
@@ -49,7 +49,7 @@ class RegiolManagementChild extends Component {
       this.getloadPlanLoads(loadPlanloadchildsr)
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
-      this.getInterBasicInfo(basicInterInfo) //需要修改
+      this.getInterBasicInfo(basicInterInfo) // 需要修改
     }
     if (prevState.data.subeditDistrictInfoThing !== subeditDistrictInfoThing) {
       this.getsubeditDistrictInfoThing(subeditDistrictInfoThing)

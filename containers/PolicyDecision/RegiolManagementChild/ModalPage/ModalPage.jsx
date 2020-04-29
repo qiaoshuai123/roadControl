@@ -52,7 +52,7 @@ class ModalPage extends React.Component {
   // }
   getsubvalidate = (validate) => {
     if (validate) {
-      message.error('该区域编号已经存在')
+      message.error('该子区域编号已经存在')
       this.isvalidate = false
     } else {
       this.isvalidate = true
@@ -206,8 +206,11 @@ class ModalPage extends React.Component {
     }
   }
   modifyOk = async () => { // 区域编号修改
+    if (!this.isvalidate) {
+      return message.error('该子区域编号已经存在')
+    }
     const {
-      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,ManagementUnit
+      EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList, ManagementUnit,
     } = this.state
     let str = ''
     IntersectionList.forEach((item) => {

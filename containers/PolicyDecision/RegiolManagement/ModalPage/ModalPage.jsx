@@ -73,7 +73,7 @@ class ModalPage extends React.Component {
     }
   }
   detailsFun = () => {
-    console.log(123456,this.details)
+    console.log(123456, this.details)
     try {
       if (this.details) {
         const { SubordinateUnitLsit, OptionList } = this.state
@@ -188,6 +188,9 @@ class ModalPage extends React.Component {
     }
   }
   modifyOk = async () => { // 区域编号修改
+    if (!this.isvalidate) {
+      return message.error('该区域编号已经存在')
+    }
     const {
       EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
     } = this.state
@@ -218,6 +221,9 @@ class ModalPage extends React.Component {
     }
   }
   handleOk = async () => { // 区域编号提交
+    if (!this.isvalidate) {
+      return message.error('该区域编号已经存在')
+    }
     const {
       EquipmentModel, CorrelationNumber, Correlationdetail, IntersectionList,
     } = this.state
