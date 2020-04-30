@@ -109,7 +109,21 @@ const Jurisdiction = Loadable({
   loading: Loading,
   delay: 0,
 })
-
+const UserActionLog = Loadable({
+  loader: () => import('./containers/SystemManage/UserActionLog/UserActionLog'),
+  loading: Loading,
+  delay: 0,
+})
+const SystemFaultLog = Loadable({
+  loader: () => import('./containers/SystemManage/SystemFaultLog/SystemFaultLog'),
+  loading: Loading,
+  delay: 0,
+})
+const SignalControlRecord = Loadable({
+  loader: () => import('./containers/SystemManage/SignalControlRecord/SignalControlRecord'),
+  loading: Loading,
+  delay: 0,
+})
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -131,6 +145,9 @@ const Parent = () => (
     <Route exact path="/trafficsystem" component={Trafficsystem} />
     <Route exact path="/trafficMenu" component={TrafficMenu} />
     <Route exact path="/jurisdiction" component={Jurisdiction} />
+    <Route exact path="/useractionlog" component={UserActionLog} />
+    <Route exact path="/systemfaultlog" component={SystemFaultLog} />
+    <Route exact path="/signalcontrolrecord" component={SignalControlRecord} />
   </React.Fragment>
 )
 reactDom.render(

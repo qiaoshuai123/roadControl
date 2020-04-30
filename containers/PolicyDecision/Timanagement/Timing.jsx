@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import styles from './Timing.scss'
 import Header from '../Header/Header'
 import { getLoadPlanTree, getInterList } from '../../../actions/data'
-import { gettimgetTimingInfo, gettimcode, gettimingInfoByExcel, getlcflgss, gettimvalidate, gettimsaveOrUpdateForm, } from '../../../actions/management'
+import { gettimgetTimingInfo, gettimcode, gettimingInfoByExcel, getlcflgss, gettimvalidate, gettimsaveOrUpdateForm } from '../../../actions/management'
 
 class Timing extends Component {
   constructor(props) {

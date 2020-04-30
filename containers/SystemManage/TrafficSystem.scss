@@ -41,11 +41,10 @@
     background: url(./imgs/line.png) center center;
   }
   .syetem_item {
+    float: left;
     height: 100%;
-    width: 270px;
     line-height: 100px;
-    margin-left: 100px;
-    display: inline-block;
+    margin-left: 20px;
     .item {
       color: #019bac;
       margin-right: 15px;
@@ -60,6 +59,7 @@
       color: #07f8ff;
     }
     :global(.ant-select-selection__rendered) {
+      width: 100%;
       line-height: 30px;
     }
     :global(.ant-input) {

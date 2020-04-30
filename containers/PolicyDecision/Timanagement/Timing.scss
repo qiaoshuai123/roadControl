@@ -291,6 +291,9 @@
             border: 1px solid #3b5268;
             color: #f1f1fb;
           }
+          :global(path) {
+            color: white;
+          }
         }
       }
       .editBtnBox {
