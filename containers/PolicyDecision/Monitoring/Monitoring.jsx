@@ -7,11 +7,7 @@ import Header from '../Header/Header'
 import InterMonitor from './InterMonitor/InterMonitor'
 import InfoBg from '../InterManagement/img/info_bg.png'
 
-import { getInterList, getBasicInterInfo, getLoadPlanTree, getLoadChildTree, getAreaList } from '../../../actions/data'
-import {
-  getInterControlSys, getUnitInterType, getUnitDeviceType,
-  getManagementUnit, getUnitDirection, getSaveInterManage,
-} from '../../../actions/InterManage'
+import { getInterList, getBasicInterInfo } from '../../../actions/data'
 
 class Monitoring extends Component {
   constructor(props) {
@@ -150,22 +146,13 @@ class Monitoring extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: { ...state.data, ...state.interManage },
+    data: state.data,
   }
 }
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterList: bindActionCreators(getInterList, dispatch),
     getBasicInterInfo: bindActionCreators(getBasicInterInfo, dispatch),
-    getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
-    getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
-    getInterControlSys: bindActionCreators(getInterControlSys, dispatch),
-    getUnitInterType: bindActionCreators(getUnitInterType, dispatch),
-    getUnitDeviceType: bindActionCreators(getUnitDeviceType, dispatch),
-    getManagementUnit: bindActionCreators(getManagementUnit, dispatch),
-    getAreaList: bindActionCreators(getAreaList, dispatch),
-    getUnitDirection: bindActionCreators(getUnitDirection, dispatch),
-    getSaveInterManage: bindActionCreators(getSaveInterManage, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Monitoring)

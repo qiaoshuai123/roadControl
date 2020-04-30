@@ -1,9 +1,14 @@
 import React from 'react'
+import classNames from 'classnames'
 import { Select, Icon, Checkbox, message } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import styles from './InterMonitor.scss'
-import CustomTree from '../../../../components/CustomTree/CustomTree'
+import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import PieCharts from './PieCharts/PieCharts'
+
+import { getLoadPlanTree, getLoadChildTree } from '../../../../actions/data'
 
 function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow } = props
@@ -42,6 +47,7 @@ class InterMonitor extends React.Component {
       pointTypeRight: 10,
       interListHeight: 0,
       searchInterList: null,
+      interModal: 'area',
     }
     this.statusList = [
       { name: '单点离线' },
@@ -67,6 +73,18 @@ class InterMonitor extends React.Component {
     this.searchInterList = interList
     this.setState({ searchInterList: interList })
   }
+  // 从子集获取区域id和index 请求路口
+  getSelectTreeId = (id) => {
+    this.props.getLoadChildTree(id, '', this.interModal )
+  }
+  // 获取子id, 路口id
+  getSelectChildId = (chidlId, lng, lat) => {
+    const marker = document.getElementById('marker' + chidlId)
+    if (marker) {
+      marker.click()
+      this.props.resetMapCenter(lng, lat)
+    }
+  }
   handleStatusDropDown = (e) => {
     const statusName = e.currentTarget.getAttribute('statusname')
     if (this.state.statusName && this.state.statusName === statusName) {
@@ -78,6 +96,7 @@ class InterMonitor extends React.Component {
   handleShowInterOrPie = (e) => {
     const popName = e.currentTarget.getAttribute('popname')
     this.setState({ popName })
+    this.props.getLoadPlanTree()
   }
   handleClosePop = () => {
     this.setState({ popName: null })
@@ -138,9 +157,14 @@ class InterMonitor extends React.Component {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
+  handleShowInterList = (interModal) => {
+    this.interModal = interModal
+    this.setState({ interModal })
+    this.props.getLoadPlanTree('', '', interModal)
+  }
   render() {
     const {
-      statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft, interListHeight, searchInterList
+      statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft, interListHeight, searchInterList, interModal,
     } = this.state
     const { Option } = Select
     return (
@@ -246,27 +270,43 @@ class InterMonitor extends React.Component {
                 </div>
               </div>
             </div>
-            {/* <div className={styles.interTreeBox}>
-              <div className={styles.interSearch}>
-                <Select defaultValue="1">
-                  <Option key="1">贵阳市</Option>
-                  <Option key="2">南阳市</Option>
-                </Select>
-                <span className={styles.searchBox}>
-                  <input className={styles.searchInput} type="text" placeholder="请输入你要搜索的内容" />
-                  <Icon className={styles.searchIcon} type="search" />
-                </span>
-              </div>
-              <div className={styles.administration}>
-                <div className={styles.btn}>行政区域</div>
-              </div>
-              <div className={styles.interTree}>
-                <CustomTree />
-              </div>
-            </div> */}
             <div className={styles.interAreaLineBox}>
-              <div className={styles.areaLineBtn}>子区</div>
-              <div className={styles.areaLineBtn}>线路</div>
+              <div className={classNames({ [styles.areaLineBtn]: true, [styles.activeBtn]: interModal === 'district' })} onClick={() => { this.handleShowInterList('district') }}>行政区域</div>
+              {
+                interModal === 'district' &&
+                <div className={styles.interTree}>
+                  <CustomInterTree
+                    {...this.props}
+                    rightDownNone="true"
+                    getSelectTreeId={this.getSelectTreeId}
+                    getSelectChildId={this.getSelectChildId}
+                  />
+                </div>
+              }
+              <div className={classNames({ [styles.areaLineBtn]: true, [styles.activeBtn]: interModal === 'subDistrict' })} onClick={() => { this.handleShowInterList('subDistrict') }}>子区</div>
+              {
+                interModal === 'subDistrict' &&
+                <div className={styles.interTree}>
+                  <CustomInterTree
+                    {...this.props}
+                    rightDownNone="true"
+                    getSelectTreeId={this.getSelectTreeId}
+                    getSelectChildId={this.getSelectChildId}
+                  />
+                </div>
+              }
+              <div className={classNames({ [styles.areaLineBtn]: true, [styles.activeBtn]: interModal === 'route' })} onClick={() => { this.handleShowInterList('route') }}>线路</div>
+              {
+                interModal === 'route' &&
+                <div className={styles.interTree}>
+                  <CustomInterTree
+                    {...this.props}
+                    rightDownNone="true"
+                    getSelectTreeId={this.getSelectTreeId}
+                    getSelectChildId={this.getSelectChildId}
+                  />
+                </div>
+              }
             </div>
           </div>
         }
@@ -287,4 +327,15 @@ class InterMonitor extends React.Component {
   }
 }
 
-export default InterMonitor
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
+    getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(InterMonitor)

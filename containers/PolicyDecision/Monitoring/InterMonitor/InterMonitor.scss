@@ -254,7 +254,7 @@
     }
     .interListBox {
         position: relative;
-        padding: 10px 0;
+        padding: 10px 0 0;
         z-index: 9;
         .interList {
           position: absolute;
@@ -302,66 +302,15 @@
               }
           }
         }
-      }
-    .administration {
-        padding: 5px 15px 5px 0;
-        .btn {
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            background-color: #018DA8;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    }
-    .interTreeBox {
-        width: 320px;
-        height: calc(100% - 150px);
-        padding: 10px 0 0 15px;
-        background-color: #02183D;
-        .interSearch {
-            display: flex;
-            :global(.ant-select-selection) {
-                width: 100px;
-                background-color: #063657;
-                border: 1px solid #063657;
-                outline: none;
-                color: #F1F1FB;
-                box-shadow: none;
-            }
-            :global(.ant-select-arrow) {
-                color: #F1F1FB;
-            }
-            .searchBox {
-                position: relative;
-                .searchInput {
-                    width: 180px;
-                    height: 32px;
-                    padding-left: 5px;
-                    margin-left: 10px;
-                    background-color: #063657;
-                    border: 1px solid #063657;
-                    border-radius: 4px;
-                    outline: none;
-                    color: #F1F1FB;
-                }
-                .searchIcon {
-                    position: absolute;
-                    right: 10px;
-                    top: 8px;
-                    font-size: 18px;
-                    color: #07BDFB;
-                    cursor: pointer;
-                }
-            }
-        }
-        .interTree {
-            height: calc(100% - 40px);
-            overflow-y: auto;
-        }
     }
     .interAreaLineBox {
-        padding: 15px;
+        height: calc(100% - 100px);
+        padding: 0 15px 15px;
+        .interTree {
+            height: calc(100% - 110px);
+            overflow-y: auto;
+            transition: all .2s;
+        }
         .areaLineBtn {
             height: 30px;
             text-align: center;
@@ -369,8 +318,11 @@
             background-color: #023757;
             letter-spacing: 5px;
             border-radius: 4px;
-            margin-bottom: 15px;
+            margin-top: 15px;
             cursor: pointer;
+        }
+        .activeBtn {
+            background-color: #018DA8;
         }
     }
 }
