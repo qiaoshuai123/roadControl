@@ -18,6 +18,9 @@ import {
   API_VIP_ROUTE_CHILD,
   API_EDITDISTRICTINFOTHING,
   API_AREA_LIST,
+  API_MONITORTYPE,
+  API_GLOBALMONITOR,
+  API_GLOBALUNITINFO,
 } from '../constants/API'
 
 // 首页路口列表
@@ -218,6 +221,54 @@ export const getAreaList = () => {
       const result = await RestUtil.get(API_AREA_LIST)
       if (result.data.code === 200) {
         dispatch({ type: types.GET_AREA_LIST, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+// 全局监控
+export const getMonitorType = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_MONITORTYPE)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_MONITORTYPE, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+// 全局监控 状态
+export const getGlobalMonitor = (type = '1,3,4', state = 'controlState') => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(`${API_GLOBALMONITOR}?signalTypes=${type}&statType=${state}`)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_GLOBALMONITOR, payload: result.data.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+// 全局监控 路口
+export const getGlobalUnitInfo = () => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.get(API_GLOBALUNITINFO)
+      if (result.data.code === 200) {
+        dispatch({ type: types.GET_GLOBALUNITINFO, payload: result.data.data })
       } else {
         console.error(result.data.message)
       }

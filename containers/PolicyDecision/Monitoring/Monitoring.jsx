@@ -7,7 +7,7 @@ import Header from '../Header/Header'
 import InterMonitor from './InterMonitor/InterMonitor'
 import InfoBg from '../InterManagement/img/info_bg.png'
 
-import { getInterList, getBasicInterInfo } from '../../../actions/data'
+import { getInterList, getBasicInterInfo, getGlobalUnitInfo } from '../../../actions/data'
 
 class Monitoring extends Component {
   constructor(props) {
@@ -20,9 +20,9 @@ class Monitoring extends Component {
     this.renderMineMap()
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo } = this.props.data
-    if (prevState.data.interList !== interList) {
-      this.getInterLists(interList)
+    const { globalUnitInfos, basicInterInfo } = this.props.data
+    if (prevState.data.globalUnitInfos !== globalUnitInfos) {
+      this.getInterLists(globalUnitInfos)
     }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
@@ -38,8 +38,8 @@ class Monitoring extends Component {
     this.runText = basicInterInfo.STAGE_CODE
   }
   // 路口列表
-  getInterLists = (interList) => {
-    this.addMarker(interList)
+  getInterLists = (globalUnitInfos) => {
+    this.addMarker(globalUnitInfos)
   }
   // 添加坐标点
   addMarker = (interList) => {
@@ -131,7 +131,8 @@ class Monitoring extends Component {
     })
     this.map = map
     this.map.on('load', () => {
-      this.props.getInterList()
+      // this.props.getInterList()
+      this.props.getGlobalUnitInfo()
     })
   }
   render() {
@@ -151,6 +152,7 @@ const mapStateToProps = (state) => {
 }
 const mapDisPatchToProps = (dispatch) => {
   return {
+    getGlobalUnitInfo: bindActionCreators(getGlobalUnitInfo, dispatch),
     getInterList: bindActionCreators(getInterList, dispatch),
     getBasicInterInfo: bindActionCreators(getBasicInterInfo, dispatch),
   }

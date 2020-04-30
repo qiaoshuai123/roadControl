@@ -40,6 +40,12 @@ const data = (state = {}, action) => {
       return Object.assign({}, state, { deleteDistrict: payload })
     case types.GET_AREA_LIST:
       return Object.assign({}, state, { areaList: payload })
+    case types.GET_MONITORTYPE:
+      return Object.assign({}, state, { monitorTypes: payload })
+    case types.GET_GLOBALMONITOR:
+      return Object.assign({}, state, { stateAnalysis: payload })
+    case types.GET_GLOBALUNITINFO:
+      return Object.assign({}, state, { globalUnitInfos: payload })
     default:
       return state
   }

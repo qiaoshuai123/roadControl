@@ -76,6 +76,8 @@ export const API_LOAD_PLANTREE = '/atms/districtManagement/loadPlanTree'
 export const API_AREA_LIST = '/atms/unitManagement/loadDistrict'
 export const API_PLANSTAGE_LIST = '/atms/hisenseSignal/loadPlanInfo_add'
 export const API_MONITORTYPE = '/atms/gm/monitorType'
+export const API_GLOBALMONITOR = '/atms/gm/signalStateAnalys'
+export const API_GLOBALUNITINFO = '/atms/gm/loadUnitInfos'
 
 // 特勤任务
 export const API_VIP_ROUTE = '/atms/vip/vipRoute'

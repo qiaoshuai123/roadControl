@@ -8,7 +8,7 @@ import styles from './InterMonitor.scss'
 import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
 import PieCharts from './PieCharts/PieCharts'
 
-import { getLoadPlanTree, getLoadChildTree } from '../../../../actions/data'
+import { getLoadPlanTree, getLoadChildTree, getMonitorType, getGlobalMonitor } from '../../../../actions/data'
 
 function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow } = props
@@ -23,9 +23,9 @@ function DropDownList(props) {
           list &&
           list.map((item) => {
             return (
-              <div className={styles.statusItems} key={item.name}>
-                <span>{item.name}</span>
-                <span className={styles.statusCheck}><Checkbox defaultChecked /></span>
+              <div className={styles.statusItems} key={item.CODE_NAME}>
+                <span>{item.CODE_NAME}</span>
+                <span className={styles.statusCheck}><Checkbox code={item.C_CODE} defaultChecked /></span>
               </div>
             )
           })
@@ -39,7 +39,7 @@ class InterMonitor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      statusName: null,
+      statusName: 'controlState',
       popName: null,
       interMonitorLeft: 15,
       interListLeft: 360,
@@ -47,14 +47,20 @@ class InterMonitor extends React.Component {
       pointTypeRight: 10,
       interListHeight: 0,
       searchInterList: null,
-      interModal: 'area',
+      interModal: 'district',
+      monitorTypes: null,
+      stateMonitors: null,
+      stateAnalysis: null,
     }
     this.statusList = [
       { name: '单点离线' },
       { name: '关灯控制' },
     ]
+    this.singalTypes = [1, 3, 4]
   }
   componentDidMount = () => {
+    this.props.getMonitorType()
+    this.props.getGlobalMonitor()
     document.addEventListener('click', (e) => {
       if (e.target !== this.searchInputBox) {
         this.setState({ interListHeight: 0 })
@@ -62,11 +68,28 @@ class InterMonitor extends React.Component {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList } = this.props.data
-    if (prevState.data.interList !== interList) {
-      this.getInterLists(interList)
+    const { globalUnitInfos, monitorTypes, stateAnalysis } = this.props.data
+    if (prevState.data.globalUnitInfos !== globalUnitInfos) {
+      this.getInterLists(globalUnitInfos)
+    }
+    if (prevState.data.monitorTypes !== monitorTypes) {
+      this.getMonitorTypes(monitorTypes)
+    }
+    if (prevState.data.stateAnalysis !== stateAnalysis) {
+      this.getSignalStateAnalys(stateAnalysis)
     }
     console.log(this.props)
+  }
+  getSignalStateAnalys = (stateAnalysis) => {
+    console.log('stateAnalysis:::::::::', stateAnalysis)
+    this.setState({ stateAnalysis })
+  }
+  // 监视状态
+  getMonitorTypes = (monitorTypes) => {
+    this.setState({
+      monitorTypes,
+      stateMonitors: monitorTypes.controlType,
+    })
   }
   // 路口列表
   getInterLists = (interList) => {
@@ -86,11 +109,15 @@ class InterMonitor extends React.Component {
     }
   }
   handleStatusDropDown = (e) => {
+    const { monitorTypes } = this.state
     const statusName = e.currentTarget.getAttribute('statusname')
+    const stateMonitors = statusName === 'controlState' ? monitorTypes.controlType :
+      statusName === 'trafficState' ? monitorTypes.trafficType : monitorTypes.deviceType
     if (this.state.statusName && this.state.statusName === statusName) {
       this.setState({ statusName: null })
     } else {
-      this.setState({ statusName })
+      this.props.getGlobalMonitor(this.singalTypes.join(','), statusName)
+      this.setState({ statusName, stateMonitors })
     }
   }
   handleShowInterOrPie = (e) => {
@@ -165,6 +192,7 @@ class InterMonitor extends React.Component {
   render() {
     const {
       statusName, popName, interMonitorLeft, interListLeft, pointTypeRight, distuibutionLeft, interListHeight, searchInterList, interModal,
+      monitorTypes, stateMonitors, stateAnalysis,
     } = this.state
     const { Option } = Select
     return (
@@ -186,25 +214,32 @@ class InterMonitor extends React.Component {
           </div>
           <div className={styles.title}>状态监视</div>
           <div className={styles.statusMsg}>
-            <DropDownList
-              title="控制状态监视"
-              list={this.statusList}
-              handleClick={this.handleStatusDropDown}
-              statusName="control"
-              isShow={statusName === 'control'}
-            />
-            <DropDownList
-              title="交通状态监视"
-              handleClick={this.handleStatusDropDown}
-              statusName="traffic"
-              isShow={statusName === 'traffic'}
-            />
-            <DropDownList
-              title="设备状态监视"
-              handleClick={this.handleStatusDropDown}
-              statusName="device"
-              isShow={statusName === 'device'}
-            />
+            {
+              monitorTypes &&
+              <React.Fragment>
+                <DropDownList
+                  title="控制状态监视"
+                  list={monitorTypes.controlType}
+                  handleClick={this.handleStatusDropDown}
+                  statusName="controlState"
+                  isShow={statusName === 'controlState'}
+                />
+                <DropDownList
+                  title="交通状态监视"
+                  list={monitorTypes.trafficType}
+                  handleClick={this.handleStatusDropDown}
+                  statusName="trafficState"
+                  isShow={statusName === 'trafficState'}
+                />
+                <DropDownList
+                  title="设备状态监视"
+                  list={monitorTypes.deviceType}
+                  handleClick={this.handleStatusDropDown}
+                  statusName="alarmState"
+                  isShow={statusName === 'alarmState'}
+                />
+              </React.Fragment>
+            }
           </div>
         </div>
         <div className={styles.pointTypeBox} style={{ right: `${pointTypeRight}px` }}>
@@ -218,16 +253,19 @@ class InterMonitor extends React.Component {
             <div><span className={styles.circleBox} />泰尔文特<span className={styles.checkeBox}><Checkbox defaultChecked /></span></div>
           </div>
           <div className={styles.statusDetails}>
-            <div className={styles.pointList}>
-              <span className={styles.circleColor} />
-              <span className={styles.pointText}>单点离线</span>
-              <span className={styles.pointNum}>104处</span>
-            </div>
-            <div className={styles.pointList}>
-              <span className={styles.circleColor} />
-              <span className={styles.pointText}>单点离线</span>
-              <span className={styles.pointNum}>104处</span>
-            </div>
+            {
+              (stateMonitors && stateAnalysis) &&
+              stateMonitors.map((item) => {
+                const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
+                return (
+                  <div className={styles.pointList} key={item.CODE_NAME + item.C_CODE}>
+                    <span className={styles.circleColor} />
+                    <span className={styles.pointText}>{item.CODE_NAME}</span>
+                    <span className={styles.pointNum}>{states ? states.CSIZE : 0}处</span>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
         {
@@ -336,6 +374,8 @@ const mapDisPatchToProps = (dispatch) => {
   return {
     getLoadPlanTree: bindActionCreators(getLoadPlanTree, dispatch),
     getLoadChildTree: bindActionCreators(getLoadChildTree, dispatch),
+    getMonitorType: bindActionCreators(getMonitorType, dispatch),
+    getGlobalMonitor: bindActionCreators(getGlobalMonitor, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(InterMonitor)
