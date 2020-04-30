@@ -226,16 +226,10 @@ export const gettimingInfoByExcel = id => async (dispatch) => {
     console.log(e)
   }
 }
-export const gettimsaveOrUpdateForm = obj => async (dispatch) => {
-  try {
+export const gettimsaveOrUpdateForm = (obj) => {
+  return async () => {
     const result = await RestUtil.post(API_TIM_SAVEORUPDATEFORM, obj)
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_TIM_SAVEORUPDATEFORM, payload: result.data.data })
-    } else {
-      console.error(result.data.message)
-    }
-  } catch (e) {
-    console.log(e)
+    return result
   }
 }
 export const gettimtest = id => async (dispatch) => {

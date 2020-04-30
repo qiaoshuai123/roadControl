@@ -31,10 +31,12 @@ class Timing extends Component {
     this.changeSignalValue = 0 // 改变信号控制系统
     this.planStageList = []
     this.stageTimes = []
+    this.page = 1
+    this.pageSizes = 15
     this.saveParams = {
       confirmId: 'add', // 修改还是增加
       coordphaseno: '', // 协调相位号
-      cyclelen: '', // 周期长
+      cyclelen: 0, // 周期长
       endTime: '',
       extension_no: '',
       numImgThing: '', // 多个阶段图
@@ -52,11 +54,10 @@ class Timing extends Component {
     this.coordinatedPhase = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
   }
   componentDidMount() {
-    const str = ''
     this.props.getLoadPlanTree()
     this.props.getInterList()
     this.props.gettimcode()
-    this.props.gettimgetTimingInfo(`curPage=1&districtId=0&keyword=${str}&pageSize=15&signalType=0&unitId=0`)
+    this.props.gettimgetTimingInfo(`curPage=1&districtId=0&keyword=${this.changeFontValue}&pageSize=15&signalType=0&unitId=0`)
   }
   componentDidUpdate(prevState) {
     const { loadPlanTree, interList, getTimingInfo, code, getTimingInfoByExcel, cfgImgs } = this.props.data
@@ -80,7 +81,6 @@ class Timing extends Component {
     }
   }
   getcfgImgs = (cfgImgs) => {
-    console.log(cfgImgs, 'ssdsds')
     this.setState({
       editPlanStageList: cfgImgs,
     }, () => {
@@ -116,7 +116,6 @@ class Timing extends Component {
     })
   }
   getTimingInfoByExcels = (getTimingInfoByExcel) => {
-    // console.log(getTimingInfoByExcel, 'qingqiuhuilaideneirong')
     const blob = new Blob([getTimingInfoByExcel], { type: 'application/vnd.ms-excel,charset=utf-8' })
     const a = document.createElement('a')
     const href = window.URL.createObjectURL(blob)
@@ -151,10 +150,14 @@ class Timing extends Component {
   }
   // 点击分页器
   pageChange = (page, pageSize) => {
-    this.props.gettimgetTimingInfo(`curPage=${page}&districtId=0&keyword=0&pageSize=${pageSize}&signalType=0&unitId=0`)
+    this.page = page
+    this.pageSizes = pageSize
+    this.props.gettimgetTimingInfo(`curPage=${page}&districtId=${this.changeRegionValue}&keyword=${this.changeFontValue}&pageSize=${pageSize}&signalType=${this.changeSignalValue}&unitId=${this.changeIntctionValue}`)
   }
   pageSize = (page, pageSize) => {
-    this.props.gettimgetTimingInfo(`curPage=${page}&districtId=0&keyword=0&pageSize=${pageSize}&signalType=0&unitId=0`)
+    this.page = page
+    this.pageSizes = pageSize
+    this.props.gettimgetTimingInfo(`curPage=${page}&districtId=${this.changeRegionValue}&keyword=${this.changeFontValue}&pageSize=${pageSize}&signalType=${this.changeSignalValue}&unitId=${this.changeIntctionValue}`)
   }
   selectListroad = (id) => { // 申请方案弹窗
     this.ids = id
@@ -174,16 +177,39 @@ class Timing extends Component {
     this.props.gettimingInfoByExcel(str)
   }
   handleCloseEdit = () => {
-    this.setState({ showEditTiming: false, editStageSelect: false })
+    this.saveParams = {
+      confirmId: 'add', // 修改还是增加
+      coordphaseno: '', // 协调相位号
+      cyclelen: '', // 周期长
+      endTime: '',
+      extension_no: '',
+      numImgThing: '', // 多个阶段图
+      numThing: '', // 多个时间字符串
+      offset: '', // 相位差
+      planname: '', // 方案名称
+      planno: '', // 方案编号
+      primaryUnitId: '', // 路口ID
+      runTime: '',
+      stageStr: '', // 多个阶段字符串
+      startTime: '',
+      structure_no: '',
+      transition_no: '',
+    }
+    this.radioStageCheck = []
+    this.planStageList = []
+    this.setState({
+      showEditTiming: false,
+      editStageSelect: false,
+      planStageList: [],
+      cycleLength: 0,
+    })
   }
   handleEditChange = (e) => {
     const paramsName = e.target.getAttribute('pname')
     this.saveParams[paramsName] = e.target.value
   }
   handleStageTimeChange = (e, indexs) => {
-    // console.log(indexs, e.target.value, '切换按钮')
     this.stageTimes[indexs] = e.target.value
-    console.log(this.stageTimes, 'ss')
   }
   handleStageTimeBlur = () => {
     let nums = 0
@@ -195,31 +221,81 @@ class Timing extends Component {
   }
   handleAddStage = () => {
     this.saveParams.primaryUnitId = this.ids
-    this.setState({ editStageSelect: true }, () => {
+    this.setState({
+      editStageSelect: true,
+    }, () => {
       this.props.getlcflgss(this.ids)
     })
   }
-  handleSaveTimingPlan = () => {
-    this.saveParams.numThing = this.stageTimes.join(',')
-    this.saveParams.numImgThing = this.numImgThings.join(',')
-    this.saveParams.stageStr = this.stageNos.join(',')
-    this.saveParams.cyclelen = this.saveParams.cyclelen.toString()
-    this.saveParams.coordphaseno = this.saveParams.coordphaseno.toString()
-    console.log(this.saveParams)
-    this.props.gettimsaveOrUpdateForm(this.saveParams).then((res) => {
-      if (res.data.code === 200) {
-        const str = ''
-        this.props.gettimgetTimingInfo(`curPage=1&districtId=0&keyword=${str}&pageSize=15&signalType=0&unitId=0`)
+  SaveValidation = () => {
+    if (!this.saveParams.planno) {
+      return message.info('请输入方案编号')
+    }
+    if (!this.saveParams.planname) {
+      return message.info('请输入方案名称')
+    }
+    if (!this.saveParams.coordphaseno) {
+      return message.info('请输入协调相位号')
+    }
+    if (!this.saveParams.offset) {
+      return message.info('请输入协调相位差')
+    }
+    if (!this.state.planStageList.length) {
+      return message.info('请选择关联阶段')
+    }
+  }
+  handleSaveTimingPlan = async () => {
+    const isSuccess = await this.SaveValidation()
+    if (!isSuccess) {
+      this.saveParams.numThing = this.stageTimes.join(',')
+      this.saveParams.numImgThing = this.numImgThings.join(',')
+      this.saveParams.stageStr = this.stageNos.join(',')
+      this.saveParams.cyclelen = this.saveParams.cyclelen.toString()
+      this.saveParams.coordphaseno = this.saveParams.coordphaseno.toString()
+      if (this.messageSave) {
+        this.props.gettimsaveOrUpdateForm(this.saveParams).then((res) => {
+          if (res.data.code === 200) {
+            this.radioStageCheck = []
+            this.planStageList = []
+            this.props.gettimgetTimingInfo(`curPage=${this.page}&districtId=${this.changeRegionValue}&keyword=${this.changeFontValue}&pageSize=${this.pageSizes}&signalType=${this.changeSignalValue}&unitId=${this.changeIntctionValue}`)
+            this.saveParams = {
+              confirmId: 'add', // 修改还是增加
+              coordphaseno: '', // 协调相位号
+              cyclelen: '', // 周期长
+              endTime: '',
+              extension_no: '',
+              numImgThing: '', // 多个阶段图
+              numThing: '', // 多个时间字符串
+              offset: '', // 相位差
+              planname: '', // 方案名称
+              planno: '', // 方案编号
+              primaryUnitId: '', // 路口ID
+              runTime: '',
+              stageStr: '', // 多个阶段字符串
+              startTime: '',
+              structure_no: '',
+              transition_no: '',
+            }
+            this.setState({
+              showEditTiming: false,
+              editStageSelect: false,
+              planStageList: [],
+              cycleLength: 0,
+            }, () => {
+              message.info(res.data.message)
+            })
+          }
+        })
+      } else {
+        message.info('该ID已经存在')
       }
-      message.info(res.data.message)
-      this.setState({ showEditTiming: false })
-    })
+    }
   }
   handleDeleteStage = () => {
     if (this.planStageList && this.planStageList.length > 0) {
       this.planStageList.pop()
       this.setState({ planStageList: this.planStageList }, () => {
-        this.stageNos = this.state.planStageList.map(item => item.STAGE_ID)
+        this.stageNos = this.state.planStageList.map(item => item.STAGENO)
         this.stageTimes = this.state.planStageList.map(item => item.GREEN)
         this.numImgThings = this.state.planStageList.map(item => item.STAGE_IMAGE)
       })
@@ -229,15 +305,13 @@ class Timing extends Component {
   }
   handleAddStageCheck = () => {
     this.planStageList = [...this.planStageList, ...this.radioStageCheck]
-    console.log(this.planStageList, 'qiaoshuaisss')
     this.setState({
       planStageList: this.planStageList,
       editStageSelect: false,
     }, () => {
-      this.stageNos = this.state.planStageList.map(item => item.ID)
+      this.stageNos = this.state.planStageList.map(item => item.STAGENO)
       this.stageTimes = this.state.planStageList.map(item => item.GREEN)
       this.numImgThings = this.state.planStageList.map(item => item.STAGE_IMAGE)
-      console.log(this.stageNos, this.stageTimes, this.numImgThings, 'sssss')
     })
   }
   handleCancelStage = () => {
@@ -249,8 +323,7 @@ class Timing extends Component {
     this.setState({ stageRadioIndex: index })
   }
   numberBlur = () => {
-    console.log(this.saveParams.planno, '内容')
-    this.props.gettimvalidate(`${this.saveParams.planno}/${this.ids}`).then((res) => {
+    this.props.gettimvalidate(`${this.ids}/${this.saveParams.planno}`).then((res) => {
       if (res.data.data) {
         message.info('该ID已经存在')
         this.messageSave = false // 有相同id不让提交
@@ -413,7 +486,7 @@ class Timing extends Component {
                             <p className={styles.phaseNo}>{stage.STAGENO}</p>
                             <img width="35px" height="35px" src={`http://192.168.1.123:26001/atms/comm/images/anniu/${stage.STAGE_IMAGE}`} alt="" />
                             <input type="text" defaultValue={stage.GREEN} onBlur={this.handleStageTimeBlur} onChange={(e) => { this.handleStageTimeChange(e, index) }} />
-                          </div>
+                          </div >
                         )
                       })
                     }
@@ -421,8 +494,8 @@ class Timing extends Component {
                       <span className={styles.editStageBtn} onClick={this.handleAddStage}><Icon type="plus" /></span>
                       <span className={styles.editStageBtn} onClick={this.handleDeleteStage}><Icon type="minus" /></span>
                     </div>
-                  </div>
-                </div>
+                  </div >
+                </div >
                 <div className={styles.editBtnBox}>
                   <div className={styles.editBtn} style={{ backgroundColor: '#ccc' }} onClick={this.handleCloseEdit}>取消</div>
                   <div className={styles.editBtn} onClick={this.handleSaveTimingPlan}>确定</div>
@@ -456,11 +529,11 @@ class Timing extends Component {
                     </div>
                   </div>
                 }
-              </div>
-            </div>
+              </div >
+            </div >
           }
-        </div>
-      </div>
+        </div >
+      </div >
     )
   }
 }
