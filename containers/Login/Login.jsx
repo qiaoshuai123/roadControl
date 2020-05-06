@@ -81,7 +81,7 @@ class Login extends React.Component {
               </div>
               <div className={styles.userMsg}>
                 <span><Icon type="lock" theme="filled" /></span>
-                <input placeholder="请输入密码" type="text" onChange={this.handlePassWord} />
+                <input placeholder="请输入密码" type="password" onChange={this.handlePassWord} />
               </div>
               <div className={styles.loginBtn} onClick={this.handleLogin}>登录</div>
             </div>
