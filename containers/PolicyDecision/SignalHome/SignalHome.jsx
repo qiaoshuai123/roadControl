@@ -26,7 +26,7 @@ class SignalHome extends PureComponent {
       searchInterList: null,
       interListHeight: 0,
       controlRoads: null,
-      controlCounts: null,
+      controlCounts: [],
       planTimes: null,
       controlStatus: null,
       realTimeStatus: null,
@@ -308,7 +308,7 @@ class SignalHome extends PureComponent {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [108.322286, 22.810375],
+      center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
@@ -445,8 +445,8 @@ class SignalHome extends PureComponent {
           <div className={styles.rightListPop}>
             <div className={styles.listBox}>
               {
-                this.state.controlCounts &&
-                <Form name="最新手控路口次数TOP15" headOne="路口名称" headTwo="当月控制次数" headTre="最新控制时间" datas={this.state.controlCounts} type="count" />
+                this.state.controlCounts ?
+                  <Form name="最新手控路口次数TOP15" headOne="路口名称" headTwo="当月控制次数" headTre="最新控制时间" datas={this.state.controlCounts} type="count" /> : <div className={styles.pTop}>最新手控路口次数TOP15</div>
               }
             </div>
             <div className={styles.listBox}>

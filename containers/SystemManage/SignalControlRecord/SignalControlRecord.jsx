@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal } from 'antd'
+import moment from 'moment'
+import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
@@ -24,7 +25,8 @@ class TrafficMenu extends React.Component {
       dataList: null,
       userLimit: null,
       current: 1,
-
+      MaintenanceUnitList: [],
+      ManagementUnit: this.formatDate(new Date() * 1),
     }
     this.sysUser = { keyword: '', pageNo: '1' }
     this.dataList = {
@@ -40,6 +42,7 @@ class TrafficMenu extends React.Component {
     this.saveUrl = '/simulation/sys/menu/save'
     this.updateUrl = '/simulation/sys/menu/update'
     this.deleteUrl = '/simulation/sys/menu/delete'
+    this.dateFormat = 'YYYY-MM-DD'
   }
   componentDidMount = () => {
     this.getSystemList()
@@ -243,15 +246,80 @@ class TrafficMenu extends React.Component {
       this.getSystemList()
     }, 1000) */
   }
+  formatDate = (value) => { // 时间戳转换日期格式方法
+    if (value == null) {
+      return ''
+    }
+    const date = new Date(value)
+    const y = date.getFullYear()// 年
+    let MM = date.getMonth() + 1// 月
+    MM = MM < 10 ? (`0${MM}`) : MM
+    let d = date.getDate()// 日
+    d = d < 10 ? (`0${d}`) : d
+    let h = date.getHours()// 时
+    h = h < 10 ? (`0${h}`) : h
+    let m = date.getMinutes()// 分
+    m = m < 10 ? (`0${m}`) : m
+    let s = date.getSeconds()// 秒
+    s = s < 10 ? (`0${s}`) : s
+    return `${y}-${MM}-${d} ${h}:${m}:${s}`
+  }
   render() {
-    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit } = this.state
+    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, MaintenanceUnitList, ManagementUnit } = this.state
     return (
       <div className={(roadStyles.Roadtcontent)}>
         {/* 地图 */}
         <div id="mapContainer" className={classNames(roadStyles.mapContainer, styles.mapContainer)} >
           <div className={styles.syetem_bg}>
             <div className={styles.syetem_top}>
-              <div className={styles.syetem_item}><span className={styles.item}>关键词</span><div className={styles.inSle}><Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /></div></div>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属区域</span>
+                <div className={styles.inSle}>
+                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
+                  <Select
+                    onChange={this.handleInputChange}
+                  >
+                    <Option value={0} key="124ssswwwa">全部</Option>
+                    {
+                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
+                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
+                  </Select>
+                </div>
+              </div>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属路口</span>
+                <div className={styles.inSle}>
+                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
+                  <Select
+                    onChange={this.handleInputChange}
+                  >
+                    <Option value={0} key="124ssswwwa">全部</Option>
+                    {
+                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
+                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
+                  </Select>
+                </div>
+              </div>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>操作用户</span>
+                <div className={styles.inSle}>
+                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
+                  <Select
+                    onChange={this.handleInputChange}
+                  >
+                    <Option value={0} key="124ssswwwa">全部</Option>
+                    {
+                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
+                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
+                  </Select>
+                </div>
+              </div>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>日志记录起始时间</span>
+                <div style={{ marginRight: '20px' }} className={styles.inSle}>
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
+                </div>
+                至
+                <div style={{ marginLeft: '20px' }} className={styles.inSle}>
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
+                </div>
+              </div>
               {
                 userLimit && userLimit.indexOf(24) !== -1 ?
                   <span className={styles.searchBtn} onClick={() => { this.handlePagination('1') }} limitid="24">查询</span> : null

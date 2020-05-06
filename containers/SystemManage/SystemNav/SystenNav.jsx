@@ -27,6 +27,7 @@ class SystemNav extends React.Component {
     limitArr.forEach((item) => {
       userLimit.push(item.id)
     })
+    window.location.href = link
     if (userLimit.indexOf(limitId) === -1) {
       message.warning('暂无权限')
     } else {

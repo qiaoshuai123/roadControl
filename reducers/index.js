@@ -9,6 +9,7 @@ import interConfig from './interConfig'
 import secretTask from './secretTask'
 import managements from './managements'
 import interManage from './interManage'
+import logManagement from './logManagement'
 
 const rootReducer = combineReducers({
   managements,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   interConfig,
   secretTask,
   interManage,
+  logManagement,
 })
 
 export default rootReducer

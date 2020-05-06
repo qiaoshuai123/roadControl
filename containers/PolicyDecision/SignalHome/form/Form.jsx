@@ -8,7 +8,8 @@ class Form extends Component {
   }
 
   render() {
-    const { name, headOne, headTwo, headTre, datas, type } = this.props
+    const { name, headOne, headTwo, headTre, datas = [], type } = this.props
+    console.log(datas, 'sdsds')
     return (
       <div className={styles.formBox}>
         <p className={styles.pTop}>{name}</p>
@@ -21,7 +22,7 @@ class Form extends Component {
             </div>
             <div className={styles.mountingTbody}>
               {
-                datas.map(item => (
+                datas && datas.map(item => (
                   <div className={styles.mountingTr} key={item.UNIT_NAME}>
                     <div className={styles.mountingTd}>{type === 'count' ? item.UNIT_NAME : item.DISTRICT_NAME}</div>
                     <div className={styles.mountingTd}>{type === 'count' ? item.NUM : item.UNIT_NAME}</div>

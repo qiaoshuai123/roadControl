@@ -131,7 +131,7 @@ class AreaOptimize extends React.Component {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [106.709075, 26.586574],
+      center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
