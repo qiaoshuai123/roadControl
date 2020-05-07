@@ -1,12 +1,14 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal } from 'antd'
+import moment from 'moment'
+import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
 import userStyles from './UserActionLog.scss'
 import getResponseDatas from '../../../utils/getResponseData'
 import SystemNav from '../SystemNav/SystenNav'
+
 
 const { Option } = Select
 const { TreeNode } = TreeSelect
@@ -25,7 +27,9 @@ class TrafficMenu extends React.Component {
       userLimit: null,
       current: 1,
       MaintenanceUnitList: [],
+      ManagementUnit: this.formatDate(new Date() * 1),
     }
+    this.num = 1
     this.sysUser = { keyword: '', pageNo: '1' }
     this.dataList = {
       name: '',
@@ -40,6 +44,7 @@ class TrafficMenu extends React.Component {
     this.saveUrl = '/simulation/sys/menu/save'
     this.updateUrl = '/simulation/sys/menu/update'
     this.deleteUrl = '/simulation/sys/menu/delete'
+    this.dateFormat = 'YYYY-MM-DD'
   }
   componentDidMount = () => {
     this.getSystemList()
@@ -52,14 +57,14 @@ class TrafficMenu extends React.Component {
     })
     this.setState({ userLimit })
   }
-  getTreeChange = (value, name, e) => {
-    console.log(value, e.triggerNode.props.eventKey, e)
-    this.dataList.perms = e.triggerNode.props.eventKey
-    this.dataList.parentId = value
-    if (this.dataList.id == value) {
-      this.dataList.parentId = 0
-    }
-  }
+  // getTreeChange = (value, name, e) => {
+  //   console.log(value, e.triggerNode.props.eventKey, e)
+  //   this.dataList.perms = e.triggerNode.props.eventKey
+  //   this.dataList.parentId = value
+  //   if (this.dataList.id == value) {
+  //     this.dataList.parentId = 0
+  //   }
+  // }
   getlistTrue = () => {
     getResponseDatas('post', this.listTrueUrl).then((res) => {
       const { code, data } = res.data
@@ -139,42 +144,42 @@ class TrafficMenu extends React.Component {
       onCancel() { },
     })
   }
-  getAddUserList = () => {
-    const url = this.dataList.id ? this.updateUrl : this.saveUrl
-    const path = this.dataList.path.replace(/\//g, '')
-    this.dataList.path = path
-    this.dataList.perms = this.dataList.perms + ';' + path
-    if (!this.dataList.name) {
-      message.error('请填写菜单名称!')
-      return
-    }
-    if (!this.dataList.path) {
-      message.error('请填写菜单地址!')
-      return
-    }
-    if (!this.dataList['sort']) {
-      message.error('请填写菜单序号!')
-      return
-    }
-    /* if (!this.dataList.type) {
-      message.error('请填写菜单类型!')
-      return
-    } */
-    if (!this.dataList.parentId) {
-      message.error('请选择父级菜单!')
-      return
-    }
-    getResponseDatas('post', url, this.getFormData(this.dataList)).then((res) => {
-      const result = res.data
-      if (result.code === 0) {
-        message.success('保存成功!')
-        this.getSystemList()
-        this.setState({ dataList: null })
-      } else {
-        message.error('网络异常，请稍后再试!')
-      }
-    })
-  }
+  // getAddUserList = () => {
+  //   const url = this.dataList.id ? this.updateUrl : this.saveUrl
+  //   const path = this.dataList.path.replace(/\//g, '')
+  //   this.dataList.path = path
+  //   this.dataList.perms = this.dataList.perms + ';' + path
+  //   if (!this.dataList.name) {
+  //     message.error('请填写菜单名称!')
+  //     return
+  //   }
+  //   if (!this.dataList.path) {
+  //     message.error('请填写菜单地址!')
+  //     return
+  //   }
+  //   if (!this.dataList['sort']) {
+  //     message.error('请填写菜单序号!')
+  //     return
+  //   }
+  //   /* if (!this.dataList.type) {
+  //     message.error('请填写菜单类型!')
+  //     return
+  //   } */
+  //   if (!this.dataList.parentId) {
+  //     message.error('请选择父级菜单!')
+  //     return
+  //   }
+  //   getResponseDatas('post', url, this.getFormData(this.dataList)).then((res) => {
+  //     const result = res.data
+  //     if (result.code === 0) {
+  //       message.success('保存成功!')
+  //       this.getSystemList()
+  //       this.setState({ dataList: null })
+  //     } else {
+  //       message.error('网络异常，请稍后再试!')
+  //     }
+  //   })
+  // }
   // 转格式
   getFormData = (obj) => {
     const formData = new FormData()
@@ -198,60 +203,78 @@ class TrafficMenu extends React.Component {
       }
     })
   }
-  handleDataLists = (item) => {
-    if (item) {
-      this.dataList = {
-        id: item.id,
-        name: item.name,
-        parentId: item.parentId,
-        path: item.path,
-        perms: item.perms,
-        sort: item['sort'],
-        type: item.type,
-      }
-      this.setState({ dataList: item })
-    } else {
-      this.dataList = {
-        name: '',
-        parentId: '0',
-        path: '',
-        perms: '',
-        sort: '',
-        type: 0,
-      }
-      this.setState({ dataList: null })
-    }
-  }
+  // handleDataLists = (item) => {
+  //   if (item) {
+  //     this.dataList = {
+  //       id: item.id,
+  //       name: item.name,
+  //       parentId: item.parentId,
+  //       path: item.path,
+  //       perms: item.perms,
+  //       sort: item['sort'],
+  //       type: item.type,
+  //     }
+  //     this.setState({ dataList: item })
+  //   } else {
+  //     this.dataList = {
+  //       name: '',
+  //       parentId: '0',
+  //       path: '',
+  //       perms: '',
+  //       sort: '',
+  //       type: 0,
+  //     }
+  //     this.setState({ dataList: null })
+  //   }
+  // }
 
   handlePagination = (pageNumber) => {
     console.log('Page: ', pageNumber)
     this.sysUser.pageNo = pageNumber
     this.getSystemList()
   }
-  handleInputChange = (e, name) => {
-    console.log(e.target.value)
-    if (name) {
-      this.dataList[name] = e.target.value
-    } else {
-      this.sysUser.keyword = e.target.value
+  // handleInputChange = (e, name) => {
+  //   console.log(e.target.value)
+  //   if (name) {
+  //     this.dataList[name] = e.target.value
+  //   } else {
+  //     this.sysUser.keyword = e.target.value
+  //   }
+  //   /* if (this.inputTimer) {
+  //     clearTimeout(this.inputTimer)
+  //     this.inputTimer = null
+  //   }
+  //   this.inputTimer = setTimeout(() => {
+  //     this.getSystemList()
+  //   }, 1000) */
+  // }
+  formatDate = (value) => { // 时间戳转换日期格式方法
+    if (value == null) {
+      return ''
     }
-    /* if (this.inputTimer) {
-      clearTimeout(this.inputTimer)
-      this.inputTimer = null
-    }
-    this.inputTimer = setTimeout(() => {
-      this.getSystemList()
-    }, 1000) */
+    const date = new Date(value)
+    const y = date.getFullYear()// 年
+    let MM = date.getMonth() + 1// 月
+    MM = MM < 10 ? (`0${MM}`) : MM
+    let d = date.getDate()// 日
+    d = d < 10 ? (`0${d}`) : d
+    let h = date.getHours()// 时
+    h = h < 10 ? (`0${h}`) : h
+    let m = date.getMinutes()// 分
+    m = m < 10 ? (`0${m}`) : m
+    let s = date.getSeconds()// 秒
+    s = s < 10 ? (`0${s}`) : s
+    return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   render() {
-    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, MaintenanceUnitList } = this.state
+    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, MaintenanceUnitList, ManagementUnit } = this.state
     return (
       <div className={(roadStyles.Roadtcontent)}>
         {/* 地图 */}
         <div id="mapContainer" className={classNames(roadStyles.mapContainer, styles.mapContainer)} >
           <div className={styles.syetem_bg}>
             <div className={styles.syetem_top}>
-              <div className={styles.syetem_item}><span className={styles.item}>所属用户</span>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属用户</span>
                 <div className={styles.inSle}>
                   {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
                   <Select
@@ -264,7 +287,7 @@ class TrafficMenu extends React.Component {
                   </Select>
                 </div>
               </div>
-              <div className={styles.syetem_item}><span className={styles.item}>所属用户组</span>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属用户组</span>
                 <div className={styles.inSle}>
                   {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
                   <Select
@@ -277,17 +300,13 @@ class TrafficMenu extends React.Component {
                   </Select>
                 </div>
               </div>
-              <div className={styles.syetem_item}><span className={styles.item}>日志记录起始时间</span>
-                <div className={styles.inSle}>
-                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
-                  <Select
-                    onChange={this.handleInputChange}
-                  >
-                    <Option value={0} key="124ssswwwa">全部</Option>
-                    {
-                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
-                  </Select>
+              <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>日志记录起始时间</span>
+                <div style={{ marginRight: '20px' }} className={styles.inSle}>
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
+                </div>
+                至
+                <div style={{ marginLeft: '20px' }} className={styles.inSle}>
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
                 </div>
               </div>
               {
@@ -297,10 +316,7 @@ class TrafficMenu extends React.Component {
               <i className={styles.line} />
             </div>
             <div className={styles.syetem_buttom}>
-              {
-                userLimit && userLimit.indexOf(23) !== -1 ?
-                  <div className={styles.title}><span onClick={this.getaddMenu} limitid="23">+添加菜单</span></div> : null
-              }
+              <div className={styles.title} />
               <div className={styles.listBox}>
                 <div className={styles.listItems}>
                   <div className={styles.listTd} >菜单名称</div>
@@ -345,7 +361,7 @@ class TrafficMenu extends React.Component {
           </div>
         </div>
         <Nav />
-        {dataList ?
+        {/* {dataList ?
           <div className={styles.traBox}>
             <div className={styles.addListBox}>
               <div className={styles.titleBox}>
@@ -359,12 +375,6 @@ class TrafficMenu extends React.Component {
                     <Input placeholder="请输入菜单名称" defaultValue={dataList.name} onChange={(e) => { this.handleInputChange(e, 'name') }} />
                   </div>
                 </div>
-                {/* <div className={styles.syetemItem}>
-                  <span className={styles.item}>菜单编号</span>
-                  <div className={styles.inSle}>
-                    <Input placeholder="请输入登陆名称" onChange={(e) => { this.handleInputChange(e, 'loginName') }} />
-                  </div>
-                </div> */}
                 <div className={styles.syetemItem}>
                   <span className={styles.item}>菜单地址</span>
                   <div className={styles.inSle}>
@@ -411,7 +421,7 @@ class TrafficMenu extends React.Component {
                 </div>
               </div>
             </div>
-          </div> : null}
+          </div> : null} */}
         <SystemNav />
       </div>
     )

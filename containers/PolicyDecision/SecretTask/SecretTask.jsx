@@ -512,7 +512,7 @@ class SecretTask extends PureComponent {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       style: '//minedata.cn/service/solu/style/id/2301',
-      center: [108.322286, 22.810375],
+      center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,
       maxZoom: 17,
