@@ -97,3 +97,24 @@ export const GET_TIM_SAVEORUPDATEFORM = 'GET_TIM_SAVEORUPDATEFORM'
 export const GET_TIM_TEST = 'GET_TIM_TEST'
 export const GET_TIM_CODE = 'GET_TIM_CODE'
 export const GET_TIM_CFGIMGS = 'GET_TIM_CFGIMGS'
+
+// 用户操作日志
+export const GET_SYS_EXPORTEXCELTHING = 'GET_SYS_EXPORTEXCELTHING' // 用户操作日志-导出用户操作日志Excel
+export const GET_SYS_LOADMANAGEMENT = 'GET_SYS_LOADMANAGEMENT' // 用户操作日志-所属用户组-下拉框
+export const GET_SYS_LOADSYSTEMOPERATIONLOGLIST = 'GET_SYS_LOADSYSTEMOPERATIONLOGLIST' // 用户操作日志-分页查询列表
+export const GET_SYS_LOADUSER = 'GET_SYS_LOADUSER' // 用户操作日志-所属用户-下拉框
+
+// 系统故障日志
+export const GET_ALARM_DELETE = 'GET_ALARM_DELETE' // 系统故障日志-删除
+export const GET_ALARM_EXPORTEXCELTHING = 'GET_ALARM_EXPORTEXCELTHING' // 系统故障日志-导出Excel
+export const GET_ALARM_LOADALARMLOGLIST = 'GET_ALARM_LOADALARMLOGLIST' // 系统故障日志-分页查询列表
+export const GET_ALARM_LOADISTRICT = 'GET_ALARM_LOADISTRICT' // 系统故障日志-所属区域-下拉框
+export const GET_ALARM_LOADUNIT = 'GET_ALARM_LOADUNIT' // 系统故障日志-所属路口-下拉框
+
+// 控制记录日志
+export const GET_SIGNAL_DELETE = 'GET_SIGNAL_DELETE' // 控制记录日志-删除
+export const GET_SIGNAL_EXPORTEXCELTHING = 'GET_SIGNAL_EXPORTEXCELTHING' // 控制记录日志-导出Excel
+export const GET_SIGNAL_LOADDISTRICT = 'GET_SIGNAL_LOADDISTRICT' // 系统故障日志-所属路口-下拉框
+export const GET_SIGNAL_LOADSIGNALCONTROLLOGLIST = 'GET_SIGNAL_LOADSIGNALCONTROLLOGLIST' // 控制记录日志-分页查询列表
+export const GET_SIGNAL_LOADUNIT = 'GET_SIGNAL_LOADUNIT' // 控制记录日志-所属路口-下拉框
+export const GET_SIGNAL_LOADUSER = 'GET_SIGNAL_LOADUSER' // 控制记录日志-所属用户-下拉框

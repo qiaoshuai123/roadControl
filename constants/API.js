@@ -109,3 +109,23 @@ export const API_TIM_VALIDATE = '/atms/timingManagement/validate' // 验证路�
 export const API_TIM_CODE = '/atms/unitManagement/code' // 信号机品牌
 export const API_TIM_CFGIMGS = '/atms/timingManagement/cfgImgs' // 加载当前路口下所有阶段图
 
+// 用户操作日志
+export const API_SYS_EXPORTEXCELTHING = '/atms/systemOperationLog/exportExcelThing' // 用户操作日志-导出用户操作日志Excel
+export const API_SYS_LOADMANAGEMENT = '/atms/systemOperationLog/loadManageMent' // 用户操作日志-所属用户组-下拉框
+export const API_SYS_LOADSYSTEMOPERATIONLOGLIST = '/atms/systemOperationLog/loadSystemOperationLogList' // 用户操作日志-分页查询列表
+export const API_SYS_LOADUSER = '/atms/systemOperationLog/loadUser' // 用户操作日志-所属用户-下拉框
+
+// 系统故障日志
+export const API_ALARM_DELETE = '/atms/alarmList/delete' // 系统故障日志-删除
+export const API_ALARM_EXPORTEXCELTHING = '/atms/alarmList/exportExcelThing' // 系统故障日志-导出Excel
+export const API_ALARM_LOADALARMLOGLIST = '/atms/alarmList/loadAlarmLogList' // 系统故障日志-分页查询列表
+export const API_ALARM_LOADISTRICT = '/atms/alarmList/loadDistrict' // 系统故障日志-所属区域-下拉框
+export const API_ALARM_LOADUNIT = '/atms/alarmList/loadUnit' // 系统故障日志-所属路口-下拉框
+
+// 控制记录日志
+export const API_SIGNAL_DELETE = '/atms/signalControlLog/delete' // 控制记录日志-删除
+export const API_SIGNAL_EXPORTEXCELTHING = '/atms/signalControlLog/exportExcelThing' // 控制记录日志-导出Excel
+export const API_SIGNAL_LOADDISTRICT = '/atms/signalControlLog/loadDistrict' // 系统故障日志-所属路口-下拉框
+export const API_SIGNAL_LOADSIGNALCONTROLLOGLIST = '/atms/signalControlLog/loadSignalControlLogList' // 控制记录日志-分页查询列表
+export const API_SIGNAL_LOADUNIT = '/atms/signalControlLog/loadUnit' // 控制记录日志-所属路口-下拉框
+export const API_SIGNAL_LOADUSER = '/atms/signalControlLog/loadUser' // 控制记录日志-所属用户-下拉框

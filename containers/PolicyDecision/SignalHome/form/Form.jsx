@@ -9,7 +9,6 @@ class Form extends Component {
 
   render() {
     const { name, headOne, headTwo, headTre, datas = [], type } = this.props
-    console.log(datas, 'sdsds')
     return (
       <div className={styles.formBox}>
         <p className={styles.pTop}>{name}</p>
