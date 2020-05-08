@@ -29,6 +29,16 @@ const Inter = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Area = Loadable({
+  loader: () => import('./containers/Evaluate/Area/Area'),
+  loading: Loading,
+  delay: 0,
+})
+const Artery = Loadable({
+  loader: () => import('./containers/Evaluate/Artery/Artery'),
+  loading: Loading,
+  delay: 0,
+})
 const SignalHome = Loadable({
   loader: () => import('./containers/PolicyDecision/SignalHome/SignalHome'),
   loading: Loading,
@@ -41,11 +51,6 @@ const Optimize = Loadable({
 })
 const Monitoring = Loadable({
   loader: () => import('./containers/PolicyDecision/Monitoring/Monitoring'),
-  loading: Loading,
-  delay: 0,
-})
-const Timing = Loadable({
-  loader: () => import('./containers/PolicyDecision/Timing/Timing'),
   loading: Loading,
   delay: 0,
 })
@@ -130,6 +135,8 @@ const Parent = () => (
     <Route path="/realtime" component={RealTime} />
     <Route path="/entrance" component={Entrance} />
     <Route path="/inter" component={Inter} />
+    <Route path="/area" component={Area} />
+    <Route path="/artery" component={Artery} />
     <Route path="/signalhome" component={SignalHome} />
     <Route path="/optimize" component={Optimize} />
     <Route path="/monitoring" component={Monitoring} />
