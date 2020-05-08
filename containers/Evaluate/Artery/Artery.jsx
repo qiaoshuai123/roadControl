@@ -27,7 +27,6 @@ class Artery extends React.Component {
             <div className={styles.interSearch}>
               <Select defaultValue="1">
                 <Option key="1">贵阳市</Option>
-                <Option key="2">南阳市</Option>
               </Select>
               <span className={styles.searchBox}>
                 <input className={styles.searchInput} type="text" placeholder="请输入你要搜索的内容" />

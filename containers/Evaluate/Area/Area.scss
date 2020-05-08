@@ -64,6 +64,10 @@
             .interName {
                 color: #07FDF4;
             }
+            .gaugeBox {
+                display: flex;
+                justify-content: space-around;
+            }
         }
     }
 }
