@@ -39,7 +39,7 @@ class Inter extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
+            <h3 className={styles.interName}>当前路口 : 人民大道北京路</h3>
             {
               this.indicators.map((item) => {
                 return (

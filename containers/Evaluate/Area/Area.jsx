@@ -39,7 +39,7 @@ class Area extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前区域 : 世纪大道与海淀五西路</h3>
+            <h3 className={styles.interName}>当前区域 : 人民大道</h3>
             {
               this.areas.map((item) => {
                 return (

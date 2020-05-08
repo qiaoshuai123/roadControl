@@ -39,7 +39,7 @@ class Artery extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前干线 : 世纪大道与海淀五西路</h3>
+            <h3 className={styles.interName}>当前干线 : </h3>
             {
               this.arteries.map((item) => {
                 return (
