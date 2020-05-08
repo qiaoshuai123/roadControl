@@ -2,16 +2,16 @@ import React from 'react'
 import { Select, Icon } from 'antd'
 
 import Header from '../Header/Header'
-import InterMsg from './InterMsg/InterMsg'
+import InterMsg from '../InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 
-import styles from './Inter.scss'
+import styles from './Artery.scss'
 
-class Inter extends React.Component {
+class Artery extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口的饱和度', '路口相位绿灯利用率', '路口一次通过率']
+    this.arteries = ['干线平均延误时间', '干线平均速度', '干线停车次数']
   }
   componentDidMount = () => {
   }
@@ -38,9 +38,9 @@ class Inter extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 人民大道北京路</h3>
+            <h3 className={styles.interName}>当前干线 : </h3>
             {
-              this.indicators.map((item) => {
+              this.arteries.map((item) => {
                 return (
                   <InterMsg msgName={item} key={item} />
                 )
@@ -53,4 +53,4 @@ class Inter extends React.Component {
   }
 }
 
-export default Inter
+export default Artery

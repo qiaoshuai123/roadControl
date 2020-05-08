@@ -2,16 +2,18 @@ import React from 'react'
 import { Select, Icon } from 'antd'
 
 import Header from '../Header/Header'
-import InterMsg from './InterMsg/InterMsg'
+import InterMsg from '../InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
+import CycleCharts from '../../../components/CycleCharts/CycleCharts'
 
-import styles from './Inter.scss'
+import styles from './Area.scss'
 
-class Inter extends React.Component {
+class Area extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口的饱和度', '路口相位绿灯利用率', '路口一次通过率']
+    this.blockDelay = ['本周昨日平均拥堵延时', '本周昨日晚高峰拥堵延时', '本周昨日早高峰拥堵延时', '上周昨日平均拥堵延时', '上周昨日早高峰拥堵延时', '上周昨日晚高峰拥堵延时']
+    this.areas = ['区域平均拥堵延时', '区域平均延误时间', '区域平均速度']
   }
   componentDidMount = () => {
   }
@@ -38,9 +40,18 @@ class Inter extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 人民大道北京路</h3>
+            <h3 className={styles.interName}>当前区域 : 人民大道</h3>
+            <div className={styles.gaugeBox}>
+              {
+                this.blockDelay.map((item) => {
+                  return (
+                    <CycleCharts title={item} />
+                  )
+                })
+              }
+            </div>
             {
-              this.indicators.map((item) => {
+              this.areas.map((item) => {
                 return (
                   <InterMsg msgName={item} key={item} />
                 )
@@ -53,4 +64,4 @@ class Inter extends React.Component {
   }
 }
 
-export default Inter
+export default Area

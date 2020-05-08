@@ -11,51 +11,41 @@ class CustomTree extends React.Component {
     }
     this.loopDate = [
       {
-        name: '美兰区',
+        name: '人民大道',
         id: 1,
         children: [
           {
-            name: '海淀五西路',
+            name: '人民大道都司路',
             id: 11,
-            children: [
-              {
-                name: '海淀五西路世纪大道',
-                id: 111,
-              },
-              {
-                name: '海淀五西路世纪大道',
-                id: 1111,
-              },
-            ],
+            children: [],
           },
           {
-            name: '海淀五东路',
+            name: '人民大道永乐路',
+            id: 11,
+            children: [],
+          },
+          {
+            name: '人民大道中山西路',
+            id: 11,
+            children: [],
+          },
+          {
+            name: '人民大道北京路',
+            id: 11,
+            children: [],
+          },
+          {
+            name: '人民大道省府西路',
             id: 12,
             children: [
-              {
-                name: '海淀五东路世纪大道',
-                id: 112,
-              },
-              {
-                name: '海淀五东路世纪大道',
-                id: 1112,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: '龙华区',
-        id: 2,
-        children: [
-          {
-            name: '龙华路',
-            id: 22,
-            children: [
-              {
-                name: '龙华路世纪大道',
-                id: 222,
-              },
+              // {
+              //   name: '海淀五东路世纪大道',
+              //   id: 112,
+              // },
+              // {
+              //   name: '海淀五东路世纪大道',
+              //   id: 1112,
+              // },
             ],
           },
         ],
