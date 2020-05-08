@@ -317,7 +317,8 @@ class SignalHome extends PureComponent {
     this.map = map
   }
   render() {
-    const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList } = this.state
+    const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList, controlCounts } = this.state
+    console.log(controlCounts, 'qiao')
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
@@ -445,8 +446,8 @@ class SignalHome extends PureComponent {
           <div className={styles.rightListPop}>
             <div className={styles.listBox}>
               {
-                this.state.controlCounts ?
-                  <Form name="最新手控路口次数TOP15" headOne="路口名称" headTwo="当月控制次数" headTre="最新控制时间" datas={this.state.controlCounts} type="count" /> : <div className={styles.pTop}>最新手控路口次数TOP15</div>
+                this.state.controlCounts &&
+                <Form name="最新手控路口次数TOP15" headOne="路口名称" headTwo="当月控制次数" headTre="最新控制时间" datas={this.state.controlCounts} type="count" />
               }
             </div>
             <div className={styles.listBox}>

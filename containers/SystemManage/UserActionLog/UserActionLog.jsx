@@ -1,14 +1,16 @@
 import React from 'react'
 import classNames from 'classnames'
 import moment from 'moment'
-import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Icon, Select, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
 import userStyles from './UserActionLog.scss'
 import getResponseDatas from '../../../utils/getResponseData'
 import SystemNav from '../SystemNav/SystenNav'
-
+import { getloadManageMent, getloaduser, getloadSystemOperationLogList, getexportExcelThing } from '../../../actions/logManagement'
 
 const { Option } = Select
 const { TreeNode } = TreeSelect
@@ -26,7 +28,9 @@ class TrafficMenu extends React.Component {
       dataList: null,
       userLimit: null,
       current: 1,
-      MaintenanceUnitList: [],
+      MaintenanceUnitList: [], // 所属用户
+      MaintenanceUnitLister: [], // 所属用户组
+      ManagementStart: '2019-01-01 00:00:00',
       ManagementUnit: this.formatDate(new Date() * 1),
     }
     this.num = 1
@@ -45,25 +49,69 @@ class TrafficMenu extends React.Component {
     this.updateUrl = '/simulation/sys/menu/update'
     this.deleteUrl = '/simulation/sys/menu/delete'
     this.dateFormat = 'YYYY-MM-DD'
+    this.page = 1
+    this.pageNum = 10
+    this.dateListUser = 0
+    this.dateListUserGroups = 0
+
   }
   componentDidMount = () => {
-    this.getSystemList()
+    // this.getSystemList()
     this.getlistTrue()
     // 获取用户权限
     const limitArr = JSON.parse(localStorage.getItem('userLimit'))
     const userLimit = []
+    this.props.getloadManageMent()
+    this.props.getloaduser()
+    const { ManagementStart, ManagementUnit } = this.state
+    const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&fromPage=${this.page}&pagesize=${this.pageNum}&userGroup=${this.dateListUserGroups}&userId=${this.dateListUser}`
+    this.props.getloadSystemOperationLogList(str)
     limitArr.forEach((item) => {
       userLimit.push(item.id)
     })
     this.setState({ userLimit })
   }
-  // getTreeChange = (value, name, e) => {
-  //   console.log(value, e.triggerNode.props.eventKey, e)
-  //   this.dataList.perms = e.triggerNode.props.eventKey
-  //   this.dataList.parentId = value
-  //   if (this.dataList.id == value) {
-  //     this.dataList.parentId = 0
-  //   }
+  componentDidUpdate = (prevState) => {
+    const { loadManageMenter, loaduser, loadSystemOperationLogList, exportExcelThing } = this.props.data
+    if (prevState.data.loadManageMenter !== loadManageMenter) {
+      this.getloadManageMenters(loadManageMenter)
+    }
+    if (prevState.data.loaduser !== loaduser) {
+      this.getloadusers(loaduser)
+    }
+    if (prevState.data.loadSystemOperationLogList !== loadSystemOperationLogList) {
+      this.getloadSystemOperationLogLists(loadSystemOperationLogList)
+    }
+    if (prevState.data.exportExcelThing !== exportExcelThing) {
+      this.getexportExcelThings(exportExcelThing)
+    }
+  }
+  getexportExcelThings = (getTimingInfoByExcel) => {
+    const blob = new Blob([getTimingInfoByExcel], { type: 'application/vnd.ms-excel,charset=utf-8' })
+    const a = document.createElement('a')
+    const href = window.URL.createObjectURL(blob)
+    a.href = href
+    document.body.appendChild(a)
+    // a.click()
+    a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(href)
+  }
+  getloadManageMenters = (loadManageMenter) => { // 所属用户组下拉框
+    this.setState({
+      MaintenanceUnitLister: loadManageMenter,
+    })
+  }
+  getloadusers = (loaduser) => { // 所属用户下拉框
+    this.setState({
+      MaintenanceUnitList: loaduser,
+    })
+  }
+  getloadSystemOperationLogLists = (loadSystemOperationLogList) => { // 分页查询列表
+    this.setState({ systemList: loadSystemOperationLogList.list, totalCount: loadSystemOperationLogList.page.totalSize, current: Number(loadSystemOperationLogList.page.fromPage) })
+  }
+  // getloadusers = (loaduser) => { // 导出excel
+
   // }
   getlistTrue = () => {
     getResponseDatas('post', this.listTrueUrl).then((res) => {
@@ -96,7 +144,7 @@ class TrafficMenu extends React.Component {
     }
     this.setState({ dataList: this.dataList })
   }
-  geterTreeNodes = (data) =>
+  geterTreeNodes = data =>
     data.map((item) => {
       if (item.children) {
         return (
@@ -107,77 +155,29 @@ class TrafficMenu extends React.Component {
       }
       return <TreeNode key={item.id} {...item} />
     })
-
-  /*  geterTreeNodes = data =>
-   data.map(item => {
-     if (item.children.length) {
-       return (
-         <TreeNode title={item.name} value={item.id} key={item.perms} dataRef={item}>
-           {this.geterTreeNodes(item.children)}
-         </TreeNode>
-       )
-     }
-     return <TreeNode key={item.id} {...item} />
-   }); */
-  getfaciDelete = (userid) => {
-    const that = this
-    confirm({
-      title: '确认要删除当前菜单?',
-      cancelText: '取消',
-      okText: '确认',
-      onOk() {
-        return new Promise((resolve) => {
-          getResponseDatas('post', that.deleteUrl, that.getFormData({ menuIds: [userid] })).then((resData) => {
-            if (resData.data.code === 0) {
-              message.success('删除成功!')
-              const { systemList } = that.state
-              if (systemList.length === 1 && that.sysUser.pageNo > 1) {
-                that.sysUser.pageNo = Number(that.sysUser.pageNo) - 1
-              }
-              that.getSystemList()
-              that.getlistTrue()
-              resolve()
-            }
-          })
-        }).catch(() => message.error('网络错误!'))
-      },
-      onCancel() { },
-    })
-  }
-  // getAddUserList = () => {
-  //   const url = this.dataList.id ? this.updateUrl : this.saveUrl
-  //   const path = this.dataList.path.replace(/\//g, '')
-  //   this.dataList.path = path
-  //   this.dataList.perms = this.dataList.perms + ';' + path
-  //   if (!this.dataList.name) {
-  //     message.error('请填写菜单名称!')
-  //     return
-  //   }
-  //   if (!this.dataList.path) {
-  //     message.error('请填写菜单地址!')
-  //     return
-  //   }
-  //   if (!this.dataList['sort']) {
-  //     message.error('请填写菜单序号!')
-  //     return
-  //   }
-  //   /* if (!this.dataList.type) {
-  //     message.error('请填写菜单类型!')
-  //     return
-  //   } */
-  //   if (!this.dataList.parentId) {
-  //     message.error('请选择父级菜单!')
-  //     return
-  //   }
-  //   getResponseDatas('post', url, this.getFormData(this.dataList)).then((res) => {
-  //     const result = res.data
-  //     if (result.code === 0) {
-  //       message.success('保存成功!')
-  //       this.getSystemList()
-  //       this.setState({ dataList: null })
-  //     } else {
-  //       message.error('网络异常，请稍后再试!')
-  //     }
+  // getfaciDelete = (userid) => {
+  //   const that = this
+  //   confirm({
+  //     title: '确认要删除当前菜单?',
+  //     cancelText: '取消',
+  //     okText: '确认',
+  //     onOk() {
+  //       return new Promise((resolve) => {
+  //         getResponseDatas('post', that.deleteUrl, that.getFormData({ menuIds: [userid] })).then((resData) => {
+  //           if (resData.data.code === 0) {
+  //             message.success('删除成功!')
+  //             const { systemList } = that.state
+  //             if (systemList.length === 1 && that.sysUser.pageNo > 1) {
+  //               that.sysUser.pageNo = Number(that.sysUser.pageNo) - 1
+  //             }
+  //             that.getSystemList()
+  //             that.getlistTrue()
+  //             resolve()
+  //           }
+  //         })
+  //       }).catch(() => message.error('网络错误!'))
+  //     },
+  //     onCancel() { },
   //   })
   // }
   // 转格式
@@ -189,65 +189,54 @@ class TrafficMenu extends React.Component {
     console.log(formData)
     return formData
   }
-  getSystemList = () => {
-    getResponseDatas('post', this.listUrl, this.getFormData(this.sysUser)).then((res) => {
-      const result = res.data
-      if (result.code === 0) {
-        console.log(result.data, 'isDelete')
-        const listdata = result.data.list.filter((item) => {
-          return item.isDelete == 0
-        })
-        this.setState({ systemList: listdata, totalCount: result.data.totalCount, current: Number(this.sysUser.pageNo) })
-      } else {
-        message.error('网络异常，请稍后再试!')
-      }
+  // getSystemList = () => {
+  //   getResponseDatas('post', this.listUrl, this.getFormData(this.sysUser)).then((res) => {
+  //     const result = res.data
+  //     if (result.code === 0) {
+  //       console.log(result.data, 'isDelete')
+  //       const listdata = result.data.list.filter((item) => {
+  //         return item.isDelete == 0
+  //       })
+  //       this.setState({ systemList: listdata, totalCount: result.data.totalCount, current: Number(this.sysUser.pageNo) })
+  //     } else {
+  //       message.error('网络异常，请稍后再试!')
+  //     }
+  //   })
+  // }
+  handleInputChangeUser = (value) => {
+    this.dateListUser = value
+  }
+  handleInputChangeUserGroups = (value) => {
+    this.dateListUserGroups = value
+  }
+  handlePagination = (pageNumber) => {
+    this.page = pageNumber
+    const { ManagementStart, ManagementUnit } = this.state
+    const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&fromPage=${this.page}&pagesize=${this.pageNum}&userGroup=${this.dateListUserGroups}&userId=${this.dateListUser}`
+    this.props.getloadSystemOperationLogList(str)
+  }
+  searchPage = () => {
+    const { ManagementStart, ManagementUnit } = this.state
+    const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&fromPage=${this.page}&pagesize=${this.pageNum}&userGroup=${this.dateListUserGroups}&userId=${this.dateListUser}`
+    this.props.getloadSystemOperationLogList(str)
+  }
+  sInstallationLocationsStart = (date) => {
+    this.ManagementUnitNumber = new Date(date._d) * 1
+    this.setState({
+      ManagementStart: this.formatDate(new Date(date._d) * 1),
     })
   }
-  // handleDataLists = (item) => {
-  //   if (item) {
-  //     this.dataList = {
-  //       id: item.id,
-  //       name: item.name,
-  //       parentId: item.parentId,
-  //       path: item.path,
-  //       perms: item.perms,
-  //       sort: item['sort'],
-  //       type: item.type,
-  //     }
-  //     this.setState({ dataList: item })
-  //   } else {
-  //     this.dataList = {
-  //       name: '',
-  //       parentId: '0',
-  //       path: '',
-  //       perms: '',
-  //       sort: '',
-  //       type: 0,
-  //     }
-  //     this.setState({ dataList: null })
-  //   }
-  // }
-
-  handlePagination = (pageNumber) => {
-    console.log('Page: ', pageNumber)
-    this.sysUser.pageNo = pageNumber
-    this.getSystemList()
+  sInstallationLocationsEnd = (date) => {
+    this.ManagementUnitNumber = new Date(date._d) * 1
+    this.setState({
+      ManagementUnit: this.formatDate(new Date(date._d) * 1),
+    })
   }
-  // handleInputChange = (e, name) => {
-  //   console.log(e.target.value)
-  //   if (name) {
-  //     this.dataList[name] = e.target.value
-  //   } else {
-  //     this.sysUser.keyword = e.target.value
-  //   }
-  //   /* if (this.inputTimer) {
-  //     clearTimeout(this.inputTimer)
-  //     this.inputTimer = null
-  //   }
-  //   this.inputTimer = setTimeout(() => {
-  //     this.getSystemList()
-  //   }, 1000) */
-  // }
+  exportTable = () => {
+    const { ManagementStart, ManagementUnit } = this.state
+    const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&userGroup=${this.dateListUserGroups}&userId=${this.dateListUser}`
+    this.props.getexportExcelThing(str)
+  }
   formatDate = (value) => { // 时间戳转换日期格式方法
     if (value == null) {
       return ''
@@ -267,7 +256,8 @@ class TrafficMenu extends React.Component {
     return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   render() {
-    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, MaintenanceUnitList, ManagementUnit } = this.state
+    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, ManagementStart, MaintenanceUnitList, ManagementUnit, MaintenanceUnitLister } = this.state
+    console.log(totalCount, current, 'ss')
     return (
       <div className={(roadStyles.Roadtcontent)}>
         {/* 地图 */}
@@ -276,42 +266,46 @@ class TrafficMenu extends React.Component {
             <div className={styles.syetem_top}>
               <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属用户</span>
                 <div className={styles.inSle}>
-                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
                   <Select
-                    onChange={this.handleInputChange}
+                    onChange={this.handleInputChangeUser}
+                    defaultValue="全部"
                   >
                     <Option value={0} key="124ssswwwa">全部</Option>
                     {
                       MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
+                        <Option value={item.ID} key={item.ID}>{item.LOGIN_NAME}</Option>)}
                   </Select>
                 </div>
               </div>
               <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>所属用户组</span>
                 <div className={styles.inSle}>
-                  {/* <Input onChange={(e) => { this.handleInputChange(e) }} placeholder="查询条件" /> */}
                   <Select
-                    onChange={this.handleInputChange}
+                    onChange={this.handleInputChangeUserGroups}
+                    defaultValue="全部"
                   >
-                    <Option value={0} key="124ssswwwa">全部</Option>
+                    <Option value={0} key="124ssswwwar">全部</Option>
                     {
-                      MaintenanceUnitList && MaintenanceUnitList.map(item =>
-                        <Option value={item.ID} key={item.ID}>{item.NAME}</Option>)}
+                      MaintenanceUnitLister && MaintenanceUnitLister.map(item =>
+                        <Option value={item.ID} key={item.ID}>{item.USER_GROUP_NAME}</Option>)}
                   </Select>
                 </div>
               </div>
               <div className={`${styles.syetem_item} ${userStyles.syetem_item}`}><span className={styles.item}>日志记录起始时间</span>
                 <div style={{ marginRight: '20px' }} className={styles.inSle}>
-                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementStart, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocationsStart} />
                 </div>
                 至
                 <div style={{ marginLeft: '20px' }} className={styles.inSle}>
-                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocations} />
+                  <DatePicker style={{ width: '200px' }} value={moment(ManagementUnit, this.dateFormat)} format={this.dateFormat} onChange={this.sInstallationLocationsEnd} />
                 </div>
               </div>
               {
                 userLimit && userLimit.indexOf(24) !== -1 ?
-                  <span className={styles.searchBtn} onClick={() => { this.handlePagination('1') }} limitid="24">查询</span> : null
+                  <span style={{ right: '160px' }} className={styles.searchBtn} onClick={this.searchPage} limitid="24">查询</span> : null
+              }
+              {
+                userLimit && userLimit.indexOf(24) !== -1 ?
+                  <span className={styles.searchBtn} onClick={this.exportTable} limitid="24">导出EXCEL</span> : null
               }
               <i className={styles.line} />
             </div>
@@ -319,35 +313,22 @@ class TrafficMenu extends React.Component {
               <div className={styles.title} />
               <div className={styles.listBox}>
                 <div className={styles.listItems}>
-                  <div className={styles.listTd} >菜单名称</div>
-                  <div className={styles.listTd} >上级菜单</div>
-                  <div className={styles.listTd} >创建时间</div>
-                  <div className={styles.listTd} >修改时间</div>
-                  <div className={styles.listTd} >显示顺序</div>
-                  <div className={styles.listTd} >操作</div>
+                  <div className={styles.listTd} >用户名称</div>
+                  <div className={styles.listTd} >所属用户组</div>
+                  <div className={styles.listTd} >客户机IP</div>
+                  <div className={styles.listTd} >操作模块</div>
+                  <div className={styles.listTd} >操作动作</div>
+                  <div className={styles.listTd} >操作时间</div>
                 </div>
                 {!!systemList && systemList.map((item, index) => {
                   return (
                     <div className={styles.listItems} key={item + index}>
-                      <div className={styles.listTd} ><span className={styles.roadName}>{item.name}</span></div>
-                      <div className={styles.listTd} ><span className={styles.roadName}>{item.parentName ? item.parentName : item.name}</span></div>
-                      <div className={styles.listTd} ><span className={styles.roadName}>{item.createTime}</span></div>
-                      <div className={styles.listTd} ><span className={styles.roadName}>{item.updateTime}</span></div>
-                      <div className={styles.listTd} ><span className={styles.roadName}>{item['sort']}</span></div>
-                      <div className={styles.listTd} >
-                        {
-                          userLimit && userLimit.indexOf(25) !== -1 ?
-                            <span className={styles.updateName} onClick={() => { this.handleDataLists(item) }} limitid="25">
-                              <Icon type="edit" className={styles.icon} />修改
-                            </span> : null
-                        }
-                        {
-                          userLimit && userLimit.indexOf(26) !== -1 ?
-                            <span className={styles.delectName} onClick={() => { this.getfaciDelete(item.id) }} limitid="26">
-                              <Icon type="close" className={styles.icon} />删除
-                            </span> : null
-                        }
-                      </div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.LOGIN_NAME}</span></div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.USER_GROUP_NAME}</span></div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.IP}</span></div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.NAME}</span></div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.DETAIL}</span></div>
+                      <div className={styles.listTd} ><span className={styles.roadName}>{item.OPERATION_TIME}</span></div>
                     </div>)
                 })}
                 {
@@ -361,71 +342,24 @@ class TrafficMenu extends React.Component {
           </div>
         </div>
         <Nav />
-        {/* {dataList ?
-          <div className={styles.traBox}>
-            <div className={styles.addListBox}>
-              <div className={styles.titleBox}>
-                <div className={styles.title} style={{ marginRight: 15 }}><Icon type="double-right" /><span>菜单信息</span></div>
-                <Icon type="close" onClick={() => { this.handleDataLists(null) }} className={styles.close} />
-              </div>
-              <div className={styles.content}>
-                <div className={styles.syetemItem}>
-                  <span className={styles.item}>菜单名称</span>
-                  <div className={styles.inSle}>
-                    <Input placeholder="请输入菜单名称" defaultValue={dataList.name} onChange={(e) => { this.handleInputChange(e, 'name') }} />
-                  </div>
-                </div>
-                <div className={styles.syetemItem}>
-                  <span className={styles.item}>菜单地址</span>
-                  <div className={styles.inSle}>
-                    <Input placeholder="请输入菜单地址" defaultValue={dataList.path} onChange={(e) => { this.handleInputChange(e, 'path') }} />
-                  </div>
-                </div>
-
-                <div className={styles.syetemItem}>
-                  <span className={styles.item}>菜单序号</span>
-                  <div className={styles.inSle}>
-                    <Input placeholder="请输入菜单序号" defaultValue={dataList['sort']} onChange={(e) => { this.handleInputChange(e, 'sort') }} />
-                  </div>
-                </div>
-                <div className={styles.syetemItem}>
-                  <span className={styles.item}>菜单类型</span>
-                  <div className={styles.inSle}>
-                    <Radio.Group defaultValue={dataList.type} onChange={(e) => { this.handleInputChange(e, 'type') }}>
-                      <Radio value={0}>目录</Radio>
-                      <Radio value={1}>菜单</Radio>
-                      <Radio value={2}>按钮</Radio>
-                    </Radio.Group>
-                  </div>
-                </div>
-                <div className={styles.syetemItem}><span className={styles.item}>父级菜单</span>
-                  <div className={styles.inSle}>
-                    {treeData ?
-                      <TreeSelect
-                        style={{ width: '100%' }}
-                        defaultValue={dataList.parentId}
-                        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                        placeholder="请选择父级菜单"
-                        allowClear
-                        treeDefaultExpandAll
-                        onChange={this.getTreeChange}
-                      >
-                        {this.geterTreeNodes(treeData)}
-                      </TreeSelect > : null}
-                  </div>
-                </div>
-
-                <div className={styles.syetemItem}>
-                  <span className={styles.botton} style={{ position: 'initial' }} onClick={this.getAddUserList}>确认</span>
-                  <span className={styles.botton} style={{ position: 'initial', color: '#817d7a' }} onClick={() => { this.handleDataLists(null) }}>取消</span>
-                </div>
-              </div>
-            </div>
-          </div> : null} */}
         <SystemNav />
       </div>
     )
   }
 }
 
-export default TrafficMenu
+const mapStateToProps = (state) => {
+  return {
+    data: { ...state.logManagement },
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getloadManageMent: bindActionCreators(getloadManageMent, dispatch),
+    getloaduser: bindActionCreators(getloaduser, dispatch),
+    getloadSystemOperationLogList: bindActionCreators(getloadSystemOperationLogList, dispatch),
+    getexportExcelThing: bindActionCreators(getexportExcelThing, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDisPatchToProps)(TrafficMenu) 

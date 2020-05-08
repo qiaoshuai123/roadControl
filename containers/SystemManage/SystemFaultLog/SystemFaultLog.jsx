@@ -320,11 +320,13 @@ class TrafficMenu extends React.Component {
               }
               <div className={styles.listBox}>
                 <div className={styles.listItems}>
-                  <div className={styles.listTd} >菜单名称</div>
-                  <div className={styles.listTd} >上级菜单</div>
-                  <div className={styles.listTd} >创建时间</div>
-                  <div className={styles.listTd} >修改时间</div>
-                  <div className={styles.listTd} >显示顺序</div>
+                  <div className={styles.listTd} >路口</div>
+                  <div className={styles.listTd} >所属区域</div>
+                  <div className={styles.listTd} >设备名称</div>
+                  <div className={styles.listTd} >故障名称</div>
+                  <div className={styles.listTd} >故障类型</div>
+                  <div className={styles.listTd} >记录时间</div>
+                  <div className={styles.listTd} >描述</div>
                   <div className={styles.listTd} >操作</div>
                 </div>
                 {!!systemList && systemList.map((item, index) => {
@@ -336,12 +338,12 @@ class TrafficMenu extends React.Component {
                       <div className={styles.listTd} ><span className={styles.roadName}>{item.updateTime}</span></div>
                       <div className={styles.listTd} ><span className={styles.roadName}>{item['sort']}</span></div>
                       <div className={styles.listTd} >
-                        {
+                        {/* {
                           userLimit && userLimit.indexOf(25) !== -1 ?
                             <span className={styles.updateName} onClick={() => { this.handleDataLists(item) }} limitid="25">
                               <Icon type="edit" className={styles.icon} />修改
                             </span> : null
-                        }
+                        } */}
                         {
                           userLimit && userLimit.indexOf(26) !== -1 ?
                             <span className={styles.delectName} onClick={() => { this.getfaciDelete(item.id) }} limitid="26">
