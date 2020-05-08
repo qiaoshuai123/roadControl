@@ -11,6 +11,7 @@ class Inter extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口的饱和度', '路口相位绿灯利用率', '路口一次通过率']
   }
   componentDidMount = () => {
   }
@@ -39,8 +40,13 @@ class Inter extends React.Component {
           </div>
           <div className={styles.interChartsMsg}>
             <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
-            <InterMsg msgName="路口流量" />
-            <InterMsg msgName="路口延误时间" />
+            {
+              this.indicators.map((item) => {
+                return (
+                  <InterMsg msgName={item} key={item} />
+                )
+              })
+            }
           </div>
         </div>
       </div>

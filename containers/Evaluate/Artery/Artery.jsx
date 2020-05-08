@@ -11,6 +11,7 @@ class Artery extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+    this.arteries = ['干线平均延误时间', '干线平均速度', '干线停车次数']
   }
   componentDidMount = () => {
   }
@@ -38,9 +39,14 @@ class Artery extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
-            <InterMsg msgName="路口流量" />
-            <InterMsg msgName="路口延误时间" />
+            <h3 className={styles.interName}>当前干线 : 世纪大道与海淀五西路</h3>
+            {
+              this.arteries.map((item) => {
+                return (
+                  <InterMsg msgName={item} key={item} />
+                )
+              })
+            }
           </div>
         </div>
       </div>

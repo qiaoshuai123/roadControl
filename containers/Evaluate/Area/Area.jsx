@@ -11,6 +11,7 @@ class Area extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+    this.areas = ['区域平均拥堵延时', '区域平均延误时间', '区域平均速度']
   }
   componentDidMount = () => {
   }
@@ -38,9 +39,14 @@ class Area extends React.Component {
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 世纪大道与海淀五西路</h3>
-            <InterMsg msgName="路口流量" />
-            <InterMsg msgName="路口延误时间" />
+            <h3 className={styles.interName}>当前区域 : 世纪大道与海淀五西路</h3>
+            {
+              this.areas.map((item) => {
+                return (
+                  <InterMsg msgName={item} key={item} />
+                )
+              })
+            }
           </div>
         </div>
       </div>
