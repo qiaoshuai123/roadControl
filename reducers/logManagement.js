@@ -23,6 +23,19 @@ const logManagement = (state = {}, action) => {
       return Object.assign({}, state, { alaloadDistrict: payload })
     case types.GET_ALARM_LOADUNIT:
       return Object.assign({}, state, { alaloadUnit: payload })
+    // 控制记录日志
+    case types.GET_SIGNAL_DELETE:
+      return Object.assign({}, state, { sigdelete: payload })
+    case types.GET_SIGNAL_EXPORTEXCELTHING:
+      return Object.assign({}, state, { sigexportExcelThing: payload })
+    case types.GET_SIGNAL_LOADDISTRICT:
+      return Object.assign({}, state, { sigloadDistrict: payload })
+    case types.GET_SIGNAL_LOADSIGNALCONTROLLOGLIST:
+      return Object.assign({}, state, { sigloadSignalControlLogList: payload })
+    case types.GET_SIGNAL_LOADUNIT:
+      return Object.assign({}, state, { sigloadUnit: payload })
+    case types.GET_SIGNAL_LOADUSER:
+      return Object.assign({}, state, { sigloadUser: payload })
     default:
       return state
   }

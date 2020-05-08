@@ -53,7 +53,6 @@ class TrafficMenu extends React.Component {
     this.pageNum = 10
     this.dateListUser = 0
     this.dateListUserGroups = 0
-
   }
   componentDidMount = () => {
     // this.getSystemList()
@@ -155,31 +154,6 @@ class TrafficMenu extends React.Component {
       }
       return <TreeNode key={item.id} {...item} />
     })
-  // getfaciDelete = (userid) => {
-  //   const that = this
-  //   confirm({
-  //     title: '确认要删除当前菜单?',
-  //     cancelText: '取消',
-  //     okText: '确认',
-  //     onOk() {
-  //       return new Promise((resolve) => {
-  //         getResponseDatas('post', that.deleteUrl, that.getFormData({ menuIds: [userid] })).then((resData) => {
-  //           if (resData.data.code === 0) {
-  //             message.success('删除成功!')
-  //             const { systemList } = that.state
-  //             if (systemList.length === 1 && that.sysUser.pageNo > 1) {
-  //               that.sysUser.pageNo = Number(that.sysUser.pageNo) - 1
-  //             }
-  //             that.getSystemList()
-  //             that.getlistTrue()
-  //             resolve()
-  //           }
-  //         })
-  //       }).catch(() => message.error('网络错误!'))
-  //     },
-  //     onCancel() { },
-  //   })
-  // }
   // 转格式
   getFormData = (obj) => {
     const formData = new FormData()
@@ -189,20 +163,6 @@ class TrafficMenu extends React.Component {
     console.log(formData)
     return formData
   }
-  // getSystemList = () => {
-  //   getResponseDatas('post', this.listUrl, this.getFormData(this.sysUser)).then((res) => {
-  //     const result = res.data
-  //     if (result.code === 0) {
-  //       console.log(result.data, 'isDelete')
-  //       const listdata = result.data.list.filter((item) => {
-  //         return item.isDelete == 0
-  //       })
-  //       this.setState({ systemList: listdata, totalCount: result.data.totalCount, current: Number(this.sysUser.pageNo) })
-  //     } else {
-  //       message.error('网络异常，请稍后再试!')
-  //     }
-  //   })
-  // }
   handleInputChangeUser = (value) => {
     this.dateListUser = value
   }
