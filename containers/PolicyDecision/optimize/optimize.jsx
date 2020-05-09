@@ -116,7 +116,7 @@ class Optimize extends Component {
             </div>
             <div className={styles.speciaContainer_left_bom}>
               {
-                this.dataList.map(item => <div key={item.id}>{item.num}</div>)
+                this.dataList.map(item => <div key={item.id}>{}</div>)
               }
             </div>
           </div>
@@ -183,7 +183,7 @@ class Optimize extends Component {
                       <div className={styles.swiperItems} key={index}>
                         <p>设备编号 : 1000227$1$041</p>
                         <p>位置 : 世纪大道与海淀五西路路口</p>
-                        <div className={styles.videoBox}>{item && index}</div>
+                        <div className={styles.videoBox}>{}</div>
                       </div>
                     )
                   })

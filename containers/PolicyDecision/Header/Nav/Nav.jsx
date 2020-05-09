@@ -24,7 +24,7 @@ class EvaNav extends React.PureComponent {
       },
       {
         name: '综合管理',
-        path: '/',
+        path: '/InterManagement',
         children: [
           { name: '路口管理', path: '/InterManagement' },
           { name: '子区管理', path: '/RegiolManagementChild' },
