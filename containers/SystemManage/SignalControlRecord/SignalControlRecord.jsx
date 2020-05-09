@@ -71,7 +71,7 @@ class TrafficMenu extends React.Component {
     this.setState({ userLimit })
   }
   componentDidUpdate = (prevState) => {
-    const { sigloadDistrict, sigloadUnit, sigloadUser, sigloadSignalControlLogList } = this.props.data
+    const { sigloadDistrict, sigloadUnit, sigloadUser, sigloadSignalControlLogList, sigexportExcelThing } = this.props.data
     if (prevState.data.sigloadDistrict !== sigloadDistrict) {
       this.getsigloadDistricts(sigloadDistrict)
     }
@@ -84,6 +84,20 @@ class TrafficMenu extends React.Component {
     if (prevState.data.sigloadSignalControlLogList !== sigloadSignalControlLogList) {
       this.getsigloadSignalControlLogLists(sigloadSignalControlLogList)
     }
+    if (prevState.data.sigexportExcelThing !== sigexportExcelThing) {
+      this.getsigexportExcelThings(sigexportExcelThing)
+    }
+  }
+  getsigexportExcelThings = (sigexportExcelThing) =>{
+    const blob = new Blob([sigexportExcelThing], { type: 'application/vnd.ms-excel,charset=utf-8' })
+    const a = document.createElement('a')
+    const href = window.URL.createObjectURL(blob)
+    a.href = href
+    document.body.appendChild(a)
+    // a.click()
+    a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(href)
   }
   getsigloadSignalControlLogLists = async (loadSystemOperationLogList) => {
     const shows = await this.adds(loadSystemOperationLogList.list)
@@ -91,7 +105,6 @@ class TrafficMenu extends React.Component {
     if (shows) {
       this.setState({ systemList: shows, totalCount: loadSystemOperationLogList.page.totalSize, current: Number(loadSystemOperationLogList.page.fromPage) })
     }
-
   }
   getsigloadDistricts = (sigloadDistrict) => {
     // console.log(sigloadDistrict, '所属区域')
@@ -323,6 +336,11 @@ class TrafficMenu extends React.Component {
     const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&fromPage=${this.page}&pagesize=${this.pageNum}&userId=${this.dateListUserGroupser}&unitId=${this.dateListUserGroups}&districtId=${this.dateListUser}`
     this.props.getsigloadSignalControlLogList(str)
   }
+  exportTable = () => {
+    const { ManagementStart, ManagementUnit } = this.state
+    const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&unitId=${this.dateListUserGroups}&districtId=${this.dateListUser}&userId=${this.dateListUserGroupser}`
+    this.props.getsigexportExcelThing(str)
+  }
   formatDate = (value) => { // 时间戳转换日期格式方法
     if (value == null) {
       return ''
@@ -402,7 +420,11 @@ class TrafficMenu extends React.Component {
               </div>
               {
                 userLimit && userLimit.indexOf(24) !== -1 ?
-                  <span className={styles.searchBtn} onClick={() => { this.handlePagination('1') }} limitid="24">查询</span> : null
+                  <span style={{ right: '160px' }} className={styles.searchBtn} onClick={() => { this.handlePagination('1') }} limitid="24">查询</span> : null
+              }
+              {
+                userLimit && userLimit.indexOf(24) !== -1 ?
+                  <span className={styles.searchBtn} onClick={this.exportTable} limitid="24">导出EXCEL</span> : null
               }
               <i className={styles.line} />
             </div>
