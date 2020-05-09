@@ -105,11 +105,8 @@ class Optimize extends Component {
         <div className={styles.speciaContainer}>
           <div className={styles.speciaContainer_left}>
             <div className={styles.speciaContainer_left_top}>
-              <Select defaultValue="lucy" style={{ width: '120px', marginRight: '10px' }} onChange={this.cityChange}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled">Disabled</Option>
-                <Option value="Yiminghe">yiminghe</Option>
+              <Select defaultValue="贵阳" style={{ width: '120px', marginRight: '10px' }} onChange={this.cityChange}>
+                <Option value="贵阳">贵阳</Option>
               </Select>
               <Search
                 placeholder="input search text"
@@ -150,11 +147,8 @@ class Optimize extends Component {
               </div>
               <div className={styles.speciaContainerLB_bom}>
                 <span className={styles.spanOne}>优化控制操作 :</span>
-                <Select defaultValue="lucy" style={{ width: '36%' }} onChange={this.handleChange}>
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="disabled">Disabled</Option>
-                  <Option value="Yiminghe">yiminghe</Option>
+                <Select defaultValue="本地多时段" style={{ width: '36%' }} onChange={this.handleChange}>
+                  <Option value="本地多时段">本地多时段</Option>
                 </Select>
                 <div><span className={styles.spans}>执行</span></div>
                 <div><span className={styles.spans}>优化控制管理</span></div>
@@ -188,7 +182,7 @@ class Optimize extends Component {
                     return (
                       <div className={styles.swiperItems} key={index}>
                         <p>设备编号 : 1000227$1$041</p>
-                        <p>位置 : 世纪大道-********</p>
+                        <p>位置 : 世纪大道与海淀五西路路口</p>
                         <div className={styles.videoBox}>{item && index}</div>
                       </div>
                     )
@@ -196,7 +190,7 @@ class Optimize extends Component {
                 }
                 <div className={styles.swiperItems}>
                   <p>设备编号 : 1000227$1$041</p>
-                  <p>位置 : 世纪大道-********</p>
+                  <p>位置 : 世纪大道与海淀五西路路口</p>
                   <div className={styles.videoBox}>123</div>
                 </div>
               </div>

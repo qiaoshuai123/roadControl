@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, DatePicker, Input, Button } from 'antd'
+import { Select, DatePicker, Input, Button, Modal } from 'antd'
 import moment from 'moment'
 import OptimizeListT from './optimizeListT/optimizeListT'
 import styles from './AreaConfigPage.scss'
@@ -15,7 +15,6 @@ class AreaConfigPage extends React.Component {
     this.dateFormat = 'YYYY-MM-DD'
   }
   componentDidMount = () => {
-
   }
   formatDate = (value) => { // 时间戳转换日期格式方法
     if (value == null) {
@@ -34,6 +33,17 @@ class AreaConfigPage extends React.Component {
     let s = date.getSeconds()// 秒
     s = s < 10 ? (`0${s}`) : s
     return `${y}-${MM}-${d} ${h}:${m}:${s}`
+  }
+  handlePlanSend = () => {
+    const { confirm } = Modal
+    // const selfThis = this
+    confirm({
+      title: '确定要下发吗？',
+      className: styles.confirmBox,
+      onOk() {
+        console.log('ok')
+      },
+    })
   }
   render() {
     const { Option } = Select
@@ -142,9 +152,9 @@ class AreaConfigPage extends React.Component {
               </div>
               <div className={styles.mountingTbody}>
                 <div className={styles.mountingTr}>
-                  <div className={styles.mountingTd}>*************</div>
-                  <div className={`${styles.mountingTd} ${styles.mountingTds}`}>*************</div>
-                  <div className={styles.mountingTd}>*************</div>
+                  <div className={styles.mountingTd}>123</div>
+                  <div className={`${styles.mountingTd} ${styles.mountingTds}`}>07:00 - 08:00</div>
+                  <div className={styles.mountingTd}>2020-05-09</div>
                 </div>
               </div>
             </div>
@@ -164,7 +174,7 @@ class AreaConfigPage extends React.Component {
             </div>
             <div className={styles.divbom}>
               <span className={styles.divbomSpan}>下发方案管理</span>
-              <span className={styles.divbomSpan}>子区方案下发</span>
+              <span className={styles.divbomSpan} onClick={this.handlePlanSend}>子区方案下发</span>
               <span className={styles.divbomSpan}>保存</span>
             </div>
           </div>
