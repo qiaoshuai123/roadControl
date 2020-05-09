@@ -57,6 +57,7 @@ class InterMonitor extends React.Component {
       { name: '关灯控制' },
     ]
     this.singalTypes = [1, 3, 4]
+    this.colorList = ['red', '#8E2801', '#B51A09', '#E59000', '#3DDC1E', '#24AFF5', '#1B7BDD', '#069A18', '#FE942A', '#091D83', '#9515F0', '#230EF1', '#fff']
   }
   componentDidMount = () => {
     this.props.getMonitorType()
@@ -86,10 +87,13 @@ class InterMonitor extends React.Component {
   }
   // 监视状态
   getMonitorTypes = (monitorTypes) => {
+    monitorTypes.controlType.forEach((item, index) => {
+    item.bagColor = this.colorList[index]
+ }) 
     this.setState({
       monitorTypes,
       stateMonitors: monitorTypes.controlType,
-    })
+  })
   }
   // 路口列表
   getInterLists = (interList) => {
@@ -259,7 +263,7 @@ class InterMonitor extends React.Component {
                 const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
                 return (
                   <div className={styles.pointList} key={item.CODE_NAME + item.C_CODE}>
-                    <span className={styles.circleColor} />
+                    <span className={styles.circleColor} style={{ backgroundColor: `${item.bagColor}` }} />
                     <span className={styles.pointText}>{item.CODE_NAME}</span>
                     <span className={styles.pointNum}>{states ? states.CSIZE : 0}处</span>
                   </div>
