@@ -109,7 +109,7 @@ class Optimize extends Component {
                 <Option value="贵阳">贵阳</Option>
               </Select>
               <Search
-                placeholder="input search text"
+                placeholder="搜索所属路口"
                 onSearch={value => console.log(value)}
                 style={{ width: '210px' }}
               />
@@ -125,7 +125,7 @@ class Optimize extends Component {
               世纪大道与海甸五西路路口
             </div>
             <ul className={styles.speciaContainer_center_bom}>
-              <li>11LAU063T70-SS102098</li>
+              {/* <li>11LAU063T70-SS102098</li> */}
               <li>通讯状态 : <span>在线</span></li>
               <li>信号灯状态 : <span>开灯</span></li>
               <li>运行状态 : <span>信号系统自主控制</span></li>

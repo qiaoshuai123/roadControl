@@ -58,10 +58,10 @@ class OptimizeMsg extends React.Component {
           <DatePicker /> - <DatePicker suffixIcon={null} />
           <div className={styles.divs}>统计类型：</div>
           <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-            <Option key="1">sim</Option>
+            <Option key="1">选择一</Option>
           </Select>
           <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-            <Option key="1">sim</Option>
+            <Option key="1">选择二</Option>
           </Select>
           <div
             className={classNames({ [styles.searchBtn]: true, [styles.searchActive]: searchName === 'search' })}

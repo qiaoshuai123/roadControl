@@ -40,11 +40,11 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            & > div {
+            &>div {
                 width: 50px;
                 height: 50px;
             }
-            & > p {
+            &>p {
                 padding-top: 10px;
             }
             .listIcon {
@@ -108,6 +108,7 @@
         }
     }
 }
+
 .pointTypeBox {
     z-index: 9;
     position: absolute;
@@ -141,8 +142,8 @@
     }
     .systemPoint {
         padding: 20px 0;
-        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
-        & > div {
+        background: linear-gradient(to bottom, #06234F 0%, #031734 100%);
+        &>div {
             position: relative;
             height: 30px;
             display: flex;
@@ -154,14 +155,14 @@
                 width: 20px;
                 height: 20px;
                 margin-right: 20px;
-                & > i {
+                &>i {
                     position: absolute;
                     bottom: 4px;
                     left: -2px;
                     width: 20px;
                     border-top: 1px solid #02F5F7;
                 }
-                & > b {
+                &>b {
                     position: absolute;
                     top: 8px;
                     left: 1px;
@@ -196,7 +197,7 @@
         height: calc(100% - 180px);
         padding-top: 20px;
         overflow-y: auto;
-        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        background: linear-gradient(to bottom, #06234F 0%, #031734 100%);
         .pointList {
             height: 30px;
             padding-left: 50px;
@@ -208,7 +209,7 @@
                 margin: 2px 20px 0 0;
                 border-radius: 50%;
                 box-shadow: inset 0 0 5px black;
-                background-color: #ff0000;
+                // background-color: #ff0000;
                 vertical-align: -3px;
             }
             .pointText {
@@ -218,6 +219,7 @@
         }
     }
 }
+
 .interListPop {
     z-index: 9;
     position: absolute;
@@ -234,7 +236,7 @@
         line-height: 40px;
         padding-left: 15px;
         font-size: 16px;
-        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        background: linear-gradient(to bottom, #06234F 0%, #031734 100%);
         .popCloseBox {
             position: absolute;
             top: 10px;
@@ -257,50 +259,50 @@
         padding: 10px 0 0;
         z-index: 9;
         .interList {
-          position: absolute;
-          top: 45px;
-          left: 0;
-          width: 100%;
-          border-radius: 4px;
-          background-color: rgba(0,0,0, .8);
-          transition: all .2s;
-          overflow-y: hidden;
-          .interItem {
-            height: 30px;
-            padding-left: 10px;
-            font-size: 14px;
-            line-height: 30px;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            width: 100%;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .8);
             transition: all .2s;
-            cursor: pointer;
-            &:hover {
-              background-color: #06234F;
+            overflow-y: hidden;
+            .interItem {
+                height: 30px;
+                padding-left: 10px;
+                font-size: 14px;
+                line-height: 30px;
+                transition: all .2s;
+                cursor: pointer;
+                &:hover {
+                    background-color: #06234F;
+                }
             }
-          }
         }
         .interSearch {
-          display: flex;
-          padding: 0 10px;
-          .searchBox {
-              position: relative;
-              .searchInput {
-                  width: 300px;
-                  height: 32px;
-                  padding-left: 5px;
-                  background-color: rgba(6,56,90, .8);
-                  border: 1px solid #063657;
-                  border-radius: 4px;
-                  outline: none;
-                  color: #F1F1FB;
-              }
-              .searchIcon {
-                  position: absolute;
-                  right: 10px;
-                  top: 8px;
-                  font-size: 18px;
-                  color: #07BDFB;
-                  cursor: pointer;
-              }
-          }
+            display: flex;
+            padding: 0 10px;
+            .searchBox {
+                position: relative;
+                .searchInput {
+                    width: 300px;
+                    height: 32px;
+                    padding-left: 5px;
+                    background-color: rgba(6, 56, 90, .8);
+                    border: 1px solid #063657;
+                    border-radius: 4px;
+                    outline: none;
+                    color: #F1F1FB;
+                }
+                .searchIcon {
+                    position: absolute;
+                    right: 10px;
+                    top: 8px;
+                    font-size: 18px;
+                    color: #07BDFB;
+                    cursor: pointer;
+                }
+            }
         }
     }
     .interAreaLineBox {
@@ -326,6 +328,7 @@
         }
     }
 }
+
 .pieWrapper {
     z-index: 9;
     position: absolute;
@@ -334,7 +337,7 @@
     width: 400px;
     height: 400px;
     font-size: 14px;
-    background-color: rgba(2,24,61, .8);
+    background-color: rgba(2, 24, 61, .8);
     transition: all .3s;
     .title {
         position: relative;
@@ -342,7 +345,7 @@
         line-height: 40px;
         padding-left: 15px;
         font-size: 16px;
-        background: linear-gradient(to bottom, #06234F 0%,#031734 100%);
+        background: linear-gradient(to bottom, #06234F 0%, #031734 100%);
         .popCloseBox {
             position: absolute;
             top: 10px;
