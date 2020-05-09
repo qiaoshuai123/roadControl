@@ -32,7 +32,7 @@ class InterMsg extends React.Component {
           <span style={{ marginLeft: '10px' }}>对比时间：</span>
           <DatePicker /> - <DatePicker />
           <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-            <Option key="1">sim</Option>
+            <Option key="1">选择一</Option>
           </Select>
           <Select
             defaultValue={[1, 2]}
