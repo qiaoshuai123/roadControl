@@ -82,16 +82,14 @@ class InterMonitor extends React.Component {
     console.log(this.props)
   }
   getSignalStateAnalys = (stateAnalysis) => {
-    console.log('stateAnalysis:::::::::', stateAnalysis)
     this.setState({ stateAnalysis })
-
   }
   // 监视状态
   getMonitorTypes = (monitorTypes) => {
     this.setState({
       monitorTypes,
       stateMonitors: monitorTypes.controlType,
-  })
+    })
   }
   // 路口列表
   getInterLists = (interList) => {
@@ -100,7 +98,7 @@ class InterMonitor extends React.Component {
   }
   // 从子集获取区域id和index 请求路口
   getSelectTreeId = (id) => {
-    this.props.getLoadChildTree(id, '', this.interModal )
+    this.props.getLoadChildTree(id, '', this.interModal)
   }
   // 获取子id, 路口id
   getSelectChildId = (chidlId, lng, lat) => {
