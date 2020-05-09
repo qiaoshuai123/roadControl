@@ -136,12 +136,13 @@ export const getsigdelete = (id, times) => {
 }
 export const getsigexportExcelThing = id => async (dispatch) => {
   try {
-    const result = await RestUtil.post(`${API_SIGNAL_EXPORTEXCELTHING}?${id}`)
-    if (result.data.code === 200) {
-      dispatch({ type: types.GET_SIGNAL_EXPORTEXCELTHING, payload: result.data.data })
-    } else {
-      console.error(result.data.message)
-    }
+    await RestUtil({
+      method: 'post',
+      url: `${API_SIGNAL_EXPORTEXCELTHING}?${id}`,
+      responseType: 'blob',
+    }).then((results) => {
+      dispatch({ type: types.GET_SIGNAL_EXPORTEXCELTHING, payload: results.data })
+    })
   } catch (e) {
     console.log(e)
   }
