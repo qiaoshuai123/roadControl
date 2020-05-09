@@ -9,7 +9,6 @@ class AreaConfig extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-    console.log(AreaConfigEcharts, 'ssssss')
     this.echarts = AreaConfigEcharts
   }
   componentDidMount = () => { }
@@ -17,7 +16,6 @@ class AreaConfig extends React.Component {
     this.props.closepage()
   }
   render() {
-    console.log(this.echarts.echarts1, 'sss')
     return (
       <div className={styles.configWrapper}>
         <div className={styles.title}>

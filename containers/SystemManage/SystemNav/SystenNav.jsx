@@ -11,7 +11,7 @@ class SystemNav extends React.Component {
       { item: '用户管理', path: '#/TrafficSystem', limitId: 7 },
       { item: '部门管理', path: '#/Usergroup', limitId: 27 },
       { item: '权限角色管理', path: '#/Jurisdiction', limitId: 17 },
-      { item: '日志管理', path: '#/Journal', limitId: 32 },
+      // { item: '日志管理', path: '#/Journal', limitId: 32 },
       { item: '菜单管理', path: '#/TrafficMenu', limitId: 22 },
       { item: '用户操作日志', path: '#/useractionlog', limitId: 7 },
       { item: '系统故障日志', path: '#/systemfaultlog', limitId: 7 },
