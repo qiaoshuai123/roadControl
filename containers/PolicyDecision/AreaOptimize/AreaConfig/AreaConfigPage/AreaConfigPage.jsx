@@ -2,6 +2,8 @@ import React from 'react'
 import { Select, DatePicker, Input, Button, Modal } from 'antd'
 import moment from 'moment'
 import OptimizeListT from './optimizeListT/optimizeListT'
+import GreenWaveCharts from '_C/GreenWaveCharts/GreenWaveCharts'
+
 import styles from './AreaConfigPage.scss'
 
 class AreaConfigPage extends React.Component {
@@ -13,6 +15,8 @@ class AreaConfigPage extends React.Component {
       installDate: this.formatDate(new Date() * 1), // 安装日期
     }
     this.dateFormat = 'YYYY-MM-DD'
+    this.greenWaveData = {"msg":"操作成功","code":"1","data":[{"area_name":"美兰区","lenAll":0,"data_version":"20180630","reverseSpeed":"39.90","execute_end_date":"","reverse_phase_plan_id":"1","execute_start_date":"","forward_phase_plan_name":"A","forward_offset":50.0,"reverse_offset":50.0,"is_key_inter":0,"len":0,"inter_name":"人民大道海岸路人行横道","forward_phase_plan_id":"1","geohash":"w7w6nu3wrv","reverse_phase_plan_name":"A","id":"11LGL063TR0","lev":"4","lat":20.06351027,"inter_id":"11LGL063TR0","lng":110.33809613,"adcode":"460100","area_code":"460108","phaseList":[{"inter_id":"11LGL063TR0","offset":50.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":77.0,"phase_plan_id":"1","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653530,"phase_name":"A","doe_date_type":99},{"inter_id":"11LGL063TR0","offset":0.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":50.0,"phase_plan_id":"1","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653531,"phase_name":"B","doe_date_type":99}],"name":"人民大道海岸路人行横道","cycle_time":127.0,"forwordSpeed":"0.00"},{"area_name":"美兰区","lenAll":159,"data_version":"20180630","reverseSpeed":"35.46","execute_end_date":"","reverse_phase_plan_id":"2","execute_start_date":"","forward_phase_plan_name":"A","forward_offset":-54.0,"reverse_offset":-54.0,"is_key_inter":0,"len":159,"inter_name":"人民大道-海甸五路口","forward_phase_plan_id":"2","geohash":"w7w6nu4jcb","reverse_phase_plan_name":"A","id":"11LGP063TC0","lev":"4","lat":20.06202472,"inter_id":"11LGP063TC0","lng":110.33851907,"adcode":"460100","area_code":"460108","phaseList":[{"inter_id":"11LGP063TC0","offset":-54.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":28.0,"phase_plan_id":"2","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653532,"phase_name":"A","doe_date_type":99},{"inter_id":"11LGP063TC0","offset":-26.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":26.0,"phase_plan_id":"2","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653533,"phase_name":"B","doe_date_type":99},{"inter_id":"11LGP063TC0","offset":0.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":40.0,"phase_plan_id":"2","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653534,"phase_name":"E","doe_date_type":99},{"inter_id":"11LGP063TC0","offset":40.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":33.0,"phase_plan_id":"2","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653535,"phase_name":"C","doe_date_type":99}],"name":"人民大道-海甸五路口","cycle_time":127.0,"forwordSpeed":"36.73"},{"area_name":"美兰区","lenAll":434,"data_version":"20180630","reverseSpeed":"0.00","execute_end_date":"","reverse_phase_plan_id":"1","execute_start_date":"","forward_phase_plan_name":"A","forward_offset":47.0,"reverse_offset":47.0,"is_key_inter":0,"len":275,"inter_name":"人民大道海南大学人行横道","forward_phase_plan_id":"1","geohash":"w7w6ngdx19","reverse_phase_plan_name":"A","id":"11LH0063SJ0","lev":"4","lat":20.05950037,"inter_id":"11LH0063SJ0","lng":110.33919987,"adcode":"460100","area_code":"460108","phaseList":[{"inter_id":"11LH0063SJ0","offset":47.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":89.0,"phase_plan_id":"1","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653541,"phase_name":"A","doe_date_type":99},{"inter_id":"11LH0063SJ0","offset":9.0,"data_version":"20180630","adcode":"460100","stat_date":"20200309020341","end_time":"07:00:00","task_id":"0","split_time":38.0,"phase_plan_id":"1","offset_type_no":1,"dt":"20200309","start_time":"00:00:00","ctlregion_id":"HaiDianWuXiLu","cyclesplit_source":2,"update_frequency":2,"cycle_time":127.0,"id":5653542,"phase_name":"B","doe_date_type":99}],"name":"人民大道海南大学人行横道","cycle_time":127.0,"forwordSpeed":"36.60"}]}
+
   }
   componentDidMount = () => {
   }
@@ -110,7 +114,14 @@ class AreaConfigPage extends React.Component {
         </div >
         <div className={styles.AreaConfigWrapperBom}>
           <div className={styles.AreaConfigWrapperBomLeft}>
-            1
+            <div className={styles.chartsBox}>
+              <GreenWaveCharts
+                chartsData={this.greenWaveData.data}
+                totleDistance={this.greenWaveData.data[this.greenWaveData.data.length - 1].lenAll}
+                showForwordWave={true}
+                showReverseWave={false}
+              />
+            </div>
           </div>
           <div className={styles.AreaConfigWrapperBomRight}>
             <div>

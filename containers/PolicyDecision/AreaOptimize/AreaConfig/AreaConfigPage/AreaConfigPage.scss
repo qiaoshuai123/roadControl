@@ -2,12 +2,14 @@
   height: 100%;
 }
 .AreaConfigWrapperTop {
-  height: 60px;
+  height: 32px;
   display: flex;
+  align-items: center;
   .chartsSearch {
-    height: 60px;
+    height: 32px;
     align-items: center;
     display: flex;
+    align-items: center;
     width: 70%;
     flex-wrap: wrap;
     .divs {
@@ -35,9 +37,9 @@
       margin-right: 0;
     }
     div {
+      height: 30px;
       float: right;
       margin-right: 15px;
-      margin-top: 16px;
     }
   }
 }
@@ -46,6 +48,13 @@
   display: flex;
   .AreaConfigWrapperBomLeft {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .chartsBox {
+      width: 1000px;
+      height: 350px;
+    }
   }
   .AreaConfigWrapperBomRight {
     width: 460px;

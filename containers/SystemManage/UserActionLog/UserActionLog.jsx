@@ -275,7 +275,7 @@ class TrafficMenu extends React.Component {
                 <div className={styles.listItems}>
                   <div className={styles.listTd} >用户名称</div>
                   <div className={styles.listTd} >所属用户组</div>
-                  <div className={styles.listTd} >客户机IP</div>
+                  <div className={styles.listTd} >IP</div>
                   <div className={styles.listTd} >操作模块</div>
                   <div className={styles.listTd} >操作动作</div>
                   <div className={styles.listTd} >操作时间</div>
