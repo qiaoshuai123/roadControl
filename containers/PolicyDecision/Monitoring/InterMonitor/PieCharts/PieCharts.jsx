@@ -14,10 +14,30 @@ class PieCharts extends React.Component {
     }
   }
   componentDidMount = () => {
-    const chartsBox = echarts.init(this.chartsBox)
-    this.renderCharts(chartsBox)
+    const { chartsData, stateAnalysis } = this.props
+    if (chartsData.length) {
+      const chartsBox = echarts.init(this.chartsBox)
+      const seriesData = chartsData.map((item) => {
+        const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
+        return { name: item.CODE_NAME, value: states ? states.CSIZE : 0 }
+      })
+      this.renderCharts(chartsBox, seriesData)
+    }
   }
-  renderCharts = (chartsBox) => {
+  componentDidUpdate = (prevState) => {
+    const { chartsData, stateAnalysis } = this.props
+    if (prevState.chartsData !== chartsData) {
+      if (chartsData.length) {
+        const chartsBox = echarts.init(this.chartsBox)
+        const seriesData = chartsData.map((item) => {
+          const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
+          return { name: item.CODE_NAME, value: states ? states.CSIZE : 0 }
+        })
+        this.renderCharts(chartsBox, seriesData)
+      }
+    }
+  }
+  renderCharts = (chartsBox, seriesData) => {
     const options = {
       title: {
         show: false,
@@ -41,18 +61,19 @@ class PieCharts extends React.Component {
           type: 'pie',
           radius: '55%',
           center: ['50%', '45%'],
-          data: [
-            { value: 335, name: '直接访问' },
-            { value: 310, name: '邮件营销' },
-            { value: 234, name: '联盟广告' },
-            { value: 135, name: '视频广告' },
-            { value: 1548, name: '搜索引擎' },
-          ],
+          // data: [
+          //   { value: 335, name: '直接访问' },
+          //   { value: 310, name: '邮件营销' },
+          //   { value: 234, name: '联盟广告' },
+          //   { value: 135, name: '视频广告' },
+          //   { value: 1548, name: '搜索引擎' },
+          // ],
+          data: seriesData,
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
             },
           },
         },

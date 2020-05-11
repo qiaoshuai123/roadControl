@@ -85,9 +85,10 @@ class InterMonitor extends React.Component {
   }
   // 监视状态
   getMonitorTypes = (monitorTypes) => {
+    this.arr = monitorTypes.controlType
     this.setState({
       monitorTypes,
-      stateMonitors: monitorTypes.controlType,
+      stateMonitors: this.arr,
     })
   }
   // 路口列表
@@ -115,8 +116,9 @@ class InterMonitor extends React.Component {
     if (this.state.statusName && this.state.statusName === statusName) {
       this.setState({ statusName: null })
     } else {
+      this.arr = stateMonitors
       this.props.getGlobalMonitor(this.singalTypes.join(','), statusName)
-      this.setState({ statusName, stateMonitors })
+      this.setState({ statusName, stateMonitors: this.arr })
     }
   }
   handleShowInterOrPie = (e) => {
@@ -355,7 +357,10 @@ class InterMonitor extends React.Component {
               <span className={styles.popCloseBox} onClick={this.handleClosePop}><Icon type="close" /></span>
             </div>
             <div className={styles.pieChartsBox}>
-              <PieCharts />
+              {
+                stateAnalysis &&
+                <PieCharts chartsData={stateMonitors} stateAnalysis={stateAnalysis} />
+              }
             </div>
           </div>
         }
