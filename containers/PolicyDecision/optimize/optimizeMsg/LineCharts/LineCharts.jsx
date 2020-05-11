@@ -45,7 +45,7 @@ class LineCharts extends React.Component {
     // }
   }
   renderCharts = (menuChart2, legend, time, series) => {
-    console.log(legend, time, series)
+    console.log(menuChart2, legend, time, series, '值')
     // 绘制图表
     const options = {
       color: ['#0D9737'],

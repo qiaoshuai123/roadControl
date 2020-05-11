@@ -181,6 +181,9 @@
   :global(.ant-select-arrow) {
     color: #f1f1fb;
   }
+  :global(.ant-switch){
+     background-color: rgba(218,220,233,.8)
+  }
   :global(.ant-switch-checked) {
     background-color: #3daa3d;
   }
