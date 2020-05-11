@@ -57,7 +57,6 @@ class InterMonitor extends React.Component {
       { name: '关灯控制' },
     ]
     this.singalTypes = [1, 3, 4]
-    
   }
   componentDidMount = () => {
     this.props.getMonitorType()

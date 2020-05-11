@@ -46,9 +46,6 @@ class RealTimeDetection extends React.Component {
       zIndex: 2,
     }
   }
-  UNSAFE_componentWillMount = () => {
-    console.log(this.props)
-  }
   componentDidMount = () => {
     const chartsData = this.props.chartsData
     chartsData.forEach((item, index) => {
