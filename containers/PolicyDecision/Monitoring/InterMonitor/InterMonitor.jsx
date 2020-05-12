@@ -11,7 +11,7 @@ import PieCharts from './PieCharts/PieCharts'
 import { getLoadPlanTree, getLoadChildTree, getMonitorType, getGlobalMonitor } from '../../../../actions/data'
 
 function DropDownList(props) {
-  const { handleClick, title, list, statusName, isShow } = props
+  const { handleClick, title, list, statusName, isShow, datathis, handleChange } = props
   return (
     <div className={styles.statusBox}>
       <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#00A9C0' : 'transparent' }}>
@@ -25,7 +25,8 @@ function DropDownList(props) {
             return (
               <div className={styles.statusItems} key={item.CODE_NAME}>
                 <span>{item.CODE_NAME}</span>
-                <span className={styles.statusCheck}><Checkbox code={item.C_CODE} defaultChecked /></span>
+                <span className={styles.statusCheck}><Checkbox code={item.C_CODE} defaultChecked onChange={handleChange} /></span>
+
               </div>
             )
           })
@@ -51,12 +52,17 @@ class InterMonitor extends React.Component {
       monitorTypes: null,
       stateMonitors: null,
       stateAnalysis: null,
+      // clicktrueL:
     }
     this.statusList = [
       { name: '单点离线' },
       { name: '关灯控制' },
     ]
+    // this.nameList=["单点离线",'关灯控制','全红控制','黄闪控制','本地多时段','本地感应','中心多时段','勤务控制','勤务正下发','手动控制','锁定阶段','指定方案']
     this.singalTypes = [1, 3, 4]
+    this.arr = []
+    this.checkMonitors = []
+    this.checkCode = []
   }
   componentDidMount = () => {
     this.props.getMonitorType()
@@ -78,7 +84,6 @@ class InterMonitor extends React.Component {
     if (prevState.data.stateAnalysis !== stateAnalysis) {
       this.getSignalStateAnalys(stateAnalysis)
     }
-    console.log(this.props)
   }
   getSignalStateAnalys = (stateAnalysis) => {
     this.setState({ stateAnalysis })
@@ -86,6 +91,7 @@ class InterMonitor extends React.Component {
   // 监视状态
   getMonitorTypes = (monitorTypes) => {
     this.arr = monitorTypes.controlType
+    this.checkMonitors = monitorTypes.controlType
     this.setState({
       monitorTypes,
       stateMonitors: this.arr,
@@ -108,6 +114,17 @@ class InterMonitor extends React.Component {
       this.props.resetMapCenter(lng, lat)
     }
   }
+  handleMonitorChange = (e) => {
+    const { code } = e.target
+    const indexs = this.checkCode.indexOf(code)
+    if (indexs >= 0) {
+      this.checkCode.splice(indexs, 1)
+    } else {
+      this.checkCode.push(code)
+    }
+    const newMonitors = this.checkMonitors.filter(item => this.checkCode.indexOf(item.C_CODE) === -1)
+    this.setState({ stateMonitors: newMonitors })
+  }
   handleStatusDropDown = (e) => {
     const { monitorTypes } = this.state
     const statusName = e.currentTarget.getAttribute('statusname')
@@ -117,10 +134,12 @@ class InterMonitor extends React.Component {
       this.setState({ statusName: null })
     } else {
       this.arr = stateMonitors
+      this.checkMonitors = stateMonitors
       this.props.getGlobalMonitor(this.singalTypes.join(','), statusName)
       this.setState({ statusName, stateMonitors: this.arr })
     }
   }
+
   handleShowInterOrPie = (e) => {
     const popName = e.currentTarget.getAttribute('popname')
     this.setState({ popName })
@@ -200,7 +219,7 @@ class InterMonitor extends React.Component {
       <React.Fragment>
         <div className={styles.interMonitorBox} style={{ left: `${interMonitorLeft}px` }}>
           <span className={styles.hideIcon} onClick={this.handleShowInterMonitor}>
-            { interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
+            {interMonitorLeft > 0 ? <Icon type="backward" /> : <Icon type="forward" />}
           </span>
           <div className={styles.title}>路口监视功能</div>
           <div className={styles.interMsg}>
@@ -216,6 +235,7 @@ class InterMonitor extends React.Component {
           <div className={styles.title}>状态监视</div>
           <div className={styles.statusMsg}>
             {
+
               monitorTypes &&
               <React.Fragment>
                 <DropDownList
@@ -223,12 +243,14 @@ class InterMonitor extends React.Component {
                   list={monitorTypes.controlType}
                   handleClick={this.handleStatusDropDown}
                   statusName="controlState"
+                  handleChange={this.handleMonitorChange}
                   isShow={statusName === 'controlState'}
                 />
                 <DropDownList
                   title="交通状态监视"
                   list={monitorTypes.trafficType}
                   handleClick={this.handleStatusDropDown}
+                  handleChange={this.handleMonitorChange}
                   statusName="trafficState"
                   isShow={statusName === 'trafficState'}
                 />
@@ -236,6 +258,7 @@ class InterMonitor extends React.Component {
                   title="设备状态监视"
                   list={monitorTypes.deviceType}
                   handleClick={this.handleStatusDropDown}
+                  handleChange={this.handleMonitorChange}
                   statusName="alarmState"
                   isShow={statusName === 'alarmState'}
                 />
@@ -245,7 +268,7 @@ class InterMonitor extends React.Component {
         </div>
         <div className={styles.pointTypeBox} style={{ right: `${pointTypeRight}px` }}>
           <span className={styles.hideIcon} onClick={this.handleShowPointType}>
-            { pointTypeRight > 0 ? <Icon type="forward" /> : <Icon type="backward" />}
+            {pointTypeRight > 0 ? <Icon type="forward" /> : <Icon type="backward" />}
           </span>
           <div className={styles.title}>系统点位分布类型</div>
           <div className={styles.systemPoint}>

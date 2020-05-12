@@ -3,29 +3,23 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
+import { Icon, Select, message, Pagination,Modal, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
 import userStyles from './SignalControlRecord.scss'
-import getResponseDatas from '../../../utils/getResponseData'
 import SystemNav from '../SystemNav/SystenNav'
 import { getsigdelete, getsigexportExcelThing, getsigloadDistrict, getsigloadSignalControlLogList, getsigloadUnit, getsigloadUser } from '../../../actions/logManagement'
 
 const { Option } = Select
-const { TreeNode } = TreeSelect
 const { confirm } = Modal
 // 日志管理
 class TrafficMenu extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hash: window.location.hash,
       totalCount: null,
       systemList: null,
-      treeData: null,
-      treeValue: undefined,
-      dataList: null,
       userLimit: null,
       current: 1,
       MaintenanceUnitList: [],
@@ -88,7 +82,7 @@ class TrafficMenu extends React.Component {
       this.getsigexportExcelThings(sigexportExcelThing)
     }
   }
-  getsigexportExcelThings = (sigexportExcelThing) =>{
+  getsigexportExcelThings = (sigexportExcelThing) => {
     const blob = new Blob([sigexportExcelThing], { type: 'application/vnd.ms-excel,charset=utf-8' })
     const a = document.createElement('a')
     const href = window.URL.createObjectURL(blob)
@@ -101,71 +95,25 @@ class TrafficMenu extends React.Component {
   }
   getsigloadSignalControlLogLists = async (loadSystemOperationLogList) => {
     const shows = await this.adds(loadSystemOperationLogList.list)
-    console.log(shows, 'ss')
     if (shows) {
       this.setState({ systemList: shows, totalCount: loadSystemOperationLogList.page.totalSize, current: Number(loadSystemOperationLogList.page.fromPage) })
     }
   }
   getsigloadDistricts = (sigloadDistrict) => {
-    // console.log(sigloadDistrict, '所属区域')
     this.setState({
       MaintenanceUnitList: sigloadDistrict,
     })
   }
   getsigloadUnits = (sigloadUnit) => {
-    // console.log(sigloadUnit, '所属路口')
     this.setState({
       MaintenanceUnitLister: sigloadUnit,
     })
   }
   getsigloadUsers = (sigloadUser) => {
-    // console.log(sigloadUser, '所属用户')
     this.setState({
       MaintenanceUnitListers: sigloadUser,
     })
   }
-  getlistTrue = () => {
-    getResponseDatas('post', this.listTrueUrl).then((res) => {
-      const { code, data } = res.data
-      if (code === 0) {
-        console.log(data)
-        const das = [{
-          children: data,
-          id: 0,
-          isDelete: 0,
-          name: '顶级',
-          parentId: 0,
-          parentName: null,
-          sort: 0,
-          path: 0,
-          type: 0,
-        }]
-        this.setState({ treeData: das })
-      }
-    })
-  }
-  getaddMenu = () => {
-    this.dataList = {
-      name: '',
-      parentId: '0',
-      path: '',
-      perms: '',
-      sort: '',
-      type: 0,
-    }
-    this.setState({ dataList: this.dataList })
-  }
-  geterTreeNodes = data =>
-    data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.name} value={item.id} key={item.id} dataRef={item}>
-            {this.geterTreeNodes(item.children)}
-          </TreeNode>
-        )
-      }
-      return <TreeNode key={item.id} {...item} />
-    })
 
   getfaciDelete = (userid, times) => {
     const that = this
@@ -179,29 +127,6 @@ class TrafficMenu extends React.Component {
       onCancel() { },
     })
   }
-  // 转格式
-  getFormData = (obj) => {
-    const formData = new FormData()
-    Object.keys(obj).forEach((item) => {
-      formData.append(item, obj[item])
-    })
-    console.log(formData)
-    return formData
-  }
-  getSystemList = () => {
-    getResponseDatas('post', this.listUrl, this.getFormData(this.sysUser)).then((res) => {
-      const result = res.data
-      if (result.code === 0) {
-        console.log(result.data, 'isDelete')
-        const listdata = result.data.list.filter((item) => {
-          return item.isDelete == 0
-        })
-        this.setState({ systemList: listdata, totalCount: result.data.totalCount, current: Number(this.sysUser.pageNo) })
-      } else {
-        message.error('网络异常，请稍后再试!')
-      }
-    })
-  }
   delectList = (userid, times) => {
     this.props.getsigdelete(userid, times).then((res) => {
       if (res.data.code === 200) {
@@ -211,11 +136,9 @@ class TrafficMenu extends React.Component {
         this.props.getsigloadSignalControlLogList(str)
       }
     })
-
   }
   adds = (list) => {
     list.forEach((item) => {
-      console.log(123)
       if (item.CONTROL_TYPE === 1) {
         if (item.formatcontrolValue === 1) {
           item.controlName = '步进'
@@ -263,7 +186,6 @@ class TrafficMenu extends React.Component {
           item.controlName += '相位'
         } else if (item.formatcontrolValue === 4) {
           item.controlName += '跟随相位'
-          console.log(item)
         } else if (item.formatcontrolValue === 5) {
           item.controlName += '阶段'
         } else if (item.formatcontrolValue === 6) {

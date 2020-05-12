@@ -238,9 +238,6 @@ class RegiolManagement extends Component {
       this.popup = null
     }
   }
-  // gohanleSelectInter = (e) => {
-  //   this.hanleSelectInter(e)
-  // }
   // 自定义信息窗体
   showInterInfo = (lng, lat, interName, singalSys, interId) => {
     this.removeInterInfo()

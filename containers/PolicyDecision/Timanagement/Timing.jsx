@@ -14,7 +14,6 @@ class Timing extends Component {
       MaintenanceUnitList: [], // 所属区域
       roadList: [], // 所属路口
       TimingList: [], // 配时列表信息
-      IsnumShow: false, // 展示对应的修改列表
       pageNumber: {}, // 展示应有的数据
       codeList: [], // 信号机品牌列表
       nums: '',
@@ -334,7 +333,7 @@ class Timing extends Component {
   }
   render() {
     const { Option } = Select
-    const { MaintenanceUnitList, roadList, TimingList, IsnumShow, pageNumber, codeList, nums, showsId,
+    const { MaintenanceUnitList, roadList, TimingList, pageNumber, codeList,
       showEditTiming, planStageList, editStageSelect, editPlanStageList, stageRadioIndex, cycleLength,
     } = this.state
     return (
