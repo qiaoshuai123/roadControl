@@ -139,7 +139,6 @@ class RegiolManagementChild extends Component {
     const marker = document.getElementById('marker' + interId)
     const lng = Number(e.currentTarget.getAttribute('lng'))
     const lat = Number(e.currentTarget.getAttribute('lat'))
-    console.log(interId, marker, lng, lat, 'sdssdccccc')
     if (marker && this.map) {
       this.map.setCenter([lng, lat])
       // marker.click()

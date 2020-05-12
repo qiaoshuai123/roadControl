@@ -72,7 +72,6 @@ class CustomTree extends React.Component {
     } else {
       this.state.expendsKey.push(id)
     }
-    console.log(this.state.expendsKey)
     this.setState({ expendsKey: this.state.expendsKey })
   }
 

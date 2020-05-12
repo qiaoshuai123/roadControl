@@ -3,29 +3,23 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Select, Input, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
+import { Icon, Select, message, Pagination, Modal, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
 import userStyles from './SystemFaultLog.scss'
-import getResponseDatas from '../../../utils/getResponseData'
 import SystemNav from '../SystemNav/SystenNav'
 import { getalaloadDistrict, getalaloadUnit, getalaloadAlarmLogList, getaladelete, getalaexportExcelThing } from '../../../actions/logManagement'
 
 const { Option } = Select
-const { TreeNode } = TreeSelect
 const { confirm } = Modal
 // 日志管理
 class TrafficMenu extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hash: window.location.hash,
       totalCount: null,
       systemList: null,
-      treeData: null,
-      treeValue: undefined,
-      dataList: null,
       userLimit: null,
       current: 1,
       MaintenanceUnitList: [],
@@ -54,8 +48,6 @@ class TrafficMenu extends React.Component {
     this.dateListUserGroups = 0
   }
   componentDidMount = () => {
-    // this.getSystemList()
-    // this.getlistTrue()
     this.props.getalaloadDistrict()
     this.props.getalaloadUnit()
     const { ManagementStart, ManagementUnit } = this.state
@@ -108,26 +100,6 @@ class TrafficMenu extends React.Component {
   getalaloadAlarmLogLists = (loadSystemOperationLogList) => {
     this.setState({ systemList: loadSystemOperationLogList.list, totalCount: loadSystemOperationLogList.page.totalSize, current: Number(loadSystemOperationLogList.page.fromPage) })
   }
-  getlistTrue = () => {
-    getResponseDatas('post', this.listTrueUrl).then((res) => {
-      const { code, data } = res.data
-      if (code === 0) {
-        console.log(data)
-        const das = [{
-          children: data,
-          id: 0,
-          isDelete: 0,
-          name: '顶级',
-          parentId: 0,
-          parentName: null,
-          sort: 0,
-          path: 0,
-          type: 0,
-        }]
-        this.setState({ treeData: das })
-      }
-    })
-  }
   getaddMenu = () => {
     this.dataList = {
       name: '',
@@ -139,17 +111,6 @@ class TrafficMenu extends React.Component {
     }
     this.setState({ dataList: this.dataList })
   }
-  geterTreeNodes = data =>
-    data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.name} value={item.id} key={item.id} dataRef={item}>
-            {this.geterTreeNodes(item.children)}
-          </TreeNode>
-        )
-      }
-      return <TreeNode key={item.id} {...item} />
-    })
   getfaciDelete = (userid, times) => {
     const that = this
     confirm({
@@ -163,28 +124,6 @@ class TrafficMenu extends React.Component {
     })
   }
   // 转格式
-  getFormData = (obj) => {
-    const formData = new FormData()
-    Object.keys(obj).forEach((item) => {
-      formData.append(item, obj[item])
-    })
-    console.log(formData)
-    return formData
-  }
-  getSystemList = () => {
-    getResponseDatas('post', this.listUrl, this.getFormData(this.sysUser)).then((res) => {
-      const result = res.data
-      if (result.code === 0) {
-        console.log(result.data, 'isDelete')
-        const listdata = result.data.list.filter((item) => {
-          return item.isDelete == 0
-        })
-        this.setState({ systemList: listdata, totalCount: result.data.totalCount, current: Number(this.sysUser.pageNo) })
-      } else {
-        message.error('网络异常，请稍后再试!')
-      }
-    })
-  }
   exportTable = () => {
     const { ManagementStart, ManagementUnit } = this.state
     const str = `beginDate=${ManagementStart}&endDate=${ManagementUnit}&unitId=${this.dateListUserGroups}&districtId=${this.dateListUser}`
@@ -246,7 +185,10 @@ class TrafficMenu extends React.Component {
     return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   render() {
-    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, MaintenanceUnitList, ManagementUnit, MaintenanceUnitLister, ManagementStart } = this.state
+    const {
+      systemList, totalCount, current, userLimit, MaintenanceUnitList,
+      ManagementUnit, MaintenanceUnitLister, ManagementStart,
+    } = this.state
     return (
       <div className={(roadStyles.Roadtcontent)}>
         {/* 地图 */}
