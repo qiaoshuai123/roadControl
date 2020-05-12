@@ -3,29 +3,22 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Icon, Select, message, Pagination, TreeSelect, Radio, Modal, DatePicker } from 'antd'
+import { Select, Pagination, DatePicker } from 'antd'
 import Nav from '../Nav/Nav'
 import roadStyles from '../Roadtraffic.scss'
 import styles from '../TrafficSystem.scss'
 import userStyles from './UserActionLog.scss'
-import getResponseDatas from '../../../utils/getResponseData'
 import SystemNav from '../SystemNav/SystenNav'
 import { getloadManageMent, getloaduser, getloadSystemOperationLogList, getexportExcelThing } from '../../../actions/logManagement'
 
 const { Option } = Select
-const { TreeNode } = TreeSelect
-const { confirm } = Modal
 // 日志管理
 class TrafficMenu extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      hash: window.location.hash,
       totalCount: null,
       systemList: null,
-      treeData: null,
-      treeValue: undefined,
-      dataList: null,
       userLimit: null,
       current: 1,
       MaintenanceUnitList: [], // 所属用户
@@ -55,8 +48,6 @@ class TrafficMenu extends React.Component {
     this.dateListUserGroups = 0
   }
   componentDidMount = () => {
-    // this.getSystemList()
-    this.getlistTrue()
     // 获取用户权限
     const limitArr = JSON.parse(localStorage.getItem('userLimit'))
     const userLimit = []
@@ -108,60 +99,6 @@ class TrafficMenu extends React.Component {
   }
   getloadSystemOperationLogLists = (loadSystemOperationLogList) => { // 分页查询列表
     this.setState({ systemList: loadSystemOperationLogList.list, totalCount: loadSystemOperationLogList.page.totalSize, current: Number(loadSystemOperationLogList.page.fromPage) })
-  }
-  // getloadusers = (loaduser) => { // 导出excel
-
-  // }
-  getlistTrue = () => {
-    getResponseDatas('post', this.listTrueUrl).then((res) => {
-      const { code, data } = res.data
-      if (code === 0) {
-        console.log(data)
-        const das = [{
-          children: data,
-          id: 0,
-          isDelete: 0,
-          name: '顶级',
-          parentId: 0,
-          parentName: null,
-          sort: 0,
-          path: 0,
-          type: 0,
-        }]
-        this.setState({ treeData: das })
-      }
-    })
-  }
-  getaddMenu = () => {
-    this.dataList = {
-      name: '',
-      parentId: '0',
-      path: '',
-      perms: '',
-      sort: '',
-      type: 0,
-    }
-    this.setState({ dataList: this.dataList })
-  }
-  geterTreeNodes = data =>
-    data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.name} value={item.id} key={item.id} dataRef={item}>
-            {this.geterTreeNodes(item.children)}
-          </TreeNode>
-        )
-      }
-      return <TreeNode key={item.id} {...item} />
-    })
-  // 转格式
-  getFormData = (obj) => {
-    const formData = new FormData()
-    Object.keys(obj).forEach((item) => {
-      formData.append(item, obj[item])
-    })
-    console.log(formData)
-    return formData
   }
   handleInputChangeUser = (value) => {
     this.dateListUser = value
@@ -216,8 +153,10 @@ class TrafficMenu extends React.Component {
     return `${y}-${MM}-${d} ${h}:${m}:${s}`
   }
   render() {
-    const { systemList, totalCount, treeData, treeValue, current, dataList, userLimit, ManagementStart, MaintenanceUnitList, ManagementUnit, MaintenanceUnitLister } = this.state
-    console.log(totalCount, current, 'ss')
+    const {
+      systemList, totalCount, current, userLimit, ManagementStart,
+      MaintenanceUnitList, ManagementUnit, MaintenanceUnitLister,
+    } = this.state
     return (
       <div className={(roadStyles.Roadtcontent)}>
         {/* 地图 */}

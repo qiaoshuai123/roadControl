@@ -15,7 +15,7 @@ class AreaOptimize extends React.Component {
     super(props)
     this.state = {
       num: 1,
-      showConfig: true,
+      showConfig: false,
     }
     this.echarts = echartss
     this.btnList = [
