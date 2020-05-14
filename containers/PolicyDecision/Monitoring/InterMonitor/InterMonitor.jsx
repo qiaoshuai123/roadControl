@@ -11,7 +11,7 @@ import PieCharts from './PieCharts/PieCharts'
 import { getLoadPlanTree, getLoadChildTree, getMonitorType, getGlobalMonitor } from '../../../../actions/data'
 
 function DropDownList(props) {
-  const { handleClick, title, list, statusName, isShow, datathis, handleChange } = props
+  const { handleClick, title, list, statusName, isShow, handleChange } = props
   return (
     <div className={styles.statusBox}>
       <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#00A9C0' : 'transparent' }}>
