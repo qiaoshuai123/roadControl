@@ -129,6 +129,11 @@ const SignalControlRecord = Loadable({
   loading: Loading,
   delay: 0,
 })
+const Surveillance = Loadable({
+  loader: () => import('./containers/PolicyDecision/Surveillance/Surveillance'),
+  loading: Loading,
+  delay: 0,
+})
 const Parent = () => (
   <React.Fragment>
     {/* <Route path="*" component={SystemMenu} /> */}
@@ -155,6 +160,7 @@ const Parent = () => (
     <Route exact path="/useractionlog" component={UserActionLog} />
     <Route exact path="/systemfaultlog" component={SystemFaultLog} />
     <Route exact path="/signalcontrolrecord" component={SignalControlRecord} />
+    <Route exact path="/surveillance" component={Surveillance} />
   </React.Fragment>
 )
 reactDom.render(

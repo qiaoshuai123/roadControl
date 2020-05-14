@@ -11,7 +11,8 @@ class EvaNav extends React.PureComponent {
     this.navItems = [
       { name: '首页', path: '/signalhome' },
       { name: '全局监控', path: '/monitoring' },
-      { name: '特勤任务', path: '/secretTask' },
+      // { name: '特勤任务', path: '/secretTask' },
+      { name: '绿波监视', path: '/surveillance' },
     ]
     this.navItemsRight = [
       {
