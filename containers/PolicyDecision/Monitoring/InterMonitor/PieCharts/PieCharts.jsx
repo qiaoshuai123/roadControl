@@ -26,15 +26,13 @@ class PieCharts extends React.Component {
   }
   componentDidUpdate = (prevState) => {
     const { chartsData, stateAnalysis } = this.props
-    if (prevState.chartsData !== chartsData) {
-      if (chartsData.length) {
-        const chartsBox = echarts.init(this.chartsBox)
-        const seriesData = chartsData.map((item) => {
-          const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
-          return { name: item.CODE_NAME, value: states ? states.CSIZE : 0 }
-        })
-        this.renderCharts(chartsBox, seriesData)
-      }
+    if (chartsData.length) {
+      const chartsBox = echarts.init(this.chartsBox)
+      const seriesData = chartsData.map((item) => {
+        const states = stateAnalysis.find(state => state.CONTROL_STATE === item.C_CODE)
+        return { name: item.CODE_NAME, value: states ? states.CSIZE : 0 }
+      })
+      this.renderCharts(chartsBox, seriesData)
     }
   }
   renderCharts = (chartsBox, seriesData) => {
