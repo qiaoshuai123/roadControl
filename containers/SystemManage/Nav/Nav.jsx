@@ -1,11 +1,6 @@
 import React from 'react'
-import { Input, Menu, Dropdown, Button, Icon, Select } from 'antd'
 import styles from './Nav.scss'
-import getResponseDatas from '../../../utils/getResponseData'
 
-const { Option } = Select
-let timeout
-let currentValue
 class Nav extends React.Component {
   constructor(props) {
     super(props)
@@ -13,18 +8,11 @@ class Nav extends React.Component {
       navtime: '',
       navmse: '',
       navtoday: '',
-      data: [],
-      menu: '',
-      value: undefined,
-      modelValue: null,
     }
     this.urls = '/simulation/parameterInfo/list'
   }
   componentDidMount = () => {
     this.timer = setInterval(this.getDate, 1000)
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ modelValue: nextProps.modelState })
   }
   componentWillUnmount = () => {
     clearInterval(this.timer)
@@ -52,41 +40,7 @@ class Nav extends React.Component {
     const hashName = window.location.hash
     window.location.href = window.location.hash.replace(hashName, '#/entrance') // entrance作为产品入口 entrnaces人民大道入口
   }
-  /* handleSearch = (value) => {
-    console.log(value);
-    if (this.props.getSearch) {
-      this.props.getSearch(value)
-    }
-  } */
-  fake = (value) => {
-    this.props.getSearch(value, (data) => {
-      this.setState({ data })
-    })
-  }
-  handleonFocus = () => {
-    const { value } = this.state
-    if (value == null || value == '') {
-      this.handleSearch()
-    }
-    this.setState({ value })
-  }
-  handleSearch = (value = '') => {
-    if (timeout) {
-      clearTimeout(timeout)
-      timeout = null
-    }
-    currentValue = value
-    timeout = setTimeout(this.fake.bind(null, value), 300)
-  }
-
-  handleChange = value => {
-    this.setState({ value })
-  }
-  handlemodelState = (e) => {
-    this.props.getmodelState(e)
-  }
   render() {
-    const { Search } = Input
     return (
       <div className={styles.navWrapper}>
         <div className={styles.navWrapper_left}>
