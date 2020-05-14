@@ -25,7 +25,11 @@ class Entrance extends React.Component {
   handleGoSystem = (e) => {
     const path = e.currentTarget.getAttribute('sysname')
     // this.props.history.push(path)
-    window.open(path)
+    if (path) {
+      window.open(path)
+    } else {
+      window.open('http://39.100.128.220:30000/road/control/simulation/#/entrances')
+    }
   }
   render() {
     const { clickCount } = this.state
@@ -47,6 +51,7 @@ class Entrance extends React.Component {
           <div
             className={styles.B}
             style={clickCount === 1 ? this.R : clickCount === 2 ? this.F : clickCount === 3 ? this.L : this.B}
+            onClick={this.handleGoSystem}
           />
           <div
             className={styles.R}

@@ -31,7 +31,7 @@ const webpackConfig = {
     {
       test: /\.svg$/,
       loader: 'svg-sprite-loader',
-      include: path.resolve(__dirname, 'svgImgs'), // //只处理指定svg的文件
+      include: path.resolve(__dirname, 'svgImgs'), // 只处理指定svg的文件
       options: {
         symbolId: '[name]',
       },
