@@ -1,49 +1,43 @@
 import React, { PureComponent } from 'react'
-import { Icon, Input, message, DatePicker, Select, Modal } from 'antd'
-import moment from 'moment'
+import { Icon, Input, message, Select, Modal } from 'antd'
 import styles from './Surveillance.scss'
 import Header from '../Header/Header'
-import classNames from 'classnames'
-// import CustomTree from './CustomTree/CustomTree'
-import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
-import InfoBg from './img/Infobg.png'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 import { getInterList, getBasicInterInfo, getVipRoute, getVipRouteChild } from '../../../actions/data'
-import { getAddUnitsIfram, getDeleteUnitFram, getDeleteVipRoad, getFindRoadByVipId, getFindList, getInitRoad, getLoadUnitStage, getSaveVipRoad, getSaveUnitRunStage } from '../../../actions/SecretTask'
+import { getDeleteUnitFram, getDeleteVipRoad, getFindRoadByVipId, getFindList, getInitRoad, getLoadUnitStage } from '../../../actions/SecretTask'
+import Areaedit from './Areaedit/Areaedit'
+import CustomInterTree from '_C/CustomInterTree/CustomInterTree'
+import InfoBg from './img/Infobg.png'
 import OnlineH from '../SignalHome/img/online_h.png'
 import OutlineH from '../SignalHome/img/outline_h.png'
 import OnlineS from '../SignalHome/img/online_s.png'
 import OutlineS from '../SignalHome/img/ouline_s.png'
 import Uico from './img/u149.png'
+
 const { Option } = Select
+const { TextArea } = Input
 class SecretTask extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      interList: null,
       searchInterList: null,
       interListHeight: 0,
-      interListHeights: 0,
       interMonitorLeft: 15,
       visible: false,
       visibleTop: 0,
       vipId: '',
-      unitId: '',
-      secretTaskName: '',
-      secretTaskDetail: '',
       selectStateArr: [],
       searchVal: '',
       roadCrossingFlag: null,
-      searchVals: '',
-      secretTaskTop: null,
       secretTaskLeftOld: null,
       secretTaskLeft: null,
-      secretTaskRight: null,
-      startValue: null,
-      endValue: null,
-      endOpen: false,
+      addGreenMeg: false,// 绿波添加显示弹窗
+      addroader: false, // 添加路口
+      showAreaedit: false, // 展示区域协调方案编辑页面
+      MaintenancePhine: '',
+      MaintenanceName: '',
+      EquipmentDetail: '',
     }
     this.searchInterList = []
     this.markers = []
@@ -345,6 +339,33 @@ class SecretTask extends PureComponent {
   handleSearchInterFocus = () => {
     this.setState({ interListHeight: 300 })
   }
+  addGreenMegsBoxers = () => { // 展示添加路口
+    this.setState({
+      addroader: true,
+    })
+  }
+  closeAddroaders = () => { // 关闭添加路口
+    this.setState({
+      addroader: false,
+    })
+  }
+  closeaddGreenMegsBox = () => { // 关闭添加/修改绿波方案
+    this.setState({
+      addGreenMeg: false,
+    })
+  }
+  // 展示区域协调方案编辑页面
+  showAreaeditBtn = () => {
+    this.setState({
+      showAreaedit: true,
+    })
+  }
+
+  closeMegFa = () => {
+    this.setState({
+      showAreaedit: false,
+    })
+  }
   handleSearchInputChange = (e) => {
     const { value } = e.target
     this.setState({
@@ -364,150 +385,12 @@ class SecretTask extends PureComponent {
       this.setState({ searchInterList: searchInters })
     }, 200)
   }
-  // hanleSelectInters = (e) => {
-  //   debugger
-  //   const interId = e.currentTarget.getAttribute('interid')
-  //   this.setState({
-  //     unitId: interId,
-  //   })
-  //   this.searchInputBox.value = e.target.innerText
-  // }
-  // handleSearchInterFocuss = () => {
-  //   this.setState({ interListHeights: 200 })
-  // }
-  // handleSearchInputChanges = (e) => {
-  //   const { value } = e.target
-  //   this.setState({
-  //     searchVals: value,
-  //   }, () => {
-  //     this.searchInterList.forEach((item) => {
-  //       if (item.UNIT_NAME === value) {
-  //         this.setState({
-  //           unitId: item.UNIT_ID,
-  //         })
-  //       }
-  //     })
-  //   })
-  //   const searchInters = []
-  //   if (this.searchTimer) {
-  //     clearTimeout(this.searchTimer)
-  //     this.searchTimer = null
-  //   }
-  //   this.searchTimer = setTimeout(() => {
-  //     this.searchInterList.forEach((item) => {
-  //       if (item.UNIT_NAME.indexOf(value) >= 0) {
-  //         searchInters.push(item)
-  //       }
-  //     })
-  //     this.setState({ searchInterList: searchInters })
-  //   }, 200)
-  // }
-  /* 
-  disabledStartDate = startValue => {
-    const { endValue } = this.state;
-    if (!startValue || !endValue) {
-      return false;
-    }
-    return startValue.valueOf() > endValue.valueOf();
-  };
-
-  disabledEndDate = endValue => {
-    const { startValue } = this.state;
-    if (!endValue || !startValue) {
-      return false;
-    }
-    return endValue.valueOf() <= startValue.valueOf();
-  };
-
-  onChange = (field, value) => {
-    this.setState({
-      [field]: value,
-    });
-  };
-
-  onStartChange = value => {
-    this.onChange('startValue', value);
-  };
-
-  onEndChange = value => {
-    this.onChange('endValue', value);
-  };
-
-  handleStartOpenChange = open => {
-    if (!open) {
-      this.setState({ endOpen: true });
-    }
-  };
-
-  handleEndOpenChange = open => {
-    this.setState({ endOpen: open });
-  }; */
-  // 保存路线
-  // getSaveVipRoad = (vipId, name, detail) => {
-  //   this.props.data.vip_saveSucess = ''
-  //   this.props.getSaveVipRoad(vipId, name, detail)
-  // }
-  // 改变文本及下拉
-  // handleChange = (e, name, index) => {
-  //   console.log(this.state[name])
-  //   if (index === undefined) {
-  //     this.setState({
-  //       [name]: e.target.value,
-  //     })
-  //   } else {
-  //     debugger
-  //     this.state[name][index] = e
-  //   }
-  // }
   // 快速特勤任务
   quicklySecretTask = () => {
     this.setState({
-      secretTaskTop: true,
-      vipId: '',
-      secretTaskDetail: '',
-      secretTaskName: '',
+      addGreenMeg: true,
     })
   }
-  // // 添加路口
-  // getAddUnitsIfram = () => {
-  //   this.setState({
-  //     roadCrossingFlag: true,
-  //   })
-  // }
-  // AddUnitsIframBtn = (vipId, unitId) => {
-  //   this.props.data.vip_addSucess = ''
-  //   this.setState({
-  //     secretTaskLeftOld: this.state.secretTaskLeft,
-  //     secretTaskLeft: null,
-  //   }, () => {
-  //     this.props.getAddUnitsIfram(vipId, unitId)
-  //   })
-  // }
-  // getSaveUnitRunStage = (vipId, unitId, stageNo) => {
-  //   console.log(vipId, unitId, stageNo, 'adfasdf')
-  //   this.props.data.vip_unitRunStage = ''
-  //   this.setState({
-  //     secretTaskLeft: null,
-  //   }, () => {
-  //     this.props.getSaveUnitRunStage(vipId, unitId, stageNo)
-  //   })
-  // }
-  // // 关闭
-  // handleClose = (flag, moudleName) => {
-  //   if (!flag) {
-  //     if (moudleName === 'roadCrossingFlag') {
-  //       this.setState({
-  //         roadCrossingFlag: null,
-  //       })
-  //     } else {
-  //       this.setState({
-  //         secretTaskTop: null,
-  //         secretTaskLeft: null,
-  //         secretTaskRight: null,
-  //       })
-  //     }
-  //   }
-  // }
   // 初始化地图
   renderMineMap = () => {
     const map = new window.minemap.Map({
@@ -567,18 +450,18 @@ class SecretTask extends PureComponent {
   }
   render() {
     const {
-      interMonitorLeft,
-      visible,
-      visibleTop,
-      interListHeight, interListHeights, searchInterList, searchVal, searchVals, secretTaskTop, secretTaskLeft, secretTaskRight,
-      vipId, unitId, secretTaskDetail, secretTaskName, roadCrossingFlag,
+      visibleTop, visible, interMonitorLeft,
+      interListHeight, searchInterList, searchVal, addroader, showAreaedit,
+      vipId, addGreenMeg, MaintenancePhine, MaintenanceName, EquipmentDetail,
     } = this.state
-    const { Search } = Input
     return (
       <div id="mapContainer" className={styles.secretTaskWrapper}>
         <Header {...this.props} />
+        {
+          showAreaedit && <Areaedit closeMegFa={this.closeMegFa} />
+        }
         <div className={styles.Popup}>
-          <p className={styles.Popup_p}><span>路口路线</span><span>编辑&gt;&gt;</span></p>
+          <p className={styles.Popup_p}><span>路口路线</span><span onClick={this.showAreaeditBtn}>编辑&gt;&gt;</span></p>
           <div className={styles.PopupBo}>
             <div className={styles.Popup_box}>
               <p>路口一</p>
@@ -702,7 +585,7 @@ class SecretTask extends PureComponent {
               }
             </div>
           </div>
-          <div className={styles.OptimizingBtns}><span>优化控制管理</span></div>
+          <div className={styles.OptimizingBtns}><span>绿波方案列表</span></div>
           <div className={styles.addtask}>
             <span onClick={this.quicklySecretTask}>添加绿波方案</span>
           </div>
@@ -723,164 +606,54 @@ class SecretTask extends PureComponent {
               </ul> : null
           }
         </div>
-        {/* {!!secretTaskTop ?
-          <div className={styles.MaskBox}>
-            <div className={styles.secretTaskBox}>
-              <div className={styles.title}>特勤任务 <Icon className={styles.Close} type='close' onClick={() => { this.handleClose(false) }} /></div>
-              <div className={styles.secretTaskCon}>
-                <div className={styles.conTop}>
-                  <div className={styles.formBox}><span>勤务名称：</span><Input style={{ width: '100px' }} value={secretTaskName} onChange={(e) => { this.handleChange(e, 'secretTaskName') }} placeholder="请输入勤务名称" /></div>
-                  <div className={styles.formBox}><span>备注描述：</span><Input onChange={this.changeRegion} value={secretTaskDetail} onChange={(e) => { this.handleChange(e, 'secretTaskDetail') }} placeholder="请输入备注描述" /></div>
-                  <div className={styles.formBox} style={{ flex: 0.05 }}></div> */}
-        {/* <div className={styles.formBox}><span>计划时间：</span>
-                    <DatePicker
-                      disabledDate={this.disabledStartDate}
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      value={startValue}
-                      placeholder="开始时间"
-                      onChange={this.onStartChange}
-                      onOpenChange={this.handleStartOpenChange}
-                    />
-                    <span style={{margin:'0 5px'}}>-</span>
-                    <DatePicker
-                      disabledDate={this.disabledEndDate}
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      value={endValue}
-                      placeholder="结束时间"
-                      onChange={this.onEndChange}
-                      open={endOpen}
-                      onOpenChange={this.handleEndOpenChange}
-                    />
-                  </div> */}
-        {/* </div>
-                <div className={styles.conLeft}>
-                  <div className={styles.titleSmall}>勤务路口<em onClick={this.getAddUnitsIfram}>添加路口</em></div>
-                  <div id="conLeftBox" className={styles.conLeftBox}>
-                    {
-                      secretTaskLeft && secretTaskLeft.map((item, ind) => {
-                        return (
-                          <div key={'sLeft' + ind} className={styles.leftItem}>
-                            <div className={styles.itemTit}>{item.name + " " + " ( IP: " + item.IPString + " )"}<Icon title="删除" onClick={() => { this.getDeleteUnitFram(vipId, item.id) }} className={styles.Close} type='close' /></div>
-                            <div className={styles.itemCon}>
-                              <div className={styles.imgBox} style={{ width: '200px', height: '200px' }}>
-                                <img className={styles.imgBgPic} src={this.imgBgUrl + item.imgName} title={!item.imgName ? '暂无图片' : ''} />
-                                <div className={styles.typeStatus}>{item.type ? item.type : '未知'}</div>
-                                {
-                                  item.imgs.length > 0 && item.imgs.map((imgsItem) => {
-                                    return <img key={'img' + imgsItem.ID} title={imgsItem.CANALIZATION_NAME}
-                                      style={{
-                                        position: 'absolute', width: imgsItem.WIDTH / 2 + 'px', height: imgsItem.HEIGHT / 2 + 'px',
-                                        top: imgsItem.P_TOP / 2 + 'px', left: imgsItem.P_LEFT / 2 + 'px'
-                                      }} src={this.imgDirUrl + imgsItem.IMAGE_NAME} />
-                                  })
-                                }
-                              </div>
-                              <div className={styles.imgBox} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                                {
-                                  item.unitStageList.length > 0 && item.unitStageList.map((infoItem) => {
-                                    const marginVal = item.unitStageList.length > 6 ? '2px' : ''
-                                    const imgName = item.unitRunStageNo === infoItem.STAGENO ? infoItem.STAGE_IMAGE : infoItem.STAGE_IMAGE.replace('_ch', '')
-                                    return <div key={'info' + infoItem.STAGENO} style={{ marginRight: marginVal }} className={styles.dirItem}><img src={this.imgInfoUrl + imgName} /><b title={infoItem.STAGENAME}>{infoItem.STAGENAME}</b></div>
-                                  })
-                                }
-                              </div>
-                            </div>
-                            <div className={styles.formBox}><span>预设勤务阶段：</span>
-                              <Select defaultValue={item.unitRunStageNo || item.unitRunStageNo === 0 ? item.unitRunStageNo : '0'} onChange={(e) => { this.handleChange(e, 'selectStateArr', ind) }}>
-                                <Option value='0'>请选择</Option>
-                                {
-                                  item.unitStageList.length > 0 && item.unitStageList.map((infoItem) => {
-                                    return <Option key={'infos' + infoItem.STAGENO} value={infoItem.STAGENO}>{infoItem.STAGENAME}</Option>
-                                  })
-                                }
-                              </Select>
-                              <em onClick={() => {
-                                this.getSaveUnitRunStage(vipId, item.id, this.state['selectStateArr'][ind])
-                              }}>保&nbsp;&nbsp;存</em>
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                    {!secretTaskLeft && <div className={styles.PanelItemNone} style={{ height: '127px', lineHeight: '127px' }}>暂无数据</div>}
-                  </div>
-
-                </div>
-                <div className={styles.conRight}>
-                  <div className={styles.titleSmall}>勤务路线<em>一键勤务</em><em className={styles.saveLine} onClick={() => { this.getSaveVipRoad(vipId, secretTaskName, secretTaskDetail) }}>保存路线</em></div>
-                  <div className={styles.itemTit}>勤务路线路口列表</div>
-                  <div className={styles.itemCon}>
-                    <div className={classNames(styles.listItem, styles.listTit)}>
-                      <s>序号</s>
-                      <s>路口名称</s>
-                      <s>勤务阶段</s>
-                      <s>勤务状态</s>
-                      <s>操作</s>
-                    </div>
-                    <div className={styles.conRightBox}>
-                      {
-                        secretTaskRight && secretTaskRight.map((item, index) => {
-                          return (
-                            <div key={'sRight' + index} className={styles.listItem}>
-                              <s>{index + 1}</s>
-                              <s><img src={this.imgInfoUrl + item.STAGE_IMAGE} />{item.UNIT_NAME}</s>
-                              <s>{item.STAGENAME}</s>
-                              <s>{item.CODE_NAME}</s>
-                              <s>{item.STAGENO === 1 ? <span>锁定</span> : <span>取消</span>}</s>
-                            </div>
-                          )
-                        })
-                      }
-                      {!secretTaskRight && <div className={styles.PanelItemNone}>暂无数据</div>}
-                    </div>
-                  </div>
+        {addGreenMeg &&
+          <div className={styles.addGreenMegs}>
+            <div className={styles.addGreenMegsBox}>
+              <p>添加/修改绿波方案<span onClick={this.closeaddGreenMegsBox}><Icon type="close" /></span></p>
+              <p>绿波方案基本信息</p>
+              <div className={styles.information}>
+                <div><span>协调干线编号</span><Input style={{ width: '200px' }} name="MaintenancePhine" onChange={this.changValue} value={MaintenancePhine} /></div>
+                <div><span>协调干线名称</span><Input style={{ width: '200px' }} name="MaintenanceName" onChange={this.changValue} value={MaintenanceName} /></div>
+                <button>保存方案</button>
+              </div>
+              <div className={styles.Scheme}>
+                <span>协调方案描述</span><TextArea rows={2} style={{ width: '200px', resize: 'none' }} name="EquipmentDetail" onChange={this.changValue} value={EquipmentDetail} />
+              </div>
+              <div className={styles.addGreenMegsBoxer}>
+                <div onClick={this.addGreenMegsBoxers} className={styles.addGreenMegsBoxer_left}>
+                  <Icon type="plus" />
                 </div>
               </div>
+              {
+                addroader &&
+                <div className={styles.addroaders}>
+                  <div>添加路口 <b onClick={this.closeAddroaders} className={styles.Icos}><Icon type="close" /></b></div>
+                  <div><span>路口名称:</span>
+                    <Select defaultValue="贵阳" style={{ width: '160px' }} onChange={this.cityChange}>
+                      <Option value="贵阳">贵阳</Option>
+                    </Select>
+                  </div>
+                  <div><span>协调相位:</span>
+                    <Select defaultValue="贵阳" style={{ width: '160px' }} onChange={this.cityChange}>
+                      <Option value="贵阳">贵阳</Option>
+                    </Select>
+                  </div>
+                  <div>
+                    <span>相位图显示:</span>
+                    <b />
+                  </div>
+                  <div>
+                    <span>相位差:</span><Input style={{ width: '160px' }} name="MaintenancePhine" onChange={this.changValue} value={MaintenancePhine} />
+                  </div>
+                  <div className={styles.lastdiv}>
+                    <span onClick={this.closeAddroaders}>取消</span>
+                    <span>保存</span>
+                  </div>
+                </div>
+              }
             </div>
-          </div> : null
-        } */}
-        {/* {
-          roadCrossingFlag ?
-            <div className={styles.MaskBox}>
-              <div className={styles.roadCrossing}>
-                <div className={styles.titleSmall}>添加路口 <Icon className={styles.Close} type='close' onClick={() => { this.handleClose(false, 'roadCrossingFlag') }} /></div>
-                <div className={styles.crossingCon}>
-                  <div className={styles.searchBox}>
-                    <input
-                      className={styles.searchInput}
-                      onClick={this.handleSearchInterFocuss}
-                      onChange={this.handleSearchInputChanges}
-                      type="text"
-                      placeholder="请输入你要搜索的路口"
-                      ref={(input) => { this.searchInputBox = input }}
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-                  <div className={styles.interList} style={{ maxHeight: `${interListHeights}px`, overflowY: 'auto' }}>
-                    <div>
-                      {
-                        searchInterList &&
-                        searchInterList.map(item => (
-                          <div
-                            className={styles.interItem}
-                            key={item.ID}
-                            interid={item.ID}
-                            lng={item.LONGITUDE}
-                            lat={item.LATITUDE}
-                            onClick={this.hanleSelectInters}
-                          >{item.UNIT_NAME}
-                          </div>
-                        ))
-                      }
-                    </div>
-                  </div>
-                  <div className={styles.btnRoadCrossing} onClick={() => { this.AddUnitsIframBtn(vipId, unitId) }}>确认添加</div>
-                </div>
-              </div>
-            </div> : null
-        } */}
+          </div>
+        }
       </div>
     )
   }
