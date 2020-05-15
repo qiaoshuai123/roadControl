@@ -81,6 +81,9 @@ input {
     span {
         margin-right: 10px;
     }
+    .spans{
+        margin: 0 5px;
+    }
     .btnPopup {
         font-size: 16px;
         color: #3c6ac8;
@@ -195,6 +198,7 @@ input {
     float: left;
     height: 55px;
     width: 55px;
+    padding-top: 8px;
     margin-top: 10px;
     margin-left: 10px;
 }
