@@ -1,9 +1,12 @@
 import React from 'react'
 import { Select, Icon } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
+import { getInterDataTree } from '../../../actions/evaluate'
 
 import styles from './Inter.scss'
 
@@ -12,8 +15,10 @@ class Inter extends React.Component {
     super(props)
     this.state = {}
     this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口的饱和度', '路口相位绿灯利用率', '路口一次通过率']
+    this.url = '/dws/interSignal/getInterDataTree'
   }
   componentDidMount = () => {
+    this.props.getInterDataTree()
   }
   componentDidUpdate = (prevProps) => {
   }
@@ -53,4 +58,14 @@ class Inter extends React.Component {
   }
 }
 
-export default Inter
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(Inter)

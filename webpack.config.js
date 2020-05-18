@@ -119,7 +119,7 @@ if (!httpENV) { // 如果是开发环境
   webpackConfig.devServer = {
     proxy: {
       '/atms': {
-        target: 'http://192.168.1.230:26001',
+        target: 'http://192.168.1.230:8888',
         // target: 'http://39.100.128.220:7002',
         // pathRewrite: { '^/api': '' },
         // changeOrigion: true, // 这个参数可以让target参数是域名。
