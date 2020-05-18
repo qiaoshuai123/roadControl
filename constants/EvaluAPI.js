@@ -1,1 +1,7 @@
 export const API_TREEDATA = '/dws/interSignal/getInterDataTree'
+export const API_INTERFLOW = '/dws/appExtend/getInterFlow'
+export const API_INTERQUEUE = '/appExtend/getInterQueueLenth'
+export const API_INTERSATURATION = '/appExtend/getInterSaturation'
+export const API_INTERSTOPNUM = '/appExtend/getInterStopNum'
+export const API_INTERRATIO = '/appExtend/getInterGreenUtilizeRatio'
+export const API_INTERPHASEODDS = '/appExtend/getInterPhasePassOdds'

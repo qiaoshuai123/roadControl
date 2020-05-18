@@ -1,21 +1,35 @@
 import React from 'react'
 import { Select, Icon } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import Header from '../Header/Header'
 import InterMsg from '../InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 import CycleCharts from '../../../components/CycleCharts/CycleCharts'
+import { getInterDataTree } from '../../../actions/evaluate'
 
 import styles from './Area.scss'
 
 class Area extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      interTree: null,
+    }
     this.blockDelay = ['本周昨日平均拥堵延时', '本周昨日晚高峰拥堵延时', '本周昨日早高峰拥堵延时', '上周昨日平均拥堵延时', '上周昨日早高峰拥堵延时', '上周昨日晚高峰拥堵延时']
     this.areas = ['区域平均拥堵延时', '区域平均延误时间', '区域平均速度']
   }
   componentDidMount = () => {
+    this.props.getInterDataTree().then((res) => {
+      console.log(res)
+      const { code, data } = res.data
+      if (code === '1') {
+        this.setState({ interTree: data }, () => {
+          console.log(this.state.interTree)
+        })
+      }
+    })
   }
   componentDidUpdate = (prevProps) => {
   }
@@ -36,7 +50,10 @@ class Area extends React.Component {
               </span>
             </div>
             <div className={styles.interTree}>
-              <CustomTree />
+              {
+                this.state.interTree &&
+                <CustomTree treeData={this.state.interTree} />
+              }
             </div>
           </div>
           <div className={styles.interChartsMsg}>
@@ -64,4 +81,14 @@ class Area extends React.Component {
   }
 }
 
-export default Area
+const mapStateToProps = (state) => {
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(Area)
