@@ -13,12 +13,32 @@ import styles from './Inter.scss'
 class Inter extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
-    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口的饱和度', '路口相位绿灯利用率', '路口一次通过率']
-    this.url = '/dws/interSignal/getInterDataTree'
+    this.state = {
+      interTree: null,
+    }
+    this.chartsParams = {
+      compare_end_date: '',
+      compare_start_data: '',
+      ft_dir_8_no: '',
+      gruop_type: '',
+      init_end_date: '',
+      init_start_date: '',
+      inter_id: '',
+      tp: '',
+      turn_dir_no: '',
+    }
+    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度', '路口相位绿灯利用率', '路口一次通过率']
   }
   componentDidMount = () => {
-    this.props.getInterDataTree()
+    this.props.getInterDataTree().then((res) => {
+      console.log(res)
+      const { code, data } = res.data
+      if (code === '1') {
+        this.setState({ interTree: data }, () => {
+          console.log(this.state.interTree)
+        })
+      }
+    })
   }
   componentDidUpdate = (prevProps) => {
   }
@@ -39,7 +59,10 @@ class Inter extends React.Component {
               </span>
             </div>
             <div className={styles.interTree}>
-              <CustomTree />
+              {
+                this.state.interTree &&
+                <CustomTree treeData={this.state.interTree} />
+              }
             </div>
           </div>
           <div className={styles.interChartsMsg}>

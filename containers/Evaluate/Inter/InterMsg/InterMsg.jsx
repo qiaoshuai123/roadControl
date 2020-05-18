@@ -31,8 +31,10 @@ class InterMsg extends React.Component {
           <DatePicker /> - <DatePicker suffixIcon={null} />
           <span style={{ marginLeft: '10px' }}>对比时间：</span>
           <DatePicker /> - <DatePicker />
-          <Select defaultValue="1" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
-            <Option key="1">选择一</Option>
+          <Select defaultValue="5mi" style={{ width: '90px', height: '30px', marginLeft: '5px' }}>
+            <Option key="5mi" value="5mi">5分钟</Option>
+            <Option key="5mi" value="10mi">10分钟</Option>
+            <Option key="5mi" value="15mi">15分钟</Option>
           </Select>
           <Select
             defaultValue={[1, 2]}

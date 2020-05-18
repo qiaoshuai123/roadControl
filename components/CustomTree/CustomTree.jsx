@@ -7,7 +7,8 @@ class CustomTree extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      expendsKey: [1, 11, 2, 22, 12],
+      expendsKey: [],
+      interTreeData: null,
     }
     this.loopDate = [
       {
@@ -52,11 +53,20 @@ class CustomTree extends React.Component {
       },
     ]
   }
-  componentDidMount = () => {}
+  componentDidMount = () => {
+    const { treeData } = this.props
+    if (treeData) {
+      this.setState({ interTreeData: treeData })
+    } else {
+      this.setState({ interTreeData: [] })
+    }
+    console.log(this.props.treeData)
+  }
   handleTreeSelect = (e) => {
     e.stopPropagation()
     const id = Number(e.currentTarget.getAttribute('id'))
     const index = this.state.expendsKey.indexOf(id)
+
     if (index >= 0) {
       this.state.expendsKey.splice(index, 1)
     } else {
@@ -67,7 +77,7 @@ class CustomTree extends React.Component {
   }
 
   render() {
-    const { expendsKey } = this.state
+    const { expendsKey, interTreeData } = this.state
     const loop = data => (
       data.map((item) => {
         const isOpen = expendsKey.indexOf(item.id) >= 0
@@ -97,7 +107,8 @@ class CustomTree extends React.Component {
       <div className={styles.treeWrapper}>
         <ul className={styles.treeList}>
           {
-            this.loopDate.map((item) => {
+            interTreeData &&
+            interTreeData.map((item) => {
               const isOpen = expendsKey.indexOf(item.id) >= 0
               return (
                 <li className={styles.treeLi} key={item.id} id={item.id} onClick={this.handleTreeSelect}>
@@ -106,7 +117,7 @@ class CustomTree extends React.Component {
                   </span>
                   <span className={styles.treeNode}>{item.name}</span>
                   {
-                    isOpen &&
+                    item.children &&
                     <ul className={styles.childTree} key={item.id}>
                       {loop(item.children)}
                     </ul>
