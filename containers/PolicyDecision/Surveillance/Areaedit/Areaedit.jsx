@@ -43,7 +43,7 @@ class Areaedit extends Component {
             <div><span>路口运行周期:</span><Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /></div>
             <div><span>干线总里程:</span><Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /></div>
             <div><span>干线总里程:</span><Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /></div>
-            <div><span>执行时段:</span><Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} />至<Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /></div>
+            <div><span>执行时段:</span><Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /><span className={styles.spans}>至</span> <Input name="MaintenancePhine" style={{ width: '90px' }} onChange={this.changValue} value={MaintenancePhine} /></div>
             <div className={styles.btnPopup}>添加&gt;&gt;</div>
           </div>
           <div className={styles.contain_bigBox}>

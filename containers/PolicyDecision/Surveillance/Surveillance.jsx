@@ -60,147 +60,16 @@ class SecretTask extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    const { interList, basicInterInfo, loadPlanTree, vip_delRoadSucess, vip_initRoad, vip_findRoadByVipId, vip_findList, vip_saveSucess, vip_addSucess, vip_delSucess, vip_unitRunStage } = this.props.data
+    const { interList, basicInterInfo } = this.props.data
     if (prevState.data !== this.props.data) {
       console.log(this.props.data)
     }
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
     }
-    // if (prevState.data.loadPlanTree !== loadPlanTree) {
-    //   this.getVipRoute()
-    // }
     if (prevState.data.basicInterInfo !== basicInterInfo) {
       this.getInterBasicInfo(basicInterInfo)
     }
-    if (prevState.data.vip_findRoadByVipId !== vip_findRoadByVipId) {
-      console.log(vip_findRoadByVipId, this.state.vipId, '当前有啥？')
-      const roadIdArr = vip_findRoadByVipId.vipRoadUnitsData // 路口id集合
-      this.setState({
-        secretTaskTop: vip_findRoadByVipId.vipRoadData[0], //浮层中上面勤务回显数据
-        secretTaskName: vip_findRoadByVipId.vipRoadData[0].START_UNIT,
-        secretTaskDetail: vip_findRoadByVipId.vipRoadData[0].DETAIL,
-      }, () => {
-        roadIdArr.map((item, index) => {
-          this.props.getInitRoad({
-            "afterStr": "",
-            "beforStr": "",
-            "id": item.UNIT_ID,
-            "orders": index + 1,
-            "vipId": this.state.vipId,
-          })
-        })
-        if (roadIdArr.length == 0) {
-          this.setState({
-            secretTaskLeft: null,
-          })
-        }
-      })
-    }
-    if (prevState.data.vip_initRoad !== vip_initRoad) {
-      const secretTaskLeft = this.state.secretTaskLeft ? JSON.parse(JSON.stringify(this.state.secretTaskLeft)) : [];
-      let selectStateArr = [];
-      vip_initRoad ? secretTaskLeft.push(vip_initRoad) : null
-      if (this.state.roadCrossingFlag) {
-        this.setState({
-          selectStateArr: [],
-        }, () => {
-          vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
-          selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
-        })
-      } else {
-        selectStateArr = this.state.selectStateArr ? JSON.parse(JSON.stringify(this.state.selectStateArr)) : [];
-        vip_initRoad.unitRunStageNo ? selectStateArr.push(vip_initRoad.unitRunStageNo) : selectStateArr.push(null)
-        // secretTaskLeft.map((item, i) =>{
-        //   item.id === unitId ? secretTaskLeft.splice(i, 1) : null
-        // })
-      }
-      this.setState({ secretTaskLeft, selectStateArr })
-    }
-    if (prevState.data.vip_findList !== vip_findList) {
-      this.setState({ secretTaskRight: vip_findList.vipRoadList.length > 0 ? vip_findList.vipRoadList : null })
-    }
-    if (prevState.data.vip_saveSucess !== vip_saveSucess) {
-      if (vip_saveSucess === 1) {
-        message.info('操作成功！')
-        this.props.getVipRoute().then(() => {
-          const { loadPlanTree } = this.props.data
-          this.state.vipId == '' ? this.setState({ vipId: loadPlanTree[loadPlanTree.length - 1].ID }, () => {
-            console.log(this.state.vipId, '看下当前的vipId')
-          }) : null
-        })
-      }
-    }
-    if (prevState.data.vip_addSucess !== vip_addSucess) {
-      if (vip_addSucess === 1) {
-        message.info('操作成功！')
-        this.props.getFindRoadByVipId(this.state.vipId)
-      } else if (vip_addSucess === 0) {
-        message.info('数据已存在！')
-        this.setState({
-          secretTaskLeft: this.state.secretTaskLeftOld,
-        })
-      }
-    }
-    if (prevState.data.vip_delSucess !== vip_delSucess) {
-      if (vip_delSucess === 1) {
-        message.info('操作成功！')
-        this.props.getFindRoadByVipId(this.state.vipId)
-      }
-    }
-    if (prevState.data.vip_unitRunStage !== vip_unitRunStage) {
-      if (vip_unitRunStage === 1) {
-        message.info('操作成功！')
-        this.props.getFindRoadByVipId(this.state.vipId)
-      }
-    }
-    if (prevState.data.vip_delRoadSucess !== vip_delRoadSucess) {
-      if (vip_delRoadSucess === 1) {
-        message.info('操作成功！')
-        this.props.getVipRoute()
-      }
-    }
-
-  }
-  handleShowInterMonitor = () => {
-    if (this.state.interMonitorLeft > 0) {
-      this.setState({
-        interMonitorLeft: -355,
-      })
-    } else {
-      this.setState({
-        interMonitorLeft: 15,
-      })
-    }
-  }
-  visibleShowLeft = (top, id, show) => { // 框的跳转与位置
-    if (top || id) {
-      this.setState({
-        visible: show,
-        visibleTop: top,
-        vipId: id,
-      }, () => {
-        console.log(id, '显示右键信息')
-      })
-    } else {
-      this.setState({
-        visible: show,
-      })
-    }
-  }
-  noShow = (e) => { // 禁止默认右键菜单
-    e.stopPropagation()
-    e.preventDefault()
-  }
-  // 路口列表
-  getInterList = (interList) => {
-    this.searchInterList = interList
-    this.setState({
-      interList,
-      searchInterList: interList,
-    }, () => {
-      this.addMarker(interList)
-    })
   }
   // 从子集获取区域id和index 请求路口
   getSelectTreeId = (id) => {
@@ -224,6 +93,44 @@ class SecretTask extends PureComponent {
       message.info('该路口尚未接入')
     }
   }
+  // 获取路口基本信息
+  getInterBasicInfo = (basicInterInfo) => {
+    this.belongArea = basicInterInfo.DISTRICT_NAME
+    this.controlState = basicInterInfo.CONTROLSTATE
+    this.alarmState = basicInterInfo.ALARMSTATE
+    this.singalIp = basicInterInfo.SIGNAL_IP
+    this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
+    this.runText = basicInterInfo.STAGE_CODE
+  }
+  // 删除路口
+  getDeleteUnitFram = (vipId, unitId) => {
+    const _this = this
+    Modal.confirm({
+      title: '确认要删除当前路口？',
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        _this.props.data.vip_delSucess = ''
+        _this.setState({
+          secretTaskLeft: null,
+        }, () => {
+          _this.props.getDeleteUnitFram(vipId, unitId)
+        })
+      },
+      onCancel() { },
+    })
+  }
+  // 路口列表
+  getInterList = (interList) => {
+    this.searchInterList = interList
+    this.setState({
+      interList,
+      searchInterList: interList,
+    }, () => {
+      this.addMarker(interList)
+    })
+  }
+
   // 添加坐标点
   addMarker = (interList) => {
     if (this.map) {
@@ -266,15 +173,7 @@ class SecretTask extends PureComponent {
       this.marker.setLngLat([lnglat.lng + 0.01, lnglat.lat + 0.01])
     }
   }
-  // 获取路口基本信息
-  getInterBasicInfo = (basicInterInfo) => {
-    this.belongArea = basicInterInfo.DISTRICT_NAME
-    this.controlState = basicInterInfo.CONTROLSTATE
-    this.alarmState = basicInterInfo.ALARMSTATE
-    this.singalIp = basicInterInfo.SIGNAL_IP
-    this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
-    this.runText = basicInterInfo.STAGE_CODE
-  }
+
   // 关闭自定义信息窗体
   removeInterInfo = () => {
     if (this.popup) {
@@ -335,7 +234,36 @@ class SecretTask extends PureComponent {
       message.info('该路口尚未接入')
     }
   }
-
+  handleShowInterMonitor = () => {
+    if (this.state.interMonitorLeft > 0) {
+      this.setState({
+        interMonitorLeft: -355,
+      })
+    } else {
+      this.setState({
+        interMonitorLeft: 15,
+      })
+    }
+  }
+  visibleShowLeft = (top, id, show) => { // 框的跳转与位置
+    if (top || id) {
+      this.setState({
+        visible: show,
+        visibleTop: top,
+        vipId: id,
+      }, () => {
+        console.log(id, '显示右键信息')
+      })
+    } else {
+      this.setState({
+        visible: show,
+      })
+    }
+  }
+  noShow = (e) => { // 禁止默认右键菜单
+    e.stopPropagation()
+    e.preventDefault()
+  }
   handleSearchInterFocus = () => {
     this.setState({ interListHeight: 300 })
   }
@@ -391,43 +319,12 @@ class SecretTask extends PureComponent {
       addGreenMeg: true,
     })
   }
-  // 初始化地图
-  renderMineMap = () => {
-    const map = new window.minemap.Map({
-      container: 'mapContainer',
-      style: '//minedata.cn/service/solu/style/id/2301',
-      center: [106.713906, 26.59579],
-      zoom: 14,
-      pitch: 0,
-      maxZoom: 17,
-      minZoom: 3,
-    })
-    this.map = map
-  }
   // 查看路线
   lookRoadLine = (vipId) => {
     this.props.getFindRoadByVipId(vipId)
     this.props.getFindList(vipId)
   }
-  // 删除路口
-  getDeleteUnitFram = (vipId, unitId) => {
-    const _this = this
-    Modal.confirm({
-      title: '确认要删除当前路口？',
-      cancelText: '取消',
-      okText: '确认',
-      onOk() {
-        _this.props.data.vip_delSucess = ''
-        _this.setState({
-          secretTaskLeft: null,
-        }, () => {
-          _this.props.getDeleteUnitFram(vipId, unitId)
-        })
 
-      },
-      onCancel() { },
-    })
-  }
   // 删除路线
   delRoadLine = (vipId) => {
     let roadLineName = ''
@@ -447,6 +344,19 @@ class SecretTask extends PureComponent {
       },
       onCancel() { },
     })
+  }
+  // 初始化地图
+  renderMineMap = () => {
+    const map = new window.minemap.Map({
+      container: 'mapContainer',
+      style: '//minedata.cn/service/solu/style/id/2301',
+      center: [106.713906, 26.59579],
+      zoom: 14,
+      pitch: 0,
+      maxZoom: 17,
+      minZoom: 3,
+    })
+    this.map = map
   }
   render() {
     const {
