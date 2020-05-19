@@ -549,8 +549,8 @@ class SecretTask extends PureComponent {
                     </Select>
                   </div>
                   <div>
-                    <span>相位图显示:</span>
-                    <b />
+                    <span className={styles.spansico}>相位图显示:</span>
+                    <b className={styles.icobs} />
                   </div>
                   <div>
                     <span>相位差:</span><Input style={{ width: '160px' }} name="MaintenancePhine" onChange={this.changValue} value={MaintenancePhine} />
