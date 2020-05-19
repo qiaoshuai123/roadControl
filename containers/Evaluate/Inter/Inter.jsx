@@ -2,11 +2,12 @@ import React from 'react'
 import { Select, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import $ from 'jquery'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
-import { getInterDataTree } from '../../../actions/evaluate'
+import { getInterDataTree, getInterFlow, getInterQueue, getInterSaturation, getInterStopNum, getInterRatio, getInterPhaseOdd } from '../../../actions/evaluate'
 
 import styles from './Inter.scss'
 
@@ -16,15 +17,15 @@ class Inter extends React.Component {
     this.state = {
       interTree: null,
       expendskey: [],
-      currentInterName:  null,
+      currentInterName: null,
     }
     this.chartsParams = {
-      compare_end_date: '',
-      compare_start_data: '',
+      compare_end_date: '2020-05-18 18:00',
+      compare_start_date: '2020-05-18 00:00',
       ft_dir_8_no: '1,2,3,4,5,6,7,8',
-      gruop_type: '',
-      init_end_date: '',
-      init_start_date: '',
+      group_type: 'inter',
+      init_end_date: '2020-05-19 18:00',
+      init_start_date: '2020-05-19 00:00',
       inter_id: '',
       tp: '5mi',
       turn_dir_no: '1,2,3,4',
@@ -34,18 +35,25 @@ class Inter extends React.Component {
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
       console.log(res)
-      const { code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName } = res.data
-      this.chartsParams.inter_id = firstInterId
-      const expendskey = [firstAdcode, firstCtlregionId]
+      const {
+        code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName,
+      } = res.data
       if (code === '1') {
-        this.setState({ interTree: data, expendskey, currentInterName: firstInterName }, () => {
-          // 调用图表接口
-        })
+        this.chartsParams.inter_id = firstInterId
+        const chartsParams = this.resetParams(this.chartsParams)
+        const expendskey = [firstAdcode, firstCtlregionId]
+        this.setState({ interTree: data, expendskey, currentInterName: firstInterName })
+        this.props.getInterFlow(chartsParams)
+        this.props.getInterQueue(chartsParams)
+        this.props.getInterSaturation(chartsParams)
+        this.props.getInterStopNum(chartsParams)
+        this.props.getInterRatio(chartsParams)
+        this.props.getInterPhaseOdd(chartsParams)
       }
     })
   }
-  getNowDate = () => {
-    const today = new Date()
+  getNowDate = (timeStep) => {
+    const today = timeStep ? new Date(timeStep) : new Date()
     const year = today.getFullYear()
     const month = ('0' + (today.getMonth() + 1)).slice(-2)
     const day = ('0' + (today.getDate())).slice(-2)
@@ -54,6 +62,16 @@ class Inter extends React.Component {
     // const seconds = ('0' + (today.getSeconds())).slice(-2)
     const nowTime = year + '-' + month + '-' + day
     return nowTime
+  }
+  resetParams = (params) => {
+    if (Object.prototype.toString.call(params) !== '[object Object]') return false
+    let newParams = '?'
+    Object.keys(params).forEach((item, index) => {
+      const itemMsg = item + '=' + params[item] + '&'
+      newParams += itemMsg
+    })
+    console.log(newParams)
+    return newParams
   }
   render() {
     const { Option } = Select
@@ -102,6 +120,12 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+    getInterFlow: bindActionCreators(getInterFlow, dispatch),
+    getInterQueue: bindActionCreators(getInterQueue, dispatch),
+    getInterSaturation: bindActionCreators(getInterSaturation, dispatch),
+    getInterStopNum: bindActionCreators(getInterStopNum, dispatch),
+    getInterRatio: bindActionCreators(getInterRatio, dispatch),
+    getInterPhaseOdd: bindActionCreators(getInterPhaseOdd, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Inter)
