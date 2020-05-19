@@ -64,7 +64,7 @@ class CustomTree extends React.Component {
   }
   handleTreeSelect = (e) => {
     e.stopPropagation()
-    const id = Number(e.currentTarget.getAttribute('id'))
+    const id = e.currentTarget.getAttribute('id')
     const index = this.state.expendsKey.indexOf(id)
 
     if (index >= 0) {
@@ -72,7 +72,6 @@ class CustomTree extends React.Component {
     } else {
       this.state.expendsKey.push(id)
     }
-    console.log(this.state.expendsKey)
     this.setState({ expendsKey: this.state.expendsKey })
   }
 
@@ -105,7 +104,7 @@ class CustomTree extends React.Component {
     )
     return (
       <div className={styles.treeWrapper}>
-        <ul className={styles.treeList}>
+        <ul className={styles.treeList} key={expendsKey.length}>
           {
             interTreeData &&
             interTreeData.map((item) => {
@@ -117,7 +116,7 @@ class CustomTree extends React.Component {
                   </span>
                   <span className={styles.treeNode}>{item.name}</span>
                   {
-                    item.children &&
+                    isOpen &&
                     <ul className={styles.childTree} key={item.id}>
                       {loop(item.children)}
                     </ul>

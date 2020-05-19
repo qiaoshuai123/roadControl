@@ -19,13 +19,13 @@ class Inter extends React.Component {
     this.chartsParams = {
       compare_end_date: '',
       compare_start_data: '',
-      ft_dir_8_no: '',
+      ft_dir_8_no: '1,2,3,4,5,6,7,8',
       gruop_type: '',
       init_end_date: '',
       init_start_date: '',
       inter_id: '',
-      tp: '',
-      turn_dir_no: '',
+      tp: '5mi',
+      turn_dir_no: '1,2,3,4',
     }
     this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度', '路口相位绿灯利用率', '路口一次通过率']
   }
@@ -40,7 +40,16 @@ class Inter extends React.Component {
       }
     })
   }
-  componentDidUpdate = (prevProps) => {
+  getNowDate = () => {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = ('0' + (today.getMonth() + 1)).slice(-2)
+    const day = ('0' + (today.getDate())).slice(-2)
+    // const hour = ('0' + (today.getHours())).slice(-2)
+    // const minutes = ('0' + (today.getMinutes())).slice(-2)
+    // const seconds = ('0' + (today.getSeconds())).slice(-2)
+    const nowTime = year + '-' + month + '-' + day
+    return nowTime
   }
   render() {
     const { Option } = Select

@@ -41,9 +41,14 @@ class InterMsg extends React.Component {
             mode="multiple"
             style={{ width: '160px', height: '30px', marginLeft: '5px' }}
           >
-            <Option key={1}>1</Option>
-            <Option key={2}>2</Option>
-            <Option key={3}>3</Option>
+            <Option key={1} value={1}>北</Option>
+            <Option key={2} value={2}>东</Option>
+            <Option key={3} value={3}>南</Option>
+            <Option key={1} value={4}>西</Option>
+            <Option key={2} value={5}>东北</Option>
+            <Option key={3} value={6}>东南</Option>
+            <Option key={2} value={7}>西南</Option>
+            <Option key={3} value={8}>西北</Option>
           </Select>
           <div
             className={classNames({ [styles.searchBtn]: true, [styles.searchActive]: searchName === 'search' })}
