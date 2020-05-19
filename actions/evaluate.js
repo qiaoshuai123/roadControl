@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+
 import RestUtil from '../utils/RestUtil'
 import {
   API_TREEDATA,
