@@ -1,11 +1,13 @@
 import React from 'react'
 import { Select, Icon, Switch } from 'antd'
 import styles from './AreaOptimize.scss'
-
 import Header from '../Header/Header'
-import CustomTree from './CustomTree/CustomTree'
+import { getInterDataTree } from '../../../actions/evaluate'
+import CustomTree from '../../../components/CustomTree/CustomTree'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import echartss from './chartsOptions'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Intersection from './IntersectionList/Intersection'
 import AreaConfig from './AreaConfig/AreaConfig'
 import InfoBg from './img/Infobg.png'
@@ -16,6 +18,8 @@ class AreaOptimize extends React.Component {
     this.state = {
       num: 1,
       showConfig: false,
+      interTree: null,
+      expendskey: [],
     }
     this.echarts = echartss
     this.btnList = [
@@ -34,6 +38,16 @@ class AreaOptimize extends React.Component {
 
   componentDidMount = () => {
     this.renderMineMap()
+    this.props.getInterDataTree().then((res) => {
+      console.log(res, '打印里面的内容')
+      const { code, data, firstAdcode, firstCtlregionId } = res.data
+      const expendskey = [firstAdcode, firstCtlregionId]
+      if (code === '1') {
+        this.setState({ interTree: data, expendskey }, () => {
+          // 调用图表接口
+        })
+      }
+    })
   }
   onChange = () => { // 协调方向切换
 
@@ -143,6 +157,7 @@ class AreaOptimize extends React.Component {
   render() {
     const { Option } = Select
     const { num, showConfig } = this.state
+    console.log(this.state.interTree, 'qiaoshsss')
     return (
       <div className={styles.areaOptWrapper} id="mapContainer">
         <Header {...this.props} />
@@ -163,7 +178,10 @@ class AreaOptimize extends React.Component {
               </span>
             </div>
             <div className={styles.interTree}>
-              <CustomTree />
+              {
+                this.state.interTree &&
+                <CustomTree treeData={this.state.interTree} keys={this.state.expendskey} />
+              }
             </div>
           </div>
           <ul className={styles.signaContainer_center}>
@@ -217,4 +235,15 @@ class AreaOptimize extends React.Component {
   }
 }
 
-export default AreaOptimize
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    data: state.data,
+  }
+}
+const mapDisPatchToProps = (dispatch) => {
+  return {
+    getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+  }
+}
+export default connect(mapStateToProps, mapDisPatchToProps)(AreaOptimize) 

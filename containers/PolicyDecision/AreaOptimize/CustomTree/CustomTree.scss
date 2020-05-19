@@ -1,4 +1,40 @@
 .treeWrapper {
+    .interSearch {
+        display: flex;
+        :global(.ant-select-selection) {
+            width: 100px;
+            background-color: #063657;
+            border: 1px solid #063657;
+            outline: none;
+            color: #f1f1fb;
+            box-shadow: none;
+        }
+        :global(.ant-select-arrow) {
+            color: #f1f1fb;
+        }
+        .searchBox {
+            position: relative;
+            .searchInput {
+                width: 200px;
+                height: 32px;
+                padding-left: 5px;
+                margin-left: 10px;
+                background-color: #063657;
+                border: 1px solid #063657;
+                border-radius: 4px;
+                outline: none;
+                color: #f1f1fb;
+            }
+            .searchIcon {
+                position: absolute;
+                right: 10px;
+                top: 8px;
+                font-size: 18px;
+                color: #07bdfb;
+                cursor: pointer;
+            }
+        }
+    }
     .treeList {
         li {
             margin: 0;
@@ -21,7 +57,7 @@
                 border: 0 none;
                 outline: none;
                 font-size: 24px;
-                color: #F2B20F;
+                color: #f2b20f;
                 cursor: pointer;
             }
             .treeNode {
@@ -49,7 +85,7 @@
             .childTree {
                 margin: 0;
                 padding: 0 0 0 25px;
-                transition: height ease .2s;
+                transition: height ease 0.2s;
                 overflow: hidden;
                 &::after {
                     position: absolute;
@@ -58,8 +94,8 @@
                     width: 1px;
                     height: 10px;
                     // margin: -22px 0 0;
-                    border-left: 1px dashed #15AEE5;
-                    content: ' ';
+                    border-left: 1px dashed #15aee5;
+                    content: " ";
                 }
                 .childLi {
                     position: relative;
@@ -70,8 +106,8 @@
                         height: 100%;
                         height: calc(100% - 20px);
                         margin: 22px 0 0;
-                        border-left: 1px dashed #15AEE5;
-                        content: ' ';
+                        border-left: 1px dashed #15aee5;
+                        content: " ";
                     }
                     &:first-child {
                         margin-top: 7px;
@@ -91,7 +127,7 @@
                     border: 0 none;
                     outline: none;
                     font-size: 20px;
-                    color: #15AEE5;
+                    color: #15aee5;
                     cursor: pointer;
                     &::before {
                         position: absolute;
@@ -99,8 +135,8 @@
                         width: 10px;
                         height: 1px;
                         margin: 12px 0 0;
-                        border-top: 1px dashed #15AEE5;
-                        content: ' ';
+                        border-top: 1px dashed #15aee5;
+                        content: " ";
                     }
                 }
                 .childNode {
@@ -128,8 +164,8 @@
 }
 :global(.ant-tree.ant-tree-show-line li span.ant-tree-switcher) {
     background-color: transparent;
-    color: #15AEE5;
+    color: #15aee5;
 }
 :global(.ant-tree.ant-tree-show-line li:not(:last-child)::before) {
-    border: 1px dashed #15AEE5;
+    border: 1px dashed #15aee5;
 }

@@ -33,7 +33,6 @@ class Inter extends React.Component {
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
-      console.log(res)
       const { code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName } = res.data
       this.chartsParams.inter_id = firstInterId
       const expendskey = [firstAdcode, firstCtlregionId]

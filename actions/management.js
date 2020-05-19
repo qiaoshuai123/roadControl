@@ -9,6 +9,7 @@ import {
   API_SUB_SAVEORUPDATEFORM, API_SUB_VALIDATE,
   API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
   API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE, API_TIM_LOADMORE, API_TIM_CFGIMGS,
+  API_EVLRE_GETINTERDATATREE,
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -286,3 +287,5 @@ export const gettimvalidate = (id) => {
     return result
   }
 }
+
+// 区域优化
