@@ -15,6 +15,8 @@ class Inter extends React.Component {
     super(props)
     this.state = {
       interTree: null,
+      expendskey: [],
+      currentInterName:  null,
     }
     this.chartsParams = {
       compare_end_date: '',
@@ -32,10 +34,12 @@ class Inter extends React.Component {
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
       console.log(res)
-      const { code, data } = res.data
+      const { code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName } = res.data
+      this.chartsParams.inter_id = firstInterId
+      const expendskey = [firstAdcode, firstCtlregionId]
       if (code === '1') {
-        this.setState({ interTree: data }, () => {
-          console.log(this.state.interTree)
+        this.setState({ interTree: data, expendskey, currentInterName: firstInterName }, () => {
+          // 调用图表接口
         })
       }
     })
@@ -70,12 +74,12 @@ class Inter extends React.Component {
             <div className={styles.interTree}>
               {
                 this.state.interTree &&
-                <CustomTree treeData={this.state.interTree} />
+                <CustomTree treeData={this.state.interTree} keys={this.state.expendskey} />
               }
             </div>
           </div>
           <div className={styles.interChartsMsg}>
-            <h3 className={styles.interName}>当前路口 : 人民大道北京路</h3>
+            <h3 className={styles.interName}>当前路口 : {this.state.currentInterName}</h3>
             {
               this.indicators.map((item) => {
                 return (
