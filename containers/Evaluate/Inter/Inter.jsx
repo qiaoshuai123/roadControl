@@ -20,7 +20,7 @@ class Inter extends React.Component {
       currentInterName: null,
     }
     this.chartsParams = {
-      compare_end_date: '2020-05-18 18:00',
+      compare_end_date: '2019-07-07 18:00',
       compare_start_date: '2020-05-18 00:00',
       ft_dir_8_no: '1,2,3,4,5,6,7,8',
       group_type: 'inter',
