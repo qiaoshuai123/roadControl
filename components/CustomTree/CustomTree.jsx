@@ -57,7 +57,7 @@ class CustomTree extends React.Component {
   componentDidMount = () => {
     const { treeData, keys } = this.props
     if (treeData) {
-      this.setState({ interTreeData: treeData, expendsKey: keys })
+      this.setState({ interTreeData: treeData, expendsKey: keys || [] })
     } else {
       this.setState({ interTreeData: [] })
     }
