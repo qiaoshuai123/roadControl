@@ -20,13 +20,13 @@ class Inter extends React.Component {
       currentInterName: null,
     }
     this.chartsParams = {
-      compare_end_date: '2019-07-07 18:00',
-      compare_start_date: '2020-05-18 00:00',
+      compare_end_date: '2019-07-12 18:00',
+      compare_start_date: '2019-07-12 00:00',
       ft_dir_8_no: '1,2,3,4,5,6,7,8',
       group_type: 'inter',
-      init_end_date: '2020-05-19 18:00',
-      init_start_date: '2020-05-19 00:00',
-      inter_id: '',
+      init_end_date: '2019-08-26 18:00',
+      init_start_date: '2019-07-07 00:00',
+      inter_id: '11LAU063T70',
       tp: '5mi',
       turn_dir_no: '1,2,3,4',
     }
@@ -42,9 +42,14 @@ class Inter extends React.Component {
         code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName,
       } = res.data
       if (code === '1') {
+<<<<<<< HEAD
         this.chartsParams.inter_id = firstInterId
         const chartsParams = this.resetParams(this.chartsParams)
         const chartsId = this.resetParams(this.chars_id)
+=======
+        // this.chartsParams.inter_id = firstInterId // 后期放开注释，首次获取的interid
+        const chartsParams = this.resetParams(this.chartsParams) || ''
+>>>>>>> f0b870325f82db7165223765f283852447cba82f
         const expendskey = [firstAdcode, firstCtlregionId]
         this.setState({ interTree: data, expendskey, currentInterName: firstInterName })
         this.props.getInterFlow(chartsParams)
@@ -71,7 +76,7 @@ class Inter extends React.Component {
   resetParams = (params) => {
     if (Object.prototype.toString.call(params) !== '[object Object]') return false
     let newParams = '?'
-    Object.keys(params).forEach((item, index) => {
+    Object.keys(params).forEach((item) => {
       const itemMsg = item + '=' + params[item] + '&'
       newParams += itemMsg
     })
