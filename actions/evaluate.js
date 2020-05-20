@@ -11,6 +11,7 @@ import {
     API_INTERSTOPNUM,
     API_INTERRATIO,
     API_INTERPHASEODDS,
+    API_INTERCIRCULAR,
 } from '../constants/EvaluAPI'
 
 export const getInterDataTree = () => {
@@ -58,6 +59,12 @@ export const getInterRatio = (params) => {
 export const getInterPhaseOdd = (params) => {
     return async() => {
         const result = await RestUtil.post(`${API_INTERPHASEODDS}${params}`)
+        return result
+    }
+}
+export const getInterCircular = (params) => {
+    return async() => {
+        const result = await RestUtil.post(`${API_INTERCIRCULAR}${params}`)
         return result
     }
 }
