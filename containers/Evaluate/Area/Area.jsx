@@ -7,7 +7,7 @@ import Header from '../Header/Header'
 import InterMsg from '../InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 import CycleCharts from '../../../components/CycleCharts/CycleCharts'
-import { getInterDataTree } from '../../../actions/evaluate'
+import { getInterDataTree, getInterCircular } from '../../../actions/evaluate'
 
 import styles from './Area.scss'
 
@@ -29,6 +29,9 @@ class Area extends React.Component {
           console.log(this.state.interTree)
         })
       }
+    })
+    this.props.getInterCircular().then((res) => {
+      console.log(res, 'res')
     })
   }
   componentDidUpdate = (prevProps) => {
@@ -89,6 +92,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+    getInterCircular: bindActionCreators(getInterCircular, dispatch), 
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Area)
