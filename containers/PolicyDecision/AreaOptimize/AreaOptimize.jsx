@@ -2,7 +2,7 @@ import React from 'react'
 import { Select, Icon, Switch } from 'antd'
 import styles from './AreaOptimize.scss'
 import Header from '../Header/Header'
-import { getInterDataTree } from '../../../actions/evaluate'
+import { getInterDataTree, getInterListRefresh } from '../../../actions/management'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import echartss from './chartsOptions'
@@ -20,6 +20,8 @@ class AreaOptimize extends React.Component {
       showConfig: false,
       interTree: null,
       expendskey: [],
+      Listofintersections: [],
+      isBtnShow: true,
     }
     this.echarts = echartss
     this.btnList = [
@@ -34,23 +36,43 @@ class AreaOptimize extends React.Component {
     ]
     this.marker = null
     this.infowindow = 0
+    this.dir = 1
   }
 
   componentDidMount = () => {
     this.renderMineMap()
-    this.props.getInterDataTree().then((res) => {
-      console.log(res, '打印里面的内容')
-      const { code, data, firstAdcode, firstCtlregionId } = res.data
-      const expendskey = [firstAdcode, firstCtlregionId]
-      if (code === '1') {
-        this.setState({ interTree: data, expendskey }, () => {
-          // 调用图表接口
-        })
-      }
+    this.props.getInterDataTree()
+  }
+  componentDidUpdate = (prevState) => {
+    const { InterListRefresh, InterDataTree } = this.props.data
+    if (prevState.data.InterListRefresh !== InterListRefresh) {
+      this.getsInterListRefresh(InterListRefresh)
+    }
+    if (prevState.data.InterDataTree !== InterDataTree) {
+      this.getsInterDataTree(InterDataTree)
+    }
+  }
+  onChange = (e) => { // 协调方向切换
+    this.setState({
+      isBtnShow: e,
     })
   }
-  onChange = () => { // 协调方向切换
-
+  getsInterDataTree = (InterDataTree) => {
+    console.log(InterDataTree, '显示树形结构')
+    const { code, data, firstAdcode, firstCtlregionId, firstRdchlId } = InterDataTree
+    const expendskey = [firstAdcode, firstCtlregionId]
+    this.firstAdcode = firstAdcode
+    this.firstCtlregionId = firstCtlregionId
+    if (code === '1') {
+      this.setState({ interTree: data, expendskey })
+      const obj = `dir=${this.dir}&evlregion_id=${firstAdcode}&rdchl_id=${firstRdchlId}`
+      this.props.getInterListRefresh(obj)
+    }
+  }
+  getsInterListRefresh = (InterListRefresh) => { // 数据展示
+    this.setState({
+      Listofintersections: InterListRefresh,
+    })
   }
   // 添加坐标点
   addMarker = () => {
@@ -156,7 +178,7 @@ class AreaOptimize extends React.Component {
   }
   render() {
     const { Option } = Select
-    const { num, showConfig } = this.state
+    const { num, showConfig, Listofintersections, isBtnShow } = this.state
     console.log(this.state.interTree, 'qiaoshsss')
     return (
       <div className={styles.areaOptWrapper} id="mapContainer">
@@ -215,7 +237,7 @@ class AreaOptimize extends React.Component {
             <div className={styles.title}><div>知春路</div><div><span onClick={this.handleShowConfig}>区域优化配置</span></div></div>
             <div className={styles.signaContainer_right_top}>
               {
-                new Array(6).fill(true).map(item => <Intersection key={item} />)
+                Listofintersections && Listofintersections.map(item => <Intersection isBtnShow={isBtnShow} itemList={item} key={item.id} />)
               }
             </div>
             <div className={styles.signaContainer_right_bom}>
@@ -236,14 +258,14 @@ class AreaOptimize extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
-    data: state.data,
+    data: { ...state.data, ...state.managements },
   }
 }
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
+    getInterListRefresh: bindActionCreators(getInterListRefresh, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(AreaOptimize) 

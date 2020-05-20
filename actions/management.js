@@ -9,7 +9,7 @@ import {
   API_SUB_SAVEORUPDATEFORM, API_SUB_VALIDATE,
   API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
   API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE, API_TIM_LOADMORE, API_TIM_CFGIMGS,
-  API_EVLRE_GETINTERDATATREE,
+  API_EVLRE_GETINTERLSITREFRESH, API_EVLRE_GETINTERDATATREE,
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -289,3 +289,27 @@ export const gettimvalidate = (id) => {
 }
 
 // 区域优化
+export const getInterDataTree = () => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_EVLRE_GETINTERDATATREE}`)
+    if (result.data.code === '1') {
+      dispatch({ type: types.GET_EVLRE_GETINTERDATATREE, payload: result.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getInterListRefresh = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_EVLRE_GETINTERLSITREFRESH}?${id}`)
+    if (result.data.code === '1') {
+      dispatch({ type: types.GET_EVLRE_GETINTERLSITREFRESH, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}

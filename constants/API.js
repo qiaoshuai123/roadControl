@@ -131,5 +131,7 @@ export const API_SIGNAL_LOADUNIT = '/atms/signalControlLog/loadUnit' // 控制�
 export const API_SIGNAL_LOADUSER = '/atms/signalControlLog/loadUser' // 控制记录日志-所属用户-下拉框
 
 // 区域优化
+export const API_EVLRE_GETINTERDATATREE = '/dws/evlregionOpt/getInterDataTree' // 路口树结构
 export const API_EVLRE_ADDEVLREGIONOPTPLAN = '/dws/evlregionOpt/addEvlregionOptPlan' // 保存方案
 export const API_EVLRE_GETEVLREGIONOPTSETSELECT = '/dws/evlregionOpt/getEvlregionOptSetSelect' // 区域优化设置下
+export const API_EVLRE_GETINTERLSITREFRESH = '/dws/evlregionOpt/getInterListRefresh' // 刷新路口数据
