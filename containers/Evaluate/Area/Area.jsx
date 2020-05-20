@@ -19,22 +19,38 @@ class Area extends React.Component {
     }
     this.blockDelay = ['本周昨日平均拥堵延时', '本周昨日晚高峰拥堵延时', '本周昨日早高峰拥堵延时', '上周昨日平均拥堵延时', '上周昨日早高峰拥堵延时', '上周昨日晚高峰拥堵延时']
     this.areas = ['区域平均拥堵延时', '区域平均延误时间', '区域平均速度']
+    this.chars_id = {
+      evlregion_id: '460107',
+    }
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
-      console.log(res)
+      this.chartsId = this.resetEvlregionId(this.chars_id)
+      console.log(this.chartsId, '11111')
+      console.log(res, 'res')
       const { code, data } = res.data
+      console.log(code, 'code')
       if (code === '1') {
+        this.props.getInterCircular(this.chartsId).then((res) => {
+          console.log(res, 'res')
+        })
         this.setState({ interTree: data }, () => {
           console.log(this.state.interTree)
         })
       }
     })
-    this.props.getInterCircular().then((res) => {
-      console.log(res, 'res')
-    })
+  
   }
   componentDidUpdate = (prevProps) => {
+  }
+  resetEvlregionId = (evlregionId) => {
+    if (Object.prototype.toString.call(evlregionId) !== '[object Object]') return false
+    let newId = '?'
+    Object.keys(evlregionId).forEach((item, index) => {
+      const itemMsg = item + '=' + evlregionId[item]
+      newId += itemMsg
+    })
+    return newId
   }
   render() {
     const { Option } = Select
@@ -82,6 +98,7 @@ class Area extends React.Component {
       </div>
     )
   }
+
 }
 
 const mapStateToProps = (state) => {
@@ -92,7 +109,7 @@ const mapStateToProps = (state) => {
 const mapDisPatchToProps = (dispatch) => {
   return {
     getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
-    getInterCircular: bindActionCreators(getInterCircular, dispatch), 
+    getInterCircular: bindActionCreators(getInterCircular, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Area)

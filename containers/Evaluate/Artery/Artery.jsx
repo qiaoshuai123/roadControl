@@ -17,6 +17,9 @@ class Artery extends React.Component {
       interTree: null,
     }
     this.arteries = ['干线平均延误时间', '干线平均速度', '干线停车次数']
+    this.chars_id = {
+      evlregion_id: '460107',
+    }
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {

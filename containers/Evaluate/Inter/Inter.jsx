@@ -7,7 +7,7 @@ import $ from 'jquery'
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
-import { getInterDataTree, getInterFlow, getInterQueue, getInterSaturation, getInterStopNum, getInterRatio, getInterPhaseOdd } from '../../../actions/evaluate'
+import { getInterDataTree, getInterFlow, getInterQueue, getInterSaturation, getInterStopNum, getInterRatio, getInterPhaseOdd, getInterCircular } from '../../../actions/evaluate'
 
 import styles from './Inter.scss'
 
@@ -30,6 +30,9 @@ class Inter extends React.Component {
       tp: '5mi',
       turn_dir_no: '1,2,3,4',
     }
+    this.chars_id = {
+      evlregion_id: '460107',
+    }
     this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度', '路口相位绿灯利用率', '路口一次通过率']
   }
   componentDidMount = () => {
@@ -41,6 +44,7 @@ class Inter extends React.Component {
       if (code === '1') {
         this.chartsParams.inter_id = firstInterId
         const chartsParams = this.resetParams(this.chartsParams)
+        const chartsId = this.resetParams(this.chars_id)
         const expendskey = [firstAdcode, firstCtlregionId]
         this.setState({ interTree: data, expendskey, currentInterName: firstInterName })
         this.props.getInterFlow(chartsParams)
@@ -49,6 +53,7 @@ class Inter extends React.Component {
         this.props.getInterStopNum(chartsParams)
         this.props.getInterRatio(chartsParams)
         this.props.getInterPhaseOdd(chartsParams)
+        this.props.getInterCircular(chartsId)
       }
     })
   }
@@ -70,7 +75,6 @@ class Inter extends React.Component {
       const itemMsg = item + '=' + params[item] + '&'
       newParams += itemMsg
     })
-    console.log(newParams)
     return newParams
   }
   render() {
@@ -126,6 +130,7 @@ const mapDisPatchToProps = (dispatch) => {
     getInterStopNum: bindActionCreators(getInterStopNum, dispatch),
     getInterRatio: bindActionCreators(getInterRatio, dispatch),
     getInterPhaseOdd: bindActionCreators(getInterPhaseOdd, dispatch),
+    getInterCircular: bindActionCreators(getInterCircular, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Inter)
