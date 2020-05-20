@@ -47,6 +47,7 @@ class SecretTask extends PureComponent {
     this.imgBgUrl = `${this.processUrl}/atms/comm/dzimg/10/`
     this.imgDirUrl = `${this.processUrl}/atms/comm/dzimg/2/`
     this.imgInfoUrl = `${this.processUrl}/atms/comm/images/anniu/`
+    this.IsaddEvlregionOptPlan = false // 判断是否保存方案
   }
   componentDidMount() {
     this.renderMineMap()
@@ -130,7 +131,14 @@ class SecretTask extends PureComponent {
       this.addMarker(interList)
     })
   }
-
+  changValue = (e) => { // 绿波方案基本信息
+    const name = e.target.name
+    const value = e.target.value
+    console.log(name, value)
+    this.setState({
+      [name]: value,
+    })
+  }
   // 添加坐标点
   addMarker = (interList) => {
     if (this.map) {

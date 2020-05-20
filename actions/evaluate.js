@@ -16,6 +16,7 @@ import {
   API_TRUNKLINESPEED,
   API_TRUNKLINESTOPNUM,
   API_TRUNKLINETRAVEROUTE,
+  API_INTERCIRCULAR,
 } from '../constants/EvaluAPI'
 
 export const getInterDataTree = () => {
@@ -172,5 +173,12 @@ export const getTrunkLineTravelRoute = (params) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const getInterCircular = (params) => {
+  return async() => {
+    const result = await RestUtil.post(`${API_INTERCIRCULAR}${params}`)
+    return result
   }
 }

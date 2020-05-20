@@ -55,6 +55,15 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { loadmore: payload })
     case types.GET_TIM_CFGIMGS:
       return Object.assign({}, state, { cfgImgs: payload })
+    // 区域优化
+    case types.GET_EVLRE_GETINTERDATATREE:
+      return Object.assign({}, state, { InterDataTree: payload })
+    case types.GET_EVLRE_ADDEVLREGIONOPTPLAN:
+      return Object.assign({}, state, { addEvlregionOptPlan: payload })
+    case types.GET_EVLRE_GETEVLREGIONOPTSETSELECT:
+      return Object.assign({}, state, { EvlregionOptSetSelect: payload })
+    case types.GET_EVLRE_GETINTERLSITREFRESH:
+      return Object.assign({}, state, { InterListRefresh: payload })
     default:
       return state
   }

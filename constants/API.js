@@ -129,3 +129,9 @@ export const API_SIGNAL_LOADDISTRICT = '/atms/signalControlLog/loadDistrict' // 
 export const API_SIGNAL_LOADSIGNALCONTROLLOGLIST = '/atms/signalControlLog/loadSignalControlLogList' // 控制记录日志-分页查询列表
 export const API_SIGNAL_LOADUNIT = '/atms/signalControlLog/loadUnit' // 控制记录日志-所属路口-下拉框
 export const API_SIGNAL_LOADUSER = '/atms/signalControlLog/loadUser' // 控制记录日志-所属用户-下拉框
+
+// 区域优化
+export const API_EVLRE_GETINTERDATATREE = '/dws/evlregionOpt/getInterDataTree' // 路口树结构
+export const API_EVLRE_ADDEVLREGIONOPTPLAN = '/dws/evlregionOpt/addEvlregionOptPlan' // 保存方案
+export const API_EVLRE_GETEVLREGIONOPTSETSELECT = '/dws/evlregionOpt/getEvlregionOptSetSelect' // 区域优化设置下
+export const API_EVLRE_GETINTERLSITREFRESH = '/dws/evlregionOpt/getInterListRefresh' // 刷新路口数据
