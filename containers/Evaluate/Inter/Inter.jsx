@@ -42,14 +42,8 @@ class Inter extends React.Component {
         code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName,
       } = res.data
       if (code === '1') {
-<<<<<<< HEAD
-        this.chartsParams.inter_id = firstInterId
-        const chartsParams = this.resetParams(this.chartsParams)
-        const chartsId = this.resetParams(this.chars_id)
-=======
         // this.chartsParams.inter_id = firstInterId // 后期放开注释，首次获取的interid
         const chartsParams = this.resetParams(this.chartsParams) || ''
->>>>>>> f0b870325f82db7165223765f283852447cba82f
         const expendskey = [firstAdcode, firstCtlregionId]
         this.setState({ interTree: data, expendskey, currentInterName: firstInterName })
         this.props.getInterFlow(chartsParams)
