@@ -2,7 +2,6 @@ import React from 'react'
 import { Select, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import $ from 'jquery'
 
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
@@ -34,7 +33,6 @@ class Inter extends React.Component {
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
-      console.log(res)
       const {
         code, data, firstAdcode, firstCtlregionId, firstInterId, firstInterName,
       } = res.data
@@ -52,6 +50,32 @@ class Inter extends React.Component {
       }
     })
   }
+  componentDidUpdate = (prevState) => {
+    const {
+      interflow, interqueue, intersatuation, interstopnum, interratio, interphaseodd,
+    } = this.props.data
+    if (prevState.data.interflow !== interflow) {
+      console.log(interflow, '路口流量')
+      const { init, compare, x } = interflow
+      this.resetChartsDatas(init, compare, x)
+    }
+    if (prevState.data.interqueue !== interqueue) {
+      console.log(interqueue, '路口排队')
+    }
+    if (prevState.data.intersatuation !== intersatuation) {
+      console.log(intersatuation, '路口饱和度')
+    }
+    if (prevState.data.interstopnum !== interstopnum) {
+      console.log(interstopnum, '路口停车次数')
+    }
+    if (prevState.data.interratio !== interratio) {
+      console.log(interratio, '路口通过率')
+    }
+    if (prevState.data.interphaseodd !== interphaseodd) {
+      console.log(interphaseodd, '路口相位')
+    }
+  }
+
   getNowDate = (timeStep) => {
     const today = timeStep ? new Date(timeStep) : new Date()
     const year = today.getFullYear()
@@ -62,6 +86,41 @@ class Inter extends React.Component {
     // const seconds = ('0' + (today.getSeconds())).slice(-2)
     const nowTime = year + '-' + month + '-' + day
     return nowTime
+  }
+  resetChartsDatas = (...args) => {
+    const [init, compare, x] = args
+    console.log(init, compare, x)
+    if (x.length > 0) {
+      const initarr = new Array(x.length).fill(0)
+      const comparearr = new Array(x.length).fill(0)
+      Object.values(init)[0].forEach((item) => {
+        const indexs = x.indexOf(item.time)
+        if (indexs >= 0) {
+          initarr[indexs] = item.data
+        }
+      })
+      Object.values(compare)[0].forEach((item) => {
+        const indexs = x.indexOf(item.time)
+        if (indexs >= 0) {
+          comparearr[indexs] = item.data
+        }
+      })
+      const series = [
+        {
+          name: '路口-初始',
+          type: 'line',
+          data: initarr,
+        },
+        {
+          name: '路口-对比',
+          type: 'line',
+          data: comparearr,
+        },
+      ]
+      const obj = { legend: ['路口-初始', '路口-对比'], time: x, series }
+      return obj
+    }
+    return {}
   }
   resetParams = (params) => {
     if (Object.prototype.toString.call(params) !== '[object Object]') return false
@@ -113,7 +172,7 @@ class Inter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.data,
+    data: state.evaluate,
   }
 }
 const mapDisPatchToProps = (dispatch) => {
