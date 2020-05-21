@@ -24,6 +24,12 @@ const evaluate = (state = {}, action) => {
       return Object.assign({}, state, { stopnum: payload })
     case types.GET_TRUNKLINETRAVEROUTE:
       return Object.assign({}, state, { traveroute: payload })
+    case types.GET_AREACONGESTIONTIME:
+      return Object.assign({}, state, { congestionTime: payload })
+    case types.GET_AREADELAYTIME:
+      return Object.assign({}, state, { areadelaytime: payload })
+    case types.GET_AREAAVGSPEED:
+      return Object.assign({}, state, { areaAvgspeed: payload })
     default:
       return state
   }

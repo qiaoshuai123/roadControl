@@ -17,6 +17,10 @@ import {
   API_TRUNKLINESTOPNUM,
   API_TRUNKLINETRAVEROUTE,
   API_INTERCIRCULAR,
+  API_TRUNKLINEDATATREE,
+  API_AREACONGESTIONTIME,
+  API_AREADELAYTIME,
+  API_AREAAVGSPEED,
 } from '../constants/EvaluAPI'
 
 export const getInterDataTree = () => {
@@ -173,6 +177,58 @@ export const getTrunkLineTravelRoute = (params) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const getAreaCongestionTime = (params) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_AREACONGESTIONTIME}${params}`)
+      if (result.data.code === '1') {
+        dispatch({ type: types.GET_AREACONGESTIONTIME, payload: result.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getAreaDelayTime = (params) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_AREADELAYTIME}${params}`)
+      if (result.data.code === '1') {
+        dispatch({ type: types.GET_AREADELAYTIME, payload: result.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getAreaAvgSpeed = (params) => {
+  return async (dispatch) => {
+    try {
+      const result = await RestUtil.post(`${API_AREAAVGSPEED}${params}`)
+      if (result.data.code === '1') {
+        dispatch({ type: types.GET_AREAAVGSPEED, payload: result.data })
+      } else {
+        console.error(result.data.message)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const getTrunkLineDataTree = () => {
+  return async () => {
+    const result = await RestUtil.post(API_TRUNKLINEDATATREE)
+    return result
   }
 }
 

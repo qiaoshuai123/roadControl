@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import Header from '../Header/Header'
 import InterMsg from '../InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
-import { getInterDataTree, getTrunklineDelayTime, getTrunklineSpeed, getTrunklineStopNum, getTrunkLineTravelRoute } from '../../../actions/evaluate'
+import { getInterDataTree, getTrunklineDelayTime, getTrunklineSpeed, getTrunklineStopNum, getTrunkLineTravelRoute, getTrunkLineDataTree } from '../../../actions/evaluate'
 import { resetParams } from '../../../utils/ResetParams'
 
 import styles from './Artery.scss'
@@ -28,7 +28,7 @@ class Artery extends React.Component {
     }
   }
   componentDidMount = () => {
-    this.props.getInterDataTree().then((res) => {
+    this.props.getTrunkLineDataTree().then((res) => {
       console.log(res)
       const { code, data } = res.data
       if (code === '1') {
@@ -107,6 +107,7 @@ const mapDisPatchToProps = (dispatch) => {
     getTrunklineSpeed: bindActionCreators(getTrunklineSpeed, dispatch),
     getTrunklineStopNum: bindActionCreators(getTrunklineStopNum, dispatch),
     getTrunkLineTravelRoute: bindActionCreators(getTrunkLineTravelRoute, dispatch),
+    getTrunkLineDataTree: bindActionCreators(getTrunkLineDataTree, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Artery)
