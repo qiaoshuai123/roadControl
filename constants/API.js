@@ -135,3 +135,5 @@ export const API_EVLRE_GETINTERDATATREE = '/dws/evlregionOpt/getInterDataTree' /
 export const API_EVLRE_ADDEVLREGIONOPTPLAN = '/dws/evlregionOpt/addEvlregionOptPlan' // 保存方案
 export const API_EVLRE_GETEVLREGIONOPTSETSELECT = '/dws/evlregionOpt/getEvlregionOptSetSelect' // 区域优化设置下
 export const API_EVLRE_GETINTERLSITREFRESH = '/dws/evlregionOpt/getInterListRefresh' // 刷新路口数据
+export const API_EVLRE_GETAREAAVGDELAYTIME = '/dws/evlregionOpt/getAreaAvgDelayTime' // 区域平均延误
+export const API_EVLRE_GETAREAAVGSPEED = '/dws/evlregionOpt/getAreaAvgSpeed' // 区域平均车速
