@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import Header from '../Header/Header'
 import InterMsg from './InterMsg/InterMsg'
 import CustomTree from '../../../components/CustomTree/CustomTree'
-import { getInterDataTree, getInterFlow, getInterQueue, getInterSaturation, getInterStopNum, getInterRatio, getInterPhaseOdd, getInterCircular } from '../../../actions/evaluate'
+import { getInterDataTree, getInterFlow, getInterQueue, getInterSaturation, getInterStopNum, getInterRatio, getInterPhaseOdd } from '../../../actions/evaluate'
 
 import styles from './Inter.scss'
 
@@ -50,7 +50,6 @@ class Inter extends React.Component {
         this.props.getInterStopNum(chartsParams)
         this.props.getInterRatio(chartsParams)
         this.props.getInterPhaseOdd(chartsParams)
-        this.props.getInterCircular(chartsId)
       }
     })
   }
@@ -188,7 +187,6 @@ const mapDisPatchToProps = (dispatch) => {
     getInterStopNum: bindActionCreators(getInterStopNum, dispatch),
     getInterRatio: bindActionCreators(getInterRatio, dispatch),
     getInterPhaseOdd: bindActionCreators(getInterPhaseOdd, dispatch),
-    getInterCircular: bindActionCreators(getInterCircular, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(Inter)

@@ -19,11 +19,11 @@ class Artery extends React.Component {
     }
     this.arteries = ['干线平均延误时间', '干线平均速度', '干线停车次数']
     this.chartsParams = {
-      compare_end_date: '2019-07-12 18:00',
-      compare_start_date: '2019-07-12 00:00',
-      init_end_date: '2019-08-26 18:00',
-      init_start_date: '2019-07-07 00:00',
-      rdchl_id: 'HaiDianLiuXiLu',
+      compare_end_date: '2020-05-21 18:00',
+      compare_start_date: '2019-05-07 00:00',
+      init_end_date: '2020-05-21 18:00',
+      init_start_date: '2019-05-07 00:00',
+      rdchl_id: 'LongKunNanLuNanduan_1',
       tp: '5mi',
     }
   }

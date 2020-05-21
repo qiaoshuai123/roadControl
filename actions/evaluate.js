@@ -177,7 +177,7 @@ export const getTrunkLineTravelRoute = (params) => {
 }
 
 export const getInterCircular = (params) => {
-  return async() => {
+  return async () => {
     const result = await RestUtil.post(`${API_INTERCIRCULAR}${params}`)
     return result
   }

@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Select, Icon, message } from 'antd'
+import transfromXY from '../../../utils/transformMapXY'
 
 import Header from '../Header/Header'
 import Form from './form/Form'
@@ -57,9 +58,6 @@ class SignalHome extends PureComponent {
     })
   }
   componentDidUpdate = (prevState) => {
-    if (prevState.data !== this.props.data) {
-      console.log(this.props)
-    }
     const { interList, controlRoads, controlCounts, planTimes, controlStatus, realTimeStatus, faultStatistics, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
@@ -199,6 +197,9 @@ class SignalHome extends PureComponent {
           new Promise((resolve) => {
             resolve(this.props.getBasicInterInfo(item.ID))
           }).then(() => {
+            const lnglats = transfromXY(item.LONGITUDE, item.LATITUDE) // lng: lnglats.lat, lat: lnglats.lon
+            console.log('转换前：', item.LONGITUDE, item.LATITUDE)
+            console.log('转换后：', lnglats.lat, lnglats.lon)
             const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
               .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '西门子', item.ID))
               .addTo(this.map)
@@ -318,7 +319,6 @@ class SignalHome extends PureComponent {
   }
   render() {
     const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList, controlCounts } = this.state
-    console.log(controlCounts, 'qiao')
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
