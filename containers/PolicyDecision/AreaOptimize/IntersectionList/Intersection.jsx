@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './Intersection.scss'
 import { Select } from 'antd'
 import echarts from 'echarts'
+import RegularCrossing from '../img/03.png'
+import KeyIntersection from '../img/04.png'
 
 class Intersection extends React.Component {
   constructor(props) {
@@ -137,7 +139,7 @@ class Intersection extends React.Component {
     return (
       <div className={styles.IntersectionItem}>
         <dl className={styles.IntersectionItem_top}>
-          <dt><span /></dt>
+          <dt><span><img src={itemList.is_key_inter === 0 ? RegularCrossing : KeyIntersection} alt="" /></span></dt>
           <dd>{itemList.name}</dd>
         </dl>
         <div className={styles.IntersectionItem_bom}>

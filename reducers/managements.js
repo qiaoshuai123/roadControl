@@ -64,6 +64,10 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { EvlregionOptSetSelect: payload })
     case types.GET_EVLRE_GETINTERLSITREFRESH:
       return Object.assign({}, state, { InterListRefresh: payload })
+    case types.GET_EVLRE_GETAREAAVGDELAYTIME:
+      return Object.assign({}, state, { AreaAvgDelayTime: payload })
+    case types.GET_EVLRE_GETAREAAVGSPEED:
+      return Object.assign({}, state, { AreaAvgSpeed: payload })
     default:
       return state
   }

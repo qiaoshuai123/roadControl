@@ -2,7 +2,7 @@ import React from 'react'
 import { Select, Icon, Switch } from 'antd'
 import styles from './AreaOptimize.scss'
 import Header from '../Header/Header'
-import { getInterDataTree, getInterListRefresh } from '../../../actions/management'
+import { getInterDataTree, getInterListRefresh, getAreaAvgDelayTime, getAreaAvgSpeed } from '../../../actions/management'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import echartss from './chartsOptions'
@@ -11,6 +11,8 @@ import { bindActionCreators } from 'redux'
 import Intersection from './IntersectionList/Intersection'
 import AreaConfig from './AreaConfig/AreaConfig'
 import InfoBg from './img/Infobg.png'
+import RegularCrossing from './img/01.png'
+import KeyIntersection from './img/02.png'
 
 class AreaOptimize extends React.Component {
   constructor(props) {
@@ -44,12 +46,22 @@ class AreaOptimize extends React.Component {
     this.props.getInterDataTree()
   }
   componentDidUpdate = (prevState) => {
-    const { InterListRefresh, InterDataTree } = this.props.data
+    const { InterListRefresh, InterDataTree, AreaAvgDelayTime, AreaAvgSpeed } = this.props.data
     if (prevState.data.InterListRefresh !== InterListRefresh) {
+      console.log(1)
       this.getsInterListRefresh(InterListRefresh)
     }
     if (prevState.data.InterDataTree !== InterDataTree) {
+      console.log(2)
       this.getsInterDataTree(InterDataTree)
+    }
+    if (prevState.data.AreaAvgDelayTime !== AreaAvgDelayTime) {
+      console.log(3)
+      this.getsAreaAvgDelayTime(AreaAvgDelayTime)
+    }
+    if (prevState.data.AreaAvgSpeed !== AreaAvgSpeed) {
+      console.log(4)
+      this.getsAreaAvgSpeed(AreaAvgSpeed)
     }
   }
   onChange = (e) => { // 协调方向切换
@@ -57,8 +69,13 @@ class AreaOptimize extends React.Component {
       isBtnShow: e,
     })
   }
+  getsAreaAvgSpeed = (AreaAvgSpeed) => {
+    console.log(AreaAvgSpeed, 'AreaAvgSpeed')
+  }
+  getsAreaAvgDelayTime = (AreaAvgDelayTime) => {
+    console.log(AreaAvgDelayTime, 'AreaAvgDelayTime')
+  }
   getsInterDataTree = (InterDataTree) => {
-    console.log(InterDataTree, '显示树形结构')
     const { code, data, firstAdcode, firstCtlregionId, firstRdchlId } = InterDataTree
     const expendskey = [firstAdcode, firstCtlregionId]
     this.firstAdcode = firstAdcode
@@ -67,9 +84,11 @@ class AreaOptimize extends React.Component {
       this.setState({ interTree: data, expendskey })
       const obj = `dir=${this.dir}&evlregion_id=${firstAdcode}&rdchl_id=${firstRdchlId}`
       this.props.getInterListRefresh(obj)
+      this.props.getAreaAvgDelayTime(firstAdcode)
     }
   }
   getsInterListRefresh = (InterListRefresh) => { // 数据展示
+    console.log(InterListRefresh, 'ssff')
     this.setState({
       Listofintersections: InterListRefresh,
     })
@@ -153,6 +172,11 @@ class AreaOptimize extends React.Component {
     this.setState({
       num: id,
     })
+    if (id === 1) {
+      this.props.getAreaAvgDelayTime(this.firstAdcode)
+    } else {
+      this.props.getAreaAvgSpeed(this.firstAdcode)
+    }
   }
   closepage = () => { // 关闭当前页面
     this.setState({
@@ -179,7 +203,7 @@ class AreaOptimize extends React.Component {
   render() {
     const { Option } = Select
     const { num, showConfig, Listofintersections, isBtnShow } = this.state
-    console.log(this.state.interTree, 'qiaoshsss')
+    console.log(Listofintersections, isBtnShow, 'qiaoshsss')
     return (
       <div className={styles.areaOptWrapper} id="mapContainer">
         <Header {...this.props} />
@@ -224,11 +248,11 @@ class AreaOptimize extends React.Component {
             </li>
             <li className={styles.lis}>
               <dl>
-                <dt><span /></dt>
+                <dt><span><img src={KeyIntersection} alt="" /></span></dt>
                 <dd>关键路口</dd>
               </dl>
               <dl>
-                <dt><span /></dt>
+                <dt><span><img src={RegularCrossing} alt="" /></span></dt>
                 <dd>常规路口</dd>
               </dl>
             </li>
@@ -237,7 +261,10 @@ class AreaOptimize extends React.Component {
             <div className={styles.title}><div>知春路</div><div><span onClick={this.handleShowConfig}>区域优化配置</span></div></div>
             <div className={styles.signaContainer_right_top}>
               {
-                Listofintersections && Listofintersections.map(item => <Intersection isBtnShow={isBtnShow} itemList={item} key={item.id} />)
+                isBtnShow && Listofintersections && Listofintersections.map(item => <Intersection isBtnShow={isBtnShow} itemList={item} key={item.id} />)
+              }
+              {
+                !isBtnShow && Listofintersections && Listofintersections.map(item => <Intersection isBtnShow={isBtnShow} itemList={item} key={item.id} />)
               }
             </div>
             <div className={styles.signaContainer_right_bom}>
@@ -266,6 +293,8 @@ const mapDisPatchToProps = (dispatch) => {
   return {
     getInterDataTree: bindActionCreators(getInterDataTree, dispatch),
     getInterListRefresh: bindActionCreators(getInterListRefresh, dispatch),
+    getAreaAvgDelayTime: bindActionCreators(getAreaAvgDelayTime, dispatch),
+    getAreaAvgSpeed: bindActionCreators(getAreaAvgSpeed, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(AreaOptimize) 
