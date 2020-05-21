@@ -10,6 +10,7 @@ import secretTask from './secretTask'
 import managements from './managements'
 import interManage from './interManage'
 import logManagement from './logManagement'
+import evaluate from './evaluate'
 
 const rootReducer = combineReducers({
   managements,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   secretTask,
   interManage,
   logManagement,
+  evaluate,
 })
 
 export default rootReducer

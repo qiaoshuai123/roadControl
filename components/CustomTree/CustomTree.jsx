@@ -61,7 +61,6 @@ class CustomTree extends React.Component {
     } else {
       this.setState({ interTreeData: [] })
     }
-    console.log(this.props.treeData)
   }
   handleTreeSelect = (e) => {
     e.stopPropagation()
