@@ -26,17 +26,11 @@ class Area extends React.Component {
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
       this.chartsId = this.resetEvlregionId(this.chars_id)
-      console.log(this.chartsId, '11111')
-      console.log(res, 'res')
       const { code, data } = res.data
       console.log(code, 'code')
       if (code === '1') {
-        this.props.getInterCircular(this.chartsId).then((res) => {
-          console.log(res, 'res')
-        })
-        this.setState({ interTree: data }, () => {
-          console.log(this.state.interTree)
-        })
+        this.props.getInterCircular(this.chartsId).then(() => {})
+        this.setState({ interTree: data })
       }
     })
   
