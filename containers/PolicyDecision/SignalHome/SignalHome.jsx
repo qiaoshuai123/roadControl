@@ -431,7 +431,7 @@ class SignalHome extends PureComponent {
             </div><div>处</div>
           </div>
           <div className={`${styles.road_show_item} ${styles.buling}`}>
-            <div><span>西门子</span><span>接入</span></div>
+            <div><span>中控</span><span>接入</span></div>
             <div>
               {
                 siemensSingal &&
