@@ -390,20 +390,22 @@ class SignalHome extends PureComponent {
               </div>
             </div>
             <div className={styles.signaContainerLB_right}>
-              {
-                this.state.realTimeState &&
-                this.state.realTimeState.map((item, index) => {
-                  const totle = this.state.realTimeStatus.totleDevice
-                  if (item.SIGNAL_SYSTEM_CODE === 3 || item.SIGNAL_SYSTEM_CODE === 4) {
-                    return (
-                      <dl key={item.CODE_NAME}>
-                        <dt><b className={styles.bone} style={{ backgroundColor: this.pieColor[index] }} /><li>{item.CODE_NAME}</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>在线{item.NORMALSIZE}处</li></dt>
-                        <dd><b /><li className={styles.nums}>{((item.NORMALSIZE + item.UNNORMALSIZE) / totle).toFixed(1) * 100}%</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>离线{item.UNNORMALSIZE}处</li></dd>
-                      </dl>
-                    )
-                  }
-                })
-              }
+              <div className={styles.signaContainerLB_rightBox}>
+                {
+                  this.state.realTimeState &&
+                  this.state.realTimeState.map((item, index) => {
+                    const totle = this.state.realTimeStatus.totleDevice
+                    if (item.SIGNAL_SYSTEM_CODE === 3 || item.SIGNAL_SYSTEM_CODE === 4) {
+                      return (
+                        <dl key={item.CODE_NAME}>
+                          <dt><b className={styles.bone} style={{ backgroundColor: this.pieColor[index] }} /><li>{item.CODE_NAME}</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>在线{item.NORMALSIZE}处</li></dt>
+                          <dd><b /><li className={styles.nums}>{((item.NORMALSIZE + item.UNNORMALSIZE) / totle).toFixed(1) * 100}%</li><li className={styles.lione} style={{ color: this.pieColor[index] }}>离线{item.UNNORMALSIZE}处</li></dd>
+                        </dl>
+                      )
+                    }
+                  })
+                }
+              </div>
             </div>
           </div>
         </div>
