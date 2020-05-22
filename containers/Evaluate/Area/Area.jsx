@@ -35,9 +35,8 @@ class Area extends React.Component {
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
-      this.chartsId = this.resetEvlregionId(this.chars_id)
+      this.chartsId = resetParams(this.chars_id)
       const { code, data } = res.data
-      console.log(code, 'code')
       if (code === '1') {
         const { firstAdcode, firstCtlregionId } = res.data
         const expendskey = [firstAdcode, firstCtlregionId]
@@ -49,7 +48,6 @@ class Area extends React.Component {
         this.props.getAreaAvgSpeed(chartsParams)
       }
     })
-  
   }
   componentDidUpdate = (prevProps) => {
   }
@@ -108,7 +106,6 @@ class Area extends React.Component {
       </div>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
