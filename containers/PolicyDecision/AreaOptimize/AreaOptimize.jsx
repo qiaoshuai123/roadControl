@@ -69,13 +69,10 @@ class AreaOptimize extends React.Component {
     })
   }
   getsRdchlList = (RdchlList) => {
-    console.log(1, 'RdchlList')
   }
   getsAreaAvgSpeed = (AreaAvgSpeed) => {
-    console.log(2, 'AreaAvgSpeed')
   }
   getsAreaAvgDelayTime = (AreaAvgDelayTime) => {
-    console.log(3, 'AreaAvgDelayTime')
   }
   getsInterDataTree = (InterDataTree) => {
     const { code, data, firstAdcode, firstCtlregionId, firstRdchlId } = InterDataTree

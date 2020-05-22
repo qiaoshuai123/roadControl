@@ -30,43 +30,43 @@
       left: 0;
       width: 100%;
       border-radius: 4px;
-      background-color: rgba(0,0,0, .4);
-      transition: all .2s;
+      background-color: rgba(0, 0, 0, 0.4);
+      transition: all 0.2s;
       overflow-y: hidden;
       .interItem {
         height: 30px;
         padding-left: 10px;
         font-size: 14px;
         line-height: 30px;
-        transition: all .2s;
+        transition: all 0.2s;
         cursor: pointer;
         &:hover {
-          background-color: #06234F;
+          background-color: #06234f;
         }
       }
     }
     .interSearch {
       display: flex;
       .searchBox {
-          position: relative;
-          .searchInput {
-              width: 224px;
-              height: 32px;
-              padding-left: 5px;
-              background-color: rgba(6,56,90, .8);
-              border: 1px solid #063657;
-              border-radius: 4px;
-              outline: none;
-              color: #F1F1FB;
-          }
-          .searchIcon {
-              position: absolute;
-              right: 10px;
-              top: 8px;
-              font-size: 18px;
-              color: #07BDFB;
-              cursor: pointer;
-          }
+        position: relative;
+        .searchInput {
+          width: 224px;
+          height: 32px;
+          padding-left: 5px;
+          background-color: rgba(6, 56, 90, 0.8);
+          border: 1px solid #063657;
+          border-radius: 4px;
+          outline: none;
+          color: #f1f1fb;
+        }
+        .searchIcon {
+          position: absolute;
+          right: 10px;
+          top: 8px;
+          font-size: 18px;
+          color: #07bdfb;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -82,55 +82,55 @@
     flex-direction: column;
     justify-content: center;
     font-size: 14px;
-    background-color: #011F53;
+    background-color: #011f53;
     .systemPoint {
       display: flex;
       & > div {
+        position: relative;
+        height: 30px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        .upIconBox {
           position: relative;
-          height: 30px;
-          flex: 1;
-          display: flex;
-          align-items: center;
-          .upIconBox {
-              position: relative;
-              display: inline-block;
-              width: 20px;
-              height: 20px;
-              & > i {
-                  position: absolute;
-                  bottom: 4px;
-                  left: -2px;
-                  width: 20px;
-                  border-top: 1px solid #02F5F7;
-              }
-              & > b {
-                  position: absolute;
-                  top: 8px;
-                  left: 1px;
-                  width: 14px;
-                  height: 14px;
-                  border-top: 1px solid #02F5F7;
-                  border-right: 1px solid #02F5F7;
-                  transform: rotate(-45deg);
-              }
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          & > i {
+            position: absolute;
+            bottom: 4px;
+            left: -2px;
+            width: 20px;
+            border-top: 1px solid #02f5f7;
           }
-          .squareBox {
-              display: inline-block;
-              width: 16px;
-              height: 16px;
-              margin-right: 5px;
-              border: 1px solid #02F5F7;
+          & > b {
+            position: absolute;
+            top: 8px;
+            left: 1px;
+            width: 14px;
+            height: 14px;
+            border-top: 1px solid #02f5f7;
+            border-right: 1px solid #02f5f7;
+            transform: rotate(-45deg);
           }
-          .circleBox {
-              width: 18px;
-              height: 18px;
-              margin-right: 5px;
-              border: 1px solid #02F5F7;
-              border-radius: 50%;
-          }
-          .checkeBox {
-              margin-left: 5px;
-          }
+        }
+        .squareBox {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin-right: 5px;
+          border: 1px solid #02f5f7;
+        }
+        .circleBox {
+          width: 18px;
+          height: 18px;
+          margin-right: 5px;
+          border: 1px solid #02f5f7;
+          border-radius: 50%;
+        }
+        .checkeBox {
+          margin-left: 5px;
+        }
       }
     }
   }
@@ -139,7 +139,7 @@
     padding-left: 20px;
     line-height: 40px;
     font-size: 16px;
-    background: linear-gradient(to bottom, #06234F 0%,#02183D 100%);
+    background: linear-gradient(to bottom, #06234f 0%, #02183d 100%);
   }
   .signaContainer_left {
     z-index: 9;
@@ -151,7 +151,7 @@
     overflow: hidden;
     .signaContainer_left_box {
       // flex: 1;
-      background: linear-gradient(to top, #031837, #06234F)
+      background: linear-gradient(to top, #031837, #06234f);
     }
     .controlRoadBox {
       height: calc(100% - 600px);
@@ -164,54 +164,61 @@
       .signaContainerLB_right {
         flex: 1;
         padding: 40px 20px 10px 10px;
-        display: flex;
-        flex-direction: column;
-        dl {
-          flex: 1;
+        overflow-y: auto;
+        height: 260px;
+        .signaContainerLB_rightBox {
+          height: 100%;
           display: flex;
           flex-direction: column;
-          padding: 5px 5px 5px;
-          dt,
-          dd {
-            flex: 1;
+          dl {
+            height: 56px;
             display: flex;
-            b {
-              height: 45%;
-              width: 20px;
-              margin: 10px;
-            }
-            .bone {
-              background-color: #00cf4d;
-              border-radius: 5px;
-            }
-            .btwo {
-              background-color: #d3692f;
-              border-radius: 5px;
-            }
-            .bthr {
-              background-color: #0f85ff;
-              border-radius: 5px;
-            }
-            li {
+            flex-direction: column;
+            padding: 5px 5px 5px;
+            dt,
+            dd {
               flex: 1;
-              font-size: 18px;
-              font-weight: bolder;
-            }
-            .nums {
-              color: #2ec8ea;
-            }
-            .lione,.litwo,.lithr{
-              flex: 1.3;
-              font-size: 14px;
-            }
-            .lione {
-              color: #0abc52;
-            }
-            .litwo {
-              color: #b55a33;
-            }
-            .lithr {
-              color: #196cca;
+              display: flex;
+              b {
+                height: 45%;
+                width: 20px;
+                margin: 10px;
+              }
+              .bone {
+                background-color: #00cf4d;
+                border-radius: 5px;
+              }
+              .btwo {
+                background-color: #d3692f;
+                border-radius: 5px;
+              }
+              .bthr {
+                background-color: #0f85ff;
+                border-radius: 5px;
+              }
+              li {
+                flex: 1;
+                font-size: 18px;
+                font-weight: bolder;
+              }
+              .nums {
+                color: #2ec8ea;
+              }
+              .lione,
+              .litwo,
+              .lithr {
+                flex: 1.3;
+                font-size: 14px;
+              }
+              .lione {
+                color: #0abc52;
+              }
+              .litwo {
+                color: #b55a33;
+              }
+              .lithr {
+                color: #196cca;
+              }
             }
           }
         }
@@ -316,23 +323,23 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(to top, #031837, #06234F);
+      background: linear-gradient(to top, #031837, #06234f);
       .listBox {
         flex: 1;
       }
     }
     .malfunctionBox {
-      background: linear-gradient(to top, #031837, #06234F);
+      background: linear-gradient(to top, #031837, #06234f);
     }
   }
 }
 .custom-popup-class {
   background-color: #ff0000;
 }
-.pTop{
+.pTop {
   height: 40px;
   font-size: 16px;
   padding-left: 20px;
   line-height: 40px;
-  background: linear-gradient(to bottom, #02183D 0%,#06234F 100%);
+  background: linear-gradient(to bottom, #02183d 0%, #06234f 100%);
 }
