@@ -2,7 +2,7 @@ import React from 'react'
 import { Select, Icon, Switch } from 'antd'
 import styles from './AreaOptimize.scss'
 import Header from '../Header/Header'
-import { getInterDataTree, getInterListRefresh, getAreaAvgDelayTime, getAreaAvgSpeed } from '../../../actions/management'
+import { getInterDataTree, getInterListRefresh, getAreaAvgDelayTime, getAreaAvgSpeed, getRdchlList, } from '../../../actions/management'
 import CustomTree from '../../../components/CustomTree/CustomTree'
 import EchartsPage from '../../../components/ecahrtsPage/EchartsPage'
 import echartss from './chartsOptions'
@@ -46,22 +46,21 @@ class AreaOptimize extends React.Component {
     this.props.getInterDataTree()
   }
   componentDidUpdate = (prevState) => {
-    const { InterListRefresh, InterDataTree, AreaAvgDelayTime, AreaAvgSpeed } = this.props.data
+    const { InterListRefresh, InterDataTree, AreaAvgDelayTime, AreaAvgSpeed, RdchlList } = this.props.data
     if (prevState.data.InterListRefresh !== InterListRefresh) {
-      console.log(1)
       this.getsInterListRefresh(InterListRefresh)
     }
     if (prevState.data.InterDataTree !== InterDataTree) {
-      console.log(2)
       this.getsInterDataTree(InterDataTree)
     }
     if (prevState.data.AreaAvgDelayTime !== AreaAvgDelayTime) {
-      console.log(3)
       this.getsAreaAvgDelayTime(AreaAvgDelayTime)
     }
     if (prevState.data.AreaAvgSpeed !== AreaAvgSpeed) {
-      console.log(4)
       this.getsAreaAvgSpeed(AreaAvgSpeed)
+    }
+    if (prevState.data.RdchlList !== RdchlList) {
+      this.getsRdchlList(RdchlList)
     }
   }
   onChange = (e) => { // 协调方向切换
@@ -69,11 +68,14 @@ class AreaOptimize extends React.Component {
       isBtnShow: e,
     })
   }
+  getsRdchlList = (RdchlList) => {
+    console.log(1, 'RdchlList')
+  }
   getsAreaAvgSpeed = (AreaAvgSpeed) => {
-    console.log(AreaAvgSpeed, 'AreaAvgSpeed')
+    console.log(2, 'AreaAvgSpeed')
   }
   getsAreaAvgDelayTime = (AreaAvgDelayTime) => {
-    console.log(AreaAvgDelayTime, 'AreaAvgDelayTime')
+    console.log(3, 'AreaAvgDelayTime')
   }
   getsInterDataTree = (InterDataTree) => {
     const { code, data, firstAdcode, firstCtlregionId, firstRdchlId } = InterDataTree
@@ -85,6 +87,7 @@ class AreaOptimize extends React.Component {
       const obj = `dir=${this.dir}&evlregion_id=${firstAdcode}&rdchl_id=${firstRdchlId}`
       this.props.getInterListRefresh(obj)
       this.props.getAreaAvgDelayTime(firstAdcode)
+      this.props.getRdchlList(firstAdcode)
     }
   }
   getsInterListRefresh = (InterListRefresh) => { // 数据展示
@@ -203,7 +206,6 @@ class AreaOptimize extends React.Component {
   render() {
     const { Option } = Select
     const { num, showConfig, Listofintersections, isBtnShow } = this.state
-    console.log(Listofintersections, isBtnShow, 'qiaoshsss')
     return (
       <div className={styles.areaOptWrapper} id="mapContainer">
         <Header {...this.props} />
@@ -285,6 +287,7 @@ class AreaOptimize extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state,'ssFD')
   return {
     data: { ...state.data, ...state.managements },
   }
@@ -295,6 +298,7 @@ const mapDisPatchToProps = (dispatch) => {
     getInterListRefresh: bindActionCreators(getInterListRefresh, dispatch),
     getAreaAvgDelayTime: bindActionCreators(getAreaAvgDelayTime, dispatch),
     getAreaAvgSpeed: bindActionCreators(getAreaAvgSpeed, dispatch),
+    getRdchlList: bindActionCreators(getRdchlList, dispatch),
   }
 }
 export default connect(mapStateToProps, mapDisPatchToProps)(AreaOptimize) 

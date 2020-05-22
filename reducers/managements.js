@@ -68,6 +68,8 @@ const managements = (state = {}, action) => {
       return Object.assign({}, state, { AreaAvgDelayTime: payload })
     case types.GET_EVLRE_GETAREAAVGSPEED:
       return Object.assign({}, state, { AreaAvgSpeed: payload })
+    case types.GET_EVLRE_GETRDCHLLIST:
+      return Object.assign({}, state, { RdchlList: payload })
     default:
       return state
   }

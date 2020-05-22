@@ -23,9 +23,9 @@ class Form extends Component {
               {
                 datas && datas.map(item => (
                   <div className={styles.mountingTr} key={item.UNIT_NAME}>
-                    <div className={styles.mountingTd}>{type === 'count' ? item.UNIT_NAME : item.DISTRICT_NAME}</div>
-                    <div className={styles.mountingTd}>{type === 'count' ? item.NUM : item.UNIT_NAME}</div>
-                    <div className={styles.mountingTd}>{type === 'times' ? item.PLAN_TIMING_CHANGE_TIME : item.CONTROL_TIME}</div>
+                    <div title={type === 'count' ? item.UNIT_NAME : item.DISTRICT_NAME} className={styles.mountingTd}>{type === 'count' ? item.UNIT_NAME : item.DISTRICT_NAME}</div>
+                    <div title={type === 'count' ? item.NUM : item.UNIT_NAME} className={styles.mountingTd}>{type === 'count' ? item.NUM : item.UNIT_NAME}</div>
+                    <div title={type === 'times' ? item.PLAN_TIMING_CHANGE_TIME : item.CONTROL_TIME} className={styles.mountingTd}>{type === 'times' ? item.PLAN_TIMING_CHANGE_TIME : item.CONTROL_TIME}</div>
                   </div>
                 ))
               }

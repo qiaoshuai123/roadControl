@@ -10,7 +10,7 @@ import {
   API_TIM_GETTIMINGINFO, API_TIM_GETTIMINGINFOBYEXCEL, API_TIM_SAVEORUPDATEFORM,
   API_TIM_TEST, API_TIM_VALIDATE, API_TIM_CODE, API_TIM_LOADMORE, API_TIM_CFGIMGS,
   API_EVLRE_GETINTERLSITREFRESH, API_EVLRE_GETINTERDATATREE, API_EVLRE_GETAREAAVGDELAYTIME,
-  API_EVLRE_GETAREAAVGSPEED,
+  API_EVLRE_GETAREAAVGSPEED, API_EVLRE_GETRDCHLLIST,
 } from '../constants/API'
 
 export const getloadManageMent = () => async (dispatch) => {
@@ -318,7 +318,7 @@ export const getAreaAvgDelayTime = id => async (dispatch) => {
   try {
     const result = await RestUtil.post(`${API_EVLRE_GETAREAAVGDELAYTIME}?evlregion_id=${id}`)
     if (result.data.code === '1') {
-      dispatch({ type: types.GET_EVLRE_GETAREAAVGDELAYTIME, payload: result.data.data })
+      dispatch({ type: types.GET_EVLRE_GETAREAAVGDELAYTIME, payload: result.data })
     } else {
       console.error(result.data.message)
     }
@@ -331,6 +331,18 @@ export const getAreaAvgSpeed = id => async (dispatch) => {
     const result = await RestUtil.post(`${API_EVLRE_GETAREAAVGSPEED}?evlregion_id=${id}`)
     if (result.data.code === '1') {
       dispatch({ type: types.GET_EVLRE_GETAREAAVGSPEED, payload: result.data.data })
+    } else {
+      console.error(result.data.message)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const getRdchlList = id => async (dispatch) => {
+  try {
+    const result = await RestUtil.post(`${API_EVLRE_GETRDCHLLIST}?ctlregion_id=${id}`)
+    if (result.data.code === '1') {
+      dispatch({ type: types.GET_EVLRE_GETRDCHLLIST, payload: result.data.data })
     } else {
       console.error(result.data.message)
     }
