@@ -199,7 +199,6 @@ class GreenWaveCharts extends React.Component {
             rightEnd,
           }
           this.reverseOffsetTime += disTime
-          console.log('反向：：：：：：', obj)
           this.reversePoints.push(obj)
         }
       }

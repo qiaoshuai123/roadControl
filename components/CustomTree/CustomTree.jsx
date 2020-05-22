@@ -75,7 +75,6 @@ class CustomTree extends React.Component {
     }
     this.setState({ expendsKey: this.state.expendsKey })
     if (level === '3') {
-      console.log('路口id:::::', id)
     }
   }
 
