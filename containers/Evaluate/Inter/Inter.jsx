@@ -32,7 +32,7 @@ class Inter extends React.Component {
     this.chars_id = {
       evlregion_id: '460107',
     }
-    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度', '路口相位绿灯利用率', '路口一次通过率']
+    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度']
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {

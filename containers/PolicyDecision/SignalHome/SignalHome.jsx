@@ -200,8 +200,8 @@ class SignalHome extends PureComponent {
             const lnglats = transfromXY(item.LONGITUDE, item.LATITUDE) // lng: lnglats.lat, lat: lnglats.lon
             console.log('转换前：', item.LONGITUDE, item.LATITUDE)
             console.log('转换后：', lnglats.lat, lnglats.lon)
-            const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
-              .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '西门子', item.ID))
+            const marker = new window.minemap.Marker(el, { offset: [-12, -12] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
+              .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '中控', item.ID))
               .addTo(this.map)
             this.markers.push(marker)
           })
@@ -359,7 +359,7 @@ class SignalHome extends PureComponent {
           <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
           <div className={styles.systemPoint}>
             <div><span className={styles.upIconBox}><i /><b /></span>海信系统</div>
-            <div><span className={styles.squareBox} />西门子</div>
+            <div><span className={styles.squareBox} />中控</div>
             {/* <div><span className={styles.circleBox} />泰尔文特</div> */}
           </div>
         </div>
@@ -431,7 +431,7 @@ class SignalHome extends PureComponent {
             </div><div>处</div>
           </div>
           <div className={`${styles.road_show_item} ${styles.buling}`}>
-            <div><span>西门子</span><span>接入</span></div>
+            <div><span>中控</span><span>接入</span></div>
             <div>
               {
                 siemensSingal &&

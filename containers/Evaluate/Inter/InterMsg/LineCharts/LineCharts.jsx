@@ -15,35 +15,6 @@ class LineCharts extends React.Component {
     const chartsBox = echarts.init(this.chartsBox)
     this.renderCharts(chartsBox)
   }
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
-    // // if (this.props.chartsData !== nextProps.chartsData) {
-    // const datas = nextProps.chartsData
-
-    // // chartsBox.showLoading({
-    // //   text: 'Please Waitting...',
-    // //   color: '#c23531',
-    // //   textColor: '#fff',
-    // //   maskColor: '#263246',
-    // //   zlevel: 0
-    // // })
-    // if (!!datas && datas.time.length > 0) {
-    //   // chartsBox.hideLoading()
-    //   this.setState({ nodata: false }, () => {
-    //     const chartsBox = echarts.init(this.chartsBox)
-    //     this.renderCharts(chartsBox, datas.legend, datas.time, datas.series)
-    //   })
-    // } else {
-    //   // chartsBox.showLoading({
-    //   //   text: '暂无数据',
-    //   //   color: '#c23531',
-    //   //   textColor: '#fff',
-    //   //   maskColor: '#263246',
-    //   //   zlevel: 0
-    //   // })
-    //   this.setState({ nodata: true })
-    // }
-    // }
-  }
   renderCharts = (menuChart2, legend, time, series) => {
     console.log(legend, time, series)
     // 绘制图表
@@ -55,6 +26,23 @@ class LineCharts extends React.Component {
           color: '#fff',
         },
       },
+      dataZoom: [
+        {
+          height: 10,
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+          bottom: 5,
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+        },
+      ],
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
