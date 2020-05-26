@@ -44,11 +44,11 @@ class InterMsg extends React.Component {
             <Option key={1} value={1}>北</Option>
             <Option key={2} value={2}>东</Option>
             <Option key={3} value={3}>南</Option>
-            <Option key={1} value={4}>西</Option>
-            <Option key={2} value={5}>东北</Option>
-            <Option key={3} value={6}>东南</Option>
-            <Option key={2} value={7}>西南</Option>
-            <Option key={3} value={8}>西北</Option>
+            <Option key={4} value={4}>西</Option>
+            <Option key={5} value={5}>东北</Option>
+            <Option key={6} value={6}>东南</Option>
+            <Option key={7} value={7}>西南</Option>
+            <Option key={8} value={8}>西北</Option>
           </Select>
           <div
             className={classNames({ [styles.searchBtn]: true, [styles.searchActive]: searchName === 'search' })}
@@ -81,7 +81,7 @@ class InterMsg extends React.Component {
           >导出
           </div>
         </div>
-        <LineCharts />
+        <LineCharts {...this.props} />
       </div>
     )
   }
