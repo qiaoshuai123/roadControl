@@ -24,6 +24,23 @@ class GraphCharts extends React.Component {
           color: '#FFFFFF',
         },
       },
+      dataZoom: [
+        {
+          height: 10,
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+          top: 0,
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+        },
+      ],
       tooltip: {
         trigger: 'axis',
       },
@@ -69,7 +86,7 @@ class GraphCharts extends React.Component {
           },
         },
         axisLabel: {
-          rotate: 45, // 旋转角度
+          // rotate: 45, // 旋转角度
           textStyle: {
             color: '#397EAE', // 更改坐标轴文字颜色
             fontSize: 12, // 更改坐标轴文字大小

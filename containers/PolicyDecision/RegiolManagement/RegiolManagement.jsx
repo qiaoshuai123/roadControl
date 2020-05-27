@@ -209,8 +209,8 @@ class RegiolManagement extends Component {
         new Promise((resolve) => {
           resolve(this.props.getBasicInterInfo(item.ID))
         }).then(() => {
-          const marker = new window.minemap.Marker(el, { offset: [-25, -25] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
-            .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '西门子', item.ID))
+          const marker = new window.minemap.Marker(el, { offset: [-11, -11] }).setLngLat({ lng: item.LONGITUDE, lat: item.LATITUDE })
+            .setPopup(this.showInterInfo(item.LONGITUDE, item.LATITUDE, item.UNIT_NAME, item.SIGNAL_SYSTEM_CODE === 4 ? '海信' : '中控', item.ID))
             .addTo(this.map)
           this.markers.push(marker)
         })
@@ -265,7 +265,7 @@ class RegiolManagement extends Component {
         </div>
       </div>
     `
-    this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-15, -25] })
+    this.popup = new window.minemap.Popup({ closeOnClick: true, closeButton: false, offset: [-1, -10] })
       .setLngLat([lng, lat])
       .setHTML(infoHtml)
       .addTo(this.map)

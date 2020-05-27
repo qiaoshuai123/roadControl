@@ -17,6 +17,7 @@ class Inter extends React.Component {
       interTree: null,
       expendskey: [],
       currentInterName: null,
+      flowChartsData: null,
     }
     this.chartsParams = {
       compare_end_date: '2019-07-12 18:00',
@@ -32,7 +33,14 @@ class Inter extends React.Component {
     this.chars_id = {
       evlregion_id: '460107',
     }
-    this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度']
+    // this.indicators = ['路口流量', '路口延误时间', '路口停车次数', '路口排队', '路口饱和度']
+    this.indicators = [
+      { names: '路口流量', params: this.chartsParams, fn: this.props.getInterFlow },
+      { names: '路口延误时间', params: this.chartsParams, fn: this.props.getInterSaturation },
+      { names: '路口停车次数', params: this.chartsParams, fn: this.props.getInterStopNum },
+      { names: '路口排队', params: this.chartsParams, fn: this.props.getInterQueue },
+      { names: '路口饱和度', params: this.chartsParams, fn: this.props.getInterRatio },
+    ]
   }
   componentDidMount = () => {
     this.props.getInterDataTree().then((res) => {
@@ -60,7 +68,8 @@ class Inter extends React.Component {
     if (prevState.data.interflow !== interflow) {
       console.log(interflow, '路口流量')
       const { init, compare, x } = interflow
-      this.resetChartsDatas(init, compare, x)
+      const flowChartsData = this.resetChartsDatas(init, compare, x)
+      this.setState({ flowChartsData })
     }
     if (prevState.data.interqueue !== interqueue) {
       console.log(interqueue, '路口排队')
@@ -94,34 +103,59 @@ class Inter extends React.Component {
     const [init, compare, x] = args
     console.log(init, compare, x)
     if (x.length > 0) {
-      const initarr = new Array(x.length).fill(0)
-      const comparearr = new Array(x.length).fill(0)
-      Object.values(init)[0].forEach((item) => {
-        const indexs = x.indexOf(item.time)
-        if (indexs >= 0) {
-          initarr[indexs] = item.data
-        }
+      const initarr = []
+      const comparearr = []
+      const initLegend = []
+      const compareLegend = []
+      Object.keys(init).forEach((item) => {
+        initLegend.push(item)
+        const data = new Array(x.length).fill('')
+        const obj = {}
+        init[item].forEach((items) => {
+          const timeIndex = x.indexOf(items.time)
+          if (timeIndex !== -1) {
+            data.splice(timeIndex, 1, items.data)
+          }
+        })
+        obj.name = item
+        obj.type = 'line'
+        obj.data = data
+        // obj.itemStyle = {
+        //   normal: {
+        //     color: _this.colors[index],
+        //   }
+        // }
+        initarr.push(obj)
       })
-      Object.values(compare)[0].forEach((item) => {
-        const indexs = x.indexOf(item.time)
-        if (indexs >= 0) {
-          comparearr[indexs] = item.data
-        }
+      Object.keys(compare).forEach((item, index) => {
+        if (compare[item] === '') return
+        compareLegend.push(item + '-对比')
+        const data = new Array(x.length).fill('')
+        const obj = {}
+        compare[item].forEach((items) => {
+          const timeIndex = (x).indexOf(items.time)
+          if (timeIndex !== -1) {
+            data.splice(timeIndex, 1, items.data)
+          }
+        })
+        obj.name = item + '-对比'
+        obj.type = 'line'
+        obj.data = data
+        // obj.itemStyle = {
+        //   normal: {
+        //     color: _this.colorAry[index],
+        //   }
+        // }
+        comparearr.push(obj)
       })
-      const series = [
-        {
-          name: '路口-初始',
-          type: 'line',
-          data: initarr,
-        },
-        {
-          name: '路口-对比',
-          type: 'line',
-          data: comparearr,
-        },
-      ]
-      const obj = { legend: ['路口-初始', '路口-对比'], time: x, series }
-      return obj
+      const legend = Array.from(new Set([...initLegend, ...compareLegend])) // 图表显示legend
+      const series = [...initarr, ...comparearr] // 图表显示series数据
+      const chartsData = {}
+      chartsData.legend = legend
+      chartsData.time = x
+      chartsData.series = series
+      console.log(chartsData)
+      return chartsData
     }
     return {}
   }
@@ -160,9 +194,13 @@ class Inter extends React.Component {
           <div className={styles.interChartsMsg}>
             <h3 className={styles.interName}>当前路口 : {this.state.currentInterName}</h3>
             {
+              this.state.flowChartsData &&
+              <InterMsg {...this.props} chartsDatas={this.state.flowChartsData} msgName="测试数据" />
+            }
+            {
               this.indicators.map((item) => {
                 return (
-                  <InterMsg msgName={item} key={item} />
+                  <InterMsg {...this.props} msgName={item.name} key={item.name} />
                 )
               })
             }
