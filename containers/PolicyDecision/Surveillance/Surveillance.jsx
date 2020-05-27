@@ -33,7 +33,6 @@ class SecretTask extends PureComponent {
       secretTaskLeftOld: null,
       secretTaskLeft: null,
       addGreenMeg: false,// 绿波添加显示弹窗
-      addroader: false, // 添加路口
       showAreaedit: false, // 展示区域协调方案编辑页面
       MaintenancePhine: '',
       MaintenanceName: '',
@@ -63,7 +62,7 @@ class SecretTask extends PureComponent {
   componentDidUpdate = (prevState) => {
     const { interList, basicInterInfo } = this.props.data
     if (prevState.data !== this.props.data) {
-      console.log(this.props.data)
+      // console.log(this.props.data)
     }
     if (prevState.data.interList !== interList) {
       this.getInterList(interList)
@@ -134,7 +133,7 @@ class SecretTask extends PureComponent {
   changValue = (e) => { // 绿波方案基本信息
     const name = e.target.name
     const value = e.target.value
-    console.log(name, value)
+    // console.log(name, value)
     this.setState({
       [name]: value,
     })
@@ -260,7 +259,7 @@ class SecretTask extends PureComponent {
         visibleTop: top,
         vipId: id,
       }, () => {
-        console.log(id, '显示右键信息')
+        // console.log(id, '显示右键信息')
       })
     } else {
       this.setState({
@@ -275,23 +274,14 @@ class SecretTask extends PureComponent {
   handleSearchInterFocus = () => {
     this.setState({ interListHeight: 300 })
   }
-  addGreenMegsBoxers = () => { // 展示添加路口
-    this.setState({
-      addroader: true,
-    })
-  }
   closeAddroaders = () => { // 关闭添加路口
     this.setState({
       addroader: false,
     })
   }
-  closeaddGreenMegsBox = () => { // 关闭添加/修改绿波方案
-    this.setState({
-      addGreenMeg: false,
-    })
-  }
   // 展示区域协调方案编辑页面
-  showAreaeditBtn = () => {
+  showAreaeditBtn = (boolean) => {
+    this.addList = boolean
     this.setState({
       showAreaedit: true,
     })
@@ -368,18 +358,17 @@ class SecretTask extends PureComponent {
   }
   render() {
     const {
-      visibleTop, visible, interMonitorLeft,
-      interListHeight, searchInterList, searchVal, addroader, showAreaedit,
-      vipId, addGreenMeg, MaintenancePhine, MaintenanceName, EquipmentDetail,
+      visibleTop, visible, interMonitorLeft, vipId,
+      interListHeight, searchInterList, searchVal, showAreaedit,
     } = this.state
     return (
       <div id="mapContainer" className={styles.secretTaskWrapper}>
         <Header {...this.props} />
         {
-          showAreaedit && <Areaedit closeMegFa={this.closeMegFa} />
+          showAreaedit && <Areaedit addList={this.addList} closeMegFa={this.closeMegFa} />
         }
         <div className={styles.Popup}>
-          <p className={styles.Popup_p}><span>路口路线</span><span onClick={this.showAreaeditBtn}>编辑&gt;&gt;</span></p>
+          <p className={styles.Popup_p}><span>路口路线</span><span onClick={() => this.showAreaeditBtn(false)}>编辑&gt;&gt;</span></p>
           <div className={styles.PopupBo}>
             <div className={styles.Popup_box}>
               <p>路口一</p>
@@ -505,7 +494,7 @@ class SecretTask extends PureComponent {
           </div>
           <div className={styles.OptimizingBtns}><span>绿波方案列表</span></div>
           <div className={styles.addtask}>
-            <span onClick={this.quicklySecretTask}>添加绿波方案</span>
+            <span onClick={() => this.showAreaeditBtn(true)}>添加绿波方案</span>
           </div>
           <div className={styles.treeBox}>
             {/* <CustomTree visibleShowLeft={this.visibleShowLeft} vipRouteList={vipRouteList} getChildInfo={this.getChildInfo} hanleSelectInter={this.hanleSelectInter} /> */}
@@ -524,54 +513,6 @@ class SecretTask extends PureComponent {
               </ul> : null
           }
         </div>
-        {addGreenMeg &&
-          <div className={styles.addGreenMegs}>
-            <div className={styles.addGreenMegsBox}>
-              <p>添加/修改绿波方案<span onClick={this.closeaddGreenMegsBox}><Icon type="close" /></span></p>
-              <p>绿波方案基本信息</p>
-              <div className={styles.information}>
-                <div><span>协调干线编号</span><Input style={{ width: '200px' }} name="MaintenancePhine" onChange={this.changValue} value={MaintenancePhine} /></div>
-                <div><span>协调干线名称</span><Input style={{ width: '200px' }} name="MaintenanceName" onChange={this.changValue} value={MaintenanceName} /></div>
-                <button>保存方案</button>
-              </div>
-              <div className={styles.Scheme}>
-                <span>协调方案描述</span><TextArea rows={2} style={{ width: '200px', resize: 'none' }} name="EquipmentDetail" onChange={this.changValue} value={EquipmentDetail} />
-              </div>
-              <div className={styles.addGreenMegsBoxer}>
-                <div onClick={this.addGreenMegsBoxers} className={styles.addGreenMegsBoxer_left}>
-                  <Icon type="plus" />
-                </div>
-              </div>
-              {
-                addroader &&
-                <div className={styles.addroaders}>
-                  <div>添加路口 <b onClick={this.closeAddroaders} className={styles.Icos}><Icon type="close" /></b></div>
-                  <div><span>路口名称:</span>
-                    <Select defaultValue="贵阳" style={{ width: '160px' }} onChange={this.cityChange}>
-                      <Option value="贵阳">贵阳</Option>
-                    </Select>
-                  </div>
-                  <div><span>协调相位:</span>
-                    <Select defaultValue="贵阳" style={{ width: '160px' }} onChange={this.cityChange}>
-                      <Option value="贵阳">贵阳</Option>
-                    </Select>
-                  </div>
-                  <div>
-                    <span className={styles.spansico}>相位图显示:</span>
-                    <b className={styles.icobs} />
-                  </div>
-                  <div>
-                    <span>相位差:</span><Input style={{ width: '160px' }} name="MaintenancePhine" onChange={this.changValue} value={MaintenancePhine} />
-                  </div>
-                  <div className={styles.lastdiv}>
-                    <span onClick={this.closeAddroaders}>取消</span>
-                    <span>保存</span>
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-        }
       </div>
     )
   }
