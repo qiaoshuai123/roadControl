@@ -71,7 +71,7 @@ class GraphCharts extends React.Component {
         axisLabel: {
           rotate: 45, // 旋转角度
           textStyle: {
-            color: '#FFFFFF', // 更改坐标轴文字颜色
+            color: '#397EAE', // 更改坐标轴文字颜色
             fontSize: 12, // 更改坐标轴文字大小
           },
           interval: 0, // 设置X轴数据间隔几个显示一个，为0表示都显示
@@ -91,7 +91,7 @@ class GraphCharts extends React.Component {
         axisLabel: {
           show: true,
           textStyle: {
-            color: '#FFFFFF', // 更改坐标轴文字颜色
+            color: '#397EAE', // 更改坐标轴文字颜色
             fontSize: 14, // 更改坐标轴文字大小
           },
         },

@@ -60,6 +60,7 @@ class SignalHome extends PureComponent {
   componentDidUpdate = (prevState) => {
     const { interList, controlRoads, controlCounts, planTimes, controlStatus, realTimeStatus, faultStatistics, basicInterInfo } = this.props.data
     if (prevState.data.interList !== interList) {
+      console.log(interList, 'ss')
       this.getInterList(interList)
     }
     if (prevState.data.controlRoads !== controlRoads) {
@@ -238,24 +239,24 @@ class SignalHome extends PureComponent {
     const id = `monitor${interId}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
-      <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
-        <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
+      <div style="width:480px;height:260px;background:#173662;">
+        <div style="color:#5F9FDC;position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:16px;">
           路口名称 ：${interName}
         </div>
         <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
-          <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
+          <div style="flex:1;color:#CED8E1;">
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">所属城区 ：</span>${this.belongArea}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">信号系统 ：</span>${singalSys}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">运行阶段 ：</span><img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
           </div>
-          <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：${this.controlState}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：${this.singalIp}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：${this.alarmState}</p>
+          <div style="flex:1;color:#CED8E1;">
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">控制状态 ：</span>${this.controlState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">信号机IP ：</span>${this.singalIp}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">设备状态 ：</span><span style="color:#168830;"></span>${this.alarmState}</p>
           </div>
         </div>
         <div style="height:40px;display:flex;justify-content:center;align-items:center;">
-          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
+          <div id="${id}" style="width:80px;color:#2CB3E3;height:30px;margin:20px auto 0;background-color:#0673B6;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
         </div>
       </div>
     `
@@ -303,6 +304,50 @@ class SignalHome extends PureComponent {
       })
       this.setState({ searchInterList: searchInters })
     }, 200)
+  }
+  showHisense = (e) => { // 筛选符合条件的海信点位
+    const { interList } = this.state
+    if (e.target.checked) {
+      this.delMarker()
+      this.haixin = true
+      const arrs = this.searchInterList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
+      this.searchInterList = arrs
+      this.addMarker(arrs)
+    } else {
+      this.haixin = false
+      if (this.zhongkong) {
+        this.delMarker()
+        const arrs = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
+        this.searchInterList = arrs
+        this.addMarker(arrs)
+      } else {
+        this.delMarker()
+        this.addMarker(interList)
+        this.searchInterList = interList
+      }
+    }
+  }
+  CentralControl = (e) => { // 筛选符合条件的中控点位
+    const { interList } = this.state
+    if (e.target.checked) {
+      this.zhongkong = true
+      this.delMarker()
+      const arrs = this.searchInterList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
+      this.searchInterList = arrs
+      this.addMarker(arrs)
+    } else {
+      this.zhongkong = false
+      if (this.haixin) {
+        this.delMarker()
+        const arrs = this.interList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
+        this.searchInterList = arrs
+        this.addMarker(arrs)
+      } else {
+        this.delMarker()
+        this.addMarker(interList)
+        this.searchInterList = interList
+      }
+    }
   }
   // 初始化地图
   renderMineMap = () => {
@@ -358,8 +403,8 @@ class SignalHome extends PureComponent {
         <div className={styles.interSysBox}>
           <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
           <div className={styles.systemPoint}>
-            <div><span className={styles.upIconBox}><i /><b /></span>海信系统</div>
-            <div><span className={styles.squareBox} />中控</div>
+            <div><span className={styles.upIconBox}><i /><b /></span><input onChange={this.showHisense} type="checkbox"/> 海信系统</div>
+            <div><span className={styles.squareBox} /><input onChange={this.CentralControl} type="checkbox" />中控</div>
             {/* <div><span className={styles.circleBox} />泰尔文特</div> */}
           </div>
         </div>
@@ -372,7 +417,7 @@ class SignalHome extends PureComponent {
           </div>
           <div className={styles.signaContainer_left_box}>
             <div className={styles.title}>实时信号控制状态</div>
-            <div style={{ height: '260px' }}>
+            <div style={{ height: '260px',background:'#182E53' }}>
               {
                 this.state.controlStatus &&
                 <Histogram chartsDatas={this.state.controlStatus} />

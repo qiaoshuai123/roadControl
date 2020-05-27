@@ -5,31 +5,30 @@
   flex-direction: column;
 }
 .pTop {
+  color: #5F9FDC;
   height: 40px;
   font-size: 16px;
   padding-left: 20px;
   line-height: 40px;
-  background: linear-gradient(to bottom, #02183d 0%, #06234f 100%);
+  // background: linear-gradient(to bottom, #02183d 0%, #06234f 100%);
 }
 .mountingManage {
   height: 100%;
-  padding: 0 10px;
   .mountingTable {
     height: 100%;
     display: flex;
+    color: #B5BFC6;
     flex-direction: column;
     font-size: 13px;
     .mountingThead {
       height: 26px;
-      color: #95edf4;
+      color: #5F9FDC;
+      background-color: #2B5391;
       display: flex;
     }
     .mountingTr {
       height: 26px;
       display: flex;
-    }
-    .mountingThead {
-      background-color: rgba(14, 28, 63, 0.7);
     }
     .mountingTh,
     .mountingTd {
@@ -50,7 +49,7 @@
       background-color: rgba(14, 50, 98, 0.7);
     }
     .mountingTr:nth-child(even) {
-      background-color: rgba(14, 28, 63, 0.7);
+      background-color: rgba(43,83,145, 0.7);
     }
     .mountingTbody {
       // flex: 1;

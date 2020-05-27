@@ -51,7 +51,7 @@ class Histogram extends React.Component {
         axisLabel: {
           show: true,
           textStyle: {
-            color: '#FFFFFF', // 更改坐标轴文字颜色
+            color: '#397EAE', // 更改坐标轴文字颜色
             fontSize: 12, // 更改坐标轴文字大小
           },
           interval: 0,
@@ -88,7 +88,7 @@ class Histogram extends React.Component {
         splitLine: { // ---grid 区域中的分隔线
           show: true, // ---是否显示，'category'类目轴不显示，此时我的X轴为类目轴，splitLine属性是无意义的
           lineStyle: {
-            color: ['#143058'],
+            color: ['#2A4065'],
             width: 1,
             type: 'solid',
           },
@@ -96,7 +96,7 @@ class Histogram extends React.Component {
         axisLabel: {
           show: true,
           textStyle: {
-            color: '#FFFFFF', // 更改坐标轴文字颜色
+            color: '#397EAE', // 更改坐标轴文字颜色
             fontSize: 13, // 更改坐标轴文字大小
           },
         },
