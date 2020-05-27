@@ -1,3 +1,5 @@
+$fc-color:#5F9FDC;
+$fontAll_color:#CCD8DF;
 .interMonitorBox {
     z-index: 9;
     position: absolute;
@@ -25,14 +27,15 @@
         height: 40px;
         line-height: 40px;
         padding-left: 10px;
-        color: #5F9FDC;;
+        color: $fc-color;
         font-size: 16px;
     }
     .interMsg {
         display: flex;
+        color: $fc-color;
         // height: 100px;
         padding: 20px 0;
-        background: linear-gradient(to bottom, #1d4071 0%, #152e53 100%);
+        background: linear-gradient(to bottom, rgba(29,64,113,.9), rgba(21,46,83,.9));
         .msgShow {
             flex: 1;
             display: flex;
@@ -60,8 +63,9 @@
     .statusMsg {
         height: 100%;
         padding-top: 20px;
-        background-color: #1d4071;
+        background-color:rgba(25,55,98,.9);
         .statusBox {
+            color: $fontAll_color;
             position: relative;
             margin-bottom: 10px;
             display: flex;
@@ -69,13 +73,12 @@
             justify-content: center;
             align-items: center;
             .statusTitle {
+                color: #2CB3E3;
                 position: relative;
                 width: 200px;
                 height: 30px;
                 text-align: center;
                 line-height: 28px;
-                border-radius: 50px;
-                border: 1px solid #00a9c0;
                 background-color: transparent;
                 cursor: pointer;
                 transition: all 0.2s;
@@ -138,12 +141,13 @@
         height: 40px;
         line-height: 40px;
         padding-left: 10px;
-        color: #f1f1fb;
+        color: $fc-color;
         font-size: 16px;
     }
     .systemPoint {
+        color: $fontAll_color;
         padding: 20px 0;
-        background: linear-gradient(to bottom, #1d4071 0%, #152e53 100%);
+        background: linear-gradient(to bottom, rgba(29,64,113,.9), rgba(21,46,83,.9));
         & > div {
             position: relative;
             height: 30px;
@@ -195,10 +199,11 @@
         }
     }
     .statusDetails {
+        color: $fontAll_color;
         height: calc(100% - 180px);
         padding-top: 20px;
         overflow-y: auto;
-        background-color: #1d4071;
+        background-color:rgba(25,55,98,.9);
         .pointList {
             height: 30px;
             padding-left: 50px;
