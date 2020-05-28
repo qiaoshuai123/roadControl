@@ -181,16 +181,16 @@ class Optimize extends Component {
                   new Array(6).fill(true).map((item, index) => {
                     return (
                       <div className={styles.swiperItems} key={index}>
-                        <p>设备编号 : 1000227$1$041</p>
-                        <p>位置 : 世纪大道与海淀五西路路口</p>
+                        <p><span className={styles.swiperItemsBox}>设备编号 : </span>1000227$1$041</p>
+                        <p><span className={styles.swiperItemsBox}>位置 : </span>世纪大道与海淀五西路路口</p>
                         <div className={styles.videoBox}>{}</div>
                       </div>
                     )
                   })
                 }
                 <div className={styles.swiperItems}>
-                  <p>设备编号 : 1000227$1$041</p>
-                  <p>位置 : 世纪大道与海淀五西路路口</p>
+                  <p><span className={styles.swiperItemsBox}>设备编号 : </span>1000227$1$041</p>
+                  <p><span className={styles.swiperItemsBox}>位置 : </span>世纪大道与海淀五西路路口</p>
                   <div className={styles.videoBox}>123</div>
                 </div>
               </div>

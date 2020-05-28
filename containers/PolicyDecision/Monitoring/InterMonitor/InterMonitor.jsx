@@ -14,7 +14,7 @@ function DropDownList(props) {
   const { handleClick, title, list, statusName, isShow, handleChange } = props
   return (
     <div className={styles.statusBox}>
-      <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#00A9C0' : 'transparent' }}>
+      <p className={styles.statusTitle} statusname={statusName} onClick={handleClick} style={{ backgroundColor: isShow ? '#0673B6' : '#22467A' }}>
         {title}
         <span className={styles.downIcon} style={{ transform: isShow ? 'rotate(180deg)' : 'rotate(0)' }}><Icon type="down" /></span>
       </p>

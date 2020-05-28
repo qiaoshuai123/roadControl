@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     >span {
-      color: #b0f3fc;
+      color: #5F9FDC;
       margin: 0 15px;
     }
     >li {
@@ -51,22 +51,22 @@
   display: flex;
   flex-wrap: wrap;
   .divs{
+    color: #3AA6C3;
     margin-left: 35px;
   }
   .searchBtn {
     width: 80px;
-    height: 30px;
+    height: 32px;
     margin-left: 15px;
     text-align: center;
-    line-height: 30px;
-    border: 1px solid #032e55;
+    line-height: 32px;
     border-radius: 3px;
     color: #f1f1fb;
     cursor: pointer;
   }
   .searchActive {
-    background-color: #00a9c0;
-    border-color: #00a9c0;
+    color: #5F9FDC;
+    background-color: #254A7F;
   }
 }
 .lineChartsBox {
@@ -84,8 +84,8 @@
     display: none;
   }
   :global(.ant-input) {
-    border: none;
     background-color: #03406c;
+    border: 1px solid #5f9fdc;;
     color: #f1f1fb;
   }
   :global(.ant-select-selection__rendered) {
@@ -94,7 +94,7 @@
   :global(.ant-select-selection) {
     background-color: #03406c;
     color: #f1f1fb;
-    border: none;
+    border: 1px solid #5f9fdc;
     box-shadow: none;
     display: flex;
     align-items: center;

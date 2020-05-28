@@ -1,4 +1,8 @@
+$fc-colorAll: #5f9fdc; // 全部字体颜色
+$fc-color: #2bd3f4; // 个别单独颜色
+$fontAll_color:#CCD8DF;// 全局颜色
 .speciaTaskBox {
+  color: $fontAll_color;
   width: 100%;
   height: 100%;
   background-color: #021035;
@@ -22,14 +26,14 @@
       text-align: center;
       line-height: 30px;
       border-radius: 3px;
-      background-color: #002E4F;
+      background-color: #002e4f;
       cursor: pointer;
     }
   }
   .speciaContainer_left {
     padding-top: 10px;
     width: 361px;
-    height: calc(100% - 210px);
+    height: calc(100% - 255px);
     flex-direction: column;
     display: flex;
     .speciaContainer_left_top {
@@ -37,9 +41,10 @@
       height: 40px;
     }
     .speciaContainer_left_bom {
+      background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
       flex: 1;
       overflow-y: auto;
-      div{
+      div {
         float: left;
         width: 160px;
         height: 155px;
@@ -55,11 +60,11 @@
     padding: 5px 30px;
     display: flex;
     flex-direction: column;
-    background-color: #011f53;
-    
+    background: rgba(24, 46, 83, 0.9);
     .speciaContainer_center_top {
+      font-weight: bold;
       flex: 2.2;
-      color: #16F8F7;
+      color: $fc-colorAll;
       font-size: 20px;
       display: flex;
       align-items: center;
@@ -73,7 +78,7 @@
         margin-right: 20px;
       }
       span {
-        color: #00ff64;
+        color: #28C8E1;
       }
     }
   }
@@ -88,11 +93,14 @@
       flex: 1.9;
       display: flex;
       flex-direction: column;
-      p:nth-child(1) {
+      background: rgba(24, 46, 83, 0.9);
+      >p:nth-child(1) {
         font-size: 18px;
         line-height: 30px;
+        color: $fc-colorAll;
         height: 30px;
         padding-left: 10px;
+        background-color: rgba(2,16,53,.9);
         span {
           font-size: 12px;
         }
@@ -110,9 +118,10 @@
         div {
           flex: 1;
         }
-        .speciaContainerLB_left,.speciaContainerLB_right{
+        .speciaContainerLB_left,
+        .speciaContainerLB_right {
           position: relative;
-          span{
+          span {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -121,23 +130,23 @@
         }
       }
       .speciaContainerLB_list {
-    
         flex: 3;
       }
       .speciaContainerLB_bom {
         flex: 1;
+        color: $fc-colorAll;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        .spanOne{
+        .spanOne {
           margin-right: 10px;
         }
         .spans {
-          color: white;
+          color: $fc-colorAll;
           padding: 5px;
           border-radius: 5px;
           cursor: pointer;
-          background-color: #04a8c3;
+          background-color: #254A7F;
         }
         .spans:nth-child(1) {
           padding: 5px 12px;
@@ -150,6 +159,7 @@
       display: flex;
       flex-direction: column;
       p {
+        color: $fc-colorAll;
         font-size: 18px;
         line-height: 30px;
         height: 30px;
@@ -170,7 +180,9 @@
           border-radius: 5px;
           display: flex;
           justify-content: center;
-          span{
+          color: $fc-colorAll;
+          background-color: #254A7F;
+          span {
             display: inline-block;
             width: 20px;
             height: 20px;
@@ -183,22 +195,21 @@
       }
     }
   }
-  .optimizeMessage{
+  .optimizeMessage {
     position: absolute;
     bottom: 0;
     left: 110px;
     height: 360px;
     width: calc(100% - 620px);
     z-index: 99;
-    background: url(./optimizeMessageBg.png) center center no-repeat;
-    background-size: 100% 100%;
+    background:rgba(29, 64, 113, 0.9);
     font-size: 14px;
   }
   .swiperRig {
     position: fixed;
     bottom: 10px;
     left: 130px;
-    width:calc(100% - 600px);
+    width: calc(100% - 600px);
     height: 240px;
     padding: 0 35px;
     display: flex;
@@ -209,15 +220,18 @@
       top: 70px;
       width: 25px;
       height: 100px;
-      background-color: rgba(1, 31, 83, .8);
+      background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
       font-size: 30px;
       text-align: center;
       line-height: 100px;
       border-radius: 3px;
       cursor: pointer;
-      transition: all .2s;
+      transition: all 0.2s;
+      :global(path) {
+        color: $fc-colorAll;
+      }
       &:hover {
-        background-color: rgba(2,133,238, .8);
+        background-color: rgba(2, 133, 238, 0.8);
       }
     }
     .swiperRig_left {
@@ -233,7 +247,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0, .8);
+      background-color: rgba(0, 0, 0, 0.8);
       overflow: hidden;
       .swiperList {
         position: absolute;
@@ -246,6 +260,9 @@
           padding: 10px 10px 0 10px;
           // margin-right: 10px;
           font-size: 13px;
+          .swiperItemsBox {
+            color: $fc-colorAll;
+          }
           & > p {
             height: 20px;
             line-height: 20px;
@@ -262,29 +279,32 @@
     }
   }
 }
-.active{
-  background-color: #08899F !important;
+.active {
+  background-color: #08899f !important;
 }
 .speciaContainer_left {
-  :global(.ant-select .ant-select-enabled){
+  input::-webkit-input-placeholder {
+    color: $fc-colorAll;
+  }
+  :global(.ant-select .ant-select-enabled) {
     flex: 1;
   }
   :global(.ant-select-selection) {
-    color: white;
+    color: $fc-colorAll;
     height: 31px;
     background-color: #023052;
     border: 1px solid #1d425f;
   }
   :global(path) {
-    color: white;
+    color: $fc-colorAll;
   }
 
   :global(.ant-input-affix-wrapper .ant-input) {
-    color: white;
+    color: $fc-colorAll;
     background-color: #023052;
     border: 1px solid #1d425f;
   }
-  :global(.ant-input-search){
+  :global(.ant-input-search) {
     flex: 2;
     height: 31px;
   }
@@ -304,7 +324,7 @@
     height: 30px;
   }
   :global(.ant-select-selection) {
-    color: white;
+    color: $fc-colorAll;
     height: 30px;
     line-height: 30px;
     background-color: #023052;
@@ -315,6 +335,6 @@
     line-height: 30px;
   }
   :global(path) {
-    color: white;
+    color: $fc-colorAll;
   }
 }

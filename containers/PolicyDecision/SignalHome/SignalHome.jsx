@@ -237,7 +237,7 @@ class SignalHome extends PureComponent {
     const id = `monitor${interId}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
-      <div style="width:480px;height:260px;background:#173662;">
+      <div style="width:480px;height:260px;background:rgba(24, 46, 83,.9);">
         <div style="color:#5F9FDC;position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:16px;">
           路口名称 ：${interName}
         </div>
@@ -401,7 +401,7 @@ class SignalHome extends PureComponent {
         <div className={styles.interSysBox}>
           <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
           <div className={styles.systemPoint}>
-            <div><span className={styles.upIconBox}><i /><b /></span><input onChange={this.showHisense} type="checkbox"/> 海信系统</div>
+            <div><span className={styles.upIconBox}><i /><b /></span><input onChange={this.showHisense} type="checkbox" /> 海信系统</div>
             <div><span className={styles.squareBox} /><input onChange={this.CentralControl} type="checkbox" />中控</div>
             {/* <div><span className={styles.circleBox} />泰尔文特</div> */}
           </div>
@@ -415,7 +415,7 @@ class SignalHome extends PureComponent {
           </div>
           <div className={styles.signaContainer_left_box}>
             <div className={styles.title}>实时信号控制状态</div>
-            <div style={{ height: '260px',background:'#182E53' }}>
+            <div style={{ height: '260px', background: 'rgba(24, 46, 83,.9)' }}>
               {
                 this.state.controlStatus &&
                 <Histogram chartsDatas={this.state.controlStatus} />

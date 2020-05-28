@@ -14,6 +14,10 @@
     transform: rotate(360deg);
   }
 }
+
+$bg-color: rgba(24, 46, 83, 0.9);
+$fc-color: #5f9fdc;
+
 .signalHomeBox {
   z-index: 9;
   position: relative;
@@ -85,7 +89,7 @@
     background-color: #011f53;
     .systemPoint {
       display: flex;
-      input{
+      input {
         height: 20px;
         width: 20px;
         margin-right: 3px;
@@ -144,7 +148,7 @@
     padding-left: 20px;
     line-height: 40px;
     font-size: 16px;
-    color: #5F9FDC;;
+    color: #5f9fdc;
   }
   .signaContainer_left {
     z-index: 9;
@@ -153,7 +157,7 @@
     left: 0;
     height: calc(100% - 100px);
     width: 448px;
-    background-color: rgba(13,27,66,.8);
+    background-color: rgba(13, 27, 66, 0.8);
     overflow: hidden;
     .signaContainer_left_box {
       // flex: 1;
@@ -163,7 +167,7 @@
       height: calc(100% - 600px);
     }
     .signaContainer_left_boxer {
-      background-color: #182E53;
+      background-color: rgba(24, 46, 83, 0.9);
       display: flex;
       .signaContainerLB_left {
         flex: 1;
@@ -266,7 +270,7 @@
           align-items: center;
           font-size: 16px;
           font-weight: 400;
-          color: #5F9FDC;
+          color: #5f9fdc;
           text-align: left;
         }
         //   > span:nth-child(1) {
@@ -285,7 +289,7 @@
         > span {
           display: inline-block;
           font: 60px num;
-          color: #FEFDF7;
+          color: #fefdf7;
           text-align: center;
           line-height: 70px;
           background: url(./img/22.png) center center no-repeat;
@@ -306,7 +310,7 @@
       }
       //外层3
       > div:nth-child(3) {
-        color: #5F9FDC;
+        color: #5f9fdc;
         position: absolute;
         bottom: 20px;
         right: 10px;
@@ -337,7 +341,7 @@
       }
     }
     .malfunctionBox {
-      background: linear-gradient(to top, #031837, #06234f);
+      background:  rgba(24, 46, 83,.9);
     }
   }
 }
