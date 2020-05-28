@@ -1,5 +1,6 @@
-$fc-color:#5F9FDC;
-$fontAll_color:#CCD8DF;
+$fc-color: #5f9fdc;
+$fontAll_color: #ccd8df;
+$bg_color: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
 .interMonitorBox {
     z-index: 9;
     position: absolute;
@@ -35,7 +36,7 @@ $fontAll_color:#CCD8DF;
         color: $fc-color;
         // height: 100px;
         padding: 20px 0;
-        background: linear-gradient(to bottom, rgba(29,64,113,.9), rgba(21,46,83,.9));
+        background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
         .msgShow {
             flex: 1;
             display: flex;
@@ -63,7 +64,7 @@ $fontAll_color:#CCD8DF;
     .statusMsg {
         height: 100%;
         padding-top: 20px;
-        background-color:rgba(25,55,98,.9);
+        background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
         .statusBox {
             color: $fontAll_color;
             position: relative;
@@ -73,7 +74,7 @@ $fontAll_color:#CCD8DF;
             justify-content: center;
             align-items: center;
             .statusTitle {
-                color: #2CB3E3;
+                color: #2cb3e3;
                 position: relative;
                 width: 200px;
                 height: 30px;
@@ -147,7 +148,7 @@ $fontAll_color:#CCD8DF;
     .systemPoint {
         color: $fontAll_color;
         padding: 20px 0;
-        background: linear-gradient(to bottom, rgba(29,64,113,.9), rgba(21,46,83,.9));
+        background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
         & > div {
             position: relative;
             height: 30px;
@@ -203,7 +204,7 @@ $fontAll_color:#CCD8DF;
         height: calc(100% - 180px);
         padding-top: 20px;
         overflow-y: auto;
-        background-color:rgba(25,55,98,.9);
+        background-color: rgba(25, 55, 98, 0.9);
         .pointList {
             height: 30px;
             padding-left: 50px;
@@ -234,7 +235,7 @@ $fontAll_color:#CCD8DF;
     width: 320px;
     height: calc(100% - 110px);
     font-size: 14px;
-    background-color: #06234d;
+    background: $bg_color;
     transition: all 0.3s;
     .title {
         position: relative;
@@ -323,14 +324,16 @@ $fontAll_color:#CCD8DF;
             height: 30px;
             text-align: center;
             line-height: 30px;
-            background-color: #023757;
+            background-color: rgb(34, 70, 122);
+            color: #2cb3e3;
             letter-spacing: 5px;
             border-radius: 4px;
             margin-top: 15px;
             cursor: pointer;
         }
         .activeBtn {
-            background-color: #018da8;
+            background-color: rgb(6, 115, 182);
+            color: #2cb3e3;
         }
     }
 }
@@ -371,5 +374,6 @@ $fontAll_color:#CCD8DF;
     }
     .pieChartsBox {
         height: calc(100% - 40px);
+        background: $bg_color;
     }
 }

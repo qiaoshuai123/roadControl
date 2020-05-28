@@ -259,6 +259,9 @@ $fontAll_color:#CCD8DF;// 全局颜色
           height: 100%;
           padding: 10px 10px 0 10px;
           // margin-right: 10px;
+          background-color: rgba(25, 55, 98, 0.9);
+          margin: 0 2px;
+          border-radius: 5px;
           font-size: 13px;
           .swiperItemsBox {
             color: $fc-colorAll;

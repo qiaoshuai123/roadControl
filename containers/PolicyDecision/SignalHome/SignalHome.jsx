@@ -1,7 +1,7 @@
 import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Select, Icon, message } from 'antd'
+import { Select, Icon, message, Checkbox } from 'antd'
 import transfromXY from '../../../utils/transformMapXY'
 
 import Header from '../Header/Header'
@@ -35,7 +35,11 @@ class SignalHome extends PureComponent {
       faultCompare: null,
       hisenseSingal: '000',
       siemensSingal: '000',
+      iszhongK: true,
+      ishaixin: true,
     }
+    this.zhongkong = true
+    this.haixin = true
     this.searchInterList = []
     this.markers = []
     this.infowindow = 0
@@ -306,22 +310,22 @@ class SignalHome extends PureComponent {
   showHisense = (e) => { // 筛选符合条件的海信点位
     const { interList } = this.state
     if (e.target.checked) {
-      this.delMarker()
       this.haixin = true
-      const arrs = this.searchInterList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
-      this.searchInterList = arrs
-      this.addMarker(arrs)
+      this.delMarker()
+      if (this.zhongkong) {
+        this.addMarker(interList)
+      } else {
+        this.searchInterList = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
+        this.addMarker(this.searchInterList)
+      }
     } else {
       this.haixin = false
+      this.delMarker()
       if (this.zhongkong) {
-        this.delMarker()
-        const arrs = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
-        this.searchInterList = arrs
-        this.addMarker(arrs)
+        this.searchInterList = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
+        this.addMarker(this.searchInterList)
       } else {
         this.delMarker()
-        this.addMarker(interList)
-        this.searchInterList = interList
       }
     }
   }
@@ -330,20 +334,20 @@ class SignalHome extends PureComponent {
     if (e.target.checked) {
       this.zhongkong = true
       this.delMarker()
-      const arrs = this.searchInterList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
-      this.searchInterList = arrs
-      this.addMarker(arrs)
+      if (this.haixin) {
+        this.addMarker(interList)
+      } else {
+        this.searchInterList = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 3)
+        this.addMarker(this.searchInterList)
+      }
     } else {
       this.zhongkong = false
+      this.delMarker()
       if (this.haixin) {
-        this.delMarker()
-        const arrs = this.interList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
-        this.searchInterList = arrs
-        this.addMarker(arrs)
+        this.searchInterList = interList.filter(item => item.SIGNAL_SYSTEM_CODE === 4)
+        this.addMarker(this.searchInterList)
       } else {
         this.delMarker()
-        this.addMarker(interList)
-        this.searchInterList = interList
       }
     }
   }
@@ -361,7 +365,7 @@ class SignalHome extends PureComponent {
     this.map = map
   }
   render() {
-    const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList, controlCounts } = this.state
+    const { interListHeight, interList, hisenseSingal, siemensSingal, searchInterList, controlCounts, ishaixin, iszhongK } = this.state
     return (
       <div className={styles.signalHomeBox} id="mapContainer">
         <Header {...this.props} />
@@ -401,8 +405,8 @@ class SignalHome extends PureComponent {
         <div className={styles.interSysBox}>
           <div style={{ color: '#08FBED' }}>系统点位分布类型：</div>
           <div className={styles.systemPoint}>
-            <div><span className={styles.upIconBox}><i /><b /></span><input onChange={this.showHisense} type="checkbox" /> 海信系统</div>
-            <div><span className={styles.squareBox} /><input onChange={this.CentralControl} type="checkbox" />中控</div>
+            <div><span className={styles.upIconBox}><i /><b /></span><Checkbox defaultChecked onChange={this.showHisense} />海信系统</div>
+            <div><span className={styles.squareBox} /><Checkbox defaultChecked onChange={this.CentralControl} />中控</div>
             {/* <div><span className={styles.circleBox} />泰尔文特</div> */}
           </div>
         </div>

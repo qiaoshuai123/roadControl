@@ -1,8 +1,10 @@
 .interMsgWrapper {
     padding: 5px 0;
+    background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
+    margin-bottom: 3px;
     .chartsTitle {
         font-size: 15px;
-        color: #03CB47;
+        color: #25B8D4;
     }
     .chartsSearch {
         height: 50px;
@@ -21,14 +23,14 @@
         }
         :global(.ant-input) {
             border: none;
-            background-color: #03406C;
+            background-color: #16537F;
             color: #F1F1FB;
         }
         :global(.ant-select-selection__rendered) {
             line-height: 28px;
         }
         :global(.ant-select-selection) {
-            background-color: #03406C;
+            background-color: #16537F;
             color: #F1F1FB;
             border: none;
             box-shadow: none;
@@ -53,14 +55,14 @@
             margin-left: 5px;
             text-align: center;
             line-height: 30px;
-            border: 1px solid #032E55;
             border-radius: 3px;
-            color: #F1F1FB;
+            color: #5F9FDC;;
             cursor: pointer;
+            background-color: #264D88;
         }
         .searchActive {
-            background-color: #00A9C0;
-            border-color: #00A9C0;
+            background-color: #0673B6;
+            color: #2AC8F1;
         }
     }
 }

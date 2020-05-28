@@ -117,10 +117,10 @@
     }
   }
   .phaseConfigBox_top {
+    color: #5f9fdc;
     height: 45px;
     padding-left: 10px;
     padding-right: 10px;
-    background-color: rgba(14, 51, 85, 0.8);
     .phaseConfigBoxTop_left {
       float: left;
       height: 100%;
@@ -152,7 +152,8 @@
       margin-right: 20px;
       text-align: center;
       line-height: 26px;
-      background-color: #12a4f1;
+      background-color: rgb(34, 70, 122);
+      color: #2cb3e3;
       border-radius: 3px;
       cursor: pointer;
     }
@@ -165,15 +166,13 @@
     .mountingThead {
       font-size: 13px;
       height: 32px;
-      color: #95edf4;
+      background-color: #2B5391;
+      color: #2cb3e3;
       display: flex;
     }
     .mountingTr {
       height: 32px;
       display: flex;
-    }
-    .mountingThead {
-      background-color: rgba(14, 28, 63, 0.7);
     }
     .mountingTh,
     .mountingTd {
@@ -187,7 +186,7 @@
     }
     .deviceMsg {
       display: flex;
-      color: white;
+      color: #5F9FDC;
       padding: 1px 5px;
       span {
           padding: 0 12px;
@@ -197,22 +196,12 @@
         align-items: center;
         justify-content: center;
       }
-      &:nth-child(1) {
-        span {
-          background-color: #7cc710;
-        }
-      }
-      &:nth-child(2) {
-        span {
-          background-color: #f3690d;
-        }
-      }
     }
     .mountingTr:nth-child(odd) {
-      background-color: rgba(14, 50, 98, 0.7);
+      background-color: rgba(14, 50, 98, 0.7)
     }
     .mountingTr:nth-child(even) {
-      background-color: rgba(14, 28, 63, 0.7);
+      background-color: rgba(43, 83, 145, 0.7)
     }
     .mountingTbody {
       // height: calc(100% - 50px);

@@ -205,14 +205,14 @@ class InterDetails extends React.PureComponent {
               <div className={styles.messageBox_top} onClick={this.handleCloseDeviceInfo}><Icon type="close" /></div>
               <div className={styles.messageBox_bottom}>
                 <ul className={styles.messageBox_bottom_left} style={{ paddingLeft: '34px' }}>
-                  <li>关联编号 : {deviceInfoMsg.DEVICE_CODE}</li>
-                  <li>维护单位 : &nbsp;<span className={styles.unitName}>{deviceInfoMsg.MAINTENANCE_UNIT_NAME}</span></li>
-                  <li>管理单位 : &nbsp;<span className={styles.unitName}>{deviceInfoMsg.MANAGEMENT_UNIT_NAME}</span></li>
+                  <li><span className={styles.fontColor}>关联编号 : </span> {deviceInfoMsg.DEVICE_CODE}</li>
+                  <li><span className={styles.fontColor}>维护单位 : </span>&nbsp;<span className={styles.unitName}>{deviceInfoMsg.MAINTENANCE_UNIT_NAME}</span></li>
+                  <li><span className={styles.fontColor}>管理单位 :</span> &nbsp;<span className={styles.unitName}>{deviceInfoMsg.MANAGEMENT_UNIT_NAME}</span></li>
                 </ul>
                 <ul className={styles.messageBox_bottom_right}>
-                  <li>设备型号 : {deviceInfoMsg.DEVICE_MODEL}</li>
-                  <li>维护电话 : {deviceInfoMsg.MAINTENANCE_UNIT_TEL}</li>
-                  <li>设备状态 :<span>&nbsp;{deviceInfoMsg.DEVICESTATENAME}</span></li>
+                  <li><span className={styles.fontColor}>设备型号 :</span> {deviceInfoMsg.DEVICE_MODEL}</li>
+                  <li><span className={styles.fontColor}>维护电话 :</span> {deviceInfoMsg.MAINTENANCE_UNIT_TEL}</li>
+                  <li><span className={styles.fontColor}>设备状态 :</span><span className={styles.fontColorTwo}>&nbsp;{deviceInfoMsg.DEVICESTATENAME}</span></li>
                 </ul>
               </div>
             </div>
@@ -258,10 +258,10 @@ class InterDetails extends React.PureComponent {
         </div>
         <div className={styles.DeviceStatus}>
           <ul className={styles.DeviceStatus_left}>
-            <li>设备状态 :<span>&nbsp;{sinaglInfo ? sinaglInfo.ALARMSTATE : '--'}</span></li>
-            <li>控制状态 : {sinaglInfo ? sinaglInfo.CONTROLSTATE : '--'}</li>
+            <li><span className={styles.fontColor}>设备状态 :</span><span>&nbsp;{sinaglInfo ? sinaglInfo.ALARMSTATE : '--'}</span></li>
+            <li><span className={styles.fontColor}>控制状态 :</span>{sinaglInfo ? sinaglInfo.CONTROLSTATE : '--'}</li>
             <li>
-              当前时段 :&nbsp;
+              <span className={styles.fontColor}>当前时段 :</span>&nbsp;
               {
                 sinaglInfo &&
                 <span className={styles.stageImgBox}>
@@ -270,8 +270,8 @@ class InterDetails extends React.PureComponent {
               }&nbsp;
               {sinaglInfo ? sinaglInfo.STAGE_CODE : '--'}
             </li>
-            <li>当前方案 : {planTimeInfo ? planTimeInfo.PLANNAME : '--'}</li>
-            <li>{systemTime}</li>
+            <li><span className={styles.fontColor}>当前方案 : </span>{planTimeInfo ? planTimeInfo.PLANNAME : '--'}</li>
+            <li><span className={styles.fontColorTwo}>{systemTime}</span></li>
           </ul>
           <div className={styles.DeviceStatus_right}>
             <dl className={styles.deviceControlBtn}>
@@ -391,7 +391,7 @@ class InterDetails extends React.PureComponent {
         <Modal
           visible={configPop && configPop !== 'singalConfig' && configPop !== 'primitive'}
           closable={false}
-          bodyStyle={{ borderRadius: '5px', backgroundColor: 'rgba(61, 87, 114, .8)', padding: 0, overflow: 'hidden' }}
+          bodyStyle={{ borderRadius: '5px', background: 'rgba(25, 55, 98, 0.9)', padding: 0, overflow: 'hidden' }}
           maskClosable={false}
           style={{ backgroundColor: '' }}
           centered

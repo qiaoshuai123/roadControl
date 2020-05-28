@@ -1,3 +1,4 @@
+$ft_color:#5F9FDC;
 .InterWrapper {
     width: 100%;
     height: 100%;
@@ -11,20 +12,25 @@
         height: calc(100% - 100px);
         display: flex;
         .interTreeBox {
+            color: #ccd8df;;
             width: 360px;
             height: 100%;
             padding: 10px 0 0 30px;
-            background-color: #02183D;
+            background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
             .interSearch {
                 display: flex;
+                input::-webkit-input-placeholder {
+                    color: #5f9fdc;
+                  }
                 :global(.ant-select-selection) {
                     width: 100px;
-                    background-color: #063657;
-                    border: 1px solid #063657;
-                    outline: none;
-                    color: #F1F1FB;
-                    box-shadow: none;
+                    background-color: #193E6C;
+                    border: 1px solid #285183;
+                    color: #5f9fdc;
                 }
+                :global(path) {
+                    color: #5f9fdc;
+                  }
                 :global(.ant-select-arrow) {
                     color: #F1F1FB;
                 }
@@ -35,11 +41,11 @@
                         height: 32px;
                         padding-left: 5px;
                         margin-left: 10px;
-                        background-color: #063657;
-                        border: 1px solid #063657;
+                        background-color: #193E6C;
+                        border: 1px solid #285183;
+                        color: #5f9fdc;
                         border-radius: 4px;
-                        outline: none;
-                        color: #F1F1FB;
+                        box-shadow: none;
                     }
                     .searchIcon {
                         position: absolute;
@@ -62,7 +68,7 @@
             padding: 10px 20px;
             overflow-y: auto;
             .interName {
-                color: #07FDF4;
+                color: $ft_color;
             }
             .gaugeBox {
                 display: flex;
