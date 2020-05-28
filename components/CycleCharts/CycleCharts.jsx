@@ -22,7 +22,7 @@ class Dashboard extends React.Component {
         x: 'center',
         bottom: '20',
         textStyle: {
-          color: '#fff',
+          color: '#5F9FDC',
           fontSize: 14,
           align: 'right',
         },
