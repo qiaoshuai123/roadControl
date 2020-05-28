@@ -277,7 +277,8 @@ class SecretTask extends PureComponent {
     this.controlState = basicInterInfo.CONTROLSTATE
     this.alarmState = basicInterInfo.ALARMSTATE
     this.singalIp = basicInterInfo.SIGNAL_IP
-    this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
+    // this.runStatePic = `http://192.168.1.230:8080/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
+    this.runStatePic = `http://10.11.57.101:20206/atms-web/resources/imgs/stage/${basicInterInfo.STAGE_IMAGE}`
     this.runText = basicInterInfo.STAGE_CODE
   }
   // 关闭自定义信息窗体
@@ -511,7 +512,7 @@ class SecretTask extends PureComponent {
   renderMineMap = () => {
     const map = new window.minemap.Map({
       container: 'mapContainer',
-      style: '//minedata.cn/service/solu/style/id/2301',
+      style: '//10.11.57.105:60050/service/solu/style/id/4636',
       center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,

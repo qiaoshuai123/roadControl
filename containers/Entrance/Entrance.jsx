@@ -37,7 +37,7 @@ class Entrance extends React.Component {
     if (path) {
       window.open(path)
     } else {
-      window.open('http://39.100.128.220:30000/road/control/simulation/#/entrances')
+      window.open('http://10.11.57.101:20206/prot/simWeb/#/entrances')
     }
   }
   handleLogout = () => {

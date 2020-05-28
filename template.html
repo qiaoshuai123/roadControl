@@ -6,11 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>道路运行管控</title>
-    <link rel="stylesheet" href="//minedata.cn/minemapapi/v2.0.0/minemap.css">
-    <script src="//minedata.cn/minemapapi/v2.0.0/minemap.js"></script>
+    <!-- 本地 -->
+    <!-- <link rel="stylesheet" href="//221.13.10.30:22191/minemapapi/v2.0.0/minemap-dark.css">
+    <script src="//221.13.10.30:22191/minemapapi/v2.0.0/minemap.js"></script> -->
+    
+    
+    <!-- 内网 -->
+    <link rel="stylesheet" href="//10.11.57.105:60050/minemapapi/v2.0.0/minemap-dark.css">
+    <script src="//10.11.57.105:60050/minemapapi/v2.0.0/minemap.js"></script>
+    <!-- <link rel="stylesheet" href="//10.11.57.105:60050/minemapapi/v2.0.0/minemap.css?v=e1711fe9">
+    <script src="//10.11.57.105:60050/minemapapi/v2.0.0/minemap.js"></script> -->
+    <!-- <script>
+        // document.write("<link href='" + APP_DOMAIN_ROOT + "/minemapapi/v2.0.0/minemap.css?v="+FILE_TIME_VERSION+"' rel='stylesheet'/>");
+    </script>-->
     <script>
-        window.minemap.accessToken = '25cc55a69ea7422182d00d6b7c0ffa93'
-        window.minemap.solution = 2365
+        // 本地
+        // window.minemap.accessToken = '25cc55a69ea7422182d00d6b7c0ffa93'
+        // window.minemap.solution = 2365
+        // minemap.domainUrl = '//221.13.10.30:22191';
+        // minemap.dataDomainUrl = '//221.13.10.30:22191';
+        // minemap.spriteUrl = '//221.13.10.30:22191/minemapapi/v2.0.0/sprite/sprite';
+        // minemap.serviceUrl = '//221.13.10.30:22191/service';
+        // minemap.accessToken = '7f190842667b447cb9f17ada55385670';
+        // minemap.solution = 2365;
+
+        /* 内网地图 */
+         window.minemap.domainUrl = '//10.11.57.105:60050';
+         window.minemap.dataDomainUrl = '//10.11.57.105:60050';
+         window.minemap.spriteUrl = '//10.11.57.105:60050/minemapapi/v2.0.0/sprite/sprite';
+         window.minemap.serviceUrl = '//10.11.57.105:60050/service';
+         window.minemap.accessToken = '7f190842667b447cb9f17ada55385670'
+         window.minemap.solution = 2365
     </script>
 </head>
 

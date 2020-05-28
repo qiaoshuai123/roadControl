@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL: 'http://39.100.128.220:20199',
-  // baseURL: 'http://192.168.1.230:8888',
+  // baseURL: 'http://10.11.57.101:20206',
 })
 // 请求拦截
 instance.interceptors.request.use((config) => {
