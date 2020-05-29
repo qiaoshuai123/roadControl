@@ -1,6 +1,36 @@
 .entranceBox {
+    min-width: 1200px;
     width: 100%;
     height: 100%;
     background: url(./bg.png) center center no-repeat;
     background-size: cover;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .logoBox {
+        padding-top: 40px;
+        display: flex;
+        justify-content: center;
+        .logo {
+            width: 570px;
+            height: 120px;
+            background: url(./logo.png) center center no-repeat;
+            background-size: 100% 100%;
+        }
+    }
+    .modalWrapper {
+        padding-top: 40px;
+        display: flex;
+        justify-content: center;
+        .modalBg {
+            position: relative;
+            width: 1200px;
+            height: 600px;
+            background: url(./modalbg.png) center center no-repeat;
+            background-size: 100% 100%;
+            .modalItem {
+                width: 350px;
+                height: 315px;
+            }
+        }
+    }
 }

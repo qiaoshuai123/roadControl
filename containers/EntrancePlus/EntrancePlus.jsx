@@ -9,7 +9,17 @@ class EntrancePlus extends React.Component {
   render() {
     return (
       <div className={styles.entranceBox}>
-        123
+        <div className={styles.logoBox}>
+          <div className={styles.logo} />
+        </div>
+        <div className={styles.modalWrapper}>
+          <div className={styles.modalBg}>
+            <div className={styles.modalItem} />
+            <div className={styles.modalItem} />
+            <div className={styles.modalItem} />
+            <div className={styles.modalItem} />
+          </div>
+        </div>
       </div>
     )
   }
