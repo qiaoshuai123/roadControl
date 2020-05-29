@@ -8,7 +8,7 @@ import styles from './RegiolManagement.scss'
 import Header from '../Header/Header'
 import ModalPage from '../InterManagement/ModalPage/ModalPage'
 import ModalPages from './ModalPage/ModalPage'
-
+import mapStyles from '../../../utils/styles_2301'
 import InfoBg from './img/info_bg.png'
 
 import { getBasicInterInfo, getInterList, getLoadPlanTree, getLoadChildTree, geteditDistrictInfoThings, getAreaList } from '../../../actions/data'
@@ -283,7 +283,8 @@ class RegiolManagement extends Component {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       // style: '//10.11.57.105:60050/service/solu/style/id/4636',
-      style: '//221.13.10.30:22191/service/solu/style/id/4636',
+      // style: '//221.13.10.30:22191/service/solu/style/id/4636',
+      style: mapStyles,
       center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,

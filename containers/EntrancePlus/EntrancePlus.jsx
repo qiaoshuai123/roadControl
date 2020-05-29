@@ -1,10 +1,19 @@
 import React from 'react'
+import classNames from 'classnames'
 import styles from './EntrancePlus.scss'
 
 class EntrancePlus extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+  }
+  handleGoSystem = (e) => {
+    const path = e.currentTarget.getAttribute('modalname')
+    if (path) {
+      window.open(path)
+    } else {
+      window.open('http://10.11.57.101:20206/simWeb/#/entrances')
+    }
   }
   render() {
     return (
@@ -14,10 +23,10 @@ class EntrancePlus extends React.Component {
         </div>
         <div className={styles.modalWrapper}>
           <div className={styles.modalBg}>
-            <div className={styles.modalItem} />
-            <div className={styles.modalItem} />
-            <div className={styles.modalItem} />
-            <div className={styles.modalItem} />
+            <div modalname="#/signalhome" className={classNames(styles.modalItem, styles.decision)} onClick={this.handleGoSystem} />
+            <div className={classNames(styles.modalItem, styles.optimize)} onClick={this.handleGoSystem} />
+            <div modalname="#/inter" className={classNames(styles.modalItem, styles.simulate)} onClick={this.handleGoSystem} />
+            <div modalname="#/TrafficSystem" className={classNames(styles.modalItem, styles.system)} onClick={this.handleGoSystem} />
           </div>
         </div>
       </div>
