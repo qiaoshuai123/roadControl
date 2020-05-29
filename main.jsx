@@ -20,7 +20,7 @@ const Login = Loadable({
   delay: 0,
 })
 const Entrance = Loadable({
-  loader: () => import('./containers/Entrance/Entrance'),
+  loader: () => import('./containers/EntrancePlus/EntrancePlus'),
   loading: Loading,
   delay: 0,
 })

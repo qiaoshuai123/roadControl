@@ -9,6 +9,7 @@ import Form from './form/Form'
 import Histogram from '../../../components/Histogram/histogram'
 import HollowPie from '../../../components/HollowPie/HollewPie'
 import GraphCharts from '../../../components/GraphCharts/GraphCharts'
+import mapStyles from '../../../utils/styles_2301'
 import styles from './Signahome.scss'
 
 import InfoBg from './img/infobg.png'
@@ -357,7 +358,7 @@ class SignalHome extends PureComponent {
     const map = new window.minemap.Map({
       container: 'mapContainer',
       // style: '//10.11.57.105:60050/service/solu/style/id/4636',
-      style: '//221.13.10.30:22191/service/solu/style/id/4636',
+      style: mapStyles,  //'//221.13.10.30:22191/service/solu/style/id/4636',
       center: [106.713906, 26.59579],
       zoom: 13,
       pitch: 0,
