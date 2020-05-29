@@ -248,7 +248,8 @@ class SecretTask extends PureComponent {
   renderMineMap = () => {
     const map = new window.minemap.Map({
       container: 'mapContainer',
-      style: '//10.11.57.105:60050/service/solu/style/id/4636',
+      // style: '//10.11.57.105:60050/service/solu/style/id/4636',
+      style: '//221.13.10.30:22191/service/solu/style/id/2301',
       center: [106.713906, 26.59579],
       zoom: 14,
       pitch: 0,
