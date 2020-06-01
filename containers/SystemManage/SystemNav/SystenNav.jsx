@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { message } from 'antd'
-import navStyles from '..//Navigation.scss'
+import navStyles from '../Navigation.scss'
 
 class SystemNav extends React.Component {
   constructor(props) {
