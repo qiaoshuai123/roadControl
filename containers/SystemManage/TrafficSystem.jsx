@@ -280,7 +280,6 @@ class TrafficSystem extends React.Component {
                 userLimit && userLimit.indexOf(13) !== -1 ?
                   <span className={styles.searchBtn} onClick={() => { this.handlePagination('1') }} limitid="13">查询</span> : null
               }
-              <i className={styles.line} />
             </div>
             <div className={styles.syetem_buttom}>
               {

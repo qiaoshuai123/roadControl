@@ -196,24 +196,24 @@ class SecretTask extends PureComponent {
     const id = `monitor${interId}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
-      <div style="width:480px;height:260px;background:url(${InfoBg}) center center no-repeat;background-size:100% 100%;">
-        <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
+      <div style="width:480px;height:260px;;background:linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));">
+        <div style="color:#60B5F1;position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
           路口名称 ：${interName}
         </div>
         <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:40px">所属城区 ：${this.belongArea}</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">信号系统 ：${singalSys}</p>
-            <p style="height:32px;line-height:32px;padding-left:40px">运行阶段 ：<img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">所属城区 ：</span>${this.belongArea}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">信号系统 ：</span>${singalSys}</p>
+            <p style="height:32px;line-height:32px;padding-left:40px"><span style="color:#599FE0">运行阶段 ：</span><img width="36px" height="36px" src="${this.runStatePic}" />${this.runText || ''}</p>
           </div>
           <div style="flex:1;">
-            <p style="height:32px;line-height:32px;padding-left:20px">控制状态 ：${this.controlState}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">信号机IP ：${this.singalIp}</p>
-            <p style="height:32px;line-height:32px;padding-left:20px">设备状态 ：${this.alarmState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">控制状态 ：</span>${this.controlState}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">信号机IP ：</span>${this.singalIp}</p>
+            <p style="height:32px;line-height:32px;padding-left:20px"><span style="color:#599FE0">设备状态 ：</span>${this.alarmState}</p>
           </div>
         </div>
         <div style="height:40px;display:flex;justify-content:center;align-items:center;">
-          <div id="${id}" style="width:80px;height:30px;margin:20px auto 0;background-color:#0F85FF;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
+          <div id="${id}" style="width:80px;color:#2CB3E3;height:30px;margin:20px auto 0;background-color:#0673B6;text-align:center;line-height:30px;border-radius:4px;cursor:pointer;">路口监控</div>
         </div>
       </div>
     `

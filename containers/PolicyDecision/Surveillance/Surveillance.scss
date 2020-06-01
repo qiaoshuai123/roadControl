@@ -4,6 +4,8 @@
     color: #fff;
   }
 }
+$bg-color: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
+$ft_color: #60b5f1;
 // 遮罩层// 浮层效果
 .MaskBox {
   width: 100%;
@@ -16,6 +18,7 @@
 }
 
 .title {
+  color: $ft_color;
   line-height: 55px;
   height: 55px;
   padding-left: 25px;
@@ -419,7 +422,7 @@
   color: #05bbec;
   width: 460px;
   height: 280px;
-  background-color: #023163;
+  background: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
   position: absolute;
   right: 0;
   top: 100px;
@@ -428,7 +431,7 @@
     height: 30px;
     line-height: 30px;
     font-weight: bold;
-    background-color: #031f47;
+    background-color: rgba(38,78,137,.8);
     padding: 0 10px;
   }
   .PopupBo {
@@ -451,8 +454,7 @@
   .Popup_box_ulOne {
     height: 25px;
     margin: 0;
-    background-color: #031f47;
-    border: 1px solid #031f47;
+    background-color: rgba(38,78,137,.8);
   }
   .Popup_box_ulOne li {
     width: 25%;
@@ -463,8 +465,7 @@
   }
   .Popup_box_ulTwo {
     height: 30px;
-    background-color: #031f47;
-    border: 1px solid #031f47;
+    background-color: rgba(38,78,137,.8);
   }
   .Popup_box_ulTwo li {
     width: 25%;
@@ -556,7 +557,7 @@
   width: 350px;
   height: calc(100% - 100px);
   z-index: 9;
-  background-color: rgba(6, 35, 79, 0.8);
+  background: $bg-color;
   transition: all 0.3s;
   .hideIcon {
     position: absolute;
@@ -576,9 +577,9 @@
     height: 40px;
     line-height: 40px;
     padding-left: 10px;
-    color: #f1f1fb;
+    color: $ft_color;
     font-size: 16px;
-    background-color: #02183d;
+    background-color: rgba(19, 41, 82, 0.6);
   }
   .searchBox {
     margin: 15px 0;
@@ -588,11 +589,12 @@
       width: 224px;
       height: 32px;
       padding-left: 5px;
-      background-color: rgba(6, 56, 90, 0.8);
-      border: 1px solid #063657;
+      margin-left: 0;
+      background-color: rgba(28,64,114, 0.8);
+      border: 1px solid #224B7B;
       border-radius: 4px;
       outline: none;
-      color: #f1f1fb;
+      color: $ft_color;
     }
     .searchIcon {
       position: absolute;
@@ -660,9 +662,9 @@
     margin-bottom: 10px;
     border-radius: 3px;
     cursor: pointer;
-    color: white;
+    background-color: #22467a;
+    color: $ft_color;
     font-weight: bold;
-    background-color: #018da8;
   }
   .addtask {
     width: 100%;
@@ -673,10 +675,11 @@
     bottom: 7%;
     left: 0;
     span {
-      padding: 5px 65px;
+      padding: 10px 65px;
       cursor: pointer;
-      border: 1px solid #00a8c2;
-      border-radius: 15px;
+      background-color: #22467a;
+      color: #60b5f1;
+      border-radius: 3px;
     }
   }
   .treeBox {
@@ -692,7 +695,10 @@
     border: 1px solid #1d425f;
   }
   :global(path) {
-    color: white;
+    color: $ft_color;
+  }
+  input::-webkit-input-placeholder {
+    color: $ft_color;
   }
 }
 .PanelItemNone {
