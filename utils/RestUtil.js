@@ -10,7 +10,7 @@ function createInstance() {
     axios.defaults.baseURL = 'http://39.100.128.220:7002'
   } else if (process.env.NODE_ENV === 'production') {
     // axios.defaults.baseURL = 'http://39.100.128.220:7002' // 公网
-    axios.defaults.baseURL = 'http://10.11.57.101:20206' // 测试
+    axios.defaults.baseURL = 'http://10.11.57.101:20206' // 内网测试
   }
   // 添加请求拦截器
   axios.interceptors.request.use((config) => {
