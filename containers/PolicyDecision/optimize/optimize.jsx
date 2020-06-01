@@ -93,8 +93,6 @@ class Optimize extends Component {
   handleChange = (value) => {
     // console.log(`selected ${value}`)
   }
-  handleSwiperMoveLeft = () => { }
-  handleSwiperMoveRight = () => { }
   render() {
     const { Option } = Select
     const { Search } = Input
@@ -170,34 +168,6 @@ class Optimize extends Component {
             {
               this.flowList.map(item => <div key={item.id} className={`${styles.chartsType} ${nums === item.id ? styles.active : ''}`} onClick={() => this.monitorMessage(item)}>{item.name}</div>)
             }
-          </div>
-          <div className={styles.swiperRig}>
-            <div className={styles.swiperRig_left} onClick={this.handleSwiperMoveLeft}>
-              <span><Icon type="caret-left" /></span>
-            </div>
-            <div className={styles.swiperBox}>
-              <div className={styles.swiperList} style={{ left: `${swiperListLeft}px` }}>
-                {
-                  new Array(6).fill(true).map((item, index) => {
-                    return (
-                      <div className={styles.swiperItems} key={index}>
-                        <p><span className={styles.swiperItemsBox}>设备编号 : </span>1000227$1$041</p>
-                        <p><span className={styles.swiperItemsBox}>位置 : </span>世纪大道与海淀五西路路口</p>
-                        <div className={styles.videoBox}>{}</div>
-                      </div>
-                    )
-                  })
-                }
-                <div className={styles.swiperItems}>
-                  <p><span className={styles.swiperItemsBox}>设备编号 : </span>1000227$1$041</p>
-                  <p><span className={styles.swiperItemsBox}>位置 : </span>世纪大道与海淀五西路路口</p>
-                  <div className={styles.videoBox}>123</div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.swiperRig_right} onClick={this.handleSwiperMoveRight}>
-              <span><Icon type="caret-right" /></span>
-            </div>
           </div>
           <div style={{ display: showOpeMessage }} className={styles.optimizeMessage}>
             <OptimizeMsg monitorMessageNone={this.monitorMessageNone} />
