@@ -1,9 +1,9 @@
 .navWrapper {
     position: fixed;
-    top: 50px;
+    top: 60px;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: 40px;
     padding-left: 30px;
     display: flex;
     align-items: center;
@@ -16,7 +16,8 @@
             height: 40px;
             text-align: center;
             line-height: 40px;
-            color: #05BBEC;
+            color: #62bbff;
+            font-size: 16px;
         }
         .navActive {
             background: url(./nav_active.png) center center no-repeat;
