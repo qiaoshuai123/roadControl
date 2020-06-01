@@ -51,7 +51,7 @@ class Histogram extends React.Component {
         axisLabel: {
           show: true,
           textStyle: {
-            color: '#397EAE', // 更改坐标轴文字颜色
+            color: '#57A5CF', // 更改坐标轴文字颜色
             fontSize: 12, // 更改坐标轴文字大小
           },
           interval: 0,
@@ -96,7 +96,7 @@ class Histogram extends React.Component {
         axisLabel: {
           show: true,
           textStyle: {
-            color: '#397EAE', // 更改坐标轴文字颜色
+            color: '#57A5CF', // 更改坐标轴文字颜色
             fontSize: 13, // 更改坐标轴文字大小
           },
         },

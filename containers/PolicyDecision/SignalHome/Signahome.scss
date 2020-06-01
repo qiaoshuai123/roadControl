@@ -16,7 +16,7 @@
 }
 
 $bg-color: rgba(24, 46, 83, 0.9);
-$fc-color: #5f9fdc;
+$fc-color: #60B5F1;
 
 .signalHomeBox {
   z-index: 9;
@@ -146,9 +146,10 @@ $fc-color: #5f9fdc;
   .title {
     height: 40px;
     padding-left: 20px;
+    font-weight: bolder;
     line-height: 40px;
     font-size: 16px;
-    color: #5f9fdc;
+    color: $fc-color;
   }
   .signaContainer_left {
     z-index: 9;
@@ -269,7 +270,7 @@ $fc-color: #5f9fdc;
           align-items: center;
           font-size: 20px;
           font-weight: bold;
-          color: #62BDFC;
+          color: #62bdfc;
           text-align: left;
         }
         //   > span:nth-child(1) {
@@ -309,7 +310,7 @@ $fc-color: #5f9fdc;
       }
       //外层3
       > div:nth-child(3) {
-        color: #5f9fdc;
+        color: $fc-color;
         position: absolute;
         bottom: 20px;
         right: 10px;
@@ -340,7 +341,7 @@ $fc-color: #5f9fdc;
       }
     }
     .malfunctionBox {
-      background:  rgba(24, 46, 83,.9);
+      background: rgba(24, 46, 83, 0.9);
     }
   }
 }

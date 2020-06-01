@@ -85,8 +85,8 @@ class Monitoring extends Component {
     const id = `monitor${interId}`
     // <span id=${id} style="position:absolute;top:25px;right:25px;width:20px;height:20px;text-align:center;line-height:20px;font-size:16px;cursor:pointer;color:#49C2D5;">X</span>
     const infoHtml = `
-      <div style="width:480px;height:260px;background:rgba(24, 46, 83,.9);">
-        <div style="position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
+      <div style="width:480px;height:260px;background:linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));">
+        <div style="color:#60B5F1;position:relative;height:50px;padding-top:13px;padding-left:20px;line-height:50px;font-size:15px;">
           路口名称 ：${interName}
         </div>
         <div style="height:130px;display:flex;padding-top:20px;font-size:14px;">
