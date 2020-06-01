@@ -1,3 +1,5 @@
+$bg-color: linear-gradient(to bottom, rgba(29, 64, 113, 0.9), rgba(21, 46, 83, 0.9));
+$ft_color: #62bbff;
 .ModalPageWrapperBox {
     position: absolute;
     width: 100%;
@@ -8,7 +10,7 @@
     .ModalPageWrapper {
         width: 720px;
         height: 633px;
-        background-color: rgba(6, 35, 79, 0.8);
+        background: $bg-color;
         position: absolute;
         font-size: 15px;
         left: 0;
@@ -102,7 +104,8 @@
             justify-content: center;
             b {
                 font-weight: normal;
-                color: white;
+                background-color: #22467a;
+                color: #60b5f1;
                 display: inline-block;
                 width: 80px;
                 height: 100%;
@@ -111,7 +114,6 @@
                 line-height: 30px;
                 border-radius: 5px;
                 cursor: pointer;
-                background-color: #05bbec;
             }
         }
     }
@@ -154,7 +156,6 @@
     }
     .mountingTableBottom {
         height: 40px;
-        color: white;
         position: absolute;
         bottom: 20px;
         right: 0;
@@ -167,13 +168,11 @@
             height: 30px;
             line-height: 30px;
             text-align: center;
-            background-color: #119ff1;
+            background-color: #22467a;
+            color: #60b5f1;
             font-weight: normal;
             b {
                 height: 100%;
-            }
-            &:hover {
-                background-color: #31a9f5;
             }
         }
     }
