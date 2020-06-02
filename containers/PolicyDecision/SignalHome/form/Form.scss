@@ -8,7 +8,7 @@
   color: #60B5F1;
   height: 40px;
   font-weight: bolder;
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 20px;
   line-height: 40px;
   // background: linear-gradient(to bottom, #02183d 0%, #06234f 100%);
@@ -37,7 +37,7 @@
       flex: 1;
       text-align: center;
       line-height: 28px;
-      
+      font-family: 'SimHei' !important;
     }
     .mountingTh:first-child,
     .mountingTd:first-child {
@@ -45,10 +45,11 @@
       padding-left: 5px;
     }
     .mountingTd {
+      
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: #fff;
+      color: rgba(255,255,255, .8);
     }
     .deviceMsg {
       margin-right: 20px;

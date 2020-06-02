@@ -6,6 +6,7 @@
   font-style: normal;
   text-align: center;
 }
+
 @keyframes rotation {
   from {
     transform: rotate(0deg);
@@ -19,7 +20,6 @@ $bg-color: rgba(24, 46, 83, 0.9);
 $fc-color: #60B5F1;
 
 .signalHomeBox {
-  // font-family: '宋体' !important;
   z-index: 9;
   position: relative;
   width: 100%;

@@ -200,7 +200,7 @@ class Inter extends React.Component {
             {
               this.indicators.map((item) => {
                 return (
-                  <InterMsg {...this.props} msgName={item.name} key={item.name} />
+                  <InterMsg {...this.props} msgName={item.names} key={item.name} />
                 )
               })
             }
