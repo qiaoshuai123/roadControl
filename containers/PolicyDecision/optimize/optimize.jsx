@@ -8,6 +8,8 @@ import OptimizeListT from './optimizeListT/optimizeListT'
 import { echartsprogramme, echarts } from './chartsOptions'
 import OptimizeMsg from './optimizeMsg/optimizeMsg'
 
+import InterSearch from './InterSearch/InterSearch'
+
 class Optimize extends Component {
   constructor(props) {
     super(props)
@@ -30,39 +32,25 @@ class Optimize extends Component {
       { id: 6, num: 6 },
     ]
     this.assessmentList = [
-      {
-        id: 1,
-        name: '排队长度',
-      },
-      {
-        id: 2,
-        name: '停车次数',
-      },
-      {
-        id: 3,
-        name: '延迟时间',
-      },
+      { id: 1, name: '排队长度' },
+      { id: 2, name: '停车次数' },
+      { id: 3, name: '延迟时间' },
     ]
     this.flowList = [
-      {
-        id: 1,
-        name: '流量',
-      },
-      {
-        id: 2,
-        name: '延续',
-      },
-      {
-        id: 3,
-        name: '停车',
-      },
-      {
-        id: 4,
-        name: '排队',
-      },
+      { id: 1, name: '流量' },
+      { id: 2, name: '延续' },
+      { id: 3, name: '停车' },
+      { id: 4, name: '排队' },
     ]
+    this.phasePlanListUrl = 'http://46.1.184.101:12344/interSignal/getInterPhasePlanList' // 获取相位列表和颜色
   }
   componentDidMount() {
+  }
+  getInterMsg = () => {
+
+  }
+  getFirstInterId = () => {
+
   }
   // 方案评估按钮切换
   AssessmentBtn(id) {
@@ -101,7 +89,7 @@ class Optimize extends Component {
       <div className={styles.speciaTaskBox}>
         <Header {...this.props} />
         <div className={styles.speciaContainer}>
-          <div className={styles.speciaContainer_left}>
+          {/* <div className={styles.speciaContainer_left}>
             <div className={styles.speciaContainer_left_top}>
               <Select defaultValue="贵阳" style={{ width: '120px', marginRight: '10px' }} onChange={this.cityChange}>
                 <Option value="贵阳">贵阳</Option>
@@ -117,7 +105,8 @@ class Optimize extends Component {
                 this.dataList.map(item => <div key={item.id}>{}</div>)
               }
             </div>
-          </div>
+          </div> */}
+          <InterSearch getInterMsg={this.getInterMsg} getFirstInterId={this.getFirstInterId} />
           <div className={styles.speciaContainer_center}>
             <div className={styles.speciaContainer_center_top}>
               世纪大道与海甸五西路路口

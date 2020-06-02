@@ -7,48 +7,42 @@ class LineCharts extends React.Component {
     this.state = {
       legend: null,
       series: null,
-      nodata: true,
+      nodata: false,
     }
     this.keyNum = Math.random()
+    this.legend = ['东进口左转', '东进口直行', '东南进口左转', '东南进口直行', '西南进口左转', '西南进口直行', '西北进口左转', '西北进口直行', '西北进口左转1', '西北进口直行1']
+    this.time = ['10:50', '10:55', '11:00', '11:05', '11:10', '11:15', '11:20', '11:25', '11:30', '11:35', '11:40', '11:45', '11:50']
+    this.series = [
+      {
+        name: '东进口左转',
+        type: 'line',
+        data: [2.0, 4.9, 1.0, 33.2, 25.6, 75.7, 25.6, 162.2, 32.6, 20.0, 6.4, 3.3, 33],
+      },
+      {
+        name: '东进口直行',
+        type: 'line',
+        data: [2.0, 4.9, 10, 33.2, 25.6, 70, 25.6, 162.2, 32.6, 20.0, 6.4, 30, 23],
+      },
+    ]
   }
   componentDidMount = () => {
     const chartsBox = echarts.init(this.chartsBox)
-    this.renderCharts(chartsBox)
+    if (this.props.chartsDatas) {
+      const { time, legend, series } = this.props.chartsDatas
+      if (time.length > 0) {
+        this.setState({ noData: false })
+        this.renderCharts(chartsBox, legend, time, series)
+      } else {
+        this.setState({ noData: true })
+      }
+    } else {
+      this.setState({ noData: false })
+      this.renderCharts(chartsBox)
+    }
   }
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
-    // // if (this.props.chartsData !== nextProps.chartsData) {
-    // const datas = nextProps.chartsData
-
-    // // chartsBox.showLoading({
-    // //   text: 'Please Waitting...',
-    // //   color: '#c23531',
-    // //   textColor: '#fff',
-    // //   maskColor: '#263246',
-    // //   zlevel: 0
-    // // })
-    // if (!!datas && datas.time.length > 0) {
-    //   // chartsBox.hideLoading()
-    //   this.setState({ nodata: false }, () => {
-    //     const chartsBox = echarts.init(this.chartsBox)
-    //     this.renderCharts(chartsBox, datas.legend, datas.time, datas.series)
-    //   })
-    // } else {
-    //   // chartsBox.showLoading({
-    //   //   text: '暂无数据',
-    //   //   color: '#c23531',
-    //   //   textColor: '#fff',
-    //   //   maskColor: '#263246',
-    //   //   zlevel: 0
-    //   // })
-    //   this.setState({ nodata: true })
-    // }
-    // }
-  }
-  renderCharts = (menuChart2, legend, time, series) => {
-    console.log(menuChart2, legend, time, series, '值')
+  renderCharts = (menuChart2, legend = this.legend, time = this.time, series = this.series) => {
     // 绘制图表
     const options = {
-      color: ['#0D9737'],
       title: {
         // subtext: '单位：次/车',
         textStyle: {
@@ -56,16 +50,33 @@ class LineCharts extends React.Component {
           color: '#fff',
         },
       },
+      dataZoom: [
+        {
+          height: 10,
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+          bottom: 5,
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+          start: 50,
+          end: 100,
+        },
+      ],
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
           type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
         },
       },
-      toolbox: { // 右侧工具栏
+      toolbox: {
         show: true,
-        top: 0,
-        right: '5%',
+        top: 20,
+        right: 10,
         feature: {
           magicType: { show: true, type: ['line', 'bar'] },
         },
@@ -77,24 +88,30 @@ class LineCharts extends React.Component {
       },
       grid: {
         left: '0',
-        right: '5%',
+        right: '0',
         bottom: '5%',
-        top: '15%',
+        top: '20%',
         containLabel: true,
       },
-      // calculable: true,
+      legend: {
+        // data: ['东进口左转', '东进口直行', '东南进口左转', '东南进口直行', '西南进口左转', '西南进口直行', '西北进口左转', '西北进口直行', '西北进口左转1', '西北进口直行1'],
+        data: legend,
+        top: 10,
+        textStyle: {
+          color: '#fff',
+        },
+      },
+      calculable: true,
       xAxis: [
         {
           type: 'category',
-          boundaryGap: false,
-          data: ['10:50', '10:55', '10:50', '10:55', '11:00', '11:05', '11:10', '11:15', '11:20', '11:25', '11:30', '11:35', '11:40', '11:45', '11:50'],
-          // data: time,
+          // data: ['10:50', '10:55', '11:00', '11:05', '11:10', '11:15', '11:20', '11:25', '11:30', '11:35', '11:40', '11:45', '11:50'],
+          data: time,
           axisLabel: { // X轴文字
             textStyle: {
               fontSize: 12,
               color: '#fff',
             },
-            interval: 0,
           },
           axisLine: {
             lineStyle: {
@@ -115,29 +132,33 @@ class LineCharts extends React.Component {
           },
         },
       ],
-      series: [
-        {
-          type: 'line',
-          data: [2.0, 4.9, 2.0, 4.9, 1.0, 33.2, 25.6, 75.7, 25.6, 162.2, 32.6, 20.0, 6.4, 3.3, 33],
-        },
-      ],
-      // series,
+      // series: [
+      //   {
+      //     name: '东进口左转',
+      //     type: 'line',
+      //     data: [2.0, 4.9, 1.0, 33.2, 25.6, 75.7, 25.6, 162.2, 32.6, 20.0, 6.4, 3.3, 33],
+      //   },
+      //   {
+      //     name: '东进口直行',
+      //     type: 'line',
+      //     data: [2.0, 4.9, 10, 33.2, 25.6, 70, 25.6, 162.2, 32.6, 20.0, 6.4, 30, 23],
+      //   },
+      // ],
+      series,
     }
     menuChart2.setOption(options, true)
   }
   render() {
-    // if (!this.state.nodata) {
-    //   return (
-    //     <div ref={(input) => { this.chartsBox = input }} style={{ height: '300px' }} key={this.keyNum + this.state.nodata} />
-    //   )
-    // }
-    // return (
-    //   <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-    //     <div className="nodataBox" />
-    //   </div>
-    // )
+    if (!this.state.nodata) {
+      return (
+        <div ref={(input) => { this.chartsBox = input }} style={{ width: '1000px', height: '300px' }} key={this.keyNum + this.state.nodata} />
+      )
+    }
     return (
-      <div ref={(input) => { this.chartsBox = input }} style={{ height: '165px' }} key={this.keyNum + this.state.nodata} />
+      <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+        {/* <div className="nodataBox" /> */}
+        暂无数据
+      </div>
     )
   }
 }

@@ -1,0 +1,88 @@
+.interSearchBox {
+  /* position: fixed; */
+  /* top: 110px; */
+  /* left: 400px; */
+  width: 300px;
+  height: calc(100% - 220px);
+  z-index: 12;
+  margin-top: 10px;
+}
+.interPhaseBox {
+  padding: 5px 0 0 10px;
+  background-color: rgba(29,64,113,0.8);
+  overflow: hidden;
+}
+.interPhaseBox .areaList {
+  display: flex;
+  height: 30px;
+  margin-bottom: 5px;
+  align-items: center;
+}
+.interSearchBox .ant-select-selection {
+  width: 100px;
+  height: 28px;
+  background-color: #023052;
+  border-color: #1d425f;
+  color: #fff;
+  box-shadow: none;
+}
+.interSearchBox .ant-select-arrow {
+  color: #fff;
+}
+.interSearchBox .ant-select-selection:hover {
+  border-color: #40a9ff;
+}
+.interSearchBox .ant-select-selection__rendered {
+  line-height: 27px;
+}
+.interSearchBox .areaSearchBox {
+  position: relative;
+}
+.interSearchBox .areaSearchIcon {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  font-size: 15px;
+}
+.interSearchBox .areaSearch {
+  width: 170px;
+  height: 28px;
+  padding: 0 15px 0 5px;
+  background-color: #023052;
+  border: 1px solid #1d425f;
+  border-radius: 4px;
+  margin-left: 5px;
+  outline: none;
+  transition: all ease .3s;
+}
+.interSearchBox .areaSearch:hover {
+  border-color: #40a9ff;
+}
+.interSearchBox .interListBox {
+  max-height: 0;
+  transition: all ease .2s;
+  overflow-y: auto;
+}
+.interSearchBox .interListBox .interItems {
+  height: 26px;
+  line-height: 26px;
+  padding-left: 10px;
+  border-bottom: 1px solid #393d45;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all ease .3s;
+  color: #fff;
+}
+.interSearchBox .interListBox .interItems:hover {
+  color: #62ddff;
+}
+.interSearchBox .phaseSvgBox {
+  width:100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+
+
+

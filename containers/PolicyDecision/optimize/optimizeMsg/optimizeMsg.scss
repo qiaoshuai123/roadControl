@@ -1,44 +1,45 @@
 
 .optimizeMessage_top {
-  height: 45px;
-  font-size: 16px;
+  position: relative;
+  height: 40px;
+  font-size: 14px;
   padding: 0 10px 0 20px;
   display: flex;
   margin-top: 10px;
+  color: #62BBFF;
   .optimizeMessage_top_left {
-    margin: 0;
-    width: 48%;
     display: flex;
     align-items: center;
     overflow: auto;
-    >span {
-      color: #b0f3fc;
-      margin: 0 15px;
-    }
-    >li {
-      margin-right: 15px;
+    .msgItem {
+      width: 100px;
+      text-align: right;
     }
   }
   .optimizeMessage_top_center {
-    width: 48%;
     display: flex;
     align-items: center;
-    >span {
-      color: #5F9FDC;
-      margin: 0 15px;
-    }
-    >li {
-      margin-right: 15px;
+    .msgItem {
+      width: 100px;
+      text-align: right;
     }
   }
   .optimizeMessage_top_right {
-    width: 4%;
-    font-size: 30px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 10px;
+    top: 0;
+    font-size: 18px;
     color: #22ced0;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all .2s;
+    &:hover {
+      transform: rotate(-180deg);
+    }
   }
 }
 .chartsTitle {
@@ -46,13 +47,16 @@
   color: #03cb47;
 }
 .chartsSearch {
-  height: 50px;
+  height: 45px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  padding-left: 20px;
+  color: #62bbff;
+  font-size: 14px;
   .divs{
-    color: #3AA6C3;
-    margin-left: 35px;
+    width: 100px;
+    text-align: right;
   }
   .searchBtn {
     width: 80px;
@@ -70,7 +74,8 @@
   }
 }
 .lineChartsBox {
-  padding: 25px 45px;
+  width: 100%;
+  
 }
 .optimizeMessage_top,.chartsSearch {
   :global(.ant-calendar-picker) {
