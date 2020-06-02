@@ -1,3 +1,4 @@
+$ft_color: #62bbff;
 .timingWrapper {
   height: 100%;
   width: 100%;
@@ -12,11 +13,13 @@
   top: 100px;
   padding: 25px;
   h3 {
-    color: whitesmoke;
+    color: $ft_color;
     height: 40px;
+    line-height: 40px;
   }
   .searchBox {
-    height: 35px;
+    background: #1a3054;
+    height: 40px;
     display: flex;
     > div {
       flex: 1;
@@ -25,7 +28,7 @@
       align-items: center;
       > span {
         padding-right: 20px;
-        color: #92d1db;
+        color: $ft_color;
       }
       input {
         flex: 1;
@@ -33,23 +36,50 @@
       &:last-child {
         display: flex;
         justify-content: flex-end;
+        span {
+          width: 70px;
+          height: 32px;
+          display: flex;
+          justify-content: center;
+          border-radius: 3px;
+          align-items: center;
+          cursor: pointer;
+          padding-right: 0;
+          color: #62bbff;
+          background-color: rgba(79, 104, 237, 0.4);
+        }
       }
     }
   }
   .goExcal {
-    height: 35px;
-    margin-top: 10px;
+    height: 45px;
+    background: #1a3054;
+    display: flex;
+    align-items: center;
     > span {
       padding-right: 6px;
-      color: #92d1db;
+      color: #62bbff;
+    }
+    .spans {
+      width: 70px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      border-radius: 3px;
+      align-items: center;
+      cursor: pointer;
+      padding-right: 0;
+      color: #62bbff;
+      background-color: rgba(79, 104, 237, 0.4);
     }
   }
   .mountingManage {
     .mountingTable {
       .mountingThead {
-        font-size: 12px;
+        font-size: 14px;
         height: 40px;
-        color: #95edf4;
+        color: $ft_color;
+        background-color: #2b5391;
         display: flex;
       }
       .mountingTr {
@@ -57,18 +87,15 @@
         position: relative;
         display: flex;
       }
-      .mountingThead {
-        background-color: rgba(14, 28, 63, 0.7);
-      }
       .mountingTbody {
         height: 550px;
         overflow-y: auto;
         > div {
           &:nth-child(odd) {
-            background-color: rgba(14, 50, 98, 0.7);
+            background-color: #1b3864;
           }
           &:nth-child(even) {
-            background-color: #023052;
+            background: #1a3054;
           }
         }
       }
@@ -84,11 +111,12 @@
       }
       .deviceMsg {
         margin: 0 10px;
-        color: #07a8ff;
+        color: #2ad2f0;
       }
     }
   }
   .paginationBox {
+    color: $ft_color;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -287,12 +315,12 @@
           }
           :global(.ant-select-selection) {
             width: 120px;
-            background-color: transparent;
-            border: 1px solid #3b5268;
-            color: #f1f1fb;
+            border: 1px solid #62bbff;
+            background: #1a3054;
+            color: $ft_color;
           }
           :global(path) {
-            color: white;
+            color: #62bbff;
           }
         }
       }
@@ -327,10 +355,9 @@
 }
 .searchBox {
   :global(.ant-input) {
-    background-color: #06385b;
-    color: white;
-    outline: none;
-    border: none;
+    border: 1px solid #62bbff;
+    background: #1a3054;
+    color: $ft_color;
   }
 }
 .timingWrapper {
@@ -346,27 +373,38 @@
     flex: 1;
   }
   :global(.ant-select-selection) {
-    color: white;
     height: 32px;
-    background-color: #023052;
-    border: 1px solid #1d425f;
+    color: #62bbff;
+    border: 1px solid #62bbff;
+    background: #1a3054;
+    color: $ft_color;
   }
   :global(path) {
-    color: white;
+    color: #62bbff;
   }
 }
 .paginationBox {
   :global(.ant-pagination-item a) {
-    color: white;
+    color: #62bbff;
   }
   :global(.ant-pagination-options) {
-    color: white;
+    color: #62bbff;
   }
   :global(.ant-pagination-item-active) {
-    background-color: #1890ff;
+    background-color: rgba(79, 104, 237, 0.4);
+  }
+  :global(.ant-select-selection--single) {
+    color: #62bbff;
+    background-color: #021035;
+    border: 1px solid  #62bbff;
+  }
+  :global(.ant-pagination-options-quick-jumper input){
+    color: #62bbff;
+    background-color: #021035;
+    border: 1px solid  #62bbff;
   }
   :global(path) {
-    color: white;
+    color: #62bbff;
   }
   // :global(.ant-pagination.mini) {
   //   height: 32px;

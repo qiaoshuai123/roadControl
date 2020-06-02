@@ -376,10 +376,10 @@ class Timing extends Component {
                     <Option value={item.C_CODE} key={item.C_CODE}>{item.CODE_NAME}</Option>)}
               </Select>
             </div>
-            <div><Button onClick={this.btnSearth} type="primary">查询</Button></div>
+            <div><span onClick={this.btnSearth}>查询</span></div>
           </div>
           <div className={styles.goExcal}>
-            <span>统计结果</span><Button onClick={this.exportTable} type="primary">导出表格</Button>
+            <span>统计结果</span><span className={styles.spans} onClick={this.exportTable}>导出表格</span>
           </div>
           <div className={styles.mountingManage}>
             <div className={styles.mountingTable}>
